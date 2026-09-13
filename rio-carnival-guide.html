@@ -1,0 +1,1576 @@
+<title>Rio Carnival 2027</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Source+Sans+3:wght@300;400;600;700&display=swap">
+
+<style>
+/* ─── TOKENS ──────────────────────────────────────── */
+:root {
+  --ground:   #F6F0E8;
+  --surface:  #FFFFFF;
+  --border:   #E2D9CC;
+  --ink:      #1A1714;
+  --muted:    #7A6F65;
+  --faint:    #EDE6DC;
+  --red:      #D63B10;
+  --blue:     #1B4D72;
+  --gold:     #C49A22;
+  --green:    #2A6644;
+  --red-bg:   #FDF0EC;
+  --blue-bg:  #EDF3F9;
+  --gold-bg:  #FBF6E8;
+  --green-bg: #EBF4EE;
+  --radius:   6px;
+  --max-w:    900px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ground:   #131110;
+    --surface:  #1E1B18;
+    --border:   #2C2823;
+    --ink:      #EDE8E0;
+    --muted:    #8A7F75;
+    --faint:    #1A1714;
+    --red-bg:   #2A1610;
+    --blue-bg:  #0E1E2E;
+    --gold-bg:  #221B0A;
+    --green-bg: #0E1F16;
+  }
+}
+:root[data-theme="dark"] {
+  --ground:   #131110;
+  --surface:  #1E1B18;
+  --border:   #2C2823;
+  --ink:      #EDE8E0;
+  --muted:    #8A7F75;
+  --faint:    #1A1714;
+  --red-bg:   #2A1610;
+  --blue-bg:  #0E1E2E;
+  --gold-bg:  #221B0A;
+  --green-bg: #0E1F16;
+}
+
+/* ─── BASE ──────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: 'Source Sans 3', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.65;
+}
+a { color: var(--blue); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ─── LAYOUT ─────────────────────────────────────────── */
+.wrap { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+
+/* ─── HERO ───────────────────────────────────────────── */
+.hero {
+  background: var(--blue);
+  color: #fff;
+  padding: 56px 24px 48px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    -45deg,
+    rgba(255,255,255,0.03) 0px,
+    rgba(255,255,255,0.03) 1px,
+    transparent 1px,
+    transparent 20px
+  );
+}
+.hero-inner { max-width: var(--max-w); margin: 0 auto; position: relative; }
+.hero-eyebrow {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.6);
+  margin: 0 0 14px;
+}
+.hero h1 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(42px, 7vw, 72px);
+  font-weight: 600;
+  line-height: 1.05;
+  margin: 0 0 20px;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+.hero h1 em { font-style: italic; color: #F0C060; }
+.hero-sub {
+  font-size: 17px;
+  color: rgba(255,255,255,0.78);
+  max-width: 560px;
+  margin: 0 0 32px;
+  font-weight: 300;
+}
+.hero-pills { display: flex; flex-wrap: wrap; gap: 10px; }
+.pill {
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #fff;
+  font-size: 13px;
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-weight: 400;
+}
+.pill strong { font-weight: 600; }
+
+/* ─── NAV ─────────────────────────────────────────────── */
+.sticky-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+.nav-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.nav-inner::-webkit-scrollbar { display: none; }
+.nav-link {
+  display: block;
+  padding: 13px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  transition: color 0.15s, border-color 0.15s;
+}
+.nav-link:hover { color: var(--ink); text-decoration: none; border-bottom-color: var(--border); }
+.nav-link.active { color: var(--red); border-bottom-color: var(--red); }
+
+/* ─── SECTION HEADERS ────────────────────────────────── */
+.section { padding: 56px 0; border-bottom: 1px solid var(--border); }
+.section:last-child { border-bottom: none; }
+.section-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin: 0 0 10px;
+}
+.section-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(28px, 5vw, 44px);
+  font-weight: 600;
+  line-height: 1.1;
+  margin: 0 0 8px;
+  text-wrap: balance;
+}
+.section-desc {
+  font-size: 16px;
+  color: var(--muted);
+  max-width: 620px;
+  margin: 0 0 36px;
+}
+
+/* ─── SCHEDULE ───────────────────────────────────────── */
+.schedule-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 12px;
+}
+.sched-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+}
+.sched-card.highlight {
+  border-color: var(--gold);
+  background: var(--gold-bg);
+}
+.sched-card.peak {
+  border-color: var(--red);
+  background: var(--red-bg);
+}
+.sched-date {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 4px;
+}
+.sched-event {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 4px;
+  line-height: 1.2;
+}
+.sched-note {
+  font-size: 13px;
+  color: var(--muted);
+  margin: 0;
+}
+.sched-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 3px;
+  margin-bottom: 6px;
+}
+.badge-yours { background: var(--blue); color: #fff; }
+.badge-peak  { background: var(--red);  color: #fff; }
+.badge-gold  { background: var(--gold); color: #fff; }
+
+/* ─── NEIGHBORHOOD TABS ──────────────────────────────── */
+.nbhd-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+.nbhd-tab {
+  padding: 7px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.nbhd-tab:hover { border-color: var(--blue); color: var(--blue); }
+.nbhd-tab.active { background: var(--blue); border-color: var(--blue); color: #fff; }
+.nbhd-panel { display: none; }
+.nbhd-panel.active { display: block; }
+
+.nbhd-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+}
+.nbhd-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.nbhd-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 30px;
+  font-weight: 600;
+  margin: 0 0 4px;
+}
+.nbhd-subtitle { font-size: 14px; color: var(--muted); margin: 0; }
+.nbhd-rank {
+  text-align: right;
+  flex-shrink: 0;
+}
+.rank-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
+.rank-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 42px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--red);
+}
+
+.ratings-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 10px;
+  margin-bottom: 24px;
+}
+.rating-box {
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  background: var(--faint);
+}
+.rating-box-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 0 0 4px; }
+.rating-box-val { font-size: 14px; font-weight: 600; margin: 0; }
+.rating-box.excellent .rating-box-val { color: var(--green); }
+.rating-box.good      .rating-box-val { color: var(--blue); }
+.rating-box.moderate  .rating-box-val { color: var(--gold); }
+.rating-box.high-risk .rating-box-val { color: var(--red); }
+
+.nbhd-body { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+@media (max-width: 640px) { .nbhd-body { grid-template-columns: 1fr; } }
+.nbhd-col h4 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 10px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 6px;
+}
+.nbhd-col ul, .time-list { padding: 0; margin: 0; list-style: none; }
+.nbhd-col ul li {
+  font-size: 14px;
+  padding: 4px 0 4px 16px;
+  position: relative;
+  border-bottom: 1px solid var(--faint);
+}
+.nbhd-col ul li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+.time-list li {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  padding: 5px 0;
+  border-bottom: 1px solid var(--faint);
+}
+.time-list li:last-child { border-bottom: none; }
+.time-normal { color: var(--muted); font-size: 13px; }
+.time-carnival { color: var(--red); font-weight: 600; font-size: 13px; }
+.nbhd-verdict {
+  margin-top: 20px;
+  padding: 14px 16px;
+  background: var(--blue-bg);
+  border-left: 3px solid var(--blue);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 14px;
+}
+.nbhd-verdict strong { color: var(--blue); }
+
+/* ─── SAMBADROME SECTION ─────────────────────────────── */
+.metro-tip {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+  margin-bottom: 28px;
+}
+.metro-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+}
+.metro-card h4 {
+  font-size: 13px;
+  font-weight: 700;
+  margin: 0 0 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--blue);
+}
+.metro-card p { font-size: 14px; color: var(--muted); margin: 0 0 6px; }
+.metro-card .duration {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1;
+}
+
+/* ─── ACCOMMODATIONS ─────────────────────────────────── */
+.accom-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+.accom-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.accom-card.top-pick { border-color: var(--gold); }
+.accom-header {
+  padding: 16px 18px 12px;
+  border-bottom: 1px solid var(--border);
+}
+.accom-top-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  background: var(--gold);
+  color: #fff;
+  border-radius: 3px;
+  margin-bottom: 8px;
+}
+.accom-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0 0 4px;
+  line-height: 1.2;
+}
+.accom-location { font-size: 13px; color: var(--muted); margin: 0; }
+.accom-specs {
+  padding: 12px 18px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.spec-chip {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 3px;
+  background: var(--faint);
+  color: var(--ink);
+}
+.spec-chip.verified { background: var(--green-bg); color: var(--green); }
+.spec-chip.unclear  { background: var(--gold-bg);  color: #8A6C00; }
+.spec-chip.missing  { background: var(--red-bg);   color: var(--red); }
+.accom-body { padding: 0 18px 16px; flex: 1; }
+.accom-body p { font-size: 14px; color: var(--muted); margin: 0 0 10px; }
+.accom-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 18px;
+  background: var(--faint);
+  border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.accom-rating { font-weight: 700; font-size: 15px; }
+.accom-price { font-size: 13px; color: var(--muted); }
+.accom-price strong { color: var(--ink); font-size: 15px; }
+.accom-link {
+  display: block;
+  text-align: center;
+  padding: 9px 18px;
+  background: var(--blue);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+.accom-link:hover { background: #15395A; color: #fff; text-decoration: none; }
+
+/* ─── COMPARISON TABLE ───────────────────────────────── */
+.table-wrap { overflow-x: auto; margin-top: 8px; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  min-width: 900px;
+}
+thead th {
+  background: var(--blue);
+  color: #fff;
+  padding: 10px 12px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  white-space: nowrap;
+}
+tbody tr { border-bottom: 1px solid var(--border); }
+tbody tr:hover { background: var(--faint); }
+tbody td {
+  padding: 10px 12px;
+  vertical-align: top;
+  color: var(--ink);
+}
+.rank-cell {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--muted);
+  text-align: center;
+  width: 36px;
+}
+.rank-cell.top { color: var(--red); }
+.check { color: var(--green); font-weight: 700; }
+.cross { color: var(--red); }
+.maybe { color: var(--gold); }
+.tag {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+.tag-excellent { background: var(--green-bg); color: var(--green); }
+.tag-good      { background: var(--blue-bg);  color: var(--blue); }
+.tag-moderate  { background: var(--gold-bg);  color: #8A6C00; }
+.tag-limited   { background: var(--red-bg);   color: var(--red); }
+.tag-best      { background: var(--red); color: #fff; }
+.tag-top       { background: var(--gold); color: #fff; }
+
+/* ─── RECOMMENDATION BOX ─────────────────────────────── */
+.rec-box {
+  background: var(--blue);
+  color: #fff;
+  border-radius: var(--radius);
+  padding: 32px;
+  margin-top: 32px;
+}
+.rec-box h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px;
+  font-weight: 600;
+  margin: 0 0 12px;
+  color: #F0C060;
+}
+.rec-box p { font-size: 15px; color: rgba(255,255,255,0.85); margin: 0 0 12px; }
+.rec-box p:last-child { margin: 0; }
+.rec-box strong { color: #fff; }
+
+.rec-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+  margin-top: 32px;
+}
+.rec-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+.rec-card-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--red);
+  margin: 0 0 6px;
+}
+.rec-card-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0 0 8px;
+}
+.rec-card-body { font-size: 14px; color: var(--muted); margin: 0; }
+
+/* ─── NOTICE / TIP ───────────────────────────────────── */
+.tip {
+  display: flex;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: var(--radius);
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+.tip-red  { background: var(--red-bg);  border: 1px solid #F4B8A8; }
+.tip-blue { background: var(--blue-bg); border: 1px solid #B8D0E8; }
+.tip-gold { background: var(--gold-bg); border: 1px solid #E4CFA0; }
+.tip-icon { font-size: 18px; flex-shrink: 0; line-height: 1.4; }
+.tip p { margin: 0; }
+.tip strong { font-weight: 700; }
+
+/* ─── FOOTER ─────────────────────────────────────────── */
+.footer {
+  padding: 32px 24px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+}
+
+@media (max-width: 500px) {
+  .hero h1 { font-size: 36px; }
+  .nbhd-header { flex-direction: column; }
+  .nbhd-rank { text-align: left; }
+}
+</style>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <p class="hero-eyebrow">Travel Planning Guide — Researched September 2026</p>
+    <h1>Rio de Janeiro<br>for <em>Carnival 2027</em></h1>
+    <p class="hero-sub">A practical guide to neighborhoods, accommodations, safety, and Carnival logistics for February 6–11, 2027. Built around 2 bedrooms, 2 bathrooms, and the real demands of Carnival week.</p>
+    <div class="hero-pills">
+      <span class="pill"><strong>Feb 6–11, 2027</strong></span>
+      <span class="pill">5 nights</span>
+      <span class="pill">Peak Carnival week</span>
+      <span class="pill">2BR · 2BA required</span>
+      <span class="pill">South Zone focus</span>
+    </div>
+  </div>
+</div>
+
+<!-- STICKY NAV -->
+<nav class="sticky-nav">
+  <div class="nav-inner">
+    <a class="nav-link" href="#schedule">Schedule</a>
+    <a class="nav-link" href="#neighborhoods">Neighborhoods</a>
+    <a class="nav-link" href="#sambadrome">Sambadrome Access</a>
+    <a class="nav-link" href="#accommodations">Accommodations</a>
+    <a class="nav-link" href="#comparison">Full Comparison</a>
+    <a class="nav-link" href="#recommendation">Recommendation</a>
+  </div>
+</nav>
+
+<!-- BOOKING URGENCY BANNER -->
+<div class="wrap" style="padding-top:20px;">
+  <div class="tip tip-red">
+    <span class="tip-icon">⚠</span>
+    <p><strong>Book immediately.</strong> It is September 2026 — Carnival 2027 is 5 months away. Quality 2-bedroom apartments in Copacabana and Ipanema are already filling. Every property below requires live availability verification. Do not wait.</p>
+  </div>
+</div>
+
+<!-- SCHEDULE SECTION -->
+<section class="section" id="schedule">
+  <div class="wrap">
+    <p class="section-label">Carnival 2027</p>
+    <h2 class="section-title">What's Happening When</h2>
+    <p class="section-desc">Official Carnival runs February 5–10, with the Champions' Parade on February 13. Your dates (Feb 6–11) land squarely inside peak week, including all three Special Group Sambadrome nights.</p>
+
+    <div class="schedule-grid">
+      <div class="sched-card">
+        <div class="sched-date">Friday, Feb 5</div>
+        <div class="sched-event">Série Ouro Night 1</div>
+        <p class="sched-note">Second-division schools. Blocos begin across the city.</p>
+      </div>
+      <div class="sched-card highlight">
+        <span class="sched-badge badge-yours">Your arrival</span>
+        <div class="sched-date">Saturday, Feb 6</div>
+        <div class="sched-event">Série Ouro Night 2</div>
+        <p class="sched-note">Major street blocos citywide. Banda de Ipanema parades near Praça General Osório.</p>
+      </div>
+      <div class="sched-card peak">
+        <span class="sched-badge badge-peak">Sambadrome</span>
+        <div class="sched-date">Sunday, Feb 7</div>
+        <div class="sched-event">Special Group — Night 1</div>
+        <p class="sched-note">First 4 elite samba schools. Starts ~9 pm, runs to 5–6 am. Simpatia é Quase Amor bloco in Ipanema (~200,000 attendees).</p>
+      </div>
+      <div class="sched-card peak">
+        <span class="sched-badge badge-peak">Sambadrome</span>
+        <div class="sched-date">Monday, Feb 8</div>
+        <div class="sched-event">Special Group — Night 2</div>
+        <p class="sched-note">4 more elite schools. Peak Sambadrome energy. Banda de Ipanema returns to Ipanema.</p>
+      </div>
+      <div class="sched-card peak">
+        <span class="sched-badge badge-peak">Sambadrome</span>
+        <div class="sched-date">Tuesday, Feb 9</div>
+        <div class="sched-event">Special Group — Night 3</div>
+        <p class="sched-note">Final parade night — most prestigious. Final 4 schools. Parades run until dawn.</p>
+      </div>
+      <div class="sched-card">
+        <div class="sched-date">Wednesday, Feb 10</div>
+        <div class="sched-event">Apuração — Score Day</div>
+        <p class="sched-note">Champion announced from ~3 pm. Celebration blocos. Official Carnival ends.</p>
+      </div>
+      <div class="sched-card highlight">
+        <span class="sched-badge badge-yours">Your checkout</span>
+        <div class="sched-date">Thursday, Feb 11</div>
+        <div class="sched-event">Post-Carnival day</div>
+        <p class="sched-note">City returns to normal. Street cleaning underway. Good day to depart or explore calmer sights.</p>
+      </div>
+      <div class="sched-card">
+        <span class="sched-badge badge-gold">Optional</span>
+        <div class="sched-date">Saturday, Feb 13</div>
+        <div class="sched-event">Champions' Parade</div>
+        <p class="sched-note">Top schools parade again. Festive but smaller crowds. If extending your stay, this is worth catching.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEIGHBORHOODS -->
+<section class="section" id="neighborhoods">
+  <div class="wrap">
+    <p class="section-label">Where to Stay</p>
+    <h2 class="section-title">Neighborhood Guide</h2>
+    <p class="section-desc">Eight neighborhoods evaluated on safety, Carnival access, Uber reliability, and suitability specifically for February 6–11, 2027.</p>
+
+    <div class="nbhd-tabs" role="tablist">
+      <button class="nbhd-tab active" onclick="showNbhd('copa')">Copacabana</button>
+      <button class="nbhd-tab" onclick="showNbhd('ipanema')">Ipanema</button>
+      <button class="nbhd-tab" onclick="showNbhd('leblon')">Leblon</button>
+      <button class="nbhd-tab" onclick="showNbhd('leme')">Leme</button>
+      <button class="nbhd-tab" onclick="showNbhd('botafogo')">Botafogo</button>
+      <button class="nbhd-tab" onclick="showNbhd('flamengo')">Flamengo</button>
+      <button class="nbhd-tab" onclick="showNbhd('urca')">Urca</button>
+      <button class="nbhd-tab" onclick="showNbhd('santa')">Santa Teresa</button>
+    </div>
+
+    <!-- COPACABANA -->
+    <div class="nbhd-panel active" id="nbhd-copa">
+      <div class="nbhd-card">
+        <div class="nbhd-header">
+          <div>
+            <div class="nbhd-title">Copacabana</div>
+            <p class="nbhd-subtitle">The classic choice — maximum Carnival immersion, high hotel density, busiest neighborhood in Rio during Carnival</p>
+          </div>
+          <div class="nbhd-rank"><div class="rank-label">Overall Rank</div><div class="rank-num">1</div></div>
+        </div>
+        <div class="ratings-row">
+          <div class="rating-box good"><div class="rating-box-label">Day Safety</div><div class="rating-box-val">Good</div></div>
+          <div class="rating-box moderate"><div class="rating-box-label">Night Safety</div><div class="rating-box-val">Moderate</div></div>
+          <div class="rating-box high-risk"><div class="rating-box-label">Carnival Theft</div><div class="rating-box-val">High Risk</div></div>
+          <div class="rating-box excellent"><div class="rating-box-label">Carnival Access</div><div class="rating-box-val">Excellent</div></div>
+          <div class="rating-box good"><div class="rating-box-label">Uber Access</div><div class="rating-box-val">Good*</div></div>
+          <div class="rating-box excellent"><div class="rating-box-label">Accommodation</div><div class="rating-box-val">Best Variety</div></div>
+        </div>
+        <div class="nbhd-body">
+          <div class="nbhd-col">
+            <h4>Travel Times — Normal / Carnival</h4>
+            <ul class="time-list">
+              <li><span>Sambadrome</span><span><span class="time-normal">25–35 min</span> / <span class="time-carnival">45–70 min</span></span></li>
+              <li><span>Ipanema beach</span><span class="time-normal">10–15 min</span></li>
+              <li><span>Leblon</span><span class="time-normal">20–30 min</span></li>
+              <li><span>Christ the Redeemer</span><span class="time-normal">20–30 min</span></li>
+              <li><span>Sugarloaf</span><span class="time-normal">15–20 min</span></li>
+            </ul>
+          </div>
+          <div class="nbhd-col">
+            <h4>Carnival-Specific Notes</h4>
+            <ul>
+              <li>Avenida Atlântica (beachfront) closed to vehicles on major bloco days</li>
+              <li>Some of Rio's largest blocos happen on your doorstep — you live inside the party</li>
+              <li>Use interior streets for Uber pickup (Rua Barata Ribeiro, Rua Ministro Viveiros de Castro)</li>
+              <li>Metro: Cardeal Arcoverde and Siqueira Campos are 5–10 min walk from most hotels</li>
+              <li>Pickpocketing in bloco crowds is the primary risk — use a money belt, take a cheap phone</li>
+              <li>Returning from Sambadrome: metro to Siqueira Campos, then short walk</li>
+            </ul>
+          </div>
+        </div>
+        <div class="nbhd-verdict">
+          <strong>Verdict:</strong> Best choice for Carnival immersion and accommodation variety. Accept the crowd and noise as part of the experience. Choose a building on an interior street with a doorman. Prioritize apartments with verified security. The metro directly connects you to the Sambadrome.
+        </div>
+      </div>
+    </div>
+
+    <!-- IPANEMA -->
+    <div class="nbhd-panel" id="nbhd-ipanema">
+      <div class="nbhd-card">
+        <div class="nbhd-header">
+          <div>
+            <div class="nbhd-title">Ipanema</div>
+            <p class="nbhd-subtitle">Best balance of safety, Carnival access, and beach quality — slightly quieter than Copacabana, significantly safer at night</p>
+          </div>
+          <div class="nbhd-rank"><div class="rank-label">Overall Rank</div><div class="rank-num">2</div></div>
+        </div>
+        <div class="ratings-row">
+          <div class="rating-box excellent"><div class="rating-box-label">Day Safety</div><div class="rating-box-val">Excellent</div></div>
+          <div class="rating-box good"><div class="rating-box-label">Night Safety</div><div class="rating-box-val">Good</div></div>
+          <div class="rating-box moderate"><div class="rating-box-label">Carnival Theft</div><div class="rating-box-val">Moderate</div></div>
+          <div class="rating-box excellent"><div class="rating-box-label">Carnival Access</div><div class="rating-box-val">Excellent</div></div>
+          <div class="rating-box good"><div class="rating-box-label">Uber Access</div><div class="rating-box-val">Good</div></div>
+          <div class="rating-box good"><div class="rating-box-label">Accommodation</div><div class="rating-box-val">Good variety</div></div>
+        </div>
+        <div class="nbhd-body">
+          <div class="nbhd-col">
+            <h4>Travel Times — Normal / Carnival</h4>
+            <ul class="time-list">
+              <li><span>Sambadrome</span><span><span class="time-normal">30–40 min</span> / <span class="time-carnival">50–75 min</span></span></li>
+              <li><span>Copacabana beach</span><span class="time-normal">10–15 min</span></li>
+              <li><span>Leblon</span><span class="time-normal">10–15 min</span></li>
+              <li><span>Christ the Redeemer</span><span class="time-normal">25–35 min</span></li>
+              <li><span>Sugarloaf</span><span class="time-normal">20–30 min</span></li>
+            </ul>
+          </div>
+          <div class="nbhd-col">
+            <h4>Carnival-Specific Notes</h4>
+            <ul>
+              <li><strong>Banda de Ipanema</strong> (Sat Feb 6, Mon Feb 8): 30,000+ near Praça General Osório — walkable</li>
+              <li><strong>Simpatia é Quase Amor</strong> (Sun Feb 7): up to 200,000 on Rua Visconde de Pirajá — walkable</li>
+              <li>Ipanema/Copacabana blocos are reachable on foot</li>
+              <li>Ipanema recorded zero homicides Q1 2026 — among safest areas in Brazil</li>
+              <li>Metro: General Osório station (Line 1) — requires transfer for Sambadrome</li>
+              <li>Road closures around Praça General Osório on bloco days; most streets remain accessible</li>
+            </ul>
+          </div>
+        </div>
+        <div class="nbhd-verdict">
+          <strong>Verdict:</strong> Best overall balance for your requirements. You get the city's best blocos walkable from your door, excellent nighttime safety, and good Uber access. The Sambadrome metro is slightly less convenient than from Copacabana (requires one transfer). Accommodation is more limited and pricier than Copacabana but higher quality.
+        </div>
+      </div>
+    </div>
+
+    <!-- LEBLON -->
+    <div class="nbhd-panel" id="nbhd-leblon">
+      <div class="nbhd-card">
+        <div class="nbhd-header">
+          <div>
+            <div class="nbhd-title">Leblon</div>
+            <p class="nbhd-subtitle">Safest, most upscale, quietest — best for sleep between late nights; highest prices; no metro</p>
+          </div>
+          <div class="nbhd-rank"><div class="rank-label">Overall Rank</div><div class="rank-num">3</div></div>
+        </div>
+        <div class="ratings-row">
+          <div class="rating-box excellent"><div class="rating-box-label">Day Safety</div><div class="rating-box-val">Excellent</div></div>
+          <div class="rating-box excellent"><div class="rating-box-label">Night Safety</div><div class="rating-box-val">Excellent</div></div>
+          <div class="rating-box moderate"><div class="rating-box-label">Carnival Theft</div><div class="rating-box-val">Low–Moderate</div></div>
+          <div class="rating-box good"><div class="rating-box-label">Carnival Access</div><div class="rating-box-val">Good</div></div>
+          <div class="rating-box good"><div class="rating-box-label">Uber Access</div><div class="rating-box-val">Good</div></div>
+          <div class="rating-box moderate"><div class="rating-box-label">Accommodation</div><div class="rating-box-val">Limited, Pricey</div></div>
+        </div>
+        <div class="nbhd-body">
+          <div class="nbhd-col">
+            <h4>Travel Times — Normal / Carnival</h4>
+            <ul class="time-list">
+              <li><span>Sambadrome</span><span><span class="time-normal">35–45 min</span> / <span class="time-carnival">55–80 min</span></span></li>
+              <li><span>Ipanema beach</span><span class="time-normal">10–15 min</span></li>
+              <li><span>Copacabana</span><span class="time-normal">20–30 min</span></li>
+              <li><span>Christ the Redeemer</span><span class="time-normal">25–35 min</span></li>
+              <li><span>Sugarloaf</span><span class="time-normal">25–35 min</span></li>
+            </ul>
+          </div>
+          <div class="nbhd-col">
+            <h4>Carnival-Specific Notes</h4>
+            <ul>
+              <li>Fewer/smaller blocos than Ipanema and Copacabana — quieter during peak bloco hours</li>
+              <li>Ipanema's major blocos are 15–20 min walk</li>
+              <li>No metro — entirely Uber-dependent for Sambadrome nights (returning at 5–6 am will be expensive with surge)</li>
+              <li>Road closures are minimal; Uber access reliable throughout Carnival</li>
+              <li>Best neighborhood for undisturbed sleep — important if attending multiple late-night events</li>
+              <li>Rua Dias Ferreira restaurant strip is excellent for pre-event dinners</li>
+            </ul>
+          </div>
+        </div>
+        <div class="nbhd-verdict">
+          <strong>Verdict:</strong> Choose Leblon if recovering well between events matters more than walking distance to blocos. The no-metro situation is a real cost on Sambadrome nights (Uber surge + longer ride). Best for those attending 1–2 Sambadrome nights and spending more time at restaurants and calmer beach days. Most expensive option.
+        </div>
+      </div>
+    </div>
+
+    <!-- LEME -->
+    <div class="nbhd-panel" id="nbhd-leme">
+      <div class="nbhd-card">
+        <div class="nbhd-header">
+          <div>
+            <div class="nbhd-title">Leme</div>
+            <p class="nbhd-subtitle">Underrated — Copacabana proximity with calmer streets, better Uber access during Carnival, closest neighborhood to Sugarloaf</p>
+          </div>
+          <div class="nbhd-rank"><div class="rank-label">Overall Rank</div><div class="rank-num">4</div></div>
+        </div>
+        <div class="ratings-row">
+          <div class="rating-box good"><div class="rating-box-label">Day Safety</div><div class="rating-box-val">Good</div></div>
+          <div class="rating-box good"><div class="rating-box-label">Night Safety</div><div class="rating-box-val">Good</div></div>
+          <div class="rating-box moderate"><div class="rating-box-label">Carnival Theft</div><div class="rating-box-val">Moderate</div></div>
+          <div class="rating-box good"><div class="rating-box-label">Carnival Access</div><div class="rating-box-val">Very Good</div></div>
+          <div class="rating-box excellent"><div class="rating-box-label">Uber Access</div><div class="rating-box-val">Excellent</div></div>
+          <div class="rating-box moderate"><div class="rating-box-label">Accommodation</div><div class="rating-box-val">Limited but exists</div></div>
+        </div>
+        <div class="nbhd-body">
+          <div class="nbhd-col">
+            <h4>Travel Times — Normal / Carnival</h4>
+            <ul class="time-list">
+              <li><span>Sambadrome</span><span><span class="time-normal">25–35 min</span> / <span class="time-carnival">40–60 min</span></span></li>
+              <li><span>Copacabana center</span><span class="time-normal">5–10 min</span></li>
+              <li><span>Ipanema</span><span class="time-normal">15–20 min</span></li>
+              <li><span>Christ the Redeemer</span><span class="time-normal">20–25 min</span></li>
+              <li><span>Sugarloaf</span><span class="time-normal">10–15 min</span></li>
+            </ul>
+          </div>
+          <div class="nbhd-col">
+            <h4>Carnival-Specific Notes</h4>
+            <ul>
+              <li>Fewer giant blocos directly in Leme vs. Copacabana proper — less crowd chaos at your door</li>
+              <li>Copacabana blocos 10–15 min walk; Ipanema blocos 20–25 min walk</li>
+              <li>Beachfront road closures are less severe than central Copacabana</li>
+              <li>Uber can generally reach most Leme buildings even on bloco days (streets north of Copa less affected)</li>
+              <li>Metro: Cardeal Arcoverde station (Line 1) is walkable — same metro access as Copacabana</li>
+              <li>Sugarloaf day trip: 10 min Uber — the closest of any option reviewed</li>
+            </ul>
+          </div>
+        </div>
+        <div class="nbhd-verdict">
+          <strong>Verdict:</strong> The most underrated option. You get all the advantages of a Copacabana-area location (metro access, bloco proximity, accommodation variety) with fewer road closures affecting Uber, quieter immediate streets, and the cheapest prices in the South Zone beach cluster. Strong choice if you find a good apartment here.
+        </div>
+      </div>
+    </div>
+
+    <!-- BOTAFOGO -->
+    <div class="nbhd-panel" id="nbhd-botafogo">
+      <div class="nbhd-card">
+        <div class="nbhd-header">
+          <div>
+            <div class="nbhd-title">Botafogo</div>
+            <p class="nbhd-subtitle">Best metro access to the Sambadrome — right choice if Sambadrome nights are your primary focus; not a beach neighborhood</p>
+          </div>
+          <div class="nbhd-rank"><div class="rank-label">Overall Rank</div><div class="rank-num">5</div></div>
+        </div>
+        <div class="ratings-row">
+          <div class="rating-box good"><div class="rating-box-label">Day Safety</div><div class="rating-box-val">Good</div></div>
+          <div class="rating-box moderate"><div class="rating-box-label">Night Safety</div><div class="rating-box-val">Moderate*</div></div>
+          <div class="rating-box good"><div class="rating-box-label">Carnival Theft</div><div class="rating-box-val">Low–Moderate</div></div>
+          <div class="rating-box good"><div class="rating-box-label">Carnival Access</div><div class="rating-box-val">Good</div></div>
+          <div class="rating-box excellent"><div class="rating-box-label">Uber Access</div><div class="rating-box-val">Excellent</div></div>
+          <div class="rating-box good"><div class="rating-box-label">Accommodation</div><div class="rating-box-val">Good value</div></div>
+        </div>
+        <div class="nbhd-body">
+          <div class="nbhd-col">
+            <h4>Travel Times — Normal / Carnival</h4>
+            <ul class="time-list">
+              <li><span>Sambadrome (Metro)</span><span><span class="time-normal">~25 min</span> / <span class="time-carnival">~25–35 min</span></span></li>
+              <li><span>Copacabana</span><span class="time-normal">10–15 min</span></li>
+              <li><span>Ipanema</span><span class="time-normal">15–20 min</span></li>
+              <li><span>Christ the Redeemer</span><span class="time-normal">20–25 min</span></li>
+              <li><span>Sugarloaf</span><span class="time-normal">10–15 min</span></li>
+            </ul>
+          </div>
+          <div class="nbhd-col">
+            <h4>Carnival-Specific Notes</h4>
+            <ul>
+              <li>Botafogo metro station (Lines 1 & 2 interchange) = fastest Sambadrome access of all options reviewed</li>
+              <li>Flamengo Park blocos (Sargento Pimenta, Bloco Okê) are walkable</li>
+              <li>Avoid Aterro do Flamengo park itself at night — poor lighting, robbery incidents</li>
+              <li>Stick to Rua Voluntários da Pátria and surrounding commercial streets after dark</li>
+              <li>Road closures during Carnival are minimal — Uber very reliable</li>
+              <li>Best price-to-location ratio of all options reviewed; 15 min to beach neighborhoods by Uber</li>
+            </ul>
+          </div>
+        </div>
+        <div class="nbhd-verdict">
+          <strong>Verdict:</strong> Best choice if the Sambadrome is your centerpiece activity. The metro line is direct and reliable even at 5 am on parade nights. The trade-off is not being a beach neighborhood — morning coffee and beach days require a short Uber. Night safety on commercial streets is fine; avoid the park after dark.
+        </div>
+      </div>
+    </div>
+
+    <!-- FLAMENGO -->
+    <div class="nbhd-panel" id="nbhd-flamengo">
+      <div class="nbhd-card">
+        <div class="nbhd-header">
+          <div>
+            <div class="nbhd-title">Flamengo</div>
+            <p class="nbhd-subtitle">Viable but not recommended over Botafogo — similar proximity, more nighttime risk around the park, fewer amenities</p>
+          </div>
+          <div class="nbhd-rank"><div class="rank-label">Overall Rank</div><div class="rank-num">6</div></div>
+        </div>
+        <div class="ratings-row">
+          <div class="rating-box good"><div class="rating-box-label">Day Safety</div><div class="rating-box-val">Good</div></div>
+          <div class="rating-box moderate"><div class="rating-box-label">Night Safety</div><div class="rating-box-val">Moderate</div></div>
+          <div class="rating-box moderate"><div class="rating-box-label">Carnival Theft</div><div class="rating-box-val">Moderate</div></div>
+          <div class="rating-box moderate"><div class="rating-box-label">Carnival Access</div><div class="rating-box-val">Moderate</div></div>
+          <div class="rating-box excellent"><div class="rating-box-label">Uber Access</div><div class="rating-box-val">Excellent</div></div>
+          <div class="rating-box moderate"><div class="rating-box-label">Accommodation</div><div class="rating-box-val">Limited</div></div>
+        </div>
+        <div class="nbhd-body">
+          <div class="nbhd-col">
+            <h4>Travel Times — Normal / Carnival</h4>
+            <ul class="time-list">
+              <li><span>Sambadrome</span><span class="time-normal">20–30 min</span></li>
+              <li><span>Copacabana</span><span class="time-normal">15–20 min</span></li>
+              <li><span>Ipanema</span><span class="time-normal">20–25 min</span></li>
+              <li><span>Christ the Redeemer</span><span class="time-normal">20–25 min</span></li>
+              <li><span>Sugarloaf</span><span class="time-normal">15–20 min</span></li>
+            </ul>
+          </div>
+          <div class="nbhd-col">
+            <h4>Key Considerations</h4>
+            <ul>
+              <li>Aterro do Flamengo park hosts some blocos but also has safety concerns at night</li>
+              <li>Active street Carnival in the park area — locally-focused rather than tourist-facing</li>
+              <li>Fewer restaurants and bars vs. Botafogo and South Zone</li>
+              <li>Not worth choosing over Botafogo unless price difference is significant</li>
+            </ul>
+          </div>
+        </div>
+        <div class="nbhd-verdict">
+          <strong>Verdict:</strong> Only choose Flamengo over Botafogo if you find a significantly better-priced or better-reviewed apartment here. Botafogo has better amenities, nightlife, and restaurant density for the same metro access. Not a bad choice — just not a first choice.
+        </div>
+      </div>
+    </div>
+
+    <!-- URCA -->
+    <div class="nbhd-panel" id="nbhd-urca">
+      <div class="nbhd-card">
+        <div class="nbhd-header">
+          <div>
+            <div class="nbhd-title">Urca</div>
+            <p class="nbhd-subtitle">Safest, most peaceful neighborhood in Rio — wrong fit for a Carnival trip; no metro, quiet after 9 pm, tiny local scene</p>
+          </div>
+          <div class="nbhd-rank"><div class="rank-label">Overall Rank</div><div class="rank-num">7</div></div>
+        </div>
+        <div class="ratings-row">
+          <div class="rating-box excellent"><div class="rating-box-label">Day Safety</div><div class="rating-box-val">Outstanding</div></div>
+          <div class="rating-box excellent"><div class="rating-box-label">Night Safety</div><div class="rating-box-val">Outstanding</div></div>
+          <div class="rating-box excellent"><div class="rating-box-label">Carnival Theft</div><div class="rating-box-val">Very Low</div></div>
+          <div class="rating-box high-risk"><div class="rating-box-label">Carnival Access</div><div class="rating-box-val">Poor</div></div>
+          <div class="rating-box moderate"><div class="rating-box-label">Uber Access</div><div class="rating-box-val">Moderate</div></div>
+          <div class="rating-box high-risk"><div class="rating-box-label">Accommodation</div><div class="rating-box-val">Very Limited</div></div>
+        </div>
+        <div class="nbhd-verdict">
+          <strong>Verdict:</strong> Do not base a Carnival trip here. Urca is magnificent for a quiet romantic getaway and delivers the world's best Sugarloaf access (5-minute walk), but it has essentially no Carnival scene, no metro, very limited restaurant options, and returning from Sambadrome at 5 am via Uber will be unreliable and expensive. Reserve Urca for a future non-Carnival visit.
+        </div>
+      </div>
+    </div>
+
+    <!-- SANTA TERESA -->
+    <div class="nbhd-panel" id="nbhd-santa">
+      <div class="nbhd-card">
+        <div class="nbhd-header">
+          <div>
+            <div class="nbhd-title">Santa Teresa</div>
+            <p class="nbhd-subtitle">Bohemian hilltop neighborhood — fine for a daytime visit, not recommended as a Carnival base due to safety and access concerns</p>
+          </div>
+          <div class="nbhd-rank"><div class="rank-label">Overall Rank</div><div class="rank-num">8</div></div>
+        </div>
+        <div class="ratings-row">
+          <div class="rating-box moderate"><div class="rating-box-label">Day Safety</div><div class="rating-box-val">Moderate</div></div>
+          <div class="rating-box high-risk"><div class="rating-box-label">Night Safety</div><div class="rating-box-val">Poor</div></div>
+          <div class="rating-box high-risk"><div class="rating-box-label">Carnival Access</div><div class="rating-box-val">Difficult</div></div>
+          <div class="rating-box high-risk"><div class="rating-box-label">Uber Access</div><div class="rating-box-val">Limited</div></div>
+          <div class="rating-box high-risk"><div class="rating-box-label">Accommodation</div><div class="rating-box-val">Not Recommended</div></div>
+        </div>
+        <div class="nbhd-verdict">
+          <strong>Verdict:</strong> Not recommended as a Carnival base. Surrounded by favelas with limited lighting, winding hill streets that slow Uber pickups, and security concerns after dark. The bohemian atmosphere and colonial architecture are genuinely lovely — visit for a daytime lunch and tram ride during your stay.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SAMBADROME ACCESS -->
+<section class="section" id="sambadrome">
+  <div class="wrap">
+    <p class="section-label">Getting There</p>
+    <h2 class="section-title">Sambadrome Access</h2>
+    <p class="section-desc">On Special Group parade nights (Feb 7, 8, 9), the metro runs 24 hours. This is your best option — not Uber. Here's what you need to know.</p>
+
+    <div class="metro-tip">
+      <div class="metro-card">
+        <h4>From Copacabana</h4>
+        <p>Siqueira Campos or Cardeal Arcoverde → transfer Central do Brasil</p>
+        <div class="duration">~30 min</div>
+      </div>
+      <div class="metro-card">
+        <h4>From Ipanema</h4>
+        <p>General Osório → transfer Central do Brasil</p>
+        <div class="duration">~35 min</div>
+      </div>
+      <div class="metro-card">
+        <h4>From Botafogo</h4>
+        <p>Botafogo → direct Line 2 or transfer at Central</p>
+        <div class="duration">~25 min</div>
+      </div>
+      <div class="metro-card">
+        <h4>From Leblon</h4>
+        <p>No metro — Uber to General Osório then metro, or Uber direct</p>
+        <div class="duration">45–80 min</div>
+      </div>
+    </div>
+
+    <div class="tip tip-blue">
+      <span class="tip-icon">🚇</span>
+      <p><strong>Strategy:</strong> Take metro to the Sambadrome (Praça Onze for even sectors, Central do Brasil for odd sectors). After the parade ends at 5–6 am, walk 2–3 blocks clear of the main exit crowd before opening the Uber app — you'll find drivers and shorter wait times. Metro home is also valid; trains run continuously.</p>
+    </div>
+    <div class="tip tip-red">
+      <span class="tip-icon">⚠</span>
+      <p><strong>Do not:</strong> Try to hail a taxi or order Uber directly at the Sambadrome exit. You will join 40,000+ people competing for the same rides. Walk clear of the perimeter before requesting.</p>
+    </div>
+    <div class="tip tip-gold">
+      <span class="tip-icon">📱</span>
+      <p><strong>Install 99 Pop</strong> alongside Uber — it's a local competitor that is often cheaper, and having both increases your chance of finding a driver quickly on surge nights. Expect 2–3× surge pricing from Uber on parade nights.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ACCOMMODATIONS -->
+<section class="section" id="accommodations">
+  <div class="wrap">
+    <p class="section-label">Where to Book</p>
+    <h2 class="section-title">Accommodation Options</h2>
+    <p class="section-desc">Properties identified through current listings on Airbnb, Booking.com, and specialist Carnival platforms. All prices are estimated ranges for peak Carnival — verify live availability and exact bed configurations directly with each listing. Carnival pricing is typically 3–5× normal rates.</p>
+
+    <div class="tip tip-red">
+      <span class="tip-icon">⚠</span>
+      <p><strong>Critical:</strong> Airbnb listing pages show bed sizes under "Sleeping Arrangements." Never assume two bedrooms = two queen beds. Verify this directly before booking, or message the host. A sofa bed + queen is not the same as two queens.</p>
+    </div>
+
+    <div class="accom-grid">
+
+      <div class="accom-card top-pick">
+        <div class="accom-header">
+          <span class="accom-top-badge">Top Pick — Bed Verify</span>
+          <div class="accom-name">2BR Between Ipanema & Copacabana</div>
+          <p class="accom-location">Arpoador — border of Ipanema/Copacabana · Airbnb</p>
+        </div>
+        <div class="accom-specs">
+          <span class="spec-chip verified">2 Bedrooms</span>
+          <span class="spec-chip unclear">Beds: Verify queen sizes</span>
+          <span class="spec-chip unclear">Bathrooms: Verify</span>
+          <span class="spec-chip verified">Entire Apt</span>
+        </div>
+        <div class="accom-body">
+          <p>One of the best micro-locations in Rio — Arpoador sits between Ipanema and Copacabana beaches. Long-established listing. Verify exact bed sizes and bathroom count in the Sleeping Arrangements section.</p>
+          <p><strong>Why it stands out:</strong> walking distance to both Ipanema blocos and Copacabana; strong Uber access; Arpoador rock for sunsets.</p>
+        </div>
+        <div class="accom-meta">
+          <span class="accom-rating">—★ Verify</span>
+          <span class="accom-price"><strong>~$2,000–2,800</strong> est. 5 nights</span>
+        </div>
+        <a class="accom-link" href="https://www.airbnb.com/rooms/16280900" target="_blank" rel="noopener">View on Airbnb →</a>
+      </div>
+
+      <div class="accom-card">
+        <div class="accom-header">
+          <div class="accom-name">4.78★ · 2BR · 2BA Rental Unit</div>
+          <p class="accom-location">Location: Verify on listing · Airbnb</p>
+        </div>
+        <div class="accom-specs">
+          <span class="spec-chip verified">2 Bedrooms</span>
+          <span class="spec-chip unclear">Beds: Verify queen sizes</span>
+          <span class="spec-chip verified">2 Bathrooms</span>
+          <span class="spec-chip verified">Entire Apt</span>
+        </div>
+        <div class="accom-body">
+          <p>This listing specifically states 2 bedrooms and 2 bathrooms — the closest to your exact specification of any listing found. Rating of 4.78★ is strong. <strong>Verify bed sizes (queen vs. double vs. twin) before booking.</strong></p>
+        </div>
+        <div class="accom-meta">
+          <span class="accom-rating">4.78★</span>
+          <span class="accom-price"><strong>~$1,800–2,600</strong> est. 5 nights</span>
+        </div>
+        <a class="accom-link" href="https://www.airbnb.com/rooms/1403029262905394412" target="_blank" rel="noopener">View on Airbnb →</a>
+      </div>
+
+      <div class="accom-card">
+        <div class="accom-header">
+          <div class="accom-name">Ipanema 2BR Suite with Balcony</div>
+          <p class="accom-location">Ipanema · Airbnb</p>
+        </div>
+        <div class="accom-specs">
+          <span class="spec-chip verified">2 Bedrooms</span>
+          <span class="spec-chip unclear">Beds: Verify queen sizes</span>
+          <span class="spec-chip unclear">1 Suite + ? · Verify 2nd bath</span>
+          <span class="spec-chip verified">Balcony</span>
+        </div>
+        <div class="accom-body">
+          <p>Listed as "02 bedrooms (1 suite)" — the suite has a private en-suite bathroom. The second bedroom may share a social bathroom. <strong>Verify whether there are 2 full bathrooms or 1 en-suite + 1 shared.</strong> Balcony is a genuine plus for Carnival week.</p>
+        </div>
+        <div class="accom-meta">
+          <span class="accom-rating">—★ Verify</span>
+          <span class="accom-price"><strong>~$2,200–3,200</strong> est. 5 nights</span>
+        </div>
+        <a class="accom-link" href="https://www.airbnb.com/rooms/2846165" target="_blank" rel="noopener">View on Airbnb →</a>
+      </div>
+
+      <div class="accom-card">
+        <div class="accom-header">
+          <div class="accom-name">Ipanema Home · 2BR · Parking</div>
+          <p class="accom-location">Ipanema · Airbnb · up to 4 guests</p>
+        </div>
+        <div class="accom-specs">
+          <span class="spec-chip verified">2 Bedrooms</span>
+          <span class="spec-chip unclear">Beds: Verify queen sizes</span>
+          <span class="spec-chip unclear">Bathrooms: Verify</span>
+          <span class="spec-chip verified">Parking included</span>
+        </div>
+        <div class="accom-body">
+          <p>Parking is rare and valuable in Ipanema (you likely won't need a car, but it signals a properly managed property). 4-guest maximum means it won't be overcrowded. Verify beds and bathrooms directly.</p>
+        </div>
+        <div class="accom-meta">
+          <span class="accom-rating">—★ Verify</span>
+          <span class="accom-price"><strong>~$2,000–2,800</strong> est. 5 nights</span>
+        </div>
+        <a class="accom-link" href="https://www.airbnb.com/rooms/1130731662853414835" target="_blank" rel="noopener">View on Airbnb →</a>
+      </div>
+
+      <div class="accom-card">
+        <div class="accom-header">
+          <div class="accom-name">Carnival in the Heart of Copacabana</div>
+          <p class="accom-location">Copacabana center · Airbnb</p>
+        </div>
+        <div class="accom-specs">
+          <span class="spec-chip verified">Carnival-marketed</span>
+          <span class="spec-chip unclear">Beds: Verify 2 queen</span>
+          <span class="spec-chip unclear">Bathrooms: Verify 2</span>
+          <span class="spec-chip verified">Entire Apt</span>
+        </div>
+        <div class="accom-body">
+          <p>Specifically marketed for Carnival — suggests a host experienced with Carnival guests. Verify bed configuration and whether "2 bedrooms" means 2 separate rooms with queen beds. Ask host about noise levels and Carnival road closure access to building.</p>
+        </div>
+        <div class="accom-meta">
+          <span class="accom-rating">—★ Verify</span>
+          <span class="accom-price"><strong>~$1,800–2,600</strong> est. 5 nights</span>
+        </div>
+        <a class="accom-link" href="https://www.airbnb.com/rooms/1269746463669883912" target="_blank" rel="noopener">View on Airbnb →</a>
+      </div>
+
+      <div class="accom-card">
+        <div class="accom-header">
+          <div class="accom-name">Copacabana 2BR Apartment</div>
+          <p class="accom-location">Copacabana · Airbnb</p>
+        </div>
+        <div class="accom-specs">
+          <span class="spec-chip verified">2 Bedrooms</span>
+          <span class="spec-chip unclear">Beds: Verify</span>
+          <span class="spec-chip unclear">Bathrooms: Verify</span>
+          <span class="spec-chip verified">Entire Apt</span>
+        </div>
+        <div class="accom-body">
+          <p>Straightforward Copacabana 2-bedroom listing. Verify bed sizes and bathroom count. Check reviews specifically for noise, cleanliness, and host responsiveness.</p>
+        </div>
+        <div class="accom-meta">
+          <span class="accom-rating">—★ Verify</span>
+          <span class="accom-price"><strong>~$1,600–2,400</strong> est. 5 nights</span>
+        </div>
+        <a class="accom-link" href="https://www.airbnb.com/rooms/1568229046411175826" target="_blank" rel="noopener">View on Airbnb →</a>
+      </div>
+
+      <div class="accom-card">
+        <div class="accom-header">
+          <div class="accom-name">Leme 2BR Beach Apartment</div>
+          <p class="accom-location">Leme / Copacabana Beach end · Booking.com</p>
+        </div>
+        <div class="accom-specs">
+          <span class="spec-chip verified">2 Bedrooms</span>
+          <span class="spec-chip unclear">Beds: Verify queen sizes</span>
+          <span class="spec-chip unclear">Bathrooms: Verify</span>
+          <span class="spec-chip verified">Balcony · Kitchenette</span>
+        </div>
+        <div class="accom-body">
+          <p>Leme/Copacabana beachfront location. Verified as "luxury" 2-bedroom on Booking.com. Balcony and kitchenette listed. Verify whether this has 2 bathrooms and confirm queen bed sizes. Booking.com listings sometimes have more detail about bed configurations than Airbnb.</p>
+        </div>
+        <div class="accom-meta">
+          <span class="accom-rating">—★ Verify</span>
+          <span class="accom-price"><strong>~$1,800–2,800</strong> est. 5 nights</span>
+        </div>
+        <a class="accom-link" href="https://www.booking.com/hotel/br/leme-2-bedrooms-charming-guisalb-39-s-apartment.html" target="_blank" rel="noopener">View on Booking.com →</a>
+      </div>
+
+      <div class="accom-card">
+        <div class="accom-header">
+          <div class="accom-name">DoBrazilRight Carnival Package</div>
+          <p class="accom-location">Copacabana — ½ block from beach · Specialist Platform</p>
+        </div>
+        <div class="accom-specs">
+          <span class="spec-chip verified">Carnival-curated</span>
+          <span class="spec-chip verified">Verified management</span>
+          <span class="spec-chip unclear">Beds/Baths: Request 2Q/2B</span>
+          <span class="spec-chip verified">Entire unit</span>
+        </div>
+        <div class="accom-body">
+          <p>Specialist Carnival operator with property half a block from Copacabana Beach, walking distance to Ipanema. Packages include Carnival support, and the operator knows the logistics. Request specifically a unit with 2 queen beds and 2 bathrooms when inquiring — they have multiple units across different configurations.</p>
+        </div>
+        <div class="accom-meta">
+          <span class="accom-rating">Specialist</span>
+          <span class="accom-price"><strong>~$2,500–4,000</strong> est. 5 nights</span>
+        </div>
+        <a class="accom-link" href="https://www.dobrazilright.com/rio-carnival-packages/" target="_blank" rel="noopener">View Carnival Packages →</a>
+      </div>
+
+    </div>
+
+    <h3 style="font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;margin:36px 0 16px;">Hotel Suites (Alternative to Apartments)</h3>
+    <p style="color:var(--muted);font-size:15px;margin-bottom:20px;">No hotel in Rio offers a standard 2-bedroom room. The hotel route means two connecting rooms or a large suite. More expensive than apartments for equivalent space, but includes daily housekeeping and 24/7 security.</p>
+
+    <div class="accom-grid">
+      <div class="accom-card">
+        <div class="accom-header">
+          <div class="accom-name">Fairmont Rio de Janeiro Copacabana</div>
+          <p class="accom-location">Copacabana · Luxury Hotel</p>
+        </div>
+        <div class="accom-specs">
+          <span class="spec-chip verified">Top-tier security</span>
+          <span class="spec-chip unclear">2 connecting rooms needed</span>
+          <span class="spec-chip verified">Beachfront</span>
+          <span class="spec-chip verified">5-star</span>
+        </div>
+        <div class="accom-body">
+          <p>Request connecting rooms or a suite with a separate sleeping area. Suites have separate living room. Beachfront on Avenida Atlântica. Daily housekeeping, concierge, and hotel-level security. Best luxury hotel option for Carnival.</p>
+        </div>
+        <div class="accom-meta">
+          <span class="accom-rating">5★ Hotel</span>
+          <span class="accom-price"><strong>~$4,000–7,000+</strong> est. 5 nights</span>
+        </div>
+        <a class="accom-link" href="https://www.fairmont.com/rio-de-janeiro/" target="_blank" rel="noopener">View Fairmont →</a>
+      </div>
+      <div class="accom-card">
+        <div class="accom-header">
+          <div class="accom-name">Windsor Atlantic / Windsor Leme</div>
+          <p class="accom-location">Copacabana / Leme · Windsor Hotels</p>
+        </div>
+        <div class="accom-specs">
+          <span class="spec-chip verified">Brazilian chain</span>
+          <span class="spec-chip unclear">Suite or connecting needed</span>
+          <span class="spec-chip verified">Beachfront</span>
+          <span class="spec-chip verified">4-star</span>
+        </div>
+        <div class="accom-body">
+          <p>Windsor Atlantic sits directly on Avenida Atlântica. Windsor Leme is at the quieter northern end of Copacabana. Both have suites. Request a suite with a sofa area, or two connecting standard rooms. Good value for hotel category during Carnival.</p>
+        </div>
+        <div class="accom-meta">
+          <span class="accom-rating">4★ Hotel</span>
+          <span class="accom-price"><strong>~$2,500–4,500</strong> est. 5 nights</span>
+        </div>
+        <a class="accom-link" href="https://www.windsorhoteis.com.br/en/hotels/" target="_blank" rel="noopener">View Windsor Hotels →</a>
+      </div>
+    </div>
+
+    <h3 style="font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;margin:36px 0 8px;">Additional Search Platforms</h3>
+    <p style="color:var(--muted);font-size:14px;margin-bottom:16px;">Use these to cast a wider net:</p>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:8px;">
+      <a href="https://www.cozycozy.com/us/rio-apartments" target="_blank" rel="noopener" class="pill" style="background:var(--blue-bg);color:var(--blue);border:1px solid #B8D0E8;">cozycozy.com — aggregates Airbnb + Booking + VRBO</a>
+      <a href="https://www.riospothomes.com" target="_blank" rel="noopener" class="pill" style="background:var(--blue-bg);color:var(--blue);border:1px solid #B8D0E8;">riospothomes.com — Rio-specialist platform</a>
+      <a href="https://experiencecarnival.rio/places-to-stay/" target="_blank" rel="noopener" class="pill" style="background:var(--blue-bg);color:var(--blue);border:1px solid #B8D0E8;">experiencecarnival.rio — Luxury/boutique Carnival</a>
+      <a href="https://www.riocarnaval.org/hotel-packages" target="_blank" rel="noopener" class="pill" style="background:var(--blue-bg);color:var(--blue);border:1px solid #B8D0E8;">riocarnaval.org/hotel-packages — Official packages</a>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARISON TABLE -->
+<section class="section" id="comparison">
+  <div class="wrap">
+    <p class="section-label">Full Comparison</p>
+    <h2 class="section-title">All Options Ranked</h2>
+    <p class="section-desc">Properties ranked from best to worst overall fit for 2 adults, Carnival week, 2QB+2BA requirement, February 6–11, 2027.</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Property</th>
+            <th>Neighborhood</th>
+            <th>2 Queen Beds</th>
+            <th>2 Bathrooms</th>
+            <th>Safety</th>
+            <th>Carnival Access</th>
+            <th>Uber Access</th>
+            <th>Sightseeing</th>
+            <th>Est. 5-Night Price</th>
+            <th>Recommendation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="rank-cell top">1</td>
+            <td><strong>4.78★ 2BR·2BA Rental</strong><br><small style="color:var(--muted)">Airbnb #1403029262905394412</small></td>
+            <td>Verify on listing</td>
+            <td class="maybe">⚡ Verify</td>
+            <td class="check">✓ Listed 2</td>
+            <td><span class="tag tag-good">Good</span></td>
+            <td><span class="tag tag-good">Good</span></td>
+            <td><span class="tag tag-good">Good</span></td>
+            <td><span class="tag tag-good">Good</span></td>
+            <td>$1,800–2,600</td>
+            <td><span class="tag tag-best">Top Candidate</span></td>
+          </tr>
+          <tr>
+            <td class="rank-cell top">2</td>
+            <td><strong>2BR Arpoador</strong><br><small style="color:var(--muted)">Airbnb #16280900</small></td>
+            <td>Ipanema/Copa border</td>
+            <td class="maybe">⚡ Verify</td>
+            <td class="maybe">⚡ Verify</td>
+            <td><span class="tag tag-excellent">Excellent</span></td>
+            <td><span class="tag tag-excellent">Excellent</span></td>
+            <td><span class="tag tag-good">Good</span></td>
+            <td><span class="tag tag-excellent">Excellent</span></td>
+            <td>$2,000–2,800</td>
+            <td><span class="tag tag-best">Best Location</span></td>
+          </tr>
+          <tr>
+            <td class="rank-cell top">3</td>
+            <td><strong>Ipanema Suite + Balcony</strong><br><small style="color:var(--muted)">Airbnb #2846165</small></td>
+            <td>Ipanema</td>
+            <td class="maybe">⚡ Verify</td>
+            <td class="maybe">⚡ 1 en-suite + ?</td>
+            <td><span class="tag tag-excellent">Excellent</span></td>
+            <td><span class="tag tag-excellent">Excellent</span></td>
+            <td><span class="tag tag-good">Good</span></td>
+            <td><span class="tag tag-excellent">Excellent</span></td>
+            <td>$2,200–3,200</td>
+            <td><span class="tag tag-top">Best Ipanema</span></td>
+          </tr>
+          <tr>
+            <td class="rank-cell">4</td>
+            <td><strong>Ipanema Home w/ Parking</strong><br><small style="color:var(--muted)">Airbnb #1130731662853414835</small></td>
+            <td>Ipanema</td>
+            <td class="maybe">⚡ Verify</td>
+            <td class="maybe">⚡ Verify</td>
+            <td><span class="tag tag-excellent">Excellent</span></td>
+            <td><span class="tag tag-excellent">Excellent</span></td>
+            <td><span class="tag tag-good">Good</span></td>
+            <td><span class="tag tag-excellent">Excellent</span></td>
+            <td>$2,000–2,800</td>
+            <td><span class="tag tag-good">Strong Option</span></td>
+          </tr>
+          <tr>
+            <td class="rank-cell">5</td>
+            <td><strong>DoBrazilRight Carnival Package</strong><br><small style="color:var(--muted)">dobrazilright.com</small></td>
+            <td>Copacabana</td>
+            <td class="maybe">⚡ Request 2Q</td>
+            <td class="maybe">⚡ Request 2B</td>
+            <td><span class="tag tag-good">Good</span></td>
+            <td><span class="tag tag-excellent">Excellent</span></td>
+            <td><span class="tag tag-good">Good</span></td>
+            <td><span class="tag tag-good">Good</span></td>
+            <td>$2,500–4,000</td>
+            <td><span class="tag tag-good">Best Supported</span></td>
+          </tr>
+          <tr>
+            <td class="rank-cell">6</td>
+            <td><strong>Copa Carnival Heart Apartment</strong><br><small style="color:var(--muted)">Airbnb #1269746463669883912</small></td>
+            <td>Copacabana</td>
+            <td class="maybe">⚡ Verify</td>
+            <td class="maybe">⚡ Verify</td>
+            <td><span class="tag tag-good">Good</span></td>
+            <td><span class="tag tag-excellent">Excellent</span></td>
+            <td><span class="tag tag-good">Good*</span></td>
+            <td><span class="tag tag-good">Good</span></td>
+            <td>$1,800–2,600</td>
+            <td><span class="tag tag-good">Best Carnival Base</span></td>
+          </tr>
+          <tr>
+            <td class="rank-cell">7</td>
+            <td><strong>Leme Beach 2BR</strong><br><small style="color:var(--muted)">Booking.com</small></td>
+            <td>Leme</td>
+            <td class="maybe">⚡ Verify</td>
+            <td class="maybe">⚡ Verify</td>
+            <td><span class="tag tag-good">Good</span></td>
+            <td><span class="tag tag-good">Good</span></td>
+            <td><span class="tag tag-excellent">Excellent</span></td>
+            <td><span class="tag tag-excellent">Excellent</span></td>
+            <td>$1,800–2,800</td>
+            <td><span class="tag tag-good">Best Value Area</span></td>
+          </tr>
+          <tr>
+            <td class="rank-cell">8</td>
+            <td><strong>Copacabana 2BR Apt</strong><br><small style="color:var(--muted)">Airbnb #1568229046411175826</small></td>
+            <td>Copacabana</td>
+            <td class="maybe">⚡ Verify</td>
+            <td class="maybe">⚡ Verify</td>
+            <td><span class="tag tag-good">Good</span></td>
+            <td><span class="tag tag-excellent">Excellent</span></td>
+            <td><span class="tag tag-good">Good*</span></td>
+            <td><span class="tag tag-good">Good</span></td>
+            <td>$1,600–2,400</td>
+            <td><span class="tag tag-moderate">Verify First</span></td>
+          </tr>
+          <tr>
+            <td class="rank-cell">9</td>
+            <td><strong>Windsor Atlantic / Leme</strong><br><small style="color:var(--muted)">Windsor Hotels</small></td>
+            <td>Copacabana/Leme</td>
+            <td class="maybe">⚡ 2 rooms needed</td>
+            <td class="check">✓ Separate rooms</td>
+            <td><span class="tag tag-excellent">Excellent</span></td>
+            <td><span class="tag tag-excellent">Excellent</span></td>
+            <td><span class="tag tag-good">Good</span></td>
+            <td><span class="tag tag-good">Good</span></td>
+            <td>$2,500–4,500</td>
+            <td><span class="tag tag-good">Hotel Option</span></td>
+          </tr>
+          <tr>
+            <td class="rank-cell">10</td>
+            <td><strong>Fairmont Copacabana</strong><br><small style="color:var(--muted)">Luxury Hotel</small></td>
+            <td>Copacabana</td>
+            <td class="maybe">⚡ 2 rooms needed</td>
+            <td class="check">✓ Separate rooms</td>
+            <td><span class="tag tag-excellent">Excellent</span></td>
+            <td><span class="tag tag-excellent">Excellent</span></td>
+            <td><span class="tag tag-good">Good</span></td>
+            <td><span class="tag tag-excellent">Excellent</span></td>
+            <td>$4,000–7,000+</td>
+            <td><span class="tag tag-top">Best Luxury</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:12px;color:var(--muted);margin-top:10px;">* "Good*" for Uber in Copacabana means reliable overall but expect road closure impacts on peak bloco days — use interior streets for pickup. ⚡ = must verify before booking. Prices are estimates; live Carnival 2027 pricing requires direct platform search.</p>
+  </div>
+</section>
+
+<!-- RECOMMENDATION -->
+<section class="section" id="recommendation">
+  <div class="wrap">
+    <p class="section-label">Final Verdict</p>
+    <h2 class="section-title">Where to Book</h2>
+
+    <div class="rec-grid">
+      <div class="rec-card">
+        <div class="rec-card-label">Best Overall Neighborhood</div>
+        <div class="rec-card-title">Copacabana (interior street)</div>
+        <p class="rec-card-body">Best accommodation variety, best metro access to Sambadrome, most Carnival immersion. Book on an interior street with a doorman. Accept the crowds as the experience.</p>
+      </div>
+      <div class="rec-card">
+        <div class="rec-card-label">Best Accommodation (verify first)</div>
+        <div class="rec-card-title">Airbnb 4.78★ · 2BR · 2BA</div>
+        <p class="rec-card-body">The only listing found that explicitly states 2 bedrooms AND 2 bathrooms with a strong rating. Verify queen-size beds and exact location. Book this one first.</p>
+      </div>
+      <div class="rec-card">
+        <div class="rec-card-label">Best Copacabana Alternative</div>
+        <div class="rec-card-title">Ipanema</div>
+        <p class="rec-card-body">Better nighttime safety, same beach access, the city's most famous blocos walkable, more upscale neighborhood. Trade-off: pricier apartments, slightly more complex metro route.</p>
+      </div>
+      <div class="rec-card">
+        <div class="rec-card-label">Best Value Option</div>
+        <div class="rec-card-title">Leme Beach 2BR (Booking.com)</div>
+        <p class="rec-card-body">Copacabana's northern end — slightly below-market pricing vs. central Copacabana, same metro access, better Uber flow during Carnival, closest to Sugarloaf Mountain.</p>
+      </div>
+      <div class="rec-card">
+        <div class="rec-card-label">Best Luxury Option</div>
+        <div class="rec-card-title">Fairmont Copacabana</div>
+        <p class="rec-card-body">If budget allows, two connecting rooms at the Fairmont gives you beachfront luxury, 24/7 concierge, and the most reliable security. Book connecting rooms or the largest suite directly with the hotel.</p>
+      </div>
+      <div class="rec-card">
+        <div class="rec-card-label">Best for Late-Night Returns</div>
+        <div class="rec-card-title">Copacabana or Botafogo</div>
+        <p class="rec-card-body">Both have metro access to/from the Sambadrome at 5 am. From Copacabana, walk from Siqueira Campos. From Botafogo, walk from Botafogo station. Both are safer at 5 am on metro nights than Uber from the Sambadrome entrance.</p>
+      </div>
+    </div>
+
+    <div class="rec-box">
+      <h3>If I were booking this trip:</h3>
+      <p>I would stay in <strong>Copacabana, on an interior street (not the beachfront avenue)</strong>, in a building with a doorman, for the full stretch of February 6–11. Here's why:</p>
+      <p>The 2027 dates are all Sambadrome parade nights. The metro to the Sambadrome from Copacabana is direct, 24-hour, and reliable — it's the only transportation option that doesn't fail on a night when 40,000 people are trying to leave at the same time. Copacabana also has the highest concentration of quality 2-bedroom apartments available during Carnival, and you're within walking distance of some of Rio's biggest street parties without needing Uber at all.</p>
+      <p>I would <strong>not</strong> choose Leblon despite it being the safest neighborhood, because the lack of metro is a genuine liability during Sambadrome nights. I would consider Ipanema as a close second — slightly safer, slightly harder metro access, more expensive accommodation.</p>
+      <p><strong>My first call:</strong> The 4.78★ Airbnb listing with 2 bedrooms and 2 bathrooms. Check it today, verify queen beds, verify exact location, and book if it's in Copacabana or Ipanema. After that: the Arpoador 2BR listing — that Ipanema/Copacabana border location is rare and gives you the best of both neighborhoods.</p>
+    </div>
+  </div>
+</section>
+
+<div class="footer">
+  <p>Research based on current listing data, neighborhood safety reports (2026), and Carnival 2027 official schedules.<br>Verify all accommodation details, bed sizes, and prices directly. Live Carnival pricing requires current platform searches.</p>
+  <p style="margin-top:8px;">
+    <a href="https://www.riocarnaval.org/" target="_blank" rel="noopener">riocarnaval.org</a> &nbsp;·&nbsp;
+    <a href="https://www.dobrazilright.com/rio-carnival-packages/" target="_blank" rel="noopener">dobrazilright.com</a> &nbsp;·&nbsp;
+    <a href="https://www.airbnb.com/rio-de-janeiro-brazil/stays" target="_blank" rel="noopener">Airbnb Rio</a> &nbsp;·&nbsp;
+    <a href="https://experiencecarnival.rio" target="_blank" rel="noopener">experiencecarnival.rio</a>
+  </p>
+</div>
+
+<script>
+function showNbhd(id) {
+  document.querySelectorAll('.nbhd-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nbhd-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('nbhd-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// Active nav link on scroll
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-link');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navLinks.forEach(l => l.classList.remove('active'));
+      const link = document.querySelector(`.nav-link[href="#${entry.target.id}"]`);
+      if (link) link.classList.add('active');
+    }
+  });
+}, { rootMargin: '-40% 0px -55% 0px' });
+sections.forEach(s => observer.observe(s));
+</script>
