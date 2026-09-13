@@ -715,6 +715,69 @@ tbody td {
 .ranking-list li::before { content:counter(rank); font-family:'Cormorant Garamond',serif; font-size:26px; font-weight:700; color:var(--muted); min-width:28px; line-height:1; }
 .ranking-list li:first-child::before { color:var(--gold); font-size:30px; }
 @media(max-width:600px){ .day-plan-header{flex-direction:column;gap:4px;} .rest-header{flex-direction:column;} .food-card-header{flex-direction:column;} }
+
+/* ─── PLACES OF TOURIST INTEREST ─────────────────────── */
+.places-tabs { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:24px; }
+.places-tab {
+  padding:7px 16px; border-radius:20px; font-size:13px; font-weight:600;
+  border:1.5px solid var(--border); background:var(--surface); color:var(--muted);
+  cursor:pointer; transition:all 0.15s; white-space:nowrap;
+}
+.places-tab:hover { border-color:var(--blue); color:var(--blue); }
+.places-tab.active { background:var(--blue); border-color:var(--blue); color:#fff; }
+.places-panel { display:none; }
+.places-panel.active { display:block; }
+.attr-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:20px; margin-bottom:16px; }
+.attr-card.must-do { border-left:4px solid var(--gold); }
+.attr-card.skip-it { border-left:4px solid var(--red); }
+.attr-header { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap; margin-bottom:10px; }
+.attr-name { font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:600; margin:0 0 4px; }
+.attr-meta { font-size:13px; color:var(--muted); margin:0 0 6px; }
+.attr-score { font-family:'Cormorant Garamond',serif; font-size:32px; font-weight:700; color:var(--gold); flex-shrink:0; }
+.attr-body { font-size:14px; color:var(--ink); line-height:1.6; margin:0 0 10px; }
+.attr-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:8px; margin-top:12px; }
+.attr-detail { font-size:12px; background:var(--faint); border-radius:var(--radius); padding:8px 10px; }
+.attr-detail-label { font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--muted); font-size:10px; display:block; margin-bottom:2px; }
+.vb { display:inline-block; font-size:11px; font-weight:700; letter-spacing:0.07em; text-transform:uppercase; padding:3px 9px; border-radius:12px; margin-right:4px; }
+.vb-mustdo { background:var(--gold-bg); color:var(--gold); border:1px solid #C49A22; }
+.vb-rec { background:var(--green-bg); color:var(--green); border:1px solid #2A6644; }
+.vb-optional { background:var(--faint); color:var(--muted); border:1px solid var(--border); }
+.vb-skip { background:var(--red-bg); color:var(--red); border:1px solid #D63B10; }
+.weather-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:24px; }
+.weather-col { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:18px; }
+.weather-col.sunny { border-top:3px solid var(--gold); }
+.weather-col.rainy { border-top:3px solid var(--blue); }
+.weather-col h3 { font-family:'Cormorant Garamond',serif; font-size:18px; font-weight:600; margin:0 0 12px; }
+.weather-item { font-size:13px; padding:7px 0; border-bottom:1px solid var(--faint); line-height:1.5; }
+.weather-item:last-child { border-bottom:none; }
+.top10-card { display:flex; align-items:flex-start; gap:14px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:16px; margin-bottom:12px; }
+.top10-card.gold-border { border-color:var(--gold); }
+.top10-rank { font-family:'Cormorant Garamond',serif; font-size:42px; font-weight:700; color:var(--gold); line-height:1; min-width:42px; flex-shrink:0; }
+.top10-rank.silver { color:var(--muted); font-size:34px; }
+.top10-body { flex:1; }
+.top10-name { font-family:'Cormorant Garamond',serif; font-size:19px; font-weight:600; margin:0 0 4px; }
+.top10-why { font-size:14px; color:var(--ink); margin:0 0 8px; line-height:1.5; }
+.top10-meta { font-size:12px; color:var(--muted); }
+.day-iti { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; margin-bottom:20px; }
+.day-iti-hdr { padding:14px 20px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; }
+.day-iti-hdr.normal { background:var(--blue); color:#fff; }
+.day-iti-hdr.carnival { background:var(--red); color:#fff; }
+.day-iti-hdr.recovery { background:var(--green); color:#fff; }
+.day-iti-date { font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:600; }
+.day-iti-theme { font-size:12px; opacity:0.85; letter-spacing:0.08em; text-transform:uppercase; }
+.day-iti-body { padding:4px 20px 16px; }
+.iti-row { display:flex; gap:14px; padding:10px 0; border-bottom:1px solid var(--faint); align-items:flex-start; }
+.iti-row:last-child { border-bottom:none; }
+.iti-label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:var(--muted); min-width:80px; padding-top:2px; flex-shrink:0; }
+.iti-content { font-size:14px; flex:1; line-height:1.6; }
+.int-badge { font-size:11px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; padding:2px 8px; border-radius:10px; }
+.int-relaxed { background:var(--green-bg); color:var(--green); }
+.int-moderate { background:var(--gold-bg); color:var(--gold); }
+.int-intense { background:var(--red-bg); color:var(--red); }
+.geo-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:18px; margin-bottom:14px; }
+.geo-title { font-family:'Cormorant Garamond',serif; font-size:19px; font-weight:600; color:var(--blue); margin:0 0 8px; }
+.places-section-h { font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:600; border-bottom:2px solid var(--border); padding-bottom:8px; margin:28px 0 16px; }
+@media(max-width:600px){ .weather-grid{grid-template-columns:1fr;} .top10-card{flex-direction:column;gap:8px;} .attr-header{flex-direction:column;} .day-iti-hdr{flex-direction:column;gap:4px;} }
 </style>
 
 <!-- HERO -->
@@ -743,6 +806,7 @@ tbody td {
     <a class="nav-link" href="#comparison">Full Comparison</a>
     <a class="nav-link" href="#recommendation">Recommendation</a>
     <a class="nav-link" href="#food">Food Guide</a>
+    <a class="nav-link" href="#places">Places of Interest</a>
   </div>
 </nav>
 
@@ -2453,6 +2517,716 @@ tbody td {
   </div><!-- /.wrap -->
 </section><!-- /#food -->
 
+<!-- PLACES OF TOURIST INTEREST -->
+<section class="section" id="places">
+  <div class="wrap">
+    <p class="section-label">Sightseeing Guide · Feb 6–11, 2027</p>
+    <h2 class="section-title">Places of Tourist Interest</h2>
+
+    <div class="tip tip-gold" style="margin-bottom:20px;">
+      <span class="tip-icon">✓</span>
+      <p><strong>2027 Carnival confirmed:</strong> Special Group parades — Night 1: Sunday Feb 7, Night 2: Monday Feb 8, Night 3 (Final, most prestigious): <strong>Tuesday Feb 9</strong>. Your Carnival date is correct. Your five sightseeing days are Feb 6, 7, 8, 10, and 11. Source: LIESA draw, April 16, 2026.</p>
+    </div>
+
+    <div class="places-tabs" role="tablist">
+      <button class="places-tab active" onclick="showPlaces('top10')">Top 10</button>
+      <button class="places-tab" onclick="showPlaces('iconic')">Iconic Rio</button>
+      <button class="places-tab" onclick="showPlaces('nature')">Nature</button>
+      <button class="places-tab" onclick="showPlaces('culture')">Culture</button>
+      <button class="places-tab" onclick="showPlaces('weather')">Weather Plan</button>
+      <button class="places-tab" onclick="showPlaces('itinerary')">Day-by-Day</button>
+      <button class="places-tab" onclick="showPlaces('logistics')">Logistics</button>
+      <button class="places-tab" onclick="showPlaces('verdict')">Skip &amp; Verdict</button>
+    </div>
+
+    <!-- PANEL: TOP 10 -->
+    <div class="places-panel active" id="places-top10">
+      <div class="tip tip-blue" style="margin-bottom:20px;">
+        <span class="tip-icon">★</span>
+        <p>Ranked for a <strong>first-time visitor with five sightseeing days</strong> during Carnival week. Quality over quantity — 3 excellent experiences beats 8 rushed ones.</p>
+      </div>
+
+      <div class="top10-card gold-border">
+        <div class="top10-rank">1</div>
+        <div class="top10-body">
+          <div class="top10-name">Christ the Redeemer <span class="vb vb-mustdo">Must Do</span></div>
+          <div class="top10-why">The single most iconic image of Rio — and it earns it. The view from 709m over Guanabara Bay, Sugarloaf, Copacabana, and the rainforest is genuinely extraordinary. Nothing else gives you the whole city at once. Go on your first clear morning.</div>
+          <div class="top10-meta">⏱ 2–3 hrs · ☀ Morning only (clouds roll in by midday) · 💰 R$90–120 (tram + entry) · 📋 Book online required · 🚗 Cosme Velho train from Rua Cosme Velho 513</div>
+          <div style="margin-top:8px;"><span class="vb vb-mustdo">10/10</span> <span class="vb vb-optional">Weather-sensitive</span></div>
+        </div>
+      </div>
+
+      <div class="top10-card gold-border">
+        <div class="top10-rank">2</div>
+        <div class="top10-body">
+          <div class="top10-name">Arpoador Sunset Rock <span class="vb vb-mustdo">Must Do</span></div>
+          <div class="top10-why">A flat rock jutting into the ocean between Ipanema and Copacabana. Every evening at sunset, hundreds of people gather, and when the sun hits the horizon, the whole crowd applauds. Free, spontaneous, and unrepeatable. One of the most genuinely Rio experiences possible.</div>
+          <div class="top10-meta">⏱ 45–60 min · 🌅 Arrive 30 min before sunset · 💰 Free · 📋 No booking · 🚶 Walk from Ipanema or Copa</div>
+          <div style="margin-top:8px;"><span class="vb vb-mustdo">10/10</span></div>
+        </div>
+      </div>
+
+      <div class="top10-card gold-border">
+        <div class="top10-rank">3</div>
+        <div class="top10-body">
+          <div class="top10-name">Sugarloaf Mountain <span class="vb vb-mustdo">Must Do</span></div>
+          <div class="top10-why">Two cable car rides to a granite peak over Guanabara Bay. The view at the second peak is astonishing — the bay, downtown Rio, the bridges, the ocean. Different from Corcovado (which looks over the city from above); Sugarloaf looks across the bay. Do both.</div>
+          <div class="top10-meta">⏱ 2.5–3 hrs · ☀ Early morning or late afternoon best · 💰 R$150–180 cable car · 📋 Book online · 🚗 Uber/taxi to Praia Vermelha</div>
+          <div style="margin-top:8px;"><span class="vb vb-mustdo">9.5/10</span> <span class="vb vb-optional">Weather-sensitive</span></div>
+        </div>
+      </div>
+
+      <div class="top10-card">
+        <div class="top10-rank silver">4</div>
+        <div class="top10-body">
+          <div class="top10-name">Santa Teresa + Selarón Steps + Lapa <span class="vb vb-rec">Highly Recommended</span></div>
+          <div class="top10-why">Three distinct but adjacent experiences you can do in sequence. Santa Teresa is Rio's most atmospheric neighborhood — cobblestone streets, belle époque mansions, street art, and a real bohemian character. The Selarón Steps are a genuine work of art (not just Instagram bait). Lapa's arched aqueduct is striking by day. Together they make Rio's best cultural afternoon.</div>
+          <div class="top10-meta">⏱ 4–5 hrs combined · 🌤 Any weather · 💰 Free (Selarón, arches) · 🚗 Uber to Santa Teresa, walk down to Lapa</div>
+          <div style="margin-top:8px;"><span class="vb vb-rec">9/10</span></div>
+        </div>
+      </div>
+
+      <div class="top10-card">
+        <div class="top10-rank silver">5</div>
+        <div class="top10-body">
+          <div class="top10-name">Ipanema Beach (Posto 9 area) <span class="vb vb-rec">Highly Recommended</span></div>
+          <div class="top10-why">Not just any beach — the Posto 9 stretch in front of Rua Farme de Amoedo has a specific energy, crowd, and cultural significance that Copacabana lacks. Going once properly (2–3 hrs, morning) is enough. The beachfront walk between Arpoador and Leblon is one of the great urban coastal experiences.</div>
+          <div class="top10-meta">⏱ 2–3 hrs · 🌅 Morning best (less crowds, better light) · 💰 Free · 🚗 Walk from Copa or Uber</div>
+          <div style="margin-top:8px;"><span class="vb vb-rec">9/10</span></div>
+        </div>
+      </div>
+
+      <div class="top10-card">
+        <div class="top10-rank silver">6</div>
+        <div class="top10-body">
+          <div class="top10-name">Botanical Garden (Jardim Botânico) <span class="vb vb-rec">Highly Recommended</span></div>
+          <div class="top10-why">The imperial palm avenue alone is worth the visit — 134 palms, 40 metres tall, aligned perfectly with Corcovado in the background. The garden itself is beautifully maintained, shaded, and peaceful. Excellent recovery-day option (gentle walking, no heat exposure). Closes Mondays.</div>
+          <div class="top10-meta">⏱ 2 hrs · 🌤 Shaded — works in heat/light cloud · 💰 R$35 · 📋 No booking needed · 🚗 Uber to Rua Jardim Botânico 1008</div>
+          <div style="margin-top:8px;"><span class="vb vb-rec">8.5/10</span> <span class="vb vb-optional">Closed Mondays</span></div>
+        </div>
+      </div>
+
+      <div class="top10-card">
+        <div class="top10-rank silver">7</div>
+        <div class="top10-body">
+          <div class="top10-name">Mirante Dona Marta <span class="vb vb-rec">Highly Recommended</span></div>
+          <div class="top10-why">A free, underrated viewpoint in Botafogo that gives one of the most photogenic views in Rio — Christ the Redeemer framed directly above with Guanabara Bay below. Less crowded than Corcovado, takes 20 minutes, and costs nothing. Excellent standalone stop or filler slot.</div>
+          <div class="top10-meta">⏱ 30–45 min · ☀ Any clear morning · 💰 Free · 🚗 Uber to Estrada Dona Marta (road closes to cars, drive to base)</div>
+          <div style="margin-top:8px;"><span class="vb vb-rec">8.5/10</span></div>
+        </div>
+      </div>
+
+      <div class="top10-card">
+        <div class="top10-rank silver">8</div>
+        <div class="top10-body">
+          <div class="top10-name">Tijuca National Park (Vista Chinesa / Cascatinha) <span class="vb vb-optional">Optional</span></div>
+          <div class="top10-why">The world's largest urban forest is impressive in concept and beautiful in execution. Vista Chinesa is a drive-up viewpoint inside the park with excellent panoramas. The Cascatinha Taunay waterfall is a short hike. If you want to feel the Atlantic rainforest without a full-day trek, this is the easiest entry. Full hiking (Pico da Tijuca) requires a full day.</div>
+          <div class="top10-meta">⏱ 2–4 hrs depending on activity · ☀ Best clear mornings · 💰 Free (park) · 🚗 Uber essential (no metro)</div>
+          <div style="margin-top:8px;"><span class="vb vb-optional">8/10</span></div>
+        </div>
+      </div>
+
+      <div class="top10-card">
+        <div class="top10-rank silver">9</div>
+        <div class="top10-body">
+          <div class="top10-name">Copacabana Beachfront Walk <span class="vb vb-optional">Optional</span></div>
+          <div class="top10-why">The 4km Art Deco mosaic promenade is worth walking once, especially if you're staying in Copa. But as a standalone destination it's less distinctive than Ipanema. Best as an early morning walk (before 9am) or evening stroll — not a dedicated half-day beach experience.</div>
+          <div class="top10-meta">⏱ 30–90 min walk · 🕕 Morning or evening · 💰 Free · 🚶 From your accommodation if staying in Copa</div>
+          <div style="margin-top:8px;"><span class="vb vb-optional">7.5/10</span></div>
+        </div>
+      </div>
+
+      <div class="top10-card">
+        <div class="top10-rank silver">10</div>
+        <div class="top10-body">
+          <div class="top10-name">Feira do Lavradio (Last Saturday Antiques Fair) <span class="vb vb-optional">Optional</span></div>
+          <div class="top10-why">Rio's best street fair — antiques, food, samba, and art in Lapa's historic district. Only runs on the last Saturday of the month. February 6 is the last Saturday of February's first week. <strong>Check if Feb 6, 2027 is the correct Feira day</strong> (not yet officially confirmed). If it falls on your arrival day, it's an easy first-evening introduction to Rio's culture.</div>
+          <div class="top10-meta">⏱ 2 hrs · 🗓 Last Saturday monthly · 💰 Free entry · 📍 Rua do Lavradio, Lapa</div>
+          <div style="margin-top:8px;"><span class="vb vb-optional">8/10 (if date aligns)</span></div>
+        </div>
+      </div>
+
+      <h3 class="places-section-h">Absolute Must-Do</h3>
+      <div class="rec-box">
+        <p>If you only have time for four things in Rio, these are the four that would genuinely hurt to miss:</p>
+        <p><strong>1. Christ the Redeemer</strong> — On your first clear morning. Everything else can be rearranged around weather. This cannot.</p>
+        <p><strong>2. Sugarloaf Mountain</strong> — A completely different perspective on the city. The cable car at sunset is one of the best views in South America.</p>
+        <p><strong>3. Arpoador sunset</strong> — Twenty minutes, free, and genuinely moving. Do it every clear evening if possible.</p>
+        <p><strong>4. Santa Teresa + Selarón Steps afternoon</strong> — The one experience where you leave the tourist circuit and feel like you actually visited Rio.</p>
+        <p style="margin-bottom:0;"><em>Everything else on the list is excellent. These four are irreplaceable.</em></p>
+      </div>
+    </div><!-- /places-top10 -->
+
+    <!-- PANEL: ICONIC RIO -->
+    <div class="places-panel" id="places-iconic">
+      <h3 class="places-section-h">The Two Pinnacles</h3>
+
+      <div class="attr-card must-do">
+        <div class="attr-header">
+          <div>
+            <div class="attr-name">Christ the Redeemer (Cristo Redentor)</div>
+            <div class="attr-meta">Corcovado Mountain, 709m · Tijuca National Park</div>
+            <div><span class="vb vb-mustdo">Must Do</span> <span class="vb vb-optional">Weather-Critical</span></div>
+          </div>
+          <div class="attr-score">10/10</div>
+        </div>
+        <div class="attr-body">
+          The most famous statue in the world atop a rainforest mountain. What makes it worth the hype: the view is legitimately staggering — you can see the entire city simultaneously, from the Atlantic beaches to the bay to the mountains. The statue itself is enormous (38m including the base) and only makes sense at scale in person. Go early (first train, 8am) before clouds form and crowds peak. February heat means clouds develop by 11am most days.
+          <div class="food-tip-green" style="margin-top:12px;">Book online in advance at <strong>paineirascorcovado.com.br</strong> — the ticket includes the train and statue access. Sold out days are common during Carnival week. Book before you fly.</div>
+          <div class="food-warning">Do NOT hike up. The trail is long, poorly maintained for casual visitors, and gives no view advantage. Always take the official train from Cosme Velho.</div>
+        </div>
+        <div class="attr-grid">
+          <div class="attr-detail"><span class="attr-detail-label">Duration</span>2–3 hours total</div>
+          <div class="attr-detail"><span class="attr-detail-label">Best Time</span>8–10am, clear days only</div>
+          <div class="attr-detail"><span class="attr-detail-label">Cost</span>R$90–120 (train + entry)</div>
+          <div class="attr-detail"><span class="attr-detail-label">Booking</span>Required — book online</div>
+          <div class="attr-detail"><span class="attr-detail-label">Transport</span>Uber to Cosme Velho train station</div>
+          <div class="attr-detail"><span class="attr-detail-label">Combine With</span>Santa Teresa (same Uber route)</div>
+        </div>
+      </div>
+
+      <div class="attr-card must-do">
+        <div class="attr-header">
+          <div>
+            <div class="attr-name">Sugarloaf Mountain (Pão de Açúcar)</div>
+            <div class="attr-meta">Urca · Two cable car stages · 396m</div>
+            <div><span class="vb vb-mustdo">Must Do</span> <span class="vb vb-optional">Weather-Sensitive</span></div>
+          </div>
+          <div class="attr-score">9.5/10</div>
+        </div>
+        <div class="attr-body">
+          Two cable car rides — first to Morro da Urca (223m), then to the summit of Pão de Açúcar (396m). The second peak gives a panoramic view of Guanabara Bay that no other point in Rio replicates: you see the bay opening to the Atlantic, the bridges, downtown, Niterói, and Rio's coastline in one arc. This is a different view from Corcovado — not redundant. Do both. Best in the morning or late afternoon (golden light on the bay is extraordinary). The cable car operates 8am–9pm daily.
+          <div class="food-tip-green" style="margin-top:12px;">After descending, walk through the Urca neighborhood — one of Rio's quietest and most charming areas, with local bars along the seafront.</div>
+        </div>
+        <div class="attr-grid">
+          <div class="attr-detail"><span class="attr-detail-label">Duration</span>2.5–3 hours</div>
+          <div class="attr-detail"><span class="attr-detail-label">Best Time</span>9am–11am or 4–6pm</div>
+          <div class="attr-detail"><span class="attr-detail-label">Cost</span>R$150–180 cable car</div>
+          <div class="attr-detail"><span class="attr-detail-label">Booking</span>Recommended online</div>
+          <div class="attr-detail"><span class="attr-detail-label">Transport</span>Uber to Praça General Tibúrcio</div>
+          <div class="attr-detail"><span class="attr-detail-label">Combine With</span>Urca walk, Praia Vermelha</div>
+        </div>
+      </div>
+
+      <h3 class="places-section-h">Beaches & Coastal Rio</h3>
+
+      <div class="attr-card must-do">
+        <div class="attr-header">
+          <div>
+            <div class="attr-name">Arpoador Rock</div>
+            <div class="attr-meta">Between Ipanema and Copacabana · Pedra do Arpoador</div>
+            <div><span class="vb vb-mustdo">Must Do</span> <span class="vb vb-optional">Free</span></div>
+          </div>
+          <div class="attr-score">10/10</div>
+        </div>
+        <div class="attr-body">
+          <strong>Recommended as: Dedicated sunset experience, every clear evening.</strong><br>
+          A flat granite rock that juts into the ocean at the junction of Ipanema and Copacabana. The ritual: at sundown, locals and visitors climb the rock, watch the sun drop behind the Two Brothers hills (Dois Irmãos), and applaud when it disappears. This happens organically, every single evening. It costs nothing and takes 45 minutes. It is one of the most genuinely Rio experiences in the city — not tourist infrastructure, just Carioca life.
+        </div>
+        <div class="attr-grid">
+          <div class="attr-detail"><span class="attr-detail-label">Use as</span>Dedicated sunset stop</div>
+          <div class="attr-detail"><span class="attr-detail-label">Duration</span>45 min</div>
+          <div class="attr-detail"><span class="attr-detail-label">Cost</span>Free</div>
+          <div class="attr-detail"><span class="attr-detail-label">Best Time</span>30 min before sunset</div>
+          <div class="attr-detail"><span class="attr-detail-label">Combine With</span>Ipanema walk, dinner in Ipanema</div>
+        </div>
+      </div>
+
+      <div class="attr-card">
+        <div class="attr-header">
+          <div>
+            <div class="attr-name">Ipanema Beach (Posto 9)</div>
+            <div class="attr-meta">Most culturally significant stretch · Rua Farme de Amoedo to Rua Vinícius de Moraes</div>
+            <div><span class="vb vb-mustdo">Must Do</span></div>
+          </div>
+          <div class="attr-score">9/10</div>
+        </div>
+        <div class="attr-body">
+          <strong>Recommended as: Dedicated morning beach experience (2–3 hrs) on one day.</strong><br>
+          Ipanema is not just a beach — it's a cultural institution with a specific social geography. Posto 9 has been the gathering point for intellectuals, artists, and Rio's LGBTQ+ community since the 1960s. The beach is beautiful (facing west, so morning light is best), the water is swimmable, and the boardwalk from Arpoador to Leblon is 3.5km of one of the world's great coastal promenades. Go once properly, in the morning, before 11am.
+        </div>
+        <div class="attr-grid">
+          <div class="attr-detail"><span class="attr-detail-label">Use as</span>Morning beach session</div>
+          <div class="attr-detail"><span class="attr-detail-label">Duration</span>2–3 hours</div>
+          <div class="attr-detail"><span class="attr-detail-label">Cost</span>Free</div>
+          <div class="attr-detail"><span class="attr-detail-label">Best Time</span>Before 11am</div>
+          <div class="attr-detail"><span class="attr-detail-label">Combine With</span>Leblon walk, Arpoador sunset</div>
+        </div>
+      </div>
+
+      <div class="attr-card">
+        <div class="attr-header">
+          <div>
+            <div class="attr-name">Copacabana Beach & Promenade</div>
+            <div class="attr-meta">4km Art Deco mosaic promenade · Most famous beach in the world</div>
+            <div><span class="vb vb-rec">Recommended</span></div>
+          </div>
+          <div class="attr-score">7.5/10</div>
+        </div>
+        <div class="attr-body">
+          <strong>Recommended as: Morning walk, not a dedicated beach day.</strong><br>
+          Copacabana's fame exceeds its current experience as a leisure beach — it's crowded, touristy, and busier than Ipanema. The wave pattern is also rougher. But the Mosaic promenade is genuinely beautiful to walk (especially at 7am, when it belongs to joggers and vendors setting up), and if you're staying in Copa it's free exploration from your door. Don't skip it entirely — just don't dedicate a morning exclusively to it when Ipanema is a short distance away.
+        </div>
+        <div class="attr-grid">
+          <div class="attr-detail"><span class="attr-detail-label">Use as</span>Morning walk / casual</div>
+          <div class="attr-detail"><span class="attr-detail-label">Duration</span>30–90 min walk</div>
+          <div class="attr-detail"><span class="attr-detail-label">Cost</span>Free</div>
+          <div class="attr-detail"><span class="attr-detail-label">Best Time</span>Early morning (7–9am)</div>
+        </div>
+      </div>
+
+      <div class="attr-card">
+        <div class="attr-header">
+          <div>
+            <div class="attr-name">Leblon Beach & Neighborhood</div>
+            <div class="attr-meta">Quieter, upscale continuation of Ipanema · Best for a final afternoon</div>
+            <div><span class="vb vb-optional">Optional</span></div>
+          </div>
+          <div class="attr-score">8/10</div>
+        </div>
+        <div class="attr-body">
+          <strong>Recommended as: Combine with Ipanema or as a quiet final-day afternoon.</strong><br>
+          Leblon is the quieter, wealthier western continuation of Ipanema Beach separated by the Jardim de Alah canal. Slightly less crowded, more local feel. The beachfront here has the best view of the Dois Irmãos (Two Brothers) hillside. Walk here from Ipanema rather than going as a dedicated trip. Leblon's Rua Dias Ferreira restaurant strip is Rio's most concentrated block of good restaurants.
+        </div>
+        <div class="attr-grid">
+          <div class="attr-detail"><span class="attr-detail-label">Use as</span>Combined with Ipanema walk</div>
+          <div class="attr-detail"><span class="attr-detail-label">Duration</span>1–2 hours combined</div>
+          <div class="attr-detail"><span class="attr-detail-label">Cost</span>Free</div>
+          <div class="attr-detail"><span class="attr-detail-label">Best Combination</span>Ipanema → Arpoador sunset → Leblon dinner</div>
+        </div>
+      </div>
+    </div><!-- /places-iconic -->
+
+    <!-- PANEL: NATURE -->
+    <div class="places-panel" id="places-nature">
+      <div class="attr-card must-do">
+        <div class="attr-header">
+          <div>
+            <div class="attr-name">Mirante Dona Marta</div>
+            <div class="attr-meta">Botafogo · Free viewpoint · 20-minute Uber</div>
+            <div><span class="vb vb-rec">Highly Recommended</span> <span class="vb vb-optional">Free</span></div>
+          </div>
+          <div class="attr-score">8.5/10</div>
+        </div>
+        <div class="attr-body">
+          Rio's most underrated viewpoint. A public belvedere on the hillside above Botafogo — free, accessible, and less crowded than the major paid attractions. The specific draw: Christ the Redeemer is framed perfectly above you, with Guanabara Bay below. It's an intimate view that Corcovado itself cannot offer (you can't photograph yourself in front of Cristo from Corcovado). Takes 30 minutes. Combine with Sugarloaf/Urca on the same afternoon for a full Botafogo-area day.
+          <div class="food-tip-green" style="margin-top:10px;">Get there by Uber (the road is narrow, private cars discouraged beyond a certain point). Go in the morning for clear views before coastal clouds develop.</div>
+        </div>
+        <div class="attr-grid">
+          <div class="attr-detail"><span class="attr-detail-label">Duration</span>30–45 min</div>
+          <div class="attr-detail"><span class="attr-detail-label">Cost</span>Free</div>
+          <div class="attr-detail"><span class="attr-detail-label">Best Time</span>Morning, clear sky</div>
+          <div class="attr-detail"><span class="attr-detail-label">Transport</span>Uber to Estrada Dona Marta</div>
+          <div class="attr-detail"><span class="attr-detail-label">Combine With</span>Sugarloaf, Urca, Botafogo</div>
+        </div>
+      </div>
+
+      <div class="attr-card">
+        <div class="attr-header">
+          <div>
+            <div class="attr-name">Jardim Botânico (Botanical Garden)</div>
+            <div class="attr-meta">Lagoa · Founded 1808 · 54 hectares</div>
+            <div><span class="vb vb-rec">Highly Recommended</span> <span class="vb vb-optional">Best Recovery Day</span></div>
+          </div>
+          <div class="attr-score">8.5/10</div>
+        </div>
+        <div class="attr-body">
+          A perfectly maintained garden with the most photogenic natural feature in Rio — the Alameda das Samambaias (fern alley) and the Alameda das Palmeiras Imperiais (imperial palm avenue), 134 palms towering 40 metres, planted in 1809, with Corcovado Mountain behind them. It's also deeply shaded and cool — a major advantage in February heat. This is the ideal recovery-day activity after Carnival night: peaceful, shaded, beautiful, and slow-paced. Two hours feels complete.
+          <div class="food-warning" style="margin-top:10px;"><strong>Closed Mondays.</strong> Plan accordingly — do not schedule this for a Monday. Also check for temporary closure notices as some sections are occasionally under maintenance.</div>
+        </div>
+        <div class="attr-grid">
+          <div class="attr-detail"><span class="attr-detail-label">Duration</span>2 hours</div>
+          <div class="attr-detail"><span class="attr-detail-label">Cost</span>R$35 adults</div>
+          <div class="attr-detail"><span class="attr-detail-label">Opens</span>8am daily (except Mon)</div>
+          <div class="attr-detail"><span class="attr-detail-label">Best Time</span>Morning (cooler)</div>
+          <div class="attr-detail"><span class="attr-detail-label">Transport</span>Uber to Rua J. Botânico 1008</div>
+          <div class="attr-detail"><span class="attr-detail-label">Combine With</span>Lagoa walk, Leblon</div>
+        </div>
+      </div>
+
+      <div class="attr-card">
+        <div class="attr-header">
+          <div>
+            <div class="attr-name">Tijuca National Park — Vista Chinesa &amp; Cascatinha</div>
+            <div class="attr-meta">World's largest urban tropical forest · Multiple access points</div>
+            <div><span class="vb vb-optional">Optional</span></div>
+          </div>
+          <div class="attr-score">8/10</div>
+        </div>
+        <div class="attr-body">
+          The Atlantic rainforest surrounding Rio is genuinely extraordinary — dense, green, and vast. There are two ways to experience it for non-hikers:
+          <ul style="margin:8px 0;padding-left:20px;font-size:14px;line-height:1.8;">
+            <li><strong>Vista Chinesa:</strong> A Chinese-style pavilion at 395m inside the park. Drive-up (Uber). Excellent rainforest panorama including the city and bay. 20 minutes visit. Combine with nearby Vista Açu and Mesa do Imperador.</li>
+            <li><strong>Cascatinha Taunay:</strong> A waterfall accessible via a short walk from the main park road. Beautiful for photographers. 30-minute visit.</li>
+          </ul>
+          For a full day: Pico da Tijuca hike (highest point in Rio, 1022m) is a 4–5 hour return hike. Worth it if hiking is a priority. Requires good fitness, trail shoes, and an early start (before 8am) due to afternoon heat and rain.
+          <div class="food-tip-green" style="margin-top:10px;">Uber is the only practical way in. The park has no metro access. Early morning is essential — afternoon thunderstorms are common in February.</div>
+        </div>
+        <div class="attr-grid">
+          <div class="attr-detail"><span class="attr-detail-label">Duration</span>2 hrs (viewpoints) or full day (hiking)</div>
+          <div class="attr-detail"><span class="attr-detail-label">Cost</span>Free (park)</div>
+          <div class="attr-detail"><span class="attr-detail-label">Best Time</span>7–11am only</div>
+          <div class="attr-detail"><span class="attr-detail-label">Transport</span>Uber essential</div>
+          <div class="attr-detail"><span class="attr-detail-label">Weather Risk</span>High — afternoon rain guaranteed in Feb</div>
+        </div>
+      </div>
+
+      <div class="attr-card">
+        <div class="attr-header">
+          <div>
+            <div class="attr-name">Lagoa Rodrigo de Freitas</div>
+            <div class="attr-meta">7.5km lakeside circuit · Between Ipanema, Leblon, Jardim Botânico, Gávea</div>
+            <div><span class="vb vb-optional">Optional</span></div>
+          </div>
+          <div class="attr-score">7/10</div>
+        </div>
+        <div class="attr-body">
+          <strong>Recommended as: Easy, scenic walk/jog — not a destination.</strong> The lake is beautiful, surrounded by mountains and the southern neighborhoods. Locals use the 7.5km circuit for running and cycling. The kiosks on the northern shore (Av. Epitácio Pessoa) serve açaí, cold drinks, and light food. Best combined with a Botanical Garden visit or as an evening walk before dinner in Leblon.
+        </div>
+        <div class="attr-grid">
+          <div class="attr-detail"><span class="attr-detail-label">Use as</span>Easy walk / combine</div>
+          <div class="attr-detail"><span class="attr-detail-label">Duration</span>45–90 min walk</div>
+          <div class="attr-detail"><span class="attr-detail-label">Cost</span>Free</div>
+          <div class="attr-detail"><span class="attr-detail-label">Combine With</span>Botanical Garden</div>
+        </div>
+      </div>
+    </div><!-- /places-nature -->
+
+    <!-- PANEL: CULTURE -->
+    <div class="places-panel" id="places-culture">
+      <div class="attr-card must-do">
+        <div class="attr-header">
+          <div>
+            <div class="attr-name">Santa Teresa</div>
+            <div class="attr-meta">Hillside bohemian neighborhood · 30 min from Copa by Uber</div>
+            <div><span class="vb vb-mustdo">Must Do</span></div>
+          </div>
+          <div class="attr-score">9/10</div>
+        </div>
+        <div class="attr-body">
+          Rio's most distinctive neighborhood — an artistic, bohemian hilltop enclave with cobblestone streets, 19th-century mansions, street art murals, small galleries, and excellent restaurants. It feels genuinely different from the beach neighborhoods. The winding streets, the elevated views, and the artistic energy create an atmosphere Rio has nowhere else. Don't rush it: 2–3 hours of wandering is better than ticking a checklist.
+          <ul style="margin:8px 0;padding-left:20px;font-size:14px;line-height:1.8;">
+            <li>Walk the main street (Rua Aprazível direction) and let yourself wander</li>
+            <li>Street art is everywhere — some of Rio's best is here</li>
+            <li>Café do Alto and Aprazível are both excellent lunch/dinner options</li>
+            <li>Several small art museums and studios open to visitors</li>
+          </ul>
+          <div class="food-warning" style="margin-top:10px;"><strong>Do NOT use the traditional tram (Bonde).</strong> Santa Teresa's famous yellow tram has extremely limited service and is not reliable for tourists. Take Uber directly to the neighborhood.</div>
+        </div>
+        <div class="attr-grid">
+          <div class="attr-detail"><span class="attr-detail-label">Duration</span>2–3 hours wandering</div>
+          <div class="attr-detail"><span class="attr-detail-label">Best Time</span>Afternoon (lunch + wander)</div>
+          <div class="attr-detail"><span class="attr-detail-label">Safety</span>Stick to main streets, go before dark</div>
+          <div class="attr-detail"><span class="attr-detail-label">Transport</span>Uber up, walk down to Lapa</div>
+          <div class="attr-detail"><span class="attr-detail-label">Combine With</span>Selarón Steps, Lapa arches</div>
+        </div>
+      </div>
+
+      <div class="attr-card must-do">
+        <div class="attr-header">
+          <div>
+            <div class="attr-name">Escadaria Selarón (Selarón Steps)</div>
+            <div class="attr-meta">Lapa · Between Santa Teresa and Lapa · Chilean artist Jorge Selarón</div>
+            <div><span class="vb vb-mustdo">Must Do</span></div>
+          </div>
+          <div class="attr-score">8.5/10</div>
+        </div>
+        <div class="attr-body">
+          A 215-step staircase covered in 2,000 tiles from 60+ countries, assembled over 23 years by Chilean artist Jorge Selarón. It sounds like tourist kitsch but isn't — it's a genuine work of art that rewards close attention. Every tile has a story. Best visited as part of the Santa Teresa → Selarón → Lapa afternoon sequence. Walk down the steps from Santa Teresa toward Lapa. Daytime only — the area below the steps (Lapa) gets crowded and loud at night. 30 minutes is enough to explore it properly.
+        </div>
+        <div class="attr-grid">
+          <div class="attr-detail"><span class="attr-detail-label">Duration</span>30 min</div>
+          <div class="attr-detail"><span class="attr-detail-label">Best Time</span>Afternoon (part of Santa Teresa combo)</div>
+          <div class="attr-detail"><span class="attr-detail-label">Cost</span>Free</div>
+          <div class="attr-detail"><span class="attr-detail-label">Safety</span>Daytime only</div>
+        </div>
+      </div>
+
+      <div class="attr-card">
+        <div class="attr-header">
+          <div>
+            <div class="attr-name">Lapa Arches &amp; Historic Lapa</div>
+            <div class="attr-meta">Centro border · 18th-century aqueduct · Samba nightlife hub</div>
+            <div><span class="vb vb-rec">Recommended</span></div>
+          </div>
+          <div class="attr-score">8/10</div>
+        </div>
+        <div class="attr-body">
+          The Arcos da Lapa (aqueduct arches) are one of Rio's most photogenic historic structures — massive, 18th century, and now used as a viaduct for the Santa Teresa tram. The neighborhood around them is Rio's most famous samba and nightlife district. By day, it's quiet and photogenic. On Friday and Saturday nights, the streets fill with samba clubs, open-air bars, and street performers — this is the most authentic nightlife Rio offers, and very different from the beach scene.
+          <div class="tip tip-blue" style="margin-top:10px;">
+            <span class="tip-icon">♪</span>
+            <p><strong>Samba outside Carnival:</strong> During Carnival week (your dates), Lapa will be even more active than usual. On the evenings of Feb 7, 8 (Sambadrome nights), Lapa fills with people. If you want to experience authentic samba in a live bar setting, Carioca da Gema (Av. Mem de Sá 79) is Rio's best. Goes from 7pm.</p>
+          </div>
+        </div>
+        <div class="attr-grid">
+          <div class="attr-detail"><span class="attr-detail-label">Duration</span>1 hr daytime / full evening nightlife</div>
+          <div class="attr-detail"><span class="attr-detail-label">Best Time</span>Afternoon + evening (Fri/Sat)</div>
+          <div class="attr-detail"><span class="attr-detail-label">Cost</span>Free (arches) / R$30–50 (samba bars)</div>
+          <div class="attr-detail"><span class="attr-detail-label">Transport</span>Uber / Metro Cinelândia</div>
+        </div>
+      </div>
+
+      <div class="attr-card">
+        <div class="attr-header">
+          <div>
+            <div class="attr-name">Centro Histórico &amp; Cinelândia</div>
+            <div class="attr-meta">Downtown Rio · Historic core · Teatro Municipal · MASP area</div>
+            <div><span class="vb vb-optional">Optional</span></div>
+          </div>
+          <div class="attr-score">6.5/10</div>
+        </div>
+        <div class="attr-body">
+          Rio's historic downtown has beautiful architecture — particularly the Teatro Municipal, the Biblioteca Nacional, and Cinelândia square. But Centro largely empties on weekends and holidays, and Carnival week makes it even more erratic. Most museums here will have altered or reduced hours during Carnival. Unless historic architecture and Brazilian cultural institutions are a specific interest, the time is better spent on the nature and neighborhood experiences. If you do go, combine with Lapa (adjacent) and avoid Sunday/Monday when it's quiet.
+        </div>
+      </div>
+
+      <div class="attr-card">
+        <div class="attr-header">
+          <div>
+            <div class="attr-name">Feira de São Cristóvão (Northeastern Market)</div>
+            <div class="attr-meta">São Cristóvão · Huge indoor market · Forró music · Northeastern food</div>
+            <div><span class="vb vb-optional">Optional</span></div>
+          </div>
+          <div class="attr-score">7.5/10</div>
+        </div>
+        <div class="attr-body">
+          A massive indoor market celebrating Northeastern Brazilian culture — food, music, crafts, forró dancing, and regional specialties. Genuinely authentic (not tourist-oriented). Open Thursday–Sunday, largest on weekends. The food stalls are excellent for trying dishes you won't find in the South Zone. However it's in the North Zone, making it a dedicated trip (30–40 min Uber). Best as an optional add-on if you're interested in Brazilian regional culture.
+        </div>
+      </div>
+    </div><!-- /places-culture -->
+
+    <!-- PANEL: WEATHER STRATEGY -->
+    <div class="places-panel" id="places-weather">
+      <div class="tip tip-blue" style="margin-bottom:20px;">
+        <span class="tip-icon">🌦</span>
+        <p><strong>February weather reality:</strong> Rio in February averages 30–35°C with high humidity. Clear mornings (before 11am) are common; afternoon thunderstorms are frequent. Plan weather-dependent attractions for mornings only and keep afternoons flexible.</p>
+      </div>
+      <div class="weather-grid">
+        <div class="weather-col sunny">
+          <h3>☀ Clear Sky — Do These First</h3>
+          <div class="weather-item"><strong>Christ the Redeemer (top priority)</strong> — clouds form by midday most days. If the morning is clear, everything else moves to make this happen. First train is 8am.</div>
+          <div class="weather-item"><strong>Sugarloaf Mountain</strong> — the bay view disappears in haze. Best in clear mornings or late afternoon. Check the webcam before going.</div>
+          <div class="weather-item"><strong>Mirante Dona Marta</strong> — only useful in clear conditions. 30 minutes each way, skip if cloudy.</div>
+          <div class="weather-item"><strong>Tijuca hiking or Vista Chinesa</strong> — go on clear mornings only. Afternoon rain in the park can be heavy on trails.</div>
+          <div class="weather-item"><strong>Arpoador sunset</strong> — check the forecast by 5pm. The applause ritual only happens when the sun actually appears at the horizon.</div>
+          <div class="weather-item"><strong>Beach time</strong> — comfortable before 11am; very hot midday. Afternoons can bring storms.</div>
+        </div>
+        <div class="weather-col rainy">
+          <h3>🌧 Cloudy or Rainy — Alternatives</h3>
+          <div class="weather-item"><strong>Botanical Garden</strong> — excellent in light rain (shaded walkways throughout). Avoid only in a heavy thunderstorm.</div>
+          <div class="weather-item"><strong>Santa Teresa</strong> — cobblestone streets and café culture work well under clouds. Good rainy-afternoon plan.</div>
+          <div class="weather-item"><strong>Selarón Steps &amp; Lapa arches</strong> — the tiles look striking in wet light. Manageable in light rain.</div>
+          <div class="weather-item"><strong>Feira de São Cristóvão</strong> — entirely indoor, weekends only. Excellent cultural rainy-day option.</div>
+          <div class="weather-item"><strong>MASP / Museu do Amanhã</strong> — only if you need a full indoor day. The architecture is more interesting than the exhibits.</div>
+          <div class="weather-item"><strong>Slow comida a quilo lunch</strong> — rainy days are perfect for long indoor lunches. Many Copa/Ipanema kilo places have comfortable seating.</div>
+        </div>
+      </div>
+      <h3 class="places-section-h">Weather Swap Logic</h3>
+      <div class="geo-card">
+        <div class="geo-title">If Feb 7 (Cristo day) is cloudy</div>
+        <p style="font-size:14px;margin:0;">Do Santa Teresa + Selarón + Lapa instead. Move Cristo to Feb 8 morning. If Feb 8 is also cloudy, do Sugarloaf (more weather-tolerant at sunset) and keep Cristo for the next clear morning.</p>
+      </div>
+      <div class="geo-card">
+        <div class="geo-title">If Feb 8 (Sugarloaf day) is poor</div>
+        <p style="font-size:14px;margin:0;">Botanical Garden afternoon + Lagoa walk + Leblon dinner. Keep Sugarloaf for any remaining clear afternoon — it runs until 9pm.</p>
+      </div>
+      <div class="geo-card">
+        <div class="geo-title">If Feb 11 (final day) is rainy</div>
+        <p style="font-size:14px;margin:0;">Indoor morning at Botanical Garden. Lunch in Leblon. Easy afternoon. A relaxed final day is a good outcome — don't force outdoor attractions when the weather has other ideas.</p>
+      </div>
+    </div><!-- /places-weather -->
+
+    <!-- PANEL: DAY-BY-DAY ITINERARY -->
+    <div class="places-panel" id="places-itinerary">
+      <div class="tip tip-blue" style="margin-bottom:20px;">
+        <span class="tip-icon">📅</span>
+        <p><strong>Philosophy:</strong> Each day has a clear theme. No day has more than 2–3 major anchors. Weather-dependent items have explicit backups. Feb 10 is intentionally light.</p>
+      </div>
+
+      <div class="day-iti">
+        <div class="day-iti-hdr normal">
+          <div class="day-iti-date">Saturday, Feb 6 — Arrive &amp; Orient</div>
+          <span class="int-badge int-relaxed">Relaxed</span>
+        </div>
+        <div class="day-iti-body">
+          <div class="iti-row"><div class="iti-label">Afternoon</div><div class="iti-content">Settle in. Walk the Copacabana mosaic promenade (30–45 min) to get oriented. Grab pão de queijo + café at the nearest padaria. Walk toward Arpoador via the beachfront.</div></div>
+          <div class="iti-row"><div class="iti-label">Sunset</div><div class="iti-content"><strong>Arpoador Rock</strong> — your first Rio sunset. Arrive 30 min before. Free. The crowd applauds when the sun disappears.</div></div>
+          <div class="iti-row"><div class="iti-label">Evening</div><div class="iti-content">Dinner at Vegetariano Social Club, Leblon (book before you fly). Early night — big week ahead.</div></div>
+          <div class="iti-row"><div class="iti-label">City Note</div><div class="iti-content">Série Ouro Sambadrome parades tonight. Blocos citywide all day. Expect some road disruptions. Keep your evening local to Copa/Ipanema.</div></div>
+        </div>
+      </div>
+
+      <div class="day-iti">
+        <div class="day-iti-hdr normal">
+          <div class="day-iti-date">Sunday, Feb 7 — Cristo &amp; Santa Teresa</div>
+          <span class="int-badge int-moderate">Moderate</span>
+        </div>
+        <div class="day-iti-body">
+          <div class="iti-row"><div class="iti-label">Morning</div><div class="iti-content"><strong>Christ the Redeemer (CLEAR SKY ONLY)</strong> — Uber to Cosme Velho, first train 8am. 2–3 hours. If cloudy: do Santa Teresa/Lapa combo today, move Cristo to Feb 8 morning.</div></div>
+          <div class="iti-row"><div class="iti-label">Lunch</div><div class="iti-content">Uber to Santa Teresa. Lunch at Aprazível (Rua Aprazível 62) — open-air, Brazilian, excellent. Or Café do Alto for a lighter option.</div></div>
+          <div class="iti-row"><div class="iti-label">Afternoon</div><div class="iti-content">Wander Santa Teresa 2–3 hours. Walk down to <strong>Selarón Steps</strong> → photograph Lapa arches from Rua Mem de Sá.</div></div>
+          <div class="iti-row"><div class="iti-label">Evening</div><div class="iti-content">Optional: one drink at Carioca da Gema (live samba from 7pm). Then <strong>home by 9pm</strong> — Sambadrome Night 1 tonight. You don't need to go, but transport will be disrupted.</div></div>
+        </div>
+      </div>
+
+      <div class="day-iti">
+        <div class="day-iti-hdr normal">
+          <div class="day-iti-date">Monday, Feb 8 — Sugarloaf &amp; Ipanema</div>
+          <span class="int-badge int-moderate">Moderate</span>
+        </div>
+        <div class="day-iti-body">
+          <div class="iti-row"><div class="iti-label">Morning</div><div class="iti-content"><strong>Sugarloaf Mountain</strong> — Uber to Praia Vermelha, cable car from 8am. 2.5–3 hours for both peaks. If Christ was moved here from Feb 7: swap and do Cristo at 8am instead, Sugarloaf at 4–6pm (cable car runs to 9pm and sunset light on the bay is extraordinary).</div></div>
+          <div class="iti-row"><div class="iti-label">Late Morning</div><div class="iti-content"><strong>Urca seafront walk</strong> after descending — 30 minutes along the wall at Praia da Urca. Fishermen, local bars, bay views. Cold coconut water from a kiosk.</div></div>
+          <div class="iti-row"><div class="iti-label">Lunch</div><div class="iti-content">Uber to Ipanema. New Natural (Rua Barão da Torre 173, kilo/natural) or any comida a quilo on Ipanema side streets.</div></div>
+          <div class="iti-row"><div class="iti-label">Afternoon</div><div class="iti-content"><strong>Ipanema Beach, Posto 9</strong> — 2–3 hours properly. Queijo coalho + água de coco from vendors. Walk west to Leblon along the sand (30 min).</div></div>
+          <div class="iti-row"><div class="iti-label">Sunset</div><div class="iti-content">Arpoador Rock again — or sunset from Leblon beach facing the Dois Irmãos hills.</div></div>
+          <div class="iti-row"><div class="iti-label">City Note</div><div class="iti-content"><strong>Home by 10pm.</strong> Sambadrome Night 2 tonight. Tomorrow is your Carnival night — save your energy.</div></div>
+        </div>
+      </div>
+
+      <div class="day-iti">
+        <div class="day-iti-hdr carnival">
+          <div class="day-iti-date">Tuesday, Feb 9 — CARNIVAL DAY</div>
+          <span class="int-badge" style="background:rgba(255,255,255,0.2);color:#fff;">Special Group Night 3 — Final &amp; Most Prestigious</span>
+        </div>
+        <div class="day-iti-body">
+          <div class="iti-row"><div class="iti-label">Morning</div><div class="iti-content"><strong>Sleep in. No alarm. No sightseeing.</strong> The final Special Group parade runs 9pm–5–6am. You need rest.</div></div>
+          <div class="iti-row"><div class="iti-label">Afternoon</div><div class="iti-content">Late lunch at 2pm — full comida a quilo meal. Hydrate. Prepare outfit if any. Pack small snacks for the Sambadrome (food there is expensive and queues are long).</div></div>
+          <div class="iti-row"><div class="iti-label">Transport</div><div class="iti-content"><strong>Metro Line 2 to Praça Onze only</strong> — do NOT take Uber (traffic gridlock). 24-hour metro service tonight. Walk to your nearest Line 2 station.</div></div>
+          <div class="iti-row"><div class="iti-label">Parade</div><div class="iti-content">Arrive by 8:30pm. First school ~9:15pm. Final school (12th) finishes 5–6am. The last schools perform when the energy is highest — stay as long as your body allows.</div></div>
+          <div class="iti-row"><div class="iti-label">Return</div><div class="iti-content">Metro from Praça Onze. Food and water at home. No Wednesday morning alarm.</div></div>
+        </div>
+      </div>
+
+      <div class="day-iti">
+        <div class="day-iti-hdr recovery">
+          <div class="day-iti-date">Wednesday, Feb 10 — Recovery Day</div>
+          <span class="int-badge int-relaxed">Relaxed</span>
+        </div>
+        <div class="day-iti-body">
+          <div class="iti-row"><div class="iti-label">Morning</div><div class="iti-content"><strong>Sleep in — no alarm.</strong> Açaí bowl or delivery breakfast when you wake.</div></div>
+          <div class="iti-row"><div class="iti-label">Afternoon</div><div class="iti-content"><strong>Botanical Garden</strong> (Wed — open, not Monday) — perfectly shaded, peaceful, and gentle on a recovering body. Imperial palms + tropical greenery. 2 hours. Then Lagoa walk if energy allows (15 min Uber from gardens).</div></div>
+          <div class="iti-row"><div class="iti-label">Evening</div><div class="iti-content">Early dinner near Copa or Ipanema. Sleep at a normal hour. The Apuração (Carnival champion announcement) happens today at ~3pm — you might hear celebrations in the city.</div></div>
+          <div class="iti-row"><div class="iti-label">If Energetic</div><div class="iti-content">Mirante Dona Marta late afternoon (30 min, free view of Cristo) — a gentle optional extra if you're feeling better than expected.</div></div>
+        </div>
+      </div>
+
+      <div class="day-iti">
+        <div class="day-iti-hdr normal">
+          <div class="day-iti-date">Thursday, Feb 11 — Final Day</div>
+          <span class="int-badge int-moderate">Moderate</span>
+        </div>
+        <div class="day-iti-body">
+          <div class="iti-row"><div class="iti-label">Morning</div><div class="iti-content">In priority order — whichever you haven't done: (1) Cristo if missed; (2) Sugarloaf if missed; (3) <strong>Tijuca — Vista Chinesa + Cascatinha waterfall</strong> (the Atlantic rainforest is Rio's secret, and most visitors never actually enter it). Uber essential. Go before 10am.</div></div>
+          <div class="iti-row"><div class="iti-label">Lunch</div><div class="iti-content">Leblon — Rua Dias Ferreira restaurant strip. Rio's best concentration of good restaurants on a single block. Sit outside if not too hot.</div></div>
+          <div class="iti-row"><div class="iti-label">Afternoon</div><div class="iti-content"><strong>Leblon Beach</strong> — quieter than Ipanema, with Dois Irmãos hills as backdrop. Your last Rio beach afternoon. Walk east to Ipanema if energy allows.</div></div>
+          <div class="iti-row"><div class="iti-label">Sunset</div><div class="iti-content"><strong>Arpoador Rock</strong> — final Rio sunset. The crowd, the applause, the horizon. One more time.</div></div>
+          <div class="iti-row"><div class="iti-label">Evening</div><div class="iti-content">Final dinner in Ipanema or Leblon. Pack. Rio is done.</div></div>
+        </div>
+      </div>
+    </div><!-- /places-itinerary -->
+
+    <!-- PANEL: LOGISTICS -->
+    <div class="places-panel" id="places-logistics">
+      <h3 class="places-section-h">Carnival-Week Impact on Sightseeing</h3>
+      <div class="attr-card">
+        <div class="attr-body">
+          <ul style="margin:0;padding-left:20px;font-size:14px;line-height:1.9;">
+            <li><strong>Blocos (street parties):</strong> Run daily Feb 5–10 across all South Zone neighborhoods. Major ones (Simpatia é Quase Amor, Banda de Ipanema) draw 100,000–300,000 people and make specific streets temporarily impassable. Check blocos schedules at riocarnaval.org before each day.</li>
+            <li><strong>Uber/taxi surge pricing:</strong> 3–8x normal fares throughout Carnival week. Near the Sambadrome on parade nights: Uber is effectively unusable. Metro is the only reliable route to/from the Sambadrome.</li>
+            <li><strong>Metro 24-hour service:</strong> Runs all night on Feb 7, 8, and 9 (the three parade nights). Line 1 connects Copa/Ipanema/Botafogo. Line 2 goes direct to Sambadrome (Praça Onze).</li>
+            <li><strong>Attraction hours during Carnival:</strong> Cristo and Sugarloaf operate normal hours — but confirm online. Botanical Garden: confirm Feb 2027 Carnival hours before scheduling. Some museums may have reduced hours.</li>
+            <li><strong>Crowds:</strong> South Zone beaches are significantly more crowded Feb 7–10. Go before 9am for dramatically quieter conditions.</li>
+            <li><strong>Safety:</strong> Petty theft rises sharply during Carnival. Leave valuables at accommodation. Use a money belt or front pocket. The tourist areas are generally safe in groups — bloco crowds are where pocket theft is most common.</li>
+            <li><strong>Feb 10 recovery:</strong> Official Carnival ends at midnight Feb 10. The Apuração (champion announcement) happens mid-afternoon. City will be quieter than the preceding days.</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3 class="places-section-h">Geographic Groupings</h3>
+      <div class="geo-card">
+        <div class="geo-title">Zone A — Corcovado / Santa Teresa / Lapa (Feb 7)</div>
+        <p style="font-size:14px;margin:0;">Cristo Cosme Velho → Uber across hillside to Santa Teresa (15 min) → Walk down to Selarón Steps → Lapa arches. All on the same hillside ridge. Natural 6–7 hour sequence including lunch.</p>
+      </div>
+      <div class="geo-card">
+        <div class="geo-title">Zone B — Sugarloaf / Urca / Mirante Dona Marta (Feb 8 morning)</div>
+        <p style="font-size:14px;margin:0;">Sugarloaf at Praia Vermelha → Urca seafront walk → Optional Mirante Dona Marta (15 min Uber from Urca). Then Uber to Ipanema for lunch. Total morning: 3–4 hours.</p>
+      </div>
+      <div class="geo-card">
+        <div class="geo-title">Zone C — Ipanema / Arpoador / Leblon (Feb 8 afternoon or Feb 11 afternoon)</div>
+        <p style="font-size:14px;margin:0;">Ipanema beach Posto 9 → walk the sand west to Leblon (30 min, 3.5km) → back to Arpoador at sunset. Entirely walkable. No transport needed within this zone.</p>
+      </div>
+      <div class="geo-card">
+        <div class="geo-title">Zone D — Botanical Garden / Lagoa / Leblon (Feb 10 recovery)</div>
+        <p style="font-size:14px;margin:0;">Botanical Garden (Rua J. Botânico 1008) → Lagoa Rodrigo de Freitas lakeside walk (15 min Uber) → Leblon for dinner. Gentle, shaded, unhurried. Perfect post-Carnival pace.</p>
+      </div>
+      <div class="geo-card">
+        <div class="geo-title">Zone E — Tijuca / Vista Chinesa / Cascatinha (Feb 11 morning)</div>
+        <p style="font-size:14px;margin:0;">Uber into Tijuca park → Vista Chinesa (drive-up viewpoint) → Cascatinha Taunay waterfall (15 min trail from road). Return Uber from same road. Total: 2–3 hours before 11am. Then Uber to Leblon for lunch.</p>
+      </div>
+    </div><!-- /places-logistics -->
+
+    <!-- PANEL: SKIP & VERDICT -->
+    <div class="places-panel" id="places-verdict">
+      <h3 class="places-section-h">What to Skip</h3>
+
+      <div class="attr-card skip-it">
+        <div class="attr-name" style="margin-bottom:6px;">Maracanã Stadium Tour</div>
+        <span class="vb vb-skip">Skip</span>
+        <div class="attr-body" style="margin-top:8px;">Expensive (R$100+) for a walk through empty corridors and a small museum. Without a live match — and no Brasileirão matches are scheduled in your dates — it's just a concrete bowl. Don't waste an afternoon on this.</div>
+      </div>
+
+      <div class="attr-card skip-it">
+        <div class="attr-name" style="margin-bottom:6px;">Museu do Amanhã (Museum of Tomorrow)</div>
+        <span class="vb vb-skip">Skip (except as rainy-day backup)</span>
+        <div class="attr-body" style="margin-top:8px;">The Santiago Calatrava building is beautiful from outside and photographs well from Praça Mauá. The interior exhibits are thin for R$30 and a 35-minute Uber from the South Zone. Worth a walk around the outside only. Do not schedule it as a destination.</div>
+      </div>
+
+      <div class="attr-card skip-it">
+        <div class="attr-name" style="margin-bottom:6px;">Niterói Day Trip</div>
+        <span class="vb vb-skip">Skip</span>
+        <div class="attr-body" style="margin-top:8px;">The bay ferry is pleasant but Niterói itself offers limited payoff for a 4–5 hour round trip. The MAC Niemeyer museum is architecturally interesting but not worth sacrificing a Rio sightseeing day. The best view of the bay is from Sugarloaf, not from across it.</div>
+      </div>
+
+      <div class="attr-card skip-it">
+        <div class="attr-name" style="margin-bottom:6px;">Santa Teresa Tram (Bonde)</div>
+        <span class="vb vb-skip">Skip as transport</span>
+        <div class="attr-body" style="margin-top:8px;">The yellow tram is iconic in old photographs. Today it runs very limited, irregular tourist loops and is not a reliable way to reach or leave Santa Teresa. Take Uber up. Walk down to Lapa. Do not plan a schedule around the tram.</div>
+      </div>
+
+      <div class="attr-card skip-it">
+        <div class="attr-name" style="margin-bottom:6px;">Dedicated Copacabana Beach Afternoon</div>
+        <span class="vb vb-optional">Walk — don't sit</span>
+        <div class="attr-body" style="margin-top:8px;">Copacabana beach is famous but Ipanema is the better dedicated beach session for a visitor. Walk the Copa mosaic promenade in the early morning. But don't schedule a "Copa beach afternoon" when Ipanema is 20 minutes by foot.</div>
+      </div>
+
+      <div class="attr-card skip-it">
+        <div class="attr-name" style="margin-bottom:6px;">Ilha Fiscal</div>
+        <span class="vb vb-skip">Skip</span>
+        <div class="attr-body" style="margin-top:8px;">A small neogothic island palace only open for guided weekend tours (and Carnival-period schedule may be disrupted). Very limited content. Not worth the effort on a 5-day trip.</div>
+      </div>
+
+      <h3 class="places-section-h" style="margin-top:36px;">My Perfect Rio — Final Verdict</h3>
+      <div class="rec-box">
+        <h3 style="margin-top:0;">If I personally had Feb 6–11, 2027 in Rio with Feb 9 at the Sambadrome:</h3>
+        <p><strong>Feb 6 (Arrive):</strong> Copacabana promenade walk. Arpoador sunset. Dinner at Vegetariano Social Club (pre-booked). Early night.</p>
+        <p><strong>Feb 7 (Best day):</strong> Cristo at 8am — first train, clear morning (webcam check the night before). Uber to Santa Teresa for lunch at Aprazível. Three hours wandering Santa Teresa. Selarón Steps on the way down. One drink at Carioca da Gema. Home by 9pm.</p>
+        <p><strong>Feb 8 (Views + Beach):</strong> Sugarloaf at 9am. Urca walk after. Ipanema Posto 9 beach in the afternoon. Walk to Leblon. Arpoador for a second sunset. Home by 10pm. Early night: tomorrow is everything.</p>
+        <p><strong>Feb 9 (Carnival):</strong> Sleep in. Slow afternoon prep. Comida a quilo at 2pm. Metro to Praça Onze by 8:30pm. Special Group Night 3 — the final, most prestigious parade night. Home at 5–6am.</p>
+        <p><strong>Feb 10 (Recovery):</strong> Wake whenever. Açaí breakfast. Botanical Garden in the afternoon (shaded, peaceful, perfect after Carnival). Lagoa walk if energy allows. Early dinner. Sleep.</p>
+        <p><strong>Feb 11 (Final):</strong> Tijuca (Vista Chinesa + Cascatinha waterfall) in the morning — the Atlantic rainforest that surrounds Rio is extraordinary and most visitors never enter it. Lunch in Leblon. Leblon beach afternoon. Arpoador final sunset. Last dinner. Pack.</p>
+        <p style="margin-bottom:0;"><strong>What I would not do:</strong> Maracanã, Museu do Amanhã, Niterói, the Santa Teresa tram, a dedicated Copa beach afternoon, or any day that tried to fit more than three anchor experiences. I would check the weather every night and be ready to move Cristo or Sugarloaf to whichever morning turned out clear. The planning is the easy part — the flexibility is what makes a Rio trip work.</p>
+      </div>
+
+      <div class="tip tip-gold" style="margin-top:20px;">
+        <span class="tip-icon">★</span>
+        <p><strong>Source note:</strong> 2027 Carnival dates confirmed via LIESA draw (April 16, 2026) — Special Group parade dates Feb 7, 8, 9 are official. Attraction operating details reflect September 2026 research. Verify opening hours and Carnival-period schedules directly with each attraction before your trip, as 2027-specific updates may not yet be published. No prices, hours, or schedules in this guide should be treated as confirmed for February 2027 without independent verification.</p>
+      </div>
+    </div><!-- /places-verdict -->
+
+  </div><!-- /.wrap -->
+</section><!-- /#places -->
+
 <div class="footer">
   <p>Neighborhood, safety, transport, and Carnival schedule sections are based on current research (September 2026).<br>Accommodation section: 0 verified properties — all 10 candidates excluded. Use the search checklist in the Accommodations section to find qualifying properties.</p>
   <p style="margin-top:8px;">
@@ -2464,6 +3238,13 @@ tbody td {
 </div>
 
 <script>
+function showPlaces(id) {
+  document.querySelectorAll('.places-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.places-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('places-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+
 function showFood(id) {
   document.querySelectorAll('.food-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.food-tab').forEach(t => t.classList.remove('active'));
