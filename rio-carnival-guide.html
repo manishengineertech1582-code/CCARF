@@ -662,6 +662,59 @@ tbody td {
   .nbhd-header { flex-direction: column; }
   .nbhd-rank { text-align: left; }
 }
+
+/* ─── FOOD GUIDE ─────────────────────────────────────── */
+.food-tabs { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:24px; }
+.food-tab {
+  padding:7px 16px; border-radius:20px; font-size:13px; font-weight:600;
+  border:1.5px solid var(--border); background:var(--surface); color:var(--muted);
+  cursor:pointer; transition:all 0.15s; white-space:nowrap;
+}
+.food-tab:hover { border-color:var(--green); color:var(--green); }
+.food-tab.active { background:var(--green); border-color:var(--green); color:#fff; }
+.food-panel { display:none; }
+.food-panel.active { display:block; }
+.food-card {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--radius); padding:20px; margin-bottom:16px;
+}
+.food-card-header { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap; margin-bottom:10px; }
+.food-name { font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:600; margin:0 0 2px; }
+.food-name-en { font-size:14px; color:var(--muted); margin:0 0 8px; }
+.food-badges { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:4px; }
+.food-score { font-family:'Cormorant Garamond',serif; font-size:26px; font-weight:600; color:var(--gold); white-space:nowrap; flex-shrink:0; }
+.food-desc { font-size:14px; color:var(--ink); margin:0 0 8px; line-height:1.6; }
+.food-warning { font-size:13px; color:var(--red); background:var(--red-bg); border:1px solid #F4B8A8; border-radius:var(--radius); padding:8px 12px; margin-top:8px; }
+.food-tip-green { font-size:13px; color:#1A4A2E; background:var(--green-bg); border:1px solid #B8D9C8; border-radius:var(--radius); padding:8px 12px; margin-top:8px; }
+.rest-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:20px; margin-bottom:16px; }
+.rest-card.top-pick { border-color:var(--gold); }
+.rest-header { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap; margin-bottom:12px; }
+.rest-name { font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:600; margin:0 0 4px; }
+.rest-meta { font-size:13px; color:var(--muted); margin:0 0 6px; }
+.rest-score { font-family:'Cormorant Garamond',serif; font-size:32px; font-weight:700; color:var(--gold); flex-shrink:0; }
+.rest-body { font-size:14px; color:var(--ink); margin:0 0 10px; line-height:1.6; }
+.rest-details { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:8px; margin-top:12px; }
+.rest-detail { font-size:12px; background:var(--faint); border-radius:var(--radius); padding:8px 10px; }
+.rest-detail-label { font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--muted); font-size:10px; display:block; margin-bottom:2px; }
+.day-plan-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; margin-bottom:20px; }
+.day-plan-header { background:var(--blue); color:#fff; padding:14px 20px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; }
+.day-plan-date { font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:600; }
+.day-plan-theme { font-size:12px; opacity:0.8; letter-spacing:0.08em; text-transform:uppercase; }
+.day-plan-body { padding:4px 20px 16px; }
+.meal-row { display:flex; gap:16px; padding:10px 0; border-bottom:1px solid var(--faint); align-items:flex-start; }
+.meal-row:last-child { border-bottom:none; }
+.meal-label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:var(--muted); min-width:80px; padding-top:2px; flex-shrink:0; }
+.meal-content { font-size:14px; flex:1; line-height:1.6; }
+.phrase-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:13px 16px; margin-bottom:8px; }
+.phrase-pt { font-family:'Cormorant Garamond',serif; font-size:19px; font-weight:600; color:var(--blue); margin:0 0 2px; }
+.phrase-en { font-size:13px; color:var(--muted); margin:0; }
+.food-nbhd-h { font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:600; border-bottom:2px solid var(--border); padding-bottom:8px; margin:28px 0 16px; }
+.ranking-list { counter-reset:rank; list-style:none; padding:0; margin:0 0 8px; }
+.ranking-list li { counter-increment:rank; display:flex; gap:14px; align-items:flex-start; padding:9px 0; border-bottom:1px solid var(--faint); font-size:14px; }
+.ranking-list li:last-child { border-bottom:none; }
+.ranking-list li::before { content:counter(rank); font-family:'Cormorant Garamond',serif; font-size:26px; font-weight:700; color:var(--muted); min-width:28px; line-height:1; }
+.ranking-list li:first-child::before { color:var(--gold); font-size:30px; }
+@media(max-width:600px){ .day-plan-header{flex-direction:column;gap:4px;} .rest-header{flex-direction:column;} .food-card-header{flex-direction:column;} }
 </style>
 
 <!-- HERO -->
@@ -689,6 +742,7 @@ tbody td {
     <a class="nav-link" href="#accommodations">Accommodations</a>
     <a class="nav-link" href="#comparison">Full Comparison</a>
     <a class="nav-link" href="#recommendation">Recommendation</a>
+    <a class="nav-link" href="#food">Food Guide</a>
   </div>
 </nav>
 
@@ -1706,6 +1760,699 @@ tbody td {
   </div>
 </section>
 
+<!-- FOOD & VEGETARIAN GUIDE -->
+<section class="section" id="food">
+  <div class="wrap">
+    <p class="section-label">Vegetarian Travel Guide</p>
+    <h2 class="section-title">Food &amp; Vegetarian Guide</h2>
+    <p class="section-desc">A practical guide for a primarily vegetarian traveler in Rio de Janeiro, February 6–11, 2027. Brazilian foods worth trying, fruits, beach food, restaurants, daily food plans, Carnival-day strategy, transport tips, and Portuguese phrases.</p>
+
+    <div class="tip tip-gold">
+      <span class="tip-icon">🌿</span>
+      <p><strong>Vegetarian definition used here:</strong> No meat, chicken, fish, or seafood. Not necessarily vegan. Eggs and dairy are acceptable unless noted. <strong>Always verify feijão (beans) and farofa — they frequently contain pork or bacon in Brazil.</strong></p>
+    </div>
+
+    <div class="food-tabs" role="tablist">
+      <button class="food-tab active" onclick="showFood('foods')">Brazilian Foods</button>
+      <button class="food-tab" onclick="showFood('fruits')">Fruits</button>
+      <button class="food-tab" onclick="showFood('beach')">Beach &amp; Street</button>
+      <button class="food-tab" onclick="showFood('restaurants')">Restaurants</button>
+      <button class="food-tab" onclick="showFood('plan')">Day-by-Day Plan</button>
+      <button class="food-tab" onclick="showFood('transport')">Getting Around</button>
+      <button class="food-tab" onclick="showFood('tips')">Phrases &amp; Watch-Outs</button>
+      <button class="food-tab" onclick="showFood('rankings')">Rankings &amp; Verdict</button>
+    </div>
+
+    <!-- ── TAB 1: BRAZILIAN FOODS ── -->
+    <div class="food-panel active" id="food-foods">
+      <h3 style="font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;margin:0 0 6px;">Brazilian Foods Worth Trying as a Vegetarian</h3>
+      <p style="color:var(--muted);font-size:15px;margin:0 0 24px;">Prioritise these over international alternatives — they are what make a Brazilian food experience distinctive. Naturally vegetarian or easily ordered vegetarian.</p>
+
+      <div class="food-card" style="border-left:3px solid var(--green);">
+        <div class="food-card-header">
+          <div><div class="food-name">Açaí</div><div class="food-name-en">Amazon açaí bowl</div><div class="food-badges"><span class="tag tag-best">Must Try</span><span class="tag" style="background:var(--green);color:#fff;">Vegan</span></div></div>
+          <div class="food-score">10/10</div>
+        </div>
+        <p class="food-desc">Thick frozen purple paste from Amazon açaí berries, served in a bowl topped with granola and banana. Dense, cold, intensely flavoured — like frozen chocolate mousse with a berry earthiness. This is the single most iconic Rio food. Found at every beach kiosk, juice bar, and padaria. Beach price R$25–50.</p>
+        <div class="food-tip-green">Confirm honey-free if strictly vegan. From established kiosks, not loose vendors.</div>
+      </div>
+
+      <div class="food-card">
+        <div class="food-card-header">
+          <div><div class="food-name">Tapioca</div><div class="food-name-en">Tapioca crepe / cassava pancake</div><div class="food-badges"><span class="tag tag-best">Must Try</span><span class="tag" style="background:var(--green);color:#fff;">Naturally Vegan</span></div></div>
+          <div class="food-score">9/10</div>
+        </div>
+        <p class="food-desc">Hydrated cassava starch cooked on a dry pan into a thin, slightly chewy crepe. Naturally gluten-free. The base is inherently vegan; fillings range from coco + leite condensado (sweet) to queijo (savory). One of the most distinctly Brazilian street foods and perfectly suited to vegetarian eating. Available at padarias, juice bars, and beach kiosks. R$8–20.</p>
+        <div class="food-tip-green">Best orders: tapioca de queijo (cheese), tapioca de coco (coconut + condensed milk), tapioca de banana.</div>
+      </div>
+
+      <div class="food-card">
+        <div class="food-card-header">
+          <div><div class="food-name">Pão de Queijo</div><div class="food-name-en">Brazilian cheese bread</div><div class="food-badges"><span class="tag" style="background:var(--green);color:#fff;">Vegetarian</span></div></div>
+          <div class="food-score">9/10</div>
+        </div>
+        <p class="food-desc">Small, airy, chewy rolls made from cassava starch and queijo Minas (mild white cheese). Crispy exterior, almost hollow inside. Found everywhere — padarias, cafes, airports, snack bars. The definitive Brazilian breakfast item alongside café com leite (coffee with milk). Naturally gluten-free.</p>
+        <div class="food-tip-green">Grab 3–4 with a café com leite for a quick R$15–25 Brazilian breakfast at any padaria.</div>
+      </div>
+
+      <div class="food-card">
+        <div class="food-card-header">
+          <div><div class="food-name">Queijo Coalho Grelhado</div><div class="food-name-en">Grilled cheese on a skewer</div><div class="food-badges"><span class="tag" style="background:var(--green);color:#fff;">Vegetarian</span></div></div>
+          <div class="food-score">8/10</div>
+        </div>
+        <p class="food-desc">Semi-firm, mildly salty Brazilian cheese grilled over charcoal on a skewer. Sold by beach vendors across Ipanema and Copacabana. Slightly charred outside, soft inside, topped with dried orégano. One of the most distinctive beach foods available to a vegetarian. Watch the vendor grill it fresh. R$8–15.</p>
+      </div>
+
+      <div class="food-card">
+        <div class="food-card-header">
+          <div><div class="food-name">Pastel de Queijo / Palmito</div><div class="food-name-en">Fried cheese or heart-of-palm pastry</div><div class="food-badges"><span class="tag" style="background:var(--green);color:#fff;">Vegetarian versions</span></div></div>
+          <div class="food-score">8/10</div>
+        </div>
+        <p class="food-desc">Thin, crispy fried pastry shell with melted cheese or heart of palm filling. A street food staple. Very hot when fresh. Order the queijo (cheese) or palmito (heart of palm) variety specifically.</p>
+        <div class="food-warning">Always specify queijo or palmito. Other fillings are typically carne, frango, or camarão. Never assume a fried pastry is vegetarian.</div>
+      </div>
+
+      <div class="food-card">
+        <div class="food-card-header">
+          <div><div class="food-name">Moqueca de Palmito</div><div class="food-name-en">Heart of palm stew — vegan moqueca</div><div class="food-badges"><span class="tag tag-best">Special Find</span><span class="tag" style="background:var(--green);color:#fff;">Vegan</span></div></div>
+          <div class="food-score">9/10</div>
+        </div>
+        <p class="food-desc">The vegetarian version of Brazil's most famous stew. Palmito (heart of palm) replaces fish in a rich coconut milk, dendê (red palm oil), tomato, pepper, onion, and cilantro broth. Served with white rice. This is how to experience moqueca as a vegetarian — genuinely Brazilian, not a compromise.</p>
+        <div class="food-warning">Farofa served alongside moqueca often contains bacon. Ask: "A farofa tem bacon?"</div>
+      </div>
+
+      <div class="food-card">
+        <div class="food-card-header">
+          <div><div class="food-name">Brigadeiro &amp; Beijinho</div><div class="food-name-en">Brazilian chocolate and coconut truffles</div><div class="food-badges"><span class="tag" style="background:var(--green);color:#fff;">Vegetarian</span></div></div>
+          <div class="food-score">9/10</div>
+        </div>
+        <p class="food-desc">Dense, fudgy chocolate balls (brigadeiro) or coconut balls (beijinho) made from condensed milk, butter, and cocoa or coconut, rolled in chocolate sprinkles or coconut flakes. Brazil's most beloved sweet. Every bakery sells them. Brigadeiro shops in Ipanema and Leblon have premium flavors.</p>
+      </div>
+
+      <div class="food-card">
+        <div class="food-card-header">
+          <div><div class="food-name">Sucos Naturais</div><div class="food-name-en">Fresh-pressed tropical juices</div><div class="food-badges"><span class="tag tag-best">Must Try</span><span class="tag" style="background:var(--green);color:#fff;">Vegan</span></div></div>
+          <div class="food-score">10/10</div>
+        </div>
+        <p class="food-desc">Brazilian juice bars (suqueiras) offer extraordinary tropical fruit juices unavailable outside Brazil — maracujá, caju, graviola, açaí, cupuaçu. In Rio, juice bars are everywhere. This is the single easiest way for a vegetarian to eat well, stay hydrated, and experience something genuinely local. Visit Bibi Sucos (multiple Ipanema/Leblon locations) for the widest fruit menu. R$12–30 per glass.</p>
+      </div>
+
+      <div class="food-card">
+        <div class="food-card-header">
+          <div><div class="food-name">Arroz e Feijão</div><div class="food-name-en">Rice and beans</div><div class="food-badges"><span class="tag tag-moderate" style="background:var(--gold-bg);color:#8A6C00;border:1px solid #E4CFA0;">VERIFY</span></div></div>
+          <div class="food-score">7/10 if vegetarian</div>
+        </div>
+        <p class="food-desc">The Brazilian daily staple — white rice with black or pinto beans. Nutritious, filling, cheap, and found at every comida a quilo. The challenge: Brazilian feijão is frequently cooked with pork, bacon, or linguiça sausage.</p>
+        <div class="food-warning">Always ask: "O feijão tem carne ou bacon?" At comida a quilo buffets, look for pork pieces in the beans before serving yourself. Vegetarian feijão exists but is not the default.</div>
+      </div>
+
+      <div class="food-card">
+        <div class="food-card-header">
+          <div><div class="food-name">Farofa</div><div class="food-name-en">Toasted cassava flour mixture</div><div class="food-badges"><span class="tag" style="background:var(--red);color:#fff;">Frequent Meat Risk</span></div></div>
+          <div class="food-score">7/10 if veg version found</div>
+        </div>
+        <p class="food-desc">Toasted cassava flour cooked in butter and mixed with additions. Dry, crumbly texture served as a side dish. Can be vegetarian (just butter + cassava) but most restaurant versions contain bacon, sausage, or ham.</p>
+        <div class="food-warning">Very high risk. Skip unless you can explicitly confirm it is free of bacon and meat. Ask: "A farofa é vegetariana? Tem bacon?"</div>
+      </div>
+    </div>
+
+    <!-- ── TAB 2: FRUITS ── -->
+    <div class="food-panel" id="food-fruits">
+      <h3 style="font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;margin:0 0 6px;">Brazilian Fruits to Try in Rio</h3>
+      <p style="color:var(--muted);font-size:15px;margin:0 0 24px;">February is late summer in Rio — peak season for most tropical fruits. Juice bars are the easiest way to sample many quickly. Prioritise fruits that are genuinely difficult or impossible to find outside Brazil.</p>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;">
+
+        <div class="food-card" style="margin-bottom:0;">
+          <div class="food-name">Açaí</div><div class="food-name-en">Amazon berry</div>
+          <div class="food-badges" style="margin-bottom:8px;"><span class="tag tag-best">Must Try — #1</span></div>
+          <p class="food-desc" style="font-size:13px;">Deep purple Amazon berry. As a bowl: frozen thick pulp with granola + banana. Earthier and less sweet than expected. Eat it on the beach at least once.</p>
+          <div style="font-size:12px;color:var(--muted);"><strong>Best way:</strong> Bowl at a beach kiosk.</div>
+        </div>
+
+        <div class="food-card" style="margin-bottom:0;">
+          <div class="food-name">Caju</div><div class="food-name-en">Cashew fruit</div>
+          <div class="food-badges" style="margin-bottom:8px;"><span class="tag tag-best">Unique to Brazil</span></div>
+          <p class="food-desc" style="font-size:13px;">The fruit attached to the cashew nut (the nut grows outside the fruit, at the bottom). Intensely juicy, slightly astringent, yellow or red. As suco de caju — sweet, tangy, and completely unlike anything you can get outside tropical countries. Try this one.</p>
+          <div style="font-size:12px;color:var(--muted);"><strong>Best way:</strong> Fresh juice at any suqueira.</div>
+        </div>
+
+        <div class="food-card" style="margin-bottom:0;">
+          <div class="food-name">Maracujá</div><div class="food-name-en">Passion fruit</div>
+          <div class="food-badges" style="margin-bottom:8px;"><span class="tag tag-best">Must Try — #2</span></div>
+          <p class="food-desc" style="font-size:13px;">Intensely tart and floral. Brazilian maracujá is more concentrated than exported varieties. As a juice it is tart, aromatic, and usually sweetened. As mousse de maracujá it is creamy and dessert-like.</p>
+          <div style="font-size:12px;color:var(--muted);"><strong>Best way:</strong> Fresh juice or mousse at a confeitaria.</div>
+        </div>
+
+        <div class="food-card" style="margin-bottom:0;">
+          <div class="food-name">Cupuaçu</div><div class="food-name-en">Amazon chocolate cousin</div>
+          <div class="food-badges" style="margin-bottom:8px;"><span class="tag tag-best">Rare find</span></div>
+          <p class="food-desc" style="font-size:13px;">Related to cacao. White creamy pulp with complex sweet-acidic chocolate-vanilla notes. Available as juice, ice cream (sorvete de cupuaçu), and candy. If you find it at a juice bar with Amazon specialties, try it.</p>
+          <div style="font-size:12px;color:var(--muted);"><strong>Best way:</strong> Ice cream or juice at an Amazon fruit bar.</div>
+        </div>
+
+        <div class="food-card" style="margin-bottom:0;">
+          <div class="food-name">Graviola</div><div class="food-name-en">Soursop</div>
+          <p class="food-desc" style="font-size:13px;">Large green fruit with white flesh. Flavor: creamy, sweet, pineapple + strawberry + citrus. As a juice it is thick and uniquely tropical. Less common than maracujá — seek it at dedicated juice bars.</p>
+          <div style="font-size:12px;color:var(--muted);"><strong>Best way:</strong> Vitamina (with milk) for a dessert-like drink.</div>
+        </div>
+
+        <div class="food-card" style="margin-bottom:0;">
+          <div class="food-name">Jabuticaba</div><div class="food-name-en">Brazilian grape-tree fruit</div>
+          <div class="food-badges" style="margin-bottom:8px;"><span class="tag tag-best">Unique to Brazil</span></div>
+          <p class="food-desc" style="font-size:13px;">Purple-black grape-like fruits that grow directly on the trunk. Sweet and grape-flavored. Rare and seasonal — if you find fresh jabuticaba at a market (Feira do Glória, Cobal), eat them on the spot. They don't keep.</p>
+          <div style="font-size:12px;color:var(--muted);"><strong>Best way:</strong> Fresh at a market, if available.</div>
+        </div>
+
+        <div class="food-card" style="margin-bottom:0;">
+          <div class="food-name">Manga</div><div class="food-name-en">Mango</div>
+          <p class="food-desc" style="font-size:13px;">Brazilian mangoes in February are at peak ripeness — intensely sweet, aromatic, fiberless. Available whole, as juice, as açaí bowl toppings, and in desserts. February is late summer: perfect mango season.</p>
+          <div style="font-size:12px;color:var(--muted);"><strong>Best way:</strong> Fresh from a fruit vendor or suco de manga.</div>
+        </div>
+
+        <div class="food-card" style="margin-bottom:0;">
+          <div class="food-name">Água de Coco</div><div class="food-name-en">Fresh green coconut water</div>
+          <div class="food-badges" style="margin-bottom:8px;"><span class="tag tag-best">Essential for hydration</span></div>
+          <p class="food-desc" style="font-size:13px;">Whole green coconuts, machete-cut, with a straw inserted. Not the bottled kind. Cold, electrolyte-rich, and the best hydration drink for Rio's 35°C+ February heat. Ask for a colher (spoon) to eat the soft coconut flesh after drinking. R$8–15 at any beach vendor or kiosk.</p>
+        </div>
+
+        <div class="food-card" style="margin-bottom:0;">
+          <div class="food-name">Acerola</div><div class="food-name-en">Barbados cherry</div>
+          <p class="food-desc" style="font-size:13px;">Small red cherry with 30× the vitamin C of an orange. Tart and refreshing as a juice. Good for staying healthy during a demanding Carnival trip. Often blended with other fruits.</p>
+          <div style="font-size:12px;color:var(--muted);"><strong>Best way:</strong> Juice or vitamin C shot at a suqueira.</div>
+        </div>
+
+        <div class="food-card" style="margin-bottom:0;">
+          <div class="food-name">Mamão</div><div class="food-name-en">Papaya</div>
+          <p class="food-desc" style="font-size:13px;">Brazilian formosa papaya is large, mild, sweet, and orange-fleshed. Cariocas eat it with a squeeze of lime at breakfast. Very common at hotel buffets and juice bars. Good for digestion during travel.</p>
+          <div style="font-size:12px;color:var(--muted);"><strong>Best way:</strong> Fresh sliced at breakfast or vitamina de mamão.</div>
+        </div>
+
+        <div class="food-card" style="margin-bottom:0;">
+          <div class="food-name">Abacaxi</div><div class="food-name-en">Pineapple</div>
+          <p class="food-desc" style="font-size:13px;">Brazilian pineapples are sweeter and less acidic than most imported varieties. Available sliced fresh at beach vendors, as juice, or grilled with salt. February is excellent pineapple season.</p>
+          <div style="font-size:12px;color:var(--muted);"><strong>Best way:</strong> Freshly sliced from a beach vendor or juice.</div>
+        </div>
+
+        <div class="food-card" style="margin-bottom:0;">
+          <div class="food-name">Melancia</div><div class="food-name-en">Watermelon</div>
+          <p class="food-desc" style="font-size:13px;">Cold sliced watermelon from a beach vendor in 35°C heat is intensely practical. Available at most beach vendors. Very cheap, very hydrating. Not unique to Brazil but perfectly suited to the trip.</p>
+          <div style="font-size:12px;color:var(--muted);"><strong>Best way:</strong> Sliced fresh from a beach vendor.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── TAB 3: BEACH & STREET FOOD ── -->
+    <div class="food-panel" id="food-beach">
+      <h3 style="font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;margin:0 0 6px;">Rio Beach Food Guide</h3>
+      <p style="color:var(--muted);font-size:15px;margin:0 0 16px;">Copacabana, Ipanema, Arpoador, and Leblon beaches all have vendors on the sand and established kiosks along the calçadão (boardwalk). Here is what a vegetarian can eat safely and what to watch for.</p>
+      <div class="tip tip-blue"><span class="tip-icon">ℹ</span><p><strong>Kiosk vs. walking vendor:</strong> Established quiosques on the boardwalk have proper refrigeration and are generally safer. Walking ambulantes are a Rio tradition but quality varies — for anything involving cooking or refrigerated cheese, prefer kiosks.</p></div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(275px,1fr));gap:14px;margin-top:20px;">
+        <div class="food-card" style="margin-bottom:0;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;flex-wrap:wrap;">
+            <div><div class="food-name" style="font-size:18px;">Açaí Bowl</div><div class="food-badges"><span class="tag" style="background:var(--green);color:#fff;">Vegan</span><span class="tag tag-best">Must Try</span></div></div>
+          </div>
+          <p class="food-desc" style="font-size:13px;margin-top:8px;">Thick frozen açaí with granola, banana, honey optional. Most beach kiosks serve it. Filling, cold, and energising. Best as a late-morning snack. From established kiosks only. R$25–50.</p>
+        </div>
+        <div class="food-card" style="margin-bottom:0;">
+          <div><div class="food-name" style="font-size:18px;">Biscoito Globo</div><div class="food-badges"><span class="tag" style="background:var(--green);color:#fff;">Vegan</span><span class="tag tag-best">Rio Icon</span></div></div>
+          <p class="food-desc" style="font-size:13px;margin-top:8px;">Light, ring-shaped, mildly salted corn snacks sold in the red-and-blue Globo bag by ambulantes on the beach. A beloved Rio tradition. Both plain (salgado) and sweet (doce) versions are available. Vegan. R$3–5 per bag. Recognisable instantly on the beach.</p>
+        </div>
+        <div class="food-card" style="margin-bottom:0;">
+          <div><div class="food-name" style="font-size:18px;">Queijo Coalho</div><div class="food-badges"><span class="tag" style="background:var(--green);color:#fff;">Vegetarian</span></div></div>
+          <p class="food-desc" style="font-size:13px;margin-top:8px;">Grilled on a charcoal grill pushed by ambulantes across the sand. Firm, salty, slightly charred. Eaten on a skewer with dried orégano. One of the most distinctive beach foods for a vegetarian. Buy from a vendor you can watch grill it fresh. R$8–15.</p>
+        </div>
+        <div class="food-card" style="margin-bottom:0;">
+          <div><div class="food-name" style="font-size:18px;">Milho Verde</div><div class="food-badges"><span class="tag" style="background:var(--green);color:#fff;">Vegan / Vegetarian</span></div></div>
+          <p class="food-desc" style="font-size:13px;margin-top:8px;">Grilled corn on the cob, sometimes served with butter and salt. Ambulantes carry small charcoal grills along the beach. Ask for sem manteiga (without butter) if vegan. Simple, satisfying, cheap.</p>
+        </div>
+        <div class="food-card" style="margin-bottom:0;">
+          <div><div class="food-name" style="font-size:18px;">Água de Coco</div><div class="food-badges"><span class="tag" style="background:var(--green);color:#fff;">Vegan</span><span class="tag tag-best">Essential</span></div></div>
+          <p class="food-desc" style="font-size:13px;margin-top:8px;">Fresh whole green coconuts with a straw. Essential hydration in 35°C+ February heat. Available from ambulantes and kiosks alike, always cold. Buy at least one daily at the beach. R$8–15. Ask for a colher (spoon) to scoop the coconut flesh after drinking.</p>
+        </div>
+        <div class="food-card" style="margin-bottom:0;">
+          <div><div class="food-name" style="font-size:18px;">Mate Gelado</div><div class="food-badges"><span class="tag" style="background:var(--green);color:#fff;">Vegan</span></div></div>
+          <p class="food-desc" style="font-size:13px;margin-top:8px;">Iced mate (herbal tea) with lemon, served in a branded thermos by Matte Leão vendors who walk the beach. Slightly bitter, uniquely refreshing, and a quintessential Rio beach ritual. R$4–8. Look for the yellow-and-green Matte Leão thermos.</p>
+        </div>
+        <div class="food-card" style="margin-bottom:0;">
+          <div><div class="food-name" style="font-size:18px;">Tapioca</div><div class="food-badges"><span class="tag" style="background:var(--green);color:#fff;">Vegan / Vegetarian</span></div></div>
+          <p class="food-desc" style="font-size:13px;margin-top:8px;">Some beach kiosks prepare tapioca on a portable grill. Coconut or queijo filling. From kiosks only for food safety. A warm, satisfying option even at the beach.</p>
+        </div>
+        <div class="food-card" style="margin-bottom:0;">
+          <div><div class="food-name" style="font-size:18px;">Fruit Plates &amp; Sorvete</div><div class="food-badges"><span class="tag" style="background:var(--green);color:#fff;">Vegan / Vegetarian</span></div></div>
+          <p class="food-desc" style="font-size:13px;margin-top:8px;">Beach kiosks sell sliced fruit plates (manga, melancia, abacaxi) on ice — very practical. Ice cream (sorvete) in tropical flavors — açaí, maracujá, caju — available from dedicated kiosk stalls along the calçadão. R$15–30 for fruit plates.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── TAB 4: RESTAURANTS ── -->
+    <div class="food-panel" id="food-restaurants">
+      <h3 style="font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;margin:0 0 6px;">Restaurants &amp; Comida a Quilo</h3>
+      <p style="color:var(--muted);font-size:15px;margin:0 0 16px;">Curated to the areas you will actually visit. All details should be verified before arrival (early 2027) — restaurant hours, menus, and vegetarian status can change.</p>
+
+      <div class="tip tip-gold"><span class="tip-icon">⚖</span><p><strong>Comida a Quilo — your best tool as a vegetarian.</strong> Pay-by-weight buffet restaurants are everywhere in Rio. You see every dish before taking it, you control your plate, and you can ask about individual items. Ideal for lunch on sightseeing days.</p></div>
+
+      <!-- Comida a Quilo Explainer -->
+      <div style="background:var(--green-bg);border:1px solid #B8D9C8;border-radius:var(--radius);padding:18px 20px;margin:20px 0 24px;">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--green);margin-bottom:10px;">How Comida a Quilo Works</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;font-size:14px;">
+          <div>
+            <strong>The system:</strong> Choose food from a buffet → weigh your plate at the counter → pay by weight. Typically R$65–100/kg in 2025–2026. A full vegetarian plate (300–500g) runs R$30–60.
+            <ul style="margin:8px 0;padding-left:18px;font-size:13px;">
+              <li>Start with the salad bar — always safe</li>
+              <li>Add arroz branco (white rice) — generally vegan</li>
+              <li>Ask about beans before serving yourself</li>
+              <li>Choose grilled or roasted vegetables</li>
+              <li>Avoid dishes with visible meat or a caldo smell</li>
+            </ul>
+          </div>
+          <div>
+            <strong>Key phrases at the buffet:</strong>
+            <ul style="margin:8px 0;padding-left:18px;font-size:13px;">
+              <li>"O feijão tem carne ou bacon?"</li>
+              <li>"Isso é vegetariano?"</li>
+              <li>"Tem algum prato sem carne?"</li>
+              <li>"Pode servir só o arroz e a salada?"</li>
+            </ul>
+            <strong>Where to find kilo restaurants in Copa:</strong> Walk inland from the beach. Look for "Restaurante a Quilo" signs on Rua Barata Ribeiro, Rua Sá Ferreira, Rua Xavier da Silveira.
+          </div>
+        </div>
+      </div>
+
+      <!-- Ipanema -->
+      <div class="food-nbhd-h">Ipanema &amp; Leblon</div>
+
+      <div class="rest-card top-pick">
+        <div class="rest-header">
+          <div>
+            <div class="rest-name">Vegetariano Social Club</div>
+            <p class="rest-meta">Rua General Urquiza 104, Leblon (Ipanema/Leblon border) · <span class="tag" style="background:var(--green);color:#fff;font-size:11px;padding:2px 6px;border-radius:3px;">Fully Vegetarian / Vegan</span></p>
+            <div class="food-badges" style="margin-top:6px;"><span class="tag tag-best">Top Recommendation</span><span class="tag" style="background:var(--blue);color:#fff;">$$</span></div>
+          </div>
+          <div class="rest-score">9/10</div>
+        </div>
+        <p class="rest-body">Rio's most well-known dedicated vegetarian and vegan restaurant. The menu is entirely meatless with a strong vegan section. Dishes include moqueca de palmito, vegan burgers, falafel, quiche, grain bowls, and daily specials. A comida a quilo section allows you to sample multiple dishes. Relaxed atmosphere, mix of tourists and local vegetarians. Easily accessible by Uber from Copacabana (~12 min). <strong>Book this for Day 1 or Day 2 of your trip.</strong></p>
+        <div class="rest-details">
+          <div class="rest-detail"><span class="rest-detail-label">Meal</span>Lunch &amp; Dinner</div>
+          <div class="rest-detail"><span class="rest-detail-label">Price</span>R$40–80/person</div>
+          <div class="rest-detail"><span class="rest-detail-label">Reservation</span>Recommended weekends</div>
+          <div class="rest-detail"><span class="rest-detail-label">Verify</span>Hours before visiting</div>
+          <div class="rest-detail"><span class="rest-detail-label">From Copa</span>~12 min Uber</div>
+        </div>
+      </div>
+
+      <div class="rest-card">
+        <div class="rest-header">
+          <div>
+            <div class="rest-name">New Natural</div>
+            <p class="rest-meta">Rua Barão da Torre 173, Ipanema · <span class="tag" style="background:var(--green);color:#fff;font-size:11px;padding:2px 6px;border-radius:3px;">Natural Food · Comida a Quilo</span></p>
+            <div class="food-badges" style="margin-top:6px;"><span class="tag" style="background:var(--green);color:#fff;">$</span></div>
+          </div>
+          <div class="rest-score">8/10</div>
+        </div>
+        <p class="rest-body">A popular natural food restaurant in Ipanema offering a pay-by-weight buffet with a strong vegetarian selection. Whole grains, legumes, roasted vegetables, salads, and daily hot dishes. Very popular with health-conscious locals. Good value, centrally located. An excellent quick, affordable vegetarian lunch between sightseeing. Verify current location and hours before visiting.</p>
+        <div class="rest-details">
+          <div class="rest-detail"><span class="rest-detail-label">Meal</span>Lunch primarily</div>
+          <div class="rest-detail"><span class="rest-detail-label">Price</span>R$25–50/person</div>
+          <div class="rest-detail"><span class="rest-detail-label">Reservation</span>Not required</div>
+        </div>
+      </div>
+
+      <div class="rest-card">
+        <div class="rest-header">
+          <div>
+            <div class="rest-name">Bibi Sucos</div>
+            <p class="rest-meta">Multiple locations — Ipanema, Leblon, Copacabana · <span class="tag" style="background:var(--green);color:#fff;font-size:11px;padding:2px 6px;border-radius:3px;">Juice Bar</span></p>
+            <div class="food-badges" style="margin-top:6px;"><span class="tag" style="background:var(--green);color:#fff;">$</span></div>
+          </div>
+          <div class="rest-score">9/10</div>
+        </div>
+        <p class="rest-body">An iconic Rio juice bar chain with an enormous menu of tropical fruit juices, vitaminas (smoothies), and açaí. Not a full restaurant but ideal for breakfast, snacks, and hydration throughout the trip. The Leblon location (Ataulfo de Paiva) and Ipanema locations are busy but fast. A practical daily stop for a vegetarian traveler. Try suco de caju, maracujá, or graviola. R$15–40.</p>
+        <div class="rest-details">
+          <div class="rest-detail"><span class="rest-detail-label">Meal</span>Breakfast · Snack</div>
+          <div class="rest-detail"><span class="rest-detail-label">Price</span>R$15–40</div>
+          <div class="rest-detail"><span class="rest-detail-label">Reservation</span>Not needed</div>
+        </div>
+      </div>
+
+      <!-- Copacabana -->
+      <div class="food-nbhd-h">Copacabana</div>
+      <div class="rest-card">
+        <div class="rest-header">
+          <div>
+            <div class="rest-name">Local Comida a Quilo (interior streets)</div>
+            <p class="rest-meta">Rua Barata Ribeiro · Rua Sá Ferreira · Rua Xavier da Silveira, Copacabana · <span class="tag" style="background:var(--green);color:#fff;font-size:11px;padding:2px 6px;border-radius:3px;">Pay-by-Weight Buffet</span></p>
+            <div class="food-badges" style="margin-top:6px;"><span class="tag" style="background:var(--green);color:#fff;">$</span></div>
+          </div>
+          <div class="rest-score">8/10</div>
+        </div>
+        <p class="rest-body">Walk inland from Copacabana Beach (away from Avenida Atlântica) to find small local kilo restaurants catering to residents and office workers — not tourists. Better value and a more authentic lunch experience. Look for "Restaurante a Quilo" or "Buffet por Quilo" signs. These are your best daily lunch option during the trip — fast, affordable, and vegetarian-controllable. R$30–60 for a full vegetarian plate.</p>
+        <div class="rest-details">
+          <div class="rest-detail"><span class="rest-detail-label">Meal</span>Lunch (11am–3pm)</div>
+          <div class="rest-detail"><span class="rest-detail-label">Price</span>R$30–60</div>
+          <div class="rest-detail"><span class="rest-detail-label">From accommodation</span>Short walk inland</div>
+        </div>
+      </div>
+
+      <!-- Botafogo -->
+      <div class="food-nbhd-h">Botafogo</div>
+      <p style="font-size:14px;color:var(--muted);margin-bottom:16px;">Botafogo has become Rio's food destination neighborhood. The Cobal do Humaitá market area has an excellent concentration of restaurants. Worth a dinner trip from Copacabana (~12 min Uber).</p>
+
+      <div class="rest-card top-pick">
+        <div class="rest-header">
+          <div>
+            <div class="rest-name">Cobal do Humaitá</div>
+            <p class="rest-meta">Rua Voluntários da Pátria, Botafogo/Humaitá · <span class="tag" style="background:var(--gold);color:#fff;font-size:11px;padding:2px 6px;border-radius:3px;">Food Market — Multiple Stalls</span></p>
+            <div class="food-badges" style="margin-top:6px;"><span class="tag tag-best">Recommended</span><span class="tag" style="background:var(--blue);color:#fff;">$–$$</span></div>
+          </div>
+          <div class="rest-score">8/10</div>
+        </div>
+        <p class="rest-body">A covered market in Humaitá with multiple food stalls and small restaurants. Middle Eastern, Japanese, Brazilian, Italian, and vegetarian options available across different stalls — ideal for a group with mixed dietary needs. Very popular with locals in an outdoor setting. Walk through and choose what looks good. No reservation needed.</p>
+        <div class="rest-details">
+          <div class="rest-detail"><span class="rest-detail-label">Meal</span>Lunch &amp; Dinner</div>
+          <div class="rest-detail"><span class="rest-detail-label">Price</span>Varies by stall</div>
+          <div class="rest-detail"><span class="rest-detail-label">From Copa</span>~12 min Uber</div>
+        </div>
+      </div>
+
+      <div class="rest-card">
+        <div class="rest-header">
+          <div>
+            <div class="rest-name">Bráz Elettrica</div>
+            <p class="rest-meta">Botafogo · <span class="tag" style="background:var(--gold);color:#fff;font-size:11px;padding:2px 6px;border-radius:3px;">Italian Pizza — Vegetarian-Friendly</span></p>
+            <div class="food-badges" style="margin-top:6px;"><span class="tag" style="background:var(--blue);color:#fff;">$$</span></div>
+          </div>
+          <div class="rest-score">8/10</div>
+        </div>
+        <p class="rest-body">A well-regarded São Paulo pizza chain with a Rio Botafogo location. Thin-crust Neapolitan-style pizzas with good vegetarian options — margherita, four cheese, mushroom, and seasonal vegetable pizzas. An excellent reliable dinner when you want something familiar and reliably vegetarian-friendly. Book in advance. R$60–120 per pizza.</p>
+        <div class="rest-details">
+          <div class="rest-detail"><span class="rest-detail-label">Meal</span>Dinner</div>
+          <div class="rest-detail"><span class="rest-detail-label">Reservation</span>Recommended</div>
+          <div class="rest-detail"><span class="rest-detail-label">From Copa</span>~12 min Uber</div>
+        </div>
+      </div>
+
+      <!-- Jardim Botânico -->
+      <div class="food-nbhd-h">Jardim Botânico / Lagoa</div>
+      <div class="rest-card">
+        <div class="rest-header">
+          <div>
+            <div class="rest-name">Lagoa Kiosks (Lagoa Rodrigo de Freitas)</div>
+            <p class="rest-meta">Av. Epitácio Pessoa, Lagoa · <span class="tag" style="background:var(--gold);color:#fff;font-size:11px;padding:2px 6px;border-radius:3px;">Multi-cuisine lagoon kiosks</span></p>
+            <div class="food-badges" style="margin-top:6px;"><span class="tag" style="background:var(--blue);color:#fff;">$$–$$$</span></div>
+          </div>
+          <div class="rest-score">7/10</div>
+        </div>
+        <p class="rest-body">The promenade around Lagoa Rodrigo de Freitas has kiosks and restaurants with lagoon views and Christ the Redeemer visible in the distance. Multiple food options with vegetarian-friendly choices at several stalls. A beautiful dinner setting — combine with a visit to Jardim Botânico (nearby) or Parque Lage.</p>
+        <div class="rest-details">
+          <div class="rest-detail"><span class="rest-detail-label">Meal</span>Lunch &amp; Dinner</div>
+          <div class="rest-detail"><span class="rest-detail-label">From Copa</span>~15 min Uber</div>
+        </div>
+      </div>
+
+      <!-- Santa Teresa -->
+      <div class="food-nbhd-h">Santa Teresa</div>
+      <div class="rest-card top-pick">
+        <div class="rest-header">
+          <div>
+            <div class="rest-name">Aprazível</div>
+            <p class="rest-meta">Rua Aprazível 62, Santa Teresa · <span class="tag" style="background:var(--gold);color:#fff;font-size:11px;padding:2px 6px;border-radius:3px;">Brazilian — Vegetarian Options</span></p>
+            <div class="food-badges" style="margin-top:6px;"><span class="tag tag-best">Special Occasion</span><span class="tag" style="background:var(--red);color:#fff;">$$$</span></div>
+          </div>
+          <div class="rest-score">9/10</div>
+        </div>
+        <p class="rest-body">One of Rio's most beautiful dining experiences — a lush outdoor garden restaurant in Santa Teresa with panoramic views. Brazilian cuisine with creative vegetarian options including heart of palm preparations, seasonal vegetable dishes, and fresh salads. The setting alone is worth the trip: an outdoor terrace among tropical trees and plants. Best for a special dinner on Day 1, 2, or the final night. Reservation essential.</p>
+        <div class="rest-details">
+          <div class="rest-detail"><span class="rest-detail-label">Meal</span>Lunch &amp; Dinner</div>
+          <div class="rest-detail"><span class="rest-detail-label">Price</span>R$100–180/person</div>
+          <div class="rest-detail"><span class="rest-detail-label">Reservation</span>Required — book ahead</div>
+          <div class="rest-detail"><span class="rest-detail-label">From Copa</span>~20 min Uber</div>
+          <div class="rest-detail"><span class="rest-detail-label">Verify</span>Menu in 2027</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── TAB 5: DAY-BY-DAY PLAN ── -->
+    <div class="food-panel" id="food-plan">
+      <h3 style="font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;margin:0 0 6px;">Day-by-Day Food Plan — February 6–11, 2027</h3>
+      <p style="color:var(--muted);font-size:15px;margin:0 0 24px;">A practical mix of restaurants, juice bars, comida a quilo, and beach food. Not every meal is a reservation — the goal is to experience Rio food culture affordably across five days.</p>
+
+      <!-- Feb 6 -->
+      <div class="day-plan-card">
+        <div class="day-plan-header"><div class="day-plan-date">Saturday, Feb 6</div><div class="day-plan-theme">Arrival Day · Explore &amp; Settle</div></div>
+        <div class="day-plan-body">
+          <div class="meal-row"><div class="meal-label">Breakfast</div><div class="meal-content">After landing, grab <strong>pão de queijo + café com leite</strong> at the nearest padaria. Simple and immediately Brazilian. Alternatively, accommodation breakfast if included.</div></div>
+          <div class="meal-row"><div class="meal-label">Lunch</div><div class="meal-content"><strong>Comida a quilo</strong> on an interior street in Copacabana (Barata Ribeiro or Sá Ferreira). Affordable, fast, and lets you see the food before committing. Verify the feijão.</div></div>
+          <div class="meal-row"><div class="meal-label">Snack</div><div class="meal-content">Walk to Copacabana or Ipanema beach. Buy an <strong>açaí bowl</strong> from a kiosk + <strong>água de coco</strong>. Try biscoito Globo from the first ambulante you see.</div></div>
+          <div class="meal-row"><div class="meal-label">Dinner</div><div class="meal-content"><strong>Vegetariano Social Club</strong> (Leblon border, ~12 min Uber). Rio's best dedicated vegetarian restaurant. The moqueca de palmito is an excellent first Brazilian dinner. R$60–100/person. Verify hours and book a table.</div></div>
+        </div>
+      </div>
+
+      <!-- Feb 7 -->
+      <div class="day-plan-card">
+        <div class="day-plan-header"><div class="day-plan-date">Sunday, Feb 7</div><div class="day-plan-theme">Sightseeing · Sambadrome Night 1</div></div>
+        <div class="day-plan-body">
+          <div class="meal-row"><div class="meal-label">Breakfast</div><div class="meal-content"><strong>Tapioca de queijo + suco de maracujá</strong> at a beachside padaria or juice bar. This is a Sambadrome night — build energy for a very long day and a very long night.</div></div>
+          <div class="meal-row"><div class="meal-label">Lunch</div><div class="meal-content">Near sightseeing. If visiting Santa Teresa area (Christ): <strong>Bar do Mineiro</strong> in Santa Teresa has traditional Brazilian dishes — ask about vegetarian options. Or comida a quilo on the way back. If attending the Simpatia é Quase Amor bloco in Ipanema: eat before, not during.</div></div>
+          <div class="meal-row"><div class="meal-label">Pre-Carnival</div><div class="meal-content"><strong>Critical:</strong> Eat a proper, familiar meal around 6–7pm before the Sambadrome. Comida a quilo near accommodation — rice, verified vegetarian beans, grilled vegetables. Do not go hungry. Do not eat anything unfamiliar tonight.</div></div>
+          <div class="meal-row"><div class="meal-label">During / After</div><div class="meal-content">Inside the Sambadrome: pastel de queijo and milho verde sometimes available but limited and expensive. Carry water + a small snack (pão de queijo). After the parade (~5–6am): açaí or juice at a padaria near Siqueira Campos that opens early. Many Copa padarias open at 6am.</div></div>
+        </div>
+      </div>
+
+      <!-- Feb 8 -->
+      <div class="day-plan-card">
+        <div class="day-plan-header"><div class="day-plan-date">Monday, Feb 8</div><div class="day-plan-theme">Sightseeing · Sambadrome Night 2</div></div>
+        <div class="day-plan-body">
+          <div class="meal-row"><div class="meal-label">Breakfast</div><div class="meal-content"><strong>Light recovery breakfast.</strong> Açaí bowl + fresh fruit + água de coco. You had a late Sambadrome night — prioritise hydration and fresh food over heavy eating.</div></div>
+          <div class="meal-row"><div class="meal-label">Lunch</div><div class="meal-content">If visiting Sugarloaf: eat in <strong>Botafogo</strong> nearby. Cobal do Humaitá (10 min Uber from Sugarloaf) has variety. Or comida a quilo on Botafogo's interior streets.</div></div>
+          <div class="meal-row"><div class="meal-label">Snack</div><div class="meal-content">Beach time if energy allows. Açaí + queijo coalho + água de coco at a kiosk.</div></div>
+          <div class="meal-row"><div class="meal-label">Pre-Carnival</div><div class="meal-content">Same strategy as Feb 7: comida a quilo around 6–7pm. Rice, verified vegetarian beans, grilled vegetables. Familiar and filling. Tonight is Sambadrome Night 2.</div></div>
+        </div>
+      </div>
+
+      <!-- Feb 9 CARNIVAL -->
+      <div class="day-plan-card" style="border-left:4px solid var(--red);">
+        <div class="day-plan-header" style="background:var(--red);">
+          <div class="day-plan-date">Tuesday, Feb 9 — YOUR CARNIVAL NIGHT</div>
+          <div class="day-plan-theme">Sambadrome Night 3 — Final &amp; Most Prestigious</div>
+        </div>
+        <div class="day-plan-body">
+          <div class="meal-row"><div class="meal-label">Morning</div><div class="meal-content"><strong>Pão de queijo + vitamina de banana + água de coco.</strong> Hydrate from the start. The Sambadrome parade begins ~9pm and runs until dawn — you need sustained energy across an entire day plus an all-night event. Pace yourself.</div></div>
+          <div class="meal-row"><div class="meal-label">Mid-day</div><div class="meal-content">Do not overexert. Keep sightseeing nearby and light. Around noon: <strong>tapioca de queijo + fresh juice</strong> at a juice bar near accommodation.</div></div>
+          <div class="meal-row"><div class="meal-label">Main Meal (2pm)</div><div class="meal-content"><strong>Comida a quilo — the most important meal of the day.</strong> A full balanced vegetarian plate at 2pm: rice, verified vegetarian beans, roasted vegetables, salad. This is the last full meal before Carnival. Do NOT eat heavy, unfamiliar, or risky food today.</div></div>
+          <div class="meal-row"><div class="meal-label">Before leaving (6pm)</div><div class="meal-content">Light snack only — 2–3 pão de queijo or a small tapioca. Água de coco or an electrolyte drink. Do not eat a heavy dinner before the parade — you will be in a warm arena for hours.</div></div>
+          <div class="meal-row"><div class="meal-label">Carry in</div><div class="meal-content">A small sealed snack in your bag: <strong>biscoito Globo, pão de queijo, or an açaí bar.</strong> Buy water at a convenience store before entering. Sambadrome vendors sell at elevated prices and vegetarian options are limited.</div></div>
+          <div class="meal-row"><div class="meal-label">After (5–6am)</div><div class="meal-content">Hydrate immediately after leaving. A padaria near Siqueira Campos metro opens at 6am — açaí, fresh juice, and pão de queijo. Metro home, then sleep. Do not drink alcohol heavily on Carnival night — hydration is more important than festivity when you have three nights of parades.</div></div>
+        </div>
+      </div>
+
+      <!-- Feb 10 Recovery -->
+      <div class="day-plan-card" style="border-left:4px solid var(--green);">
+        <div class="day-plan-header" style="background:var(--green);">
+          <div class="day-plan-date">Wednesday, Feb 10 — Recovery Day</div>
+          <div class="day-plan-theme">Post-Carnival · Rest &amp; Light Sightseeing</div>
+        </div>
+        <div class="day-plan-body">
+          <div class="meal-row"><div class="meal-label">Morning</div><div class="meal-content"><strong>Hydration first.</strong> Água de coco + acerola juice as soon as you wake (likely late morning). A padaria near accommodation for pão de queijo and café com leite.</div></div>
+          <div class="meal-row"><div class="meal-label">Late Breakfast</div><div class="meal-content"><strong>Açaí bowl + fresh fruit slices</strong> at a beach kiosk. Gentle, nutritious, and restorative. Sit on the calçadão and let the city recover around you — the Apuração (score announcement) is today at ~3pm with street celebrations.</div></div>
+          <div class="meal-row"><div class="meal-label">Lunch</div><div class="meal-content">Comida a quilo near accommodation. Keep the plate light — salads, rice, roasted vegetables. Avoid very heavy food while your body recovers.</div></div>
+          <div class="meal-row"><div class="meal-label">Dinner</div><div class="meal-content">A relaxed dinner near your accommodation. <strong>Bráz</strong> in Botafogo (~12 min Uber) for a comfortable pizza dinner. Or return to a Copa restaurant if you want to stay local.</div></div>
+        </div>
+      </div>
+
+      <!-- Feb 11 -->
+      <div class="day-plan-card">
+        <div class="day-plan-header"><div class="day-plan-date">Thursday, Feb 11</div><div class="day-plan-theme">Final Day · Last Experiences</div></div>
+        <div class="day-plan-body">
+          <div class="meal-row"><div class="meal-label">Breakfast</div><div class="meal-content"><strong>A proper sit-down Brazilian breakfast at a padaria:</strong> pão de queijo, tapioca, fresh juice, café com leite. This is your last Rio morning — enjoy it.</div></div>
+          <div class="meal-row"><div class="meal-label">Lunch</div><div class="meal-content">Return to your favourite food spot from the trip. If you haven't visited <strong>Bibi Sucos</strong>, go now for a full fruit juice experience with caju, maracujá, and graviola. Or a final comida a quilo with a large fresh salad.</div></div>
+          <div class="meal-row"><div class="meal-label">Snack</div><div class="meal-content">Final beach session: açaí + queijo coalho + água de coco. Buy a bag of biscoito Globo to carry home — the perfect Rio souvenir.</div></div>
+          <div class="meal-row"><div class="meal-label">Dinner</div><div class="meal-content">Special final dinner. <strong>Aprazível in Santa Teresa</strong> if you haven't been — Rio's most beautiful outdoor setting. Or return to Vegetariano Social Club. Reserve in advance.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── TAB 6: GETTING AROUND ── -->
+    <div class="food-panel" id="food-transport">
+      <h3 style="font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;margin:0 0 6px;">Getting Around Rio</h3>
+      <p style="color:var(--muted);font-size:15px;margin:0 0 16px;">Transport decisions directly affect which restaurants you can reach and how safely. For the full neighborhood-by-neighborhood transport analysis, see the Neighborhoods section.</p>
+
+      <div class="tip tip-red"><span class="tip-icon">⚠</span><p><strong>Do not assume walking is practical during Carnival.</strong> Extreme crowds, road closures, and nighttime safety make Uber or Metro the right choice for most journeys. On Sambadrome nights (Feb 7, 8, 9) the Metro runs 24 hours — use it for the Sambadrome return.</p></div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin:20px 0 24px;">
+        <div class="food-card" style="margin-bottom:0;">
+          <div class="food-name" style="font-size:17px;">Uber / 99 Pop</div>
+          <p class="food-desc" style="font-size:13px;margin-top:6px;"><strong>Best for:</strong> Restaurants in Ipanema, Botafogo, Jardim Botânico, Santa Teresa, Leblon. Reliable during normal hours. On Carnival bloco days and Sambadrome nights, surge pricing applies (2–3× normal). Set pickup 2–3 blocks from active parade routes. For the return from the Sambadrome at 5am, use the Metro — it is faster and more reliable than Uber.</p>
+        </div>
+        <div class="food-card" style="margin-bottom:0;">
+          <div class="food-name" style="font-size:17px;">Metro Rio</div>
+          <p class="food-desc" style="font-size:13px;margin-top:6px;"><strong>Best for:</strong> Sambadrome nights (24h service Feb 7–9). Line 1 serves Copacabana (Siqueira Campos, 8 min walk), Ipanema (General Osório, 5 min walk), and Botafogo. Transfer at Central to Line 2 for the Sambadrome (Praça Onze). Also useful as a supplement to Uber for Ipanema restaurant trips.</p>
+        </div>
+        <div class="food-card" style="margin-bottom:0;">
+          <div class="food-name" style="font-size:17px;">Walking</div>
+          <p class="food-desc" style="font-size:13px;margin-top:6px;"><strong>OK for:</strong> Copa beach to interior street restaurants (5 min walk), beach kiosks and vendors, nearby padarias and juice bars. <strong>Avoid:</strong> Walking late at night, during active blocos in crowds, between neighborhoods during Carnival. Walking is not your primary commute mode this trip.</p>
+        </div>
+      </div>
+
+      <h3 style="font-family:'Cormorant Garamond',serif;font-size:20px;margin:0 0 14px;">Key Food Route Travel Times (from Copacabana)</h3>
+      <div class="table-wrap">
+        <table style="min-width:580px;">
+          <thead><tr><th>Destination</th><th>Mode</th><th>Normal Day</th><th>Carnival Period</th></tr></thead>
+          <tbody>
+            <tr><td>Vegetariano Social Club (Leblon)</td><td>Uber</td><td>~12 min</td><td>~20–30 min (bloco days)</td></tr>
+            <tr><td>Bibi Sucos / New Natural (Ipanema)</td><td>Uber or Metro (Osório)</td><td>~10 min</td><td>~20 min</td></tr>
+            <tr><td>Cobal do Humaitá (Botafogo)</td><td>Uber or Metro (Botafogo)</td><td>~12 min</td><td>~20 min</td></tr>
+            <tr><td>Bráz (Botafogo)</td><td>Uber</td><td>~12 min</td><td>~20 min</td></tr>
+            <tr><td>Aprazível (Santa Teresa)</td><td>Uber</td><td>~20 min</td><td>~35 min</td></tr>
+            <tr><td>Lagoa kiosks</td><td>Uber</td><td>~15 min</td><td>~25 min</td></tr>
+            <tr><td>Sambadrome (night parade)</td><td>Metro (preferred)</td><td>~30 min</td><td>~30 min (24h metro)</td></tr>
+            <tr><td>Airport (Galeão)</td><td>Uber / Private transfer</td><td>~45–60 min</td><td>~75 min+ on Carnival days</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="tip tip-blue" style="margin-top:20px;"><span class="tip-icon">ℹ</span><p><strong>Day-by-day transport for food:</strong> Feb 6: Uber to Vegetariano Social Club (evening). Feb 7–9 (Sambadrome nights): Metro to Sambadrome — walk to Siqueira Campos → Line 1 → Central → Line 2 → Praça Onze (~30 min). Return same route. Feb 10–11: Uber to preferred restaurants.</p></div>
+    </div>
+
+    <!-- ── TAB 7: PHRASES & WATCH-OUTS ── -->
+    <div class="food-panel" id="food-tips">
+      <h3 style="font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;margin:0 0 6px;">Phrases, Watch-Outs &amp; Attraction Pairings</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:20px;">
+        <div>
+          <h4 style="font-family:'Cormorant Garamond',serif;font-size:20px;margin:0 0 12px;">Vegetarian Portuguese</h4>
+          <div class="phrase-card"><div class="phrase-pt">Sou vegetariano/a.</div><div class="phrase-en">I am vegetarian. (-o male, -a female)</div></div>
+          <div class="phrase-card"><div class="phrase-pt">Não como carne.</div><div class="phrase-en">I don't eat meat.</div></div>
+          <div class="phrase-card"><div class="phrase-pt">Não como frango.</div><div class="phrase-en">I don't eat chicken.</div></div>
+          <div class="phrase-card"><div class="phrase-pt">Não como peixe ou frutos do mar.</div><div class="phrase-en">I don't eat fish or seafood.</div></div>
+          <div class="phrase-card"><div class="phrase-pt">Tem alguma opção vegetariana?</div><div class="phrase-en">Do you have a vegetarian option?</div></div>
+          <div class="phrase-card"><div class="phrase-pt">Isso tem carne?</div><div class="phrase-en">Does this contain meat?</div></div>
+          <div class="phrase-card"><div class="phrase-pt">O feijão tem carne ou bacon?</div><div class="phrase-en">Do the beans have meat or bacon?</div></div>
+          <div class="phrase-card"><div class="phrase-pt">A farofa tem bacon?</div><div class="phrase-en">Does the farofa have bacon?</div></div>
+          <div class="phrase-card"><div class="phrase-pt">Sem carne, por favor.</div><div class="phrase-en">Without meat, please.</div></div>
+          <div class="phrase-card"><div class="phrase-pt">É feito com caldo de carne?</div><div class="phrase-en">Is it made with meat stock?</div></div>
+          <div class="phrase-card"><div class="phrase-pt">Pode fazer sem frango?</div><div class="phrase-en">Can you make it without chicken?</div></div>
+          <div class="phrase-card"><div class="phrase-pt">Quero só o arroz e a salada.</div><div class="phrase-en">I just want the rice and salad.</div></div>
+        </div>
+        <div>
+          <h4 style="font-family:'Cormorant Garamond',serif;font-size:20px;margin:0 0 12px;">Vegetarian Watch-Outs</h4>
+          <div class="food-warning" style="margin-bottom:10px;"><strong>Feijão (beans)</strong> — The biggest hidden meat risk. Frequently cooked with pork, linguiça sausage, paio, or bacon. Do not assume beans are vegetarian. Always ask: "O feijão tem carne ou bacon?"</div>
+          <div class="food-warning" style="margin-bottom:10px;"><strong>Farofa</strong> — Toasted cassava flour. Very frequently contains bacon or sausage. Skip unless explicitly confirmed clean.</div>
+          <div class="food-warning" style="margin-bottom:10px;"><strong>Caldo (broth / stock)</strong> — Many soups and stews use meat stock. Ask: "É feito com caldo de carne?"</div>
+          <div class="food-warning" style="margin-bottom:10px;"><strong>Pastel / Coxinha</strong> — Traditional fillings are meat-based. Only queijo or palmito varieties are safe. Never assume a fried pastry is vegetarian.</div>
+          <div class="food-warning" style="margin-bottom:10px;"><strong>Sauces and moquecas</strong> — Many Brazilian stews and sauces are built on a meat or fish base. Ask before ordering any stew.</div>
+          <div class="food-tip-green" style="margin-bottom:10px;"><strong>Safest options:</strong> Açaí bowls · tapioca (plain base) · pão de queijo · fresh juices · plain white rice · salads · queijo coalho · biscoito Globo · fresh fruits · coconut water.</div>
+          <div class="food-tip-green"><strong>Vegetarian ≠ Vegan in Brazil.</strong> Vegetarian dishes frequently include dairy (queijo, manteiga, leite condensado). If strictly vegan, also ask about: leite (milk), manteiga (butter), ovo (egg), mel (honey).</div>
+        </div>
+      </div>
+
+      <!-- Attraction Pairings -->
+      <h4 style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;margin:32px 0 14px;">Food + Tourist Attraction Pairings</h4>
+      <div class="table-wrap">
+        <table style="min-width:560px;">
+          <thead><tr><th>Attraction</th><th>Best Nearby Vegetarian Option</th><th>How to Get There</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Copacabana Beach</strong></td><td>Açaí bowl + queijo coalho at kiosk; milho verde; comida a quilo on interior street for lunch (Barata Ribeiro)</td><td>Walk from accommodation</td></tr>
+            <tr><td><strong>Ipanema / Arpoador</strong></td><td>New Natural (comida a quilo); Vegetariano Social Club; Bibi Sucos; beach açaí kiosk</td><td>~10 min Uber from Copa</td></tr>
+            <tr><td><strong>Christ the Redeemer</strong></td><td>Eat before departing — food at top is limited and overpriced. Santa Teresa: Bar do Mineiro or Aprazível nearby. Carry pão de queijo + water.</td><td>~25 min Uber from Copa</td></tr>
+            <tr><td><strong>Sugarloaf Mountain</strong></td><td>Eat in Botafogo before or after. Cobal do Humaitá is 10 min Uber from Sugarloaf. Limited at Sugarloaf itself.</td><td>Botafogo area, ~12 min Uber from Copa</td></tr>
+            <tr><td><strong>Jardim Botânico</strong></td><td>Café inside the garden. Lagoa kiosks for lunch nearby (15 min walk from JB gates). Combine with Leblon for Bibi Sucos or deli options.</td><td>~20 min Uber from Copa</td></tr>
+            <tr><td><strong>Santa Teresa / Lapa</strong></td><td>Aprazível (special dinner); Bar do Mineiro (verify veg options). Limited food in Lapa daytime — eat before going.</td><td>~20 min Uber from Copa</td></tr>
+            <tr><td><strong>Sambadrome (parade nights)</strong></td><td>Eat a full comida a quilo meal before departure (~6–7pm). Carry pão de queijo + water inside. Do not rely on food inside the Sambadrome.</td><td>Metro: Siqueira Campos → Central → Praça Onze</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── TAB 8: RANKINGS & VERDICT ── -->
+    <div class="food-panel" id="food-rankings">
+      <h3 style="font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;margin:0 0 24px;">Rankings &amp; Final Verdict</h3>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:28px;">
+        <div>
+          <h4 style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;border-bottom:1px solid var(--border);padding-bottom:6px;margin-bottom:12px;">Top 10 Foods to Try</h4>
+          <ol class="ranking-list">
+            <li><div><strong>Açaí bowl</strong> — at a beach kiosk, with banana and granola</div></li>
+            <li><div><strong>Suco de caju</strong> — cashew fruit juice, impossible outside Brazil</div></li>
+            <li><div><strong>Tapioca de coco</strong> — coconut tapioca crepe, definitively Brazilian</div></li>
+            <li><div><strong>Pão de queijo</strong> — the definitive Brazilian breakfast item</div></li>
+            <li><div><strong>Moqueca de palmito</strong> — heart of palm stew with coconut milk</div></li>
+            <li><div><strong>Água de coco fresca</strong> — from a whole green coconut at the beach</div></li>
+            <li><div><strong>Brigadeiro</strong> — at a specialty brigadeiro shop in Ipanema or Leblon</div></li>
+            <li><div><strong>Queijo coalho grelhado</strong> — grilled cheese skewer on the beach</div></li>
+            <li><div><strong>Suco de maracujá</strong> — fresh-pressed passion fruit juice</div></li>
+            <li><div><strong>Biscoito Globo</strong> — the one snack that defines Rio beach culture</div></li>
+          </ol>
+        </div>
+        <div>
+          <h4 style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;border-bottom:1px solid var(--border);padding-bottom:6px;margin-bottom:12px;">Top 5 Fruits to Try</h4>
+          <ol class="ranking-list">
+            <li><div><strong>Caju</strong> — cashew fruit, truly impossible outside tropical countries</div></li>
+            <li><div><strong>Maracujá</strong> — passion fruit in its most intense Brazilian form</div></li>
+            <li><div><strong>Açaí</strong> — the Amazon berry in its real, undiluted form</div></li>
+            <li><div><strong>Graviola</strong> — soursop, creamy and uniquely tropical</div></li>
+            <li><div><strong>Cupuaçu</strong> — Amazon chocolate cousin, if you find it</div></li>
+          </ol>
+          <h4 style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;border-bottom:1px solid var(--border);padding-bottom:6px;margin:20px 0 12px;">Top 5 Beach Foods</h4>
+          <ol class="ranking-list">
+            <li><div><strong>Açaí bowl</strong> — from a kiosk, not an ambulante</div></li>
+            <li><div><strong>Água de coco fresca</strong> — essential hydration, not optional</div></li>
+            <li><div><strong>Queijo coalho</strong> — grilled cheese from a charcoal ambulante</div></li>
+            <li><div><strong>Biscoito Globo</strong> — the original, from the branded ambulante</div></li>
+            <li><div><strong>Milho verde</strong> — grilled corn, simple and satisfying</div></li>
+          </ol>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:28px;">
+        <div>
+          <h4 style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;border-bottom:1px solid var(--border);padding-bottom:6px;margin-bottom:12px;">Top Restaurants for This Trip</h4>
+          <ol class="ranking-list">
+            <li><div><strong>Vegetariano Social Club</strong> — Leblon — book for Day 1 or 2</div></li>
+            <li><div><strong>Aprazível</strong> — Santa Teresa — Rio's most beautiful dining setting</div></li>
+            <li><div><strong>Cobal do Humaitá</strong> — Botafogo — variety and local atmosphere</div></li>
+            <li><div><strong>Bibi Sucos</strong> — Ipanema/Leblon — daily juice and breakfast stop</div></li>
+            <li><div><strong>New Natural</strong> — Ipanema — best comida a quilo for vegetarians</div></li>
+            <li><div><strong>Bráz</strong> — Botafogo — reliable vegetarian-friendly pizza dinner</div></li>
+            <li><div><strong>Copa interior kilo restaurants</strong> — best value daily lunch</div></li>
+          </ol>
+        </div>
+        <div>
+          <h4 style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;border-bottom:1px solid var(--border);padding-bottom:6px;margin-bottom:12px;">Top 5 Quick Meals</h4>
+          <ol class="ranking-list">
+            <li><div><strong>Comida a quilo</strong> — fastest full vegetarian meal, anywhere</div></li>
+            <li><div><strong>Tapioca + juice</strong> — any padaria or juice bar, 5 minutes</div></li>
+            <li><div><strong>Açaí bowl</strong> — any beach kiosk</div></li>
+            <li><div><strong>Pão de queijo + café</strong> — any padaria in Copacabana</div></li>
+            <li><div><strong>Pastel de queijo + juice</strong> — juice bar + street pastelaria</div></li>
+          </ol>
+          <h4 style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;border-bottom:1px solid var(--border);padding-bottom:6px;margin:20px 0 12px;">Top 5 Best Value</h4>
+          <ol class="ranking-list">
+            <li><div><strong>Comida a quilo (Copa interior)</strong> — local pricing, not tourist pricing</div></li>
+            <li><div><strong>Padaria breakfast</strong> — pão de queijo + juice + café, R$20–30</div></li>
+            <li><div><strong>Beach kiosk açaí</strong> — filling and cheap at R$25–40</div></li>
+            <li><div><strong>Biscoito Globo</strong> — R$3–5 for a bag</div></li>
+            <li><div><strong>Fresh fruit slices from a beach vendor</strong> — R$10–20</div></li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- Final Verdict -->
+      <div class="rec-box">
+        <h3>My Rio Vegetarian Food Plan</h3>
+        <p>If I were a primarily vegetarian traveler visiting Rio for the first time from February 6–11, 2027 — with February 9 as my Carnival night — here is exactly what I would do:</p>
+        <p><strong>Every morning:</strong> Pão de queijo + café com leite at the nearest padaria. At least one açaí bowl on the beach during the trip. At least one Bibi Sucos juice session — caju + maracujá, minimum.</p>
+        <p><strong>Every lunch:</strong> Comida a quilo on Copacabana's interior streets. Fast, affordable, and fully vegetarian-controllable. Ask about the feijão every single time.</p>
+        <p><strong>Must-do dinner:</strong> Vegetariano Social Club on Day 1 or Day 2 — book it before you fly. If one special-setting dinner matters to you, add Aprazível in Santa Teresa. Both are worth the Uber.</p>
+        <p><strong>At the beach, every beach day:</strong> Queijo coalho + água de coco + biscoito Globo. These three items define the Rio beach experience for a vegetarian. None require a restaurant.</p>
+        <p><strong>February 9 (Carnival night):</strong> Full comida a quilo at 2pm. Small snack before leaving. Pão de queijo + water in your bag. Metro to Praça Onze. Metro home at 5–6am. Açaí in the morning. That is the entire strategy.</p>
+        <p><strong>The best news about vegetarian eating in Rio:</strong> The fruit, juice, açaí, and tapioca culture is native to Rio — it is not a vegetarian compromise. It is some of the most Brazilian food that exists. You are eating exactly what Cariocas eat.</p>
+      </div>
+    </div>
+
+  </div><!-- /.wrap -->
+</section><!-- /#food -->
+
 <div class="footer">
   <p>Neighborhood, safety, transport, and Carnival schedule sections are based on current research (September 2026).<br>Accommodation section: 0 verified properties — all 10 candidates excluded. Use the search checklist in the Accommodations section to find qualifying properties.</p>
   <p style="margin-top:8px;">
@@ -1717,6 +2464,13 @@ tbody td {
 </div>
 
 <script>
+function showFood(id) {
+  document.querySelectorAll('.food-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.food-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('food-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+
 function showNbhd(id) {
   document.querySelectorAll('.nbhd-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nbhd-tab').forEach(t => t.classList.remove('active'));
