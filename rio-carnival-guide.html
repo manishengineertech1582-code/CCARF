@@ -524,6 +524,67 @@ tbody td {
 .tag-best      { background: var(--red); color: #fff; }
 .tag-top       { background: var(--gold); color: #fff; }
 
+/* ─── TRANSPORT EVALUATION ──────────────────────────── */
+.transport-section {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+.transport-section h4 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 12px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 6px;
+}
+.transport-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(195px, 1fr));
+  gap: 10px;
+}
+.transport-card {
+  background: var(--faint);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 11px 13px;
+}
+.transport-card-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  margin: 0 0 4px;
+}
+.transport-card-val {
+  font-size: 13px;
+  font-weight: 700;
+  margin: 0 0 3px;
+  line-height: 1.3;
+}
+.transport-card-note {
+  font-size: 12px;
+  color: var(--muted);
+  margin: 0;
+  line-height: 1.4;
+}
+.transport-card-val.tc-excellent { color: var(--green); }
+.transport-card-val.tc-good      { color: var(--blue); }
+.transport-card-val.tc-acceptable{ color: #8A6C00; }
+.transport-card-val.tc-difficult  { color: var(--red); }
+.transport-card-val.tc-poor      { color: var(--red); }
+.transport-score-disp { font-size: 18px; line-height: 1.2; color: var(--gold); letter-spacing: 0.04em; }
+.transport-priority-banner {
+  background: var(--blue-bg);
+  border: 1px solid #B8D0E8;
+  border-left: 4px solid var(--blue);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  font-size: 13px;
+  margin-bottom: 24px;
+}
+
 /* ─── RECOMMENDATION BOX ─────────────────────────────── */
 .rec-box {
   background: var(--blue);
@@ -702,7 +763,10 @@ tbody td {
   <div class="wrap">
     <p class="section-label">Where to Stay</p>
     <h2 class="section-title">Neighborhood Guide</h2>
-    <p class="section-desc">Eight neighborhoods evaluated on safety, Carnival access, Uber reliability, and suitability specifically for February 6–11, 2027.</p>
+    <p class="section-desc">Eight neighborhoods — plus Barra da Tijuca — evaluated against two primary criteria: <strong>Security (#1)</strong> and <strong>Transportation (#2)</strong>. Rankings are not based on beach proximity. They reflect: nighttime safety first, then Carnival-night Uber/Metro access, late-night return feasibility, and Sambadrome commute. A beautiful neighborhood with poor transport does not rank highly for this trip.</p>
+    <div class="transport-priority-banner">
+      <strong>Ranking criteria in order:</strong> Security · Carnival-night transport · Uber access · Metro proximity · Late-night return · Sambadrome commute · Bloco access · Sightseeing · Restaurants/nightlife · Price
+    </div>
 
     <div class="nbhd-tabs" role="tablist">
       <button class="nbhd-tab active" onclick="showNbhd('copa')">Copacabana</button>
@@ -713,6 +777,7 @@ tbody td {
       <button class="nbhd-tab" onclick="showNbhd('flamengo')">Flamengo</button>
       <button class="nbhd-tab" onclick="showNbhd('urca')">Urca</button>
       <button class="nbhd-tab" onclick="showNbhd('santa')">Santa Teresa</button>
+      <button class="nbhd-tab" onclick="showNbhd('barra')">Barra da Tijuca</button>
     </div>
 
     <!-- COPACABANA -->
@@ -723,7 +788,7 @@ tbody td {
             <div class="nbhd-title">Copacabana</div>
             <p class="nbhd-subtitle">The classic choice — maximum Carnival immersion, high hotel density, busiest neighborhood in Rio during Carnival</p>
           </div>
-          <div class="nbhd-rank"><div class="rank-label">Overall Rank</div><div class="rank-num">1</div></div>
+          <div class="nbhd-rank"><div class="rank-label">Overall Rank</div><div class="rank-num">1</div><div class="rank-label" style="margin-top:10px;">Transport</div><div class="transport-score-disp">★★★★☆</div></div>
         </div>
         <div class="ratings-row">
           <div class="rating-box good"><div class="rating-box-label">Day Safety</div><div class="rating-box-val">Good</div></div>
@@ -756,6 +821,31 @@ tbody td {
             </ul>
           </div>
         </div>
+        <div class="transport-section">
+          <h4>Transportation Evaluation</h4>
+          <div class="transport-grid">
+            <div class="transport-card">
+              <div class="transport-card-label">Uber Access</div>
+              <div class="transport-card-val tc-good">GOOD</div>
+              <p class="transport-card-note">Interior streets (Rua Barata Ribeiro, Rua Ministro Viveiros de Castro) accessible year-round, even on peak bloco days. Avenida Atlântica closes on major bloco days — always request pickup on an interior street. Nighttime Uber: plentiful drivers, practical reach to building entrance.</p>
+            </div>
+            <div class="transport-card">
+              <div class="transport-card-label">Nearest Metro</div>
+              <div class="transport-card-val tc-good">Siqueira Campos · ~8 min walk</div>
+              <p class="transport-card-note">Also Cardeal Arcoverde (~10 min walk). Line 1 → transfer Central → Line 2 → Praça Onze (Sambadrome). ~30 min total. 24-hour service on Feb 7, 8, 9 parade nights.</p>
+            </div>
+            <div class="transport-card">
+              <div class="transport-card-label">Sambadrome Night</div>
+              <div class="transport-card-val tc-good">Metro ~30 min · Uber 45–70 min</div>
+              <p class="transport-card-note"><strong>Normal day:</strong> 25–35 min Uber. <strong>Carnival period:</strong> Metro strongly recommended — road closures make Uber much slower. Board at Siqueira Campos, change at Central. Metro runs throughout the night.</p>
+            </div>
+            <div class="transport-card">
+              <div class="transport-card-label">Late-Night Return</div>
+              <div class="transport-card-val tc-excellent">EASY</div>
+              <p class="transport-card-note">Metro runs 24h on Feb 7–9. From Sambadrome: metro to Siqueira Campos (~30 min), then 8 min walk on Copa's well-lit, active streets. Most Copa buildings have 24-hour doormen. Uber from Siqueira Campos also an option.</p>
+            </div>
+          </div>
+        </div>
         <div class="nbhd-verdict">
           <strong>Verdict:</strong> Best choice for Carnival immersion and accommodation variety. Accept the crowd and noise as part of the experience. Choose a building on an interior street with a doorman. Prioritize apartments with verified security. The metro directly connects you to the Sambadrome.
         </div>
@@ -770,7 +860,7 @@ tbody td {
             <div class="nbhd-title">Ipanema</div>
             <p class="nbhd-subtitle">Best balance of safety, Carnival access, and beach quality — slightly quieter than Copacabana, significantly safer at night</p>
           </div>
-          <div class="nbhd-rank"><div class="rank-label">Overall Rank</div><div class="rank-num">2</div></div>
+          <div class="nbhd-rank"><div class="rank-label">Overall Rank</div><div class="rank-num">4</div><div class="rank-label" style="margin-top:10px;">Transport</div><div class="transport-score-disp">★★★★☆</div></div>
         </div>
         <div class="ratings-row">
           <div class="rating-box excellent"><div class="rating-box-label">Day Safety</div><div class="rating-box-val">Excellent</div></div>
@@ -803,6 +893,31 @@ tbody td {
             </ul>
           </div>
         </div>
+        <div class="transport-section">
+          <h4>Transportation Evaluation</h4>
+          <div class="transport-grid">
+            <div class="transport-card">
+              <div class="transport-card-label">Uber Access</div>
+              <div class="transport-card-val tc-good">GOOD</div>
+              <p class="transport-card-note">Most Ipanema streets accessible throughout Carnival. Closures around Praça General Osório on bloco days (Feb 6, 7, 8) affect the immediate plaza area — interior streets remain driveable. Nighttime Uber: reliable, well-lit pickup on Rua Visconde de Pirajá.</p>
+            </div>
+            <div class="transport-card">
+              <div class="transport-card-label">Nearest Metro</div>
+              <div class="transport-card-val tc-good">General Osório · ~5–8 min walk</div>
+              <p class="transport-card-note">Line 1 — requires transfer at Estácio or Central for Sambadrome (Line 2). Total: ~35 min. No direct Sambadrome line, but transfer is straightforward. 24-hour service Feb 7, 8, 9.</p>
+            </div>
+            <div class="transport-card">
+              <div class="transport-card-label">Sambadrome Night</div>
+              <div class="transport-card-val tc-good">Metro ~35 min · Uber 50–75 min</div>
+              <p class="transport-card-note"><strong>Normal day:</strong> 30–40 min Uber. <strong>Carnival period:</strong> Metro recommended (one transfer). After parade: metro from Praça Onze → General Osório. Or walk 2–3 blocks from Sambadrome exit before requesting Uber.</p>
+            </div>
+            <div class="transport-card">
+              <div class="transport-card-label">Late-Night Return</div>
+              <div class="transport-card-val tc-excellent">EASY</div>
+              <p class="transport-card-note">Metro 24h on Feb 7–9. General Osório station is well-lit, safe, on Ipanema's main commercial street. Walk from station is brief and through an active area. Uber also practical from Sambadrome area.</p>
+            </div>
+          </div>
+        </div>
         <div class="nbhd-verdict">
           <strong>Verdict:</strong> Best overall balance for your requirements. You get the city's best blocos walkable from your door, excellent nighttime safety, and good Uber access. The Sambadrome metro is slightly less convenient than from Copacabana (requires one transfer). Accommodation is more limited and pricier than Copacabana but higher quality.
         </div>
@@ -817,7 +932,7 @@ tbody td {
             <div class="nbhd-title">Leblon</div>
             <p class="nbhd-subtitle">Safest, most upscale, quietest — best for sleep between late nights; highest prices; no metro</p>
           </div>
-          <div class="nbhd-rank"><div class="rank-label">Overall Rank</div><div class="rank-num">3</div></div>
+          <div class="nbhd-rank"><div class="rank-label">Overall Rank</div><div class="rank-num">5</div><div class="rank-label" style="margin-top:10px;">Transport</div><div class="transport-score-disp">★★★☆☆</div></div>
         </div>
         <div class="ratings-row">
           <div class="rating-box excellent"><div class="rating-box-label">Day Safety</div><div class="rating-box-val">Excellent</div></div>
@@ -850,6 +965,31 @@ tbody td {
             </ul>
           </div>
         </div>
+        <div class="transport-section">
+          <h4>Transportation Evaluation</h4>
+          <div class="transport-grid">
+            <div class="transport-card">
+              <div class="transport-card-label">Uber Access</div>
+              <div class="transport-card-val tc-good">GOOD — but Uber-Only</div>
+              <p class="transport-card-note">Minimal road closures in Leblon. Uber accessible to most buildings year-round. However, 100% Uber-dependent — no metro exists in Leblon. Late-night surge pricing (2–3×) at 5am is a real cost. Expect R$100–180 per Sambadrome return.</p>
+            </div>
+            <div class="transport-card">
+              <div class="transport-card-label">Nearest Metro</div>
+              <div class="transport-card-val tc-difficult">NONE — No Metro in Leblon</div>
+              <p class="transport-card-note">Nearest metro: General Osório (Ipanema), ~15–20 min Uber. This is Leblon's critical weakness for a Carnival trip — no reliable overnight metro option. Ipanema + Line 1 is an option but adds a second Uber leg.</p>
+            </div>
+            <div class="transport-card">
+              <div class="transport-card-label">Sambadrome Night</div>
+              <div class="transport-card-val tc-difficult">Uber only · 55–80 min Carnival</div>
+              <p class="transport-card-note"><strong>Normal day:</strong> 35–45 min Uber. <strong>Carnival period:</strong> No metro alternative. Uber 55–80 min with road closures. Option: Uber to General Osório + metro (total ~55 min) but adds complexity at 2am.</p>
+            </div>
+            <div class="transport-card">
+              <div class="transport-card-label">Late-Night Return</div>
+              <div class="transport-card-val tc-difficult">DIFFICULT</div>
+              <p class="transport-card-note">No metro means 5am Uber-only return from Sambadrome. Expect 2–3× surge, 35–45 min ride, possible long wait. Must walk clear of Sambadrome perimeter (2–3 blocks) before requesting. This is the biggest practical downside of staying in Leblon for a Carnival trip.</p>
+            </div>
+          </div>
+        </div>
         <div class="nbhd-verdict">
           <strong>Verdict:</strong> Choose Leblon if recovering well between events matters more than walking distance to blocos. The no-metro situation is a real cost on Sambadrome nights (Uber surge + longer ride). Best for those attending 1–2 Sambadrome nights and spending more time at restaurants and calmer beach days. Most expensive option.
         </div>
@@ -864,7 +1004,7 @@ tbody td {
             <div class="nbhd-title">Leme</div>
             <p class="nbhd-subtitle">Underrated — Copacabana proximity with calmer streets, better Uber access during Carnival, closest neighborhood to Sugarloaf</p>
           </div>
-          <div class="nbhd-rank"><div class="rank-label">Overall Rank</div><div class="rank-num">4</div></div>
+          <div class="nbhd-rank"><div class="rank-label">Overall Rank</div><div class="rank-num">2</div><div class="rank-label" style="margin-top:10px;">Transport</div><div class="transport-score-disp">★★★★★</div></div>
         </div>
         <div class="ratings-row">
           <div class="rating-box good"><div class="rating-box-label">Day Safety</div><div class="rating-box-val">Good</div></div>
@@ -897,6 +1037,31 @@ tbody td {
             </ul>
           </div>
         </div>
+        <div class="transport-section">
+          <h4>Transportation Evaluation</h4>
+          <div class="transport-grid">
+            <div class="transport-card">
+              <div class="transport-card-label">Uber Access</div>
+              <div class="transport-card-val tc-excellent">EXCELLENT</div>
+              <p class="transport-card-note">Best Uber access of any South Zone beach neighborhood. Leme's street grid sits north of central Copa's beachfront closures — most streets unaffected even on major bloco days. Easy driver navigation, clean addresses, practical building access year-round including late at night.</p>
+            </div>
+            <div class="transport-card">
+              <div class="transport-card-label">Nearest Metro</div>
+              <div class="transport-card-val tc-good">Cardeal Arcoverde · ~10–12 min walk</div>
+              <p class="transport-card-note">Line 1 → Central → Line 2 → Praça Onze (Sambadrome). ~30 min total. Same Sambadrome route as central Copacabana. 24-hour service Feb 7, 8, 9. Walk to station is flat, safe, on main Copa avenue.</p>
+            </div>
+            <div class="transport-card">
+              <div class="transport-card-label">Sambadrome Night</div>
+              <div class="transport-card-val tc-excellent">Metro ~30 min · Uber 40–60 min</div>
+              <p class="transport-card-note"><strong>Normal day:</strong> 25–35 min Uber. <strong>Carnival period:</strong> Metro recommended — and Uber is more reliable here than central Copa due to fewer local road closures. Better pickup flexibility than Copa proper.</p>
+            </div>
+            <div class="transport-card">
+              <div class="transport-card-label">Late-Night Return</div>
+              <div class="transport-card-val tc-excellent">EASY</div>
+              <p class="transport-card-note">Metro 24h on Feb 7–9. From Sambadrome: metro to Cardeal Arcoverde (~30 min), walk 10–12 min on Copa main avenue. Quieter residential streets in Leme make the final walk more relaxed than central Copa. 24-hour building security common.</p>
+            </div>
+          </div>
+        </div>
         <div class="nbhd-verdict">
           <strong>Verdict:</strong> The most underrated option. You get all the advantages of a Copacabana-area location (metro access, bloco proximity, accommodation variety) with fewer road closures affecting Uber, quieter immediate streets, and the cheapest prices in the South Zone beach cluster. Strong choice if you find a good apartment here.
         </div>
@@ -911,7 +1076,7 @@ tbody td {
             <div class="nbhd-title">Botafogo</div>
             <p class="nbhd-subtitle">Best metro access to the Sambadrome — right choice if Sambadrome nights are your primary focus; not a beach neighborhood</p>
           </div>
-          <div class="nbhd-rank"><div class="rank-label">Overall Rank</div><div class="rank-num">5</div></div>
+          <div class="nbhd-rank"><div class="rank-label">Overall Rank</div><div class="rank-num">3</div><div class="rank-label" style="margin-top:10px;">Transport</div><div class="transport-score-disp">★★★★★</div></div>
         </div>
         <div class="ratings-row">
           <div class="rating-box good"><div class="rating-box-label">Day Safety</div><div class="rating-box-val">Good</div></div>
@@ -944,6 +1109,31 @@ tbody td {
             </ul>
           </div>
         </div>
+        <div class="transport-section">
+          <h4>Transportation Evaluation</h4>
+          <div class="transport-grid">
+            <div class="transport-card">
+              <div class="transport-card-label">Uber Access</div>
+              <div class="transport-card-val tc-excellent">EXCELLENT</div>
+              <p class="transport-card-note">Minimal Carnival road closures in Botafogo. Wide commercial streets, easy driver navigation. Uber access to building entrance is straightforward at any hour. Multiple reliable pickup points on Rua Voluntários da Pátria and side streets.</p>
+            </div>
+            <div class="transport-card">
+              <div class="transport-card-label">Nearest Metro</div>
+              <div class="transport-card-val tc-excellent">Botafogo · ~5 min walk</div>
+              <p class="transport-card-note">Lines 1 &amp; 2 interchange. Line 2 runs <strong>DIRECT to Praça Onze (Sambadrome)</strong> — no transfer required. ~25 min total. Best metro access to the Sambadrome of any neighborhood reviewed. 24-hour service Feb 7, 8, 9.</p>
+            </div>
+            <div class="transport-card">
+              <div class="transport-card-label">Sambadrome Night</div>
+              <div class="transport-card-val tc-excellent">Metro ~25 min direct · Uber 25–35 min</div>
+              <p class="transport-card-note"><strong>Normal day:</strong> ~25 min Uber. <strong>Carnival period:</strong> Metro direct on Line 2 — same travel time as a normal day because the Sambadrome is on the same line. No transfer, no crowd congestion with Copa-bound passengers. Best Carnival commute reviewed.</p>
+            </div>
+            <div class="transport-card">
+              <div class="transport-card-label">Late-Night Return</div>
+              <div class="transport-card-val tc-excellent">EASY</div>
+              <p class="transport-card-note">Metro 24h on Feb 7–9. Line 2 direct from Praça Onze to Botafogo. 5am return: board metro at Sambadrome, arrive Botafogo station ~25 min later, 5 min walk to building. Stick to Rua Voluntários da Pátria (commercial, lit). Do not walk through Aterro park at night.</p>
+            </div>
+          </div>
+        </div>
         <div class="nbhd-verdict">
           <strong>Verdict:</strong> Best choice if the Sambadrome is your centerpiece activity. The metro line is direct and reliable even at 5 am on parade nights. The trade-off is not being a beach neighborhood — morning coffee and beach days require a short Uber. Night safety on commercial streets is fine; avoid the park after dark.
         </div>
@@ -958,7 +1148,7 @@ tbody td {
             <div class="nbhd-title">Flamengo</div>
             <p class="nbhd-subtitle">Viable but not recommended over Botafogo — similar proximity, more nighttime risk around the park, fewer amenities</p>
           </div>
-          <div class="nbhd-rank"><div class="rank-label">Overall Rank</div><div class="rank-num">6</div></div>
+          <div class="nbhd-rank"><div class="rank-label">Overall Rank</div><div class="rank-num">6</div><div class="rank-label" style="margin-top:10px;">Transport</div><div class="transport-score-disp">★★★★☆</div></div>
         </div>
         <div class="ratings-row">
           <div class="rating-box good"><div class="rating-box-label">Day Safety</div><div class="rating-box-val">Good</div></div>
@@ -989,6 +1179,31 @@ tbody td {
             </ul>
           </div>
         </div>
+        <div class="transport-section">
+          <h4>Transportation Evaluation</h4>
+          <div class="transport-grid">
+            <div class="transport-card">
+              <div class="transport-card-label">Uber Access</div>
+              <div class="transport-card-val tc-excellent">EXCELLENT</div>
+              <p class="transport-card-note">Minimal Carnival road closures in Flamengo. Wide main avenues, accessible streets. Uber reliable at all hours. Good commercial street presence makes nighttime pickup safe and practical.</p>
+            </div>
+            <div class="transport-card">
+              <div class="transport-card-label">Nearest Metro</div>
+              <div class="transport-card-val tc-good">Flamengo · ~8–12 min walk</div>
+              <p class="transport-card-note">Line 1 → Central → transfer Line 2 → Praça Onze (Sambadrome). ~30–35 min total. Note: walk to/from Flamengo station at night — use Rua do Catete commercial corridor, avoid Aterro park entirely.</p>
+            </div>
+            <div class="transport-card">
+              <div class="transport-card-label">Sambadrome Night</div>
+              <div class="transport-card-val tc-good">Metro ~30 min · Uber 30–50 min</div>
+              <p class="transport-card-note"><strong>Normal day:</strong> 20–30 min Uber. <strong>Carnival period:</strong> Metro recommended via Line 1 (same route as Copa). After parade: metro home or walk 2–3 blocks from Sambadrome before requesting Uber.</p>
+            </div>
+            <div class="transport-card">
+              <div class="transport-card-label">Late-Night Return</div>
+              <div class="transport-card-val tc-good">REASONABLE</div>
+              <p class="transport-card-note">Metro 24h on Feb 7–9. Return to Flamengo station ~30 min. Night walk from station: use commercial streets only (Rua do Catete), not park paths. Safety manageable if route is pre-planned. Uber from station also an option.</p>
+            </div>
+          </div>
+        </div>
         <div class="nbhd-verdict">
           <strong>Verdict:</strong> Only choose Flamengo over Botafogo if you find a significantly better-priced or better-reviewed apartment here. Botafogo has better amenities, nightlife, and restaurant density for the same metro access. Not a bad choice — just not a first choice.
         </div>
@@ -1003,7 +1218,7 @@ tbody td {
             <div class="nbhd-title">Urca</div>
             <p class="nbhd-subtitle">Safest, most peaceful neighborhood in Rio — wrong fit for a Carnival trip; no metro, quiet after 9 pm, tiny local scene</p>
           </div>
-          <div class="nbhd-rank"><div class="rank-label">Overall Rank</div><div class="rank-num">7</div></div>
+          <div class="nbhd-rank"><div class="rank-label">Overall Rank</div><div class="rank-num">8</div><div class="rank-label" style="margin-top:10px;">Transport</div><div class="transport-score-disp">★★☆☆☆</div></div>
         </div>
         <div class="ratings-row">
           <div class="rating-box excellent"><div class="rating-box-label">Day Safety</div><div class="rating-box-val">Outstanding</div></div>
@@ -1012,6 +1227,31 @@ tbody td {
           <div class="rating-box high-risk"><div class="rating-box-label">Carnival Access</div><div class="rating-box-val">Poor</div></div>
           <div class="rating-box moderate"><div class="rating-box-label">Uber Access</div><div class="rating-box-val">Moderate</div></div>
           <div class="rating-box high-risk"><div class="rating-box-label">Accommodation</div><div class="rating-box-val">Very Limited</div></div>
+        </div>
+        <div class="transport-section">
+          <h4>Transportation Evaluation</h4>
+          <div class="transport-grid">
+            <div class="transport-card">
+              <div class="transport-card-label">Uber Access</div>
+              <div class="transport-card-val tc-acceptable">ACCEPTABLE — with caveats</div>
+              <p class="transport-card-note">Urca is accessible by Uber but is a cul-de-sac neighborhood — drivers sometimes decline or struggle with late-night trips. Fewer active drivers near the neighborhood after midnight. Uber wait times of 15–25 min at 4–5am are realistic.</p>
+            </div>
+            <div class="transport-card">
+              <div class="transport-card-label">Nearest Metro</div>
+              <div class="transport-card-val tc-difficult">NONE — No Metro Access</div>
+              <p class="transport-card-note">No metro station in or near Urca. Nearest: Botafogo (~20 min Uber). 100% Uber-dependent for all Carnival travel. A metro-less base for a Carnival trip is a critical constraint.</p>
+            </div>
+            <div class="transport-card">
+              <div class="transport-card-label">Sambadrome Night</div>
+              <div class="transport-card-val tc-difficult">Uber only · 40–60 min Carnival</div>
+              <p class="transport-card-note"><strong>Normal day:</strong> 25–35 min Uber. <strong>Carnival period:</strong> No metro. Uber-only at surge pricing. Post-parade Uber at 5am to Urca is genuinely unreliable — isolated location, limited nearby driver supply.</p>
+            </div>
+            <div class="transport-card">
+              <div class="transport-card-label">Late-Night Return</div>
+              <div class="transport-card-val tc-poor">POOR</div>
+              <p class="transport-card-note">Returning to Urca at 5am after Sambadrome: surge pricing + limited driver supply + isolated dead-end neighborhood = unreliable. This is the hardest constraint for a Carnival trip from Urca. Not recommended.</p>
+            </div>
+          </div>
         </div>
         <div class="nbhd-verdict">
           <strong>Verdict:</strong> Do not base a Carnival trip here. Urca is magnificent for a quiet romantic getaway and delivers the world's best Sugarloaf access (5-minute walk), but it has essentially no Carnival scene, no metro, very limited restaurant options, and returning from Sambadrome at 5 am via Uber will be unreliable and expensive. Reserve Urca for a future non-Carnival visit.
@@ -1027,7 +1267,7 @@ tbody td {
             <div class="nbhd-title">Santa Teresa</div>
             <p class="nbhd-subtitle">Bohemian hilltop neighborhood — fine for a daytime visit, not recommended as a Carnival base due to safety and access concerns</p>
           </div>
-          <div class="nbhd-rank"><div class="rank-label">Overall Rank</div><div class="rank-num">8</div></div>
+          <div class="nbhd-rank"><div class="rank-label">Overall Rank</div><div class="rank-num">9</div><div class="rank-label" style="margin-top:10px;">Transport</div><div class="transport-score-disp">★☆☆☆☆</div></div>
         </div>
         <div class="ratings-row">
           <div class="rating-box moderate"><div class="rating-box-label">Day Safety</div><div class="rating-box-val">Moderate</div></div>
@@ -1036,8 +1276,105 @@ tbody td {
           <div class="rating-box high-risk"><div class="rating-box-label">Uber Access</div><div class="rating-box-val">Limited</div></div>
           <div class="rating-box high-risk"><div class="rating-box-label">Accommodation</div><div class="rating-box-val">Not Recommended</div></div>
         </div>
+        <div class="transport-section">
+          <h4>Transportation Evaluation</h4>
+          <div class="transport-grid">
+            <div class="transport-card">
+              <div class="transport-card-label">Uber Access</div>
+              <div class="transport-card-val tc-difficult">LIMITED</div>
+              <p class="transport-card-note">Winding uphill streets confuse some drivers. Narrow lanes in parts. Some addresses difficult to locate. Pickup wait times 15–25 min at night. Not a neighborhood where you can step out and find an Uber quickly at 3am.</p>
+            </div>
+            <div class="transport-card">
+              <div class="transport-card-label">Nearest Metro</div>
+              <div class="transport-card-val tc-poor">NONE — No Metro, No Tram at Night</div>
+              <p class="transport-card-note">No metro. Nearest metro: Central do Brasil (~20 min Uber). The historic tram (bonde) does not run at night. Public buses are not an option for late-night Carnival travel.</p>
+            </div>
+            <div class="transport-card">
+              <div class="transport-card-label">Sambadrome Night</div>
+              <div class="transport-card-val tc-difficult">Uber only · 35–50 min</div>
+              <p class="transport-card-note"><strong>Normal day:</strong> 20–30 min Uber. <strong>Carnival period:</strong> Uber-only, longer pickup waits on winding roads. No metro alternative. Returning at 5am through narrow hill streets with limited driver availability is one of the worst commutes reviewed.</p>
+            </div>
+            <div class="transport-card">
+              <div class="transport-card-label">Late-Night Return</div>
+              <div class="transport-card-val tc-poor">POOR</div>
+              <p class="transport-card-note">Winding dark roads, some poorly lit sections, security concerns after midnight in parts of Santa Teresa, slow Uber pickup. Late-night return after Carnival is among the highest-risk commutes of any neighborhood reviewed.</p>
+            </div>
+          </div>
+        </div>
         <div class="nbhd-verdict">
           <strong>Verdict:</strong> Not recommended as a Carnival base. Surrounded by favelas with limited lighting, winding hill streets that slow Uber pickups, and security concerns after dark. The bohemian atmosphere and colonial architecture are genuinely lovely — visit for a daytime lunch and tram ride during your stay.
+        </div>
+      </div>
+    </div>
+
+    <!-- BARRA DA TIJUCA -->
+    <div class="nbhd-panel" id="nbhd-barra">
+      <div class="nbhd-card">
+        <div class="nbhd-header">
+          <div>
+            <div class="nbhd-title">Barra da Tijuca</div>
+            <p class="nbhd-subtitle">Modern, spacious, excellent safety — but 40 km from Carnival's heart; only viable with a clear transportation strategy and a realistic commute plan</p>
+          </div>
+          <div class="nbhd-rank"><div class="rank-label">Overall Rank</div><div class="rank-num">7</div><div class="rank-label" style="margin-top:10px;">Transport</div><div class="transport-score-disp">★★☆☆☆</div></div>
+        </div>
+        <div class="ratings-row">
+          <div class="rating-box excellent"><div class="rating-box-label">Day Safety</div><div class="rating-box-val">Very Good</div></div>
+          <div class="rating-box good"><div class="rating-box-label">Night Safety</div><div class="rating-box-val">Good</div></div>
+          <div class="rating-box excellent"><div class="rating-box-label">Carnival Theft</div><div class="rating-box-val">Very Low</div></div>
+          <div class="rating-box high-risk"><div class="rating-box-label">Carnival Access</div><div class="rating-box-val">Poor</div></div>
+          <div class="rating-box good"><div class="rating-box-label">Uber Access</div><div class="rating-box-val">Good (local)</div></div>
+          <div class="rating-box excellent"><div class="rating-box-label">Accommodation</div><div class="rating-box-val">Excellent value</div></div>
+        </div>
+        <div class="nbhd-body">
+          <div class="nbhd-col">
+            <h4>Travel Times — Normal / Carnival</h4>
+            <ul class="time-list">
+              <li><span>Sambadrome</span><span><span class="time-normal">45–60 min</span> / <span class="time-carnival">60–90+ min</span></span></li>
+              <li><span>Copacabana</span><span><span class="time-normal">35–45 min</span> / <span class="time-carnival">45–65 min</span></span></li>
+              <li><span>Ipanema</span><span><span class="time-normal">30–40 min</span> / <span class="time-carnival">40–60 min</span></span></li>
+              <li><span>Christ the Redeemer</span><span class="time-normal">40–50 min</span></li>
+              <li><span>Sugarloaf</span><span class="time-normal">40–55 min</span></li>
+            </ul>
+          </div>
+          <div class="nbhd-col">
+            <h4>Carnival-Specific Notes</h4>
+            <ul>
+              <li>Jardim Oceânico (Line 4 terminus) is the key metro link — connects to General Osório (Ipanema) in ~20 min; then transfer for Sambadrome</li>
+              <li>Total metro to Sambadrome: ~65–75 min (Jardim Oceânico → General Osório → Estácio → Praça Onze)</li>
+              <li>Barra itself has almost no Carnival blocos — you must Uber or metro to every event</li>
+              <li>Local roads in Barra: excellent, wide, no Carnival road closures</li>
+              <li>Long-distance Uber (to/from Sambadrome ~40 km): 2–3× surge — expect R$130–200+ each way at parade-end</li>
+              <li>Accommodation budget goes much further here — significantly more space for the same money</li>
+            </ul>
+          </div>
+        </div>
+        <div class="transport-section">
+          <h4>Transportation Evaluation</h4>
+          <div class="transport-grid">
+            <div class="transport-card">
+              <div class="transport-card-label">Uber Access</div>
+              <div class="transport-card-val tc-difficult">GOOD locally · DIFFICULT for Carnival</div>
+              <p class="transport-card-note">Within Barra: excellent wide roads, easy driver access. To/from central Carnival: 35–50 km Uber trip at surge pricing, potential Av. Brasil restrictions. A one-way Sambadrome Uber late at night may be R$150–220 and unreliable.</p>
+            </div>
+            <div class="transport-card">
+              <div class="transport-card-label">Nearest Metro</div>
+              <div class="transport-card-val tc-acceptable">Jardim Oceânico · ~10–20 min walk</div>
+              <p class="transport-card-note">Line 4 terminus. Connects to General Osório (Ipanema) in ~20 min, then transfer Line 1 for Sambadrome. Total to Sambadrome: ~65–75 min. Feasible but very long. Metro runs 24h on Feb 7–9 parade nights.</p>
+            </div>
+            <div class="transport-card">
+              <div class="transport-card-label">Sambadrome Night</div>
+              <div class="transport-card-val tc-difficult">Normal: 45–60 min · Carnival: 60–90+ min</div>
+              <p class="transport-card-note"><strong>Normal day:</strong> 45–60 min Uber. <strong>Carnival period:</strong> Metro recommended (65–75 min each way). At 5am, Uber from Sambadrome area to Barra is a 40 km trip at peak surge — expensive and slow. Budget 90+ min total for the return on Sambadrome nights.</p>
+            </div>
+            <div class="transport-card">
+              <div class="transport-card-label">Late-Night Return</div>
+              <div class="transport-card-val tc-poor">POOR</div>
+              <p class="transport-card-note">The defining problem for Barra. Returning from a 5am Sambadrome finale: metro runs 24h on parade nights (65–75 min journey) or Uber 40 km at 3× surge. Either way: 60–90 min return each Sambadrome night. This is the primary reason Barra ranks 7th despite excellent safety.</p>
+            </div>
+          </div>
+        </div>
+        <div class="nbhd-verdict">
+          <strong>Verdict:</strong> Barra can qualify for this trip only if: (a) you find a substantially better apartment for the same budget, AND (b) you are prepared to use metro for all Sambadrome nights (~65–75 min each way), AND (c) you accept that every major event requires a 40+ km commute. Do not book Barra if attending all three Sambadrome nights is your priority — the cumulative commute time and late-night return difficulty is significant. If you want a quiet, safe base for 1–2 Sambadrome visits with daytime sightseeing, Barra can work — but with clear eyes about the transport cost.
         </div>
       </div>
     </div>
@@ -1072,6 +1409,11 @@ tbody td {
         <p>No metro — Uber to General Osório then metro, or Uber direct</p>
         <div class="duration">45–80 min</div>
       </div>
+      <div class="metro-card">
+        <h4>From Barra da Tijuca</h4>
+        <p>Jardim Oceânico (Line 4) → General Osório → transfer Line 1 → Central → Line 2</p>
+        <div class="duration">65–80 min</div>
+      </div>
     </div>
 
     <div class="tip tip-blue">
@@ -1100,7 +1442,7 @@ tbody td {
     <div style="background:var(--red-bg);border:2px solid var(--red);border-radius:var(--radius);padding:32px;margin-bottom:32px;text-align:center;">
       <div style="font-size:40px;margin-bottom:12px;">0</div>
       <div style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;color:var(--red);margin-bottom:12px;">No accommodation currently passes all mandatory verification gates for February 6–11, 2027.</div>
-      <p style="font-size:15px;color:var(--ink);max-width:620px;margin:0 auto;">Live availability, exact pricing, confirmed bed sizes, confirmed bathroom counts, confirmed cancellation terms, and minimum review thresholds must all be verified for a property to appear in this section. None of the candidates researched passed every gate. Use the search checklist below to find and confirm qualifying properties yourself.</p>
+      <p style="font-size:15px;color:var(--ink);max-width:620px;margin:0 auto;">Live availability, exact pricing (≤ ~$4,000 total), confirmed bed sizes, confirmed bathroom count, confirmed cancellation terms, minimum review threshold (35+), and full transportation assessment must all be verified for a property to appear in this section. None of the candidates researched passed every gate. Use the search checklist below to find and confirm qualifying properties yourself.</p>
     </div>
 
     <h3 style="font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;margin:0 0 8px;">Why Candidates Were Excluded</h3>
@@ -1168,7 +1510,7 @@ tbody td {
           <tr>
             <td><strong>Fairmont Copacabana</strong></td>
             <td>Hotel</td>
-            <td><span class="tag tag-limited">Likely exceeds $3,500 total</span></td>
+            <td><span class="tag tag-limited">Likely exceeds $4,000 total</span></td>
             <td>2QB+2BA requires 2 connecting rooms · Connecting availability unconfirmed · Exact Carnival rate unconfirmed</td>
           </tr>
           <tr>
@@ -1193,7 +1535,7 @@ tbody td {
 
       <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;">
         <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--red);margin-bottom:8px;">Gate 2 — Exact Total Price</div>
-        <p style="font-size:14px;margin:0;">On the booking summary page, read the full breakdown: nightly rate × 5 nights + cleaning fee + service fee + taxes. Hard maximum: <strong>$3,500 USD</strong> total. Exclude if over.</p>
+        <p style="font-size:14px;margin:0;">On the booking summary page, read the full breakdown: nightly rate × 5 nights + cleaning fee + service fee + taxes. Target maximum: approximately <strong>$4,000 USD</strong> total. Exclude if clearly over this threshold.</p>
       </div>
 
       <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;">
@@ -1208,12 +1550,12 @@ tbody td {
 
       <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;">
         <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--red);margin-bottom:8px;">Gate 5 — Two Full Bathrooms</div>
-        <p style="font-size:14px;margin:0;">Listing must explicitly state 2 bathrooms. A half-bath or powder room does not count. If only one full bathroom is shown, exclude. If the count is missing, message the host and exclude until confirmed in writing.</p>
+        <p style="font-size:14px;margin:0;">Listing must explicitly state at least 1 full bathroom. A half-bath or powder room does not count. Confirm the count is clearly stated. If missing, message the host and exclude until confirmed in writing. Properties with 2 full bathrooms are preferred.</p>
       </div>
 
       <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;">
         <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--red);margin-bottom:8px;">Gate 6 — Reviews</div>
-        <p style="font-size:14px;margin:0;">Minimum <strong>40 reviews</strong>, rating <strong>4.0+/5</strong> (Airbnb) or <strong>8.0+/10</strong> (Booking.com). Read the most recent 10–15 reviews specifically for: cleanliness, noise, AC, Wi-Fi, host responsiveness, building security. Recurring complaints = exclude.</p>
+        <p style="font-size:14px;margin:0;">Approximately <strong>35+ reviews</strong>, rating <strong>4.0+/5</strong> (Airbnb) or <strong>8.0+/10</strong> (Booking.com). Read the most recent 10–15 reviews for: cleanliness, noise, AC, Wi-Fi, host responsiveness, building security. Recurring complaints = exclude. Also verify: Uber reach to building entrance, doorman/security presence.</p>
       </div>
 
     </div>
@@ -1248,31 +1590,32 @@ tbody td {
     </div>
 
     <div style="margin-top:28px;">
-      <p style="font-size:14px;font-weight:600;margin-bottom:8px;">When a property qualifies, record it against these columns:</p>
+      <p style="font-size:14px;font-weight:600;margin-bottom:8px;">When a property qualifies, record it against these columns. Transportation columns are mandatory — no property may appear without Uber, Metro, and Carnival Return assessments.</p>
       <div class="table-wrap">
-        <table>
+        <table style="min-width:1200px;">
           <thead>
             <tr>
               <th>Rank</th>
-              <th>Property Name</th>
+              <th>Property</th>
               <th>Neighborhood</th>
-              <th>Exact Beds</th>
-              <th>Bedrooms</th>
-              <th>Bathrooms</th>
+              <th>Beds</th>
+              <th>Baths</th>
               <th>Rating</th>
-              <th>Review Count</th>
-              <th>Exact 5-Night Total</th>
-              <th>Fully Refundable</th>
-              <th>Cancellation Deadline</th>
-              <th>Safety</th>
-              <th>Carnival Fit</th>
-              <th>Uber / Transport</th>
-              <th>Source</th>
+              <th>Reviews</th>
+              <th>5-Night Total</th>
+              <th>Refundable Until</th>
+              <th>Security</th>
+              <th>Transport ★</th>
+              <th>Metro</th>
+              <th>Uber</th>
+              <th>Sambadrome</th>
+              <th>Carnival Return</th>
+              <th>Overall</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td colspan="15" style="text-align:center;padding:24px;color:var(--muted);font-style:italic;">No verified properties yet. Complete the search checklist to populate this table.</td>
+              <td colspan="16" style="text-align:center;padding:24px;color:var(--muted);font-style:italic;">No verified properties yet. Complete the search checklist to populate this table. Every column including Metro, Uber, Sambadrome, and Carnival Return must be assessed before a property may appear here.</td>
             </tr>
           </tbody>
         </table>
@@ -1293,31 +1636,34 @@ tbody td {
 
     <div class="rec-grid">
       <div class="rec-card">
-        <div class="rec-card-label">Best Overall Neighborhood</div>
-        <div class="rec-card-title">Copacabana (interior street)</div>
-        <p class="rec-card-body">Backed by research, not a booking claim. Best accommodation inventory, direct metro to Sambadrome, walking distance to major blocos. Choose a building on an interior street (not Avenida Atlântica) with a doorman.</p>
+        <div class="rec-card-label">Best Overall Base</div>
+        <div class="rec-card-title">Copacabana — interior street</div>
+        <p class="rec-card-body">Rank 1. Metro (Siqueira Campos, 8 min walk) gives direct access to all three Sambadrome nights. Interior streets accessible by Uber year-round. Largest 2BR apartment inventory in Rio. 24-hour doormen common. Best balance of security, transport, and accommodation variety.</p>
       </div>
       <div class="rec-card">
-        <div class="rec-card-label">Best Alternative to Copacabana</div>
+        <div class="rec-card-label">Best Transport Score</div>
+        <div class="rec-card-title">Leme or Botafogo</div>
+        <p class="rec-card-body">Leme: ★★★★★ transport — fewest road closures, excellent Uber, metro to Sambadrome. Botafogo: ★★★★★ — Line 2 direct to Sambadrome (~25 min, no transfer), best late-night return of any neighborhood. If Sambadrome access is the priority, Botafogo wins.</p>
+      </div>
+      <div class="rec-card">
+        <div class="rec-card-label">Best Safety + Transport</div>
         <div class="rec-card-title">Ipanema</div>
-        <p class="rec-card-body">Better nighttime safety, Banda de Ipanema and Simpatia blocos are walkable, beach quality equal to Copacabana. Trade-off: pricier, slightly more complex metro route to Sambadrome (one transfer).</p>
+        <p class="rec-card-body">Rank 4. Zero homicides Q1 2026. Banda de Ipanema and Simpatia blocos walkable. General Osório metro (5 min walk) connects to Sambadrome via one transfer. Good Uber access. Trade-off: pricier apartments, narrower inventory than Copa.</p>
       </div>
       <div class="rec-card">
-        <div class="rec-card-label">Best for Sambadrome Access</div>
-        <div class="rec-card-title">Botafogo</div>
-        <p class="rec-card-body">Direct metro on Line 2 to Praça Onze, ~25 min. Best transport option for attending all three Special Group parade nights (Feb 7–9). Not a beach neighborhood but Copacabana is 10–15 min by Uber.</p>
-      </div>
-      <div class="rec-card">
-        <div class="rec-card-label">Best for Late-Night Returns</div>
-        <div class="rec-card-title">Copacabana or Botafogo</div>
-        <p class="rec-card-body">Both served by 24-hour metro on Sambadrome nights. Walk from Siqueira Campos (Copa) or Botafogo station. Metro beats Uber at 5 am — do not try to Uber from the Sambadrome exit.</p>
+        <div class="rec-card-label">Avoid for Late-Night Return</div>
+        <div class="rec-card-title">Leblon, Urca, Santa Teresa</div>
+        <p class="rec-card-body">Leblon: no metro, Uber-only at 5am surge. Urca: isolated, no metro, limited driver supply at night. Santa Teresa: winding roads, poor lighting, security risk. All three rank poorly for late-night Carnival return. Avoid for a Carnival-first trip.</p>
       </div>
     </div>
 
     <div class="rec-box" style="margin-top:28px;">
-      <h3>On neighborhood — confirmed by research</h3>
-      <p>For February 6–11, 2027, I would target <strong>Copacabana on an interior street</strong> as the primary search area. Reasons: largest inventory of 2-bedroom apartments during Carnival week, direct metro connection to all three Sambadrome parade nights, walking access to major blocos, strongest Uber reliability on interior streets. Ipanema is the better neighborhood on safety but narrower inventory.</p>
-      <p><strong>On accommodation:</strong> no specific property recommendation can be made until a property passes all 10 verification gates. Use the search checklist in the Accommodations section. Run the search on Airbnb and Booking.com today — September 2026 is already late for Carnival 2027 availability in the South Zone.</p>
+      <h3>Neighborhood verdict — with transportation strategy</h3>
+      <p>For February 6–11, 2027, I would target <strong>Copacabana on an interior street</strong> as the primary search area. Here's the transportation strategy I would use:</p>
+      <p><strong>Sambadrome nights (Feb 7, 8, 9):</strong> Walk 8 min to Siqueira Campos → Metro Line 1 → transfer Central → Line 2 → Praça Onze. Total: ~30 min. After parade ends at 5–6am: board metro at Praça Onze (24h service), arrive Siqueira Campos ~30 min later, walk 8 min to building. Do NOT Uber from the Sambadrome exit — walk 2–3 blocks away first.</p>
+      <p><strong>Bloco days (Feb 6, 7, 8):</strong> Uber to any neighborhood for blocos not in Copa. For in-Copa blocos (Simpatia, Banda de Ipanema nearby): attend by Uber or on foot from Copa's interior streets. Late return: Uber from pickup zone on interior street.</p>
+      <p><strong>Sightseeing (Christ the Redeemer, Sugarloaf):</strong> Both ~20–30 min Uber from Copa. Book morning departure slots to avoid midday heat. Uber pickup straightforward on interior streets.</p>
+      <p><strong>On accommodation:</strong> No specific property recommendation can be made until a property passes all verification gates. Use the search checklist in the Accommodations section. Run the search on Airbnb and Booking.com immediately — September 2026 is already late for Carnival 2027 availability.</p>
     </div>
 
     <!-- QA AUDIT REPORT -->
@@ -1350,7 +1696,7 @@ tbody td {
               <tr><td>Airbnb #1568229046411175826 (Copa 2BR)</td><td>Availability, beds, bathrooms, cancellation not confirmed</td></tr>
               <tr><td>Booking.com Leme 2BR</td><td>Availability, queen bed sizes, 2nd bathroom, cancellation not confirmed</td></tr>
               <tr><td>DoBrazilRight Carnival Package</td><td>Not a specific bookable unit — package-level listing only</td></tr>
-              <tr><td>Fairmont Copacabana</td><td>2QB+2BA requires connecting rooms — availability and total cost unconfirmed; likely exceeds $3,500</td></tr>
+              <tr><td>Fairmont Copacabana</td><td>2QB+2BA requires connecting rooms — availability and total cost unconfirmed; likely exceeds $4,000</td></tr>
               <tr><td>Windsor Atlantic / Windsor Leme</td><td>2QB+2BA not a standard room type; connecting availability unconfirmed</td></tr>
             </tbody>
           </table>
