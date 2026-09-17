@@ -1,5 +1,7 @@
+<meta charset="utf-8">
 <title>Rio Carnival 2027</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Source+Sans+3:wght@300;400;600;700&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 
 <style>
 /* ─── TOKENS ──────────────────────────────────────── */
@@ -778,6 +780,77 @@ tbody td {
 .geo-title { font-family:'Cormorant Garamond',serif; font-size:19px; font-weight:600; color:var(--blue); margin:0 0 8px; }
 .places-section-h { font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:600; border-bottom:2px solid var(--border); padding-bottom:8px; margin:28px 0 16px; }
 @media(max-width:600px){ .weather-grid{grid-template-columns:1fr;} .top10-card{flex-direction:column;gap:8px;} .attr-header{flex-direction:column;} .day-iti-hdr{flex-direction:column;gap:4px;} }
+
+/* ─── RIO MAP ───────────────────────────────────────── */
+#rio-map { height:550px; border-radius:var(--radius); border:1px solid var(--border); overflow:hidden; margin-top:16px; background:#e8e4dd; }
+.map-legend { display:flex; flex-wrap:wrap; gap:12px; margin:16px 0 8px; }
+.map-legend-item { display:flex; align-items:center; gap:6px; font-size:13px; font-weight:600; }
+.map-dot { width:16px; height:16px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:9px; flex-shrink:0; }
+.dot-airbnb { background:#E74C3C; border:2px solid #fff; box-shadow:0 1px 3px rgba(0,0,0,0.3); }
+.dot-carnival { background:#1B4D72; border:2px solid #fff; box-shadow:0 1px 3px rgba(0,0,0,0.3); }
+.dot-meeting { background:#8E44AD; border:2px solid #fff; box-shadow:0 1px 3px rgba(0,0,0,0.3); }
+.dot-attraction { background:#C49A22; border:2px solid #fff; box-shadow:0 1px 3px rgba(0,0,0,0.3); }
+.dot-tijuca { background:#2A6644; border:2px solid #fff; box-shadow:0 1px 3px rgba(0,0,0,0.3); }
+.map-note { font-size:12px; color:var(--muted); margin-top:8px; }
+.leaflet-popup-content { font-family:'Source Sans 3',sans-serif; font-size:13px; line-height:1.5; max-width:220px; }
+.popup-name { font-family:'Cormorant Garamond',serif; font-size:16px; font-weight:600; margin:0 0 4px; }
+.popup-cat { font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; margin:0 0 6px; }
+.popup-cat.cat-airbnb { color:#E74C3C; }
+.popup-cat.cat-carnival { color:#1B4D72; }
+.popup-cat.cat-meeting { color:#8E44AD; }
+.popup-cat.cat-attraction { color:#C49A22; }
+.popup-cat.cat-tijuca { color:#2A6644; }
+.popup-desc { font-size:12px; color:#555; margin:0 0 4px; }
+.popup-addr { font-size:11px; color:#888; font-style:italic; margin:0; }
+
+/* ─── TIJUCA TAB ────────────────────────────────────── */
+.tijuca-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:20px; margin-bottom:16px; }
+.tijuca-card-header { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; margin-bottom:10px; }
+.tijuca-name { font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:600; color:var(--ink); margin:0; }
+.tijuca-cat { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:var(--green); background:var(--green-bg); padding:3px 8px; border-radius:3px; white-space:nowrap; }
+.tijuca-meta-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:8px; margin-top:12px; }
+.tijuca-meta-item { background:var(--faint); border-radius:var(--radius); padding:8px 10px; }
+.tijuca-meta-label { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:var(--muted); margin:0 0 2px; }
+.tijuca-meta-val { font-size:13px; color:var(--ink); margin:0; }
+.tijuca-why { font-size:14px; line-height:1.65; margin:0 0 10px; }
+.tijuca-intro { background:var(--green-bg); border-left:4px solid var(--green); padding:16px 18px; border-radius:0 var(--radius) var(--radius) 0; margin-bottom:24px; }
+.tijuca-intro h3 { font-family:'Cormorant Garamond',serif; font-size:20px; margin:0 0 8px; color:var(--green); }
+
+/* ─── PLANNING TABS (Feb 6-11 / Feb 11-19) ─────────── */
+.plan-tabs { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:24px; }
+.plan-tab { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:7px 14px; font-size:13px; font-weight:600; cursor:pointer; color:var(--muted); transition:all .15s; }
+.plan-tab:hover { border-color:var(--gold); color:var(--gold); }
+.plan-tab.active { background:var(--gold); border-color:var(--gold); color:#fff; }
+.plan-panel { display:none; }
+.plan-panel.active { display:block; }
+.plan-day { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; margin-bottom:16px; }
+.plan-day-hdr { padding:12px 18px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; }
+.plan-day-hdr.hdr-blue { background:var(--blue); color:#fff; }
+.plan-day-hdr.hdr-red { background:var(--red); color:#fff; }
+.plan-day-hdr.hdr-green { background:var(--green); color:#fff; }
+.plan-day-hdr.hdr-gold { background:var(--gold); color:#fff; }
+.plan-day-hdr.hdr-muted { background:var(--faint); color:var(--ink); border-bottom:1px solid var(--border); }
+.plan-day-date { font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:600; }
+.plan-day-theme { font-size:11px; opacity:0.85; letter-spacing:0.07em; text-transform:uppercase; }
+.plan-day-body { padding:4px 18px 14px; }
+.plan-row { display:flex; gap:12px; padding:9px 0; border-bottom:1px solid var(--faint); align-items:flex-start; }
+.plan-row:last-child { border-bottom:none; }
+.plan-label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:var(--muted); min-width:86px; padding-top:2px; flex-shrink:0; }
+.plan-content { font-size:14px; flex:1; line-height:1.6; }
+.plan-cluster { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:16px; margin-bottom:12px; }
+.plan-cluster-title { font-family:'Cormorant Garamond',serif; font-size:18px; font-weight:600; color:var(--blue); margin:0 0 6px; }
+.plan-option { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:18px; margin-bottom:14px; }
+.plan-option-title { font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:600; margin:0 0 8px; }
+.plan-option-badges { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:10px; }
+.plan-dest { background:var(--surface); border-left:4px solid var(--blue); border-radius:0 var(--radius) var(--radius) 0; padding:16px 18px; margin-bottom:14px; border:1px solid var(--border); border-left:4px solid var(--blue); }
+.plan-dest-name { font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:600; margin:0 0 4px; }
+.plan-dest-meta { font-size:12px; color:var(--muted); margin:0 0 10px; }
+.carnival-confirmed { background:var(--blue-bg); border:2px solid var(--blue); border-radius:var(--radius); padding:16px 18px; margin-bottom:20px; }
+.carnival-confirmed-title { font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:600; color:var(--blue); margin:0 0 8px; }
+.carnival-confirmed-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:8px; margin-top:10px; }
+.carnival-confirmed-item label { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:var(--muted); display:block; margin-bottom:2px; }
+.carnival-confirmed-item span { font-size:13px; color:var(--ink); font-weight:600; }
+@media(max-width:600px){ #rio-map{height:380px;} .plan-row{flex-direction:column;gap:4px;} .plan-label{min-width:auto;} .tijuca-card-header{flex-direction:column;} .carnival-confirmed-grid{grid-template-columns:1fr 1fr;} }
 </style>
 
 <!-- HERO -->
@@ -807,6 +880,10 @@ tbody td {
     <a class="nav-link" href="#recommendation">Recommendation</a>
     <a class="nav-link" href="#food">Food Guide</a>
     <a class="nav-link" href="#places">Places of Interest</a>
+    <a class="nav-link" href="#riomap">Rio Map</a>
+    <a class="nav-link" href="#tijuca">Tijuca</a>
+    <a class="nav-link" href="#feb611">Feb 6–11</a>
+    <a class="nav-link" href="#feb1119">Feb 11–19</a>
   </div>
 </nav>
 
@@ -851,9 +928,10 @@ tbody td {
       </div>
       <div class="sched-card peak">
         <span class="sched-badge badge-peak">Sambadrome</span>
+        <span class="sched-badge badge-gold" style="margin-left:4px;">Our Night ✓</span>
         <div class="sched-date">Tuesday, Feb 9</div>
-        <div class="sched-event">Special Group — Night 3</div>
-        <p class="sched-note">Final parade night — most prestigious. Final 4 schools. Parades run until dawn.</p>
+        <div class="sched-event">Special Group — Night 3 — <strong>Camarote Mar</strong></div>
+        <p class="sched-note">Final parade night — most prestigious. Final 4 schools. Parades run until dawn. <strong>Our confirmed purchase: Camarote Mar, Sector 6, Sambódromo da Marquês de Sapucaí.</strong> Meeting point: Othon Palace Copacabana, Av. Atlântica, 3264.</p>
       </div>
       <div class="sched-card">
         <div class="sched-date">Wednesday, Feb 10</div>
@@ -3227,6 +3305,565 @@ tbody td {
   </div><!-- /.wrap -->
 </section><!-- /#places -->
 
+<!-- RIO MAP SECTION -->
+<section class="section" id="riomap">
+  <div class="wrap">
+    <p class="section-label">Geographic Planning · Rio de Janeiro</p>
+    <h2 class="section-title">Rio Map</h2>
+    <p class="section-desc">All key locations for the Rio portion of the trip — our Airbnb in Copacabana, tourist attractions from the Places of Interest section, Carnival venues, Tijuca, and our confirmed Camarote Mar locations. This map covers Rio de Janeiro only.</p>
+
+    <div class="map-legend">
+      <div class="map-legend-item"><span class="map-dot dot-airbnb"></span> Our Airbnb</div>
+      <div class="map-legend-item"><span class="map-dot dot-carnival"></span> Carnival Venue</div>
+      <div class="map-legend-item"><span class="map-dot dot-meeting"></span> Meeting Point</div>
+      <div class="map-legend-item"><span class="map-dot dot-attraction"></span> Tourist Attraction</div>
+      <div class="map-legend-item"><span class="map-dot dot-tijuca"></span> Tijuca</div>
+    </div>
+
+    <div id="rio-map"></div>
+    <p class="map-note">Map data © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors · Leaflet · Coordinates approximate — verify before navigating. Click any marker for details.</p>
+  </div>
+</section>
+
+<!-- TIJUCA SECTION -->
+<section class="section" id="tijuca">
+  <div class="wrap">
+    <p class="section-label">Rio de Janeiro · Atlantic Rainforest</p>
+    <h2 class="section-title">Tijuca</h2>
+    <p class="section-desc">Tijuca National Park is part of Rio — the Atlantic rainforest that blankets the hills surrounding the city is one of its most extraordinary features. This section covers all Tijuca-area locations, including those already listed in Places of Interest and additional researched entries.</p>
+
+    <div class="tijuca-intro">
+      <h3>About Tijuca National Park</h3>
+      <p style="margin:0;font-size:14px;line-height:1.65;">The world's largest urban tropical forest, covering 32 km² within Rio's city limits. Once nearly deforested for coffee plantations, it was replanted in the 19th century on the orders of Emperor Dom Pedro II — making it one of the earliest reforestation projects in history. Today it provides Rio with its water supply, its cooler temperatures, and its extraordinary green backdrop. Uber is the only practical way in from the South Zone — there is no metro access. Go early: afternoon thunderstorms arrive reliably in February, often by 2–3pm. Source: <a href="https://www.parquetijuca.com.br/" target="_blank" rel="noopener">parquetijuca.com.br</a></p>
+    </div>
+
+    <h3 class="places-section-h">Already in Places of Interest</h3>
+    <p style="font-size:13px;color:var(--muted);margin-top:-8px;margin-bottom:16px;">These entries appear in the Places of Tourist Interest section above. Listed here for Tijuca-specific planning.</p>
+
+    <div class="tijuca-card">
+      <div class="tijuca-card-header">
+        <p class="tijuca-name">Vista Chinesa</p>
+        <span class="tijuca-cat">Viewpoint · Drive-up</span>
+      </div>
+      <p class="tijuca-why">A Chinese-style pavilion at 395m inside Tijuca National Park, accessible directly by Uber without hiking. Excellent panorama of the forest, city, and bay. The easiest way to experience the park with young children, limited mobility, or limited time. Combine with Mesa do Imperador (2km away) and Cascatinha for a complete Tijuca half-day.</p>
+      <div class="tijuca-meta-grid">
+        <div class="tijuca-meta-item"><p class="tijuca-meta-label">Category</p><p class="tijuca-meta-val">Viewpoint inside park</p></div>
+        <div class="tijuca-meta-item"><p class="tijuca-meta-label">Duration</p><p class="tijuca-meta-val">20–30 min visit</p></div>
+        <div class="tijuca-meta-item"><p class="tijuca-meta-label">Cost</p><p class="tijuca-meta-val">Free</p></div>
+        <div class="tijuca-meta-item"><p class="tijuca-meta-label">From Airbnb</p><p class="tijuca-meta-val">~10 km / approx 25 min</p></div>
+        <div class="tijuca-meta-item"><p class="tijuca-meta-label">Transport</p><p class="tijuca-meta-val">Uber essential</p></div>
+        <div class="tijuca-meta-item"><p class="tijuca-meta-label">Best Time</p><p class="tijuca-meta-val">7–11am only</p></div>
+      </div>
+    </div>
+
+    <div class="tijuca-card">
+      <div class="tijuca-card-header">
+        <p class="tijuca-name">Cascatinha Taunay</p>
+        <span class="tijuca-cat">Waterfall · Short Walk</span>
+      </div>
+      <p class="tijuca-why">A 35m waterfall accessible via a short, flat walk from the main park road — about 10 minutes from the parking area. Beautiful for photography, especially in morning light. The pool at the base is cold and clear. Combine easily with Vista Chinesa (nearby on same road).</p>
+      <div class="tijuca-meta-grid">
+        <div class="tijuca-meta-item"><p class="tijuca-meta-label">Category</p><p class="tijuca-meta-val">Waterfall / short trail</p></div>
+        <div class="tijuca-meta-item"><p class="tijuca-meta-label">Duration</p><p class="tijuca-meta-val">30–45 min</p></div>
+        <div class="tijuca-meta-item"><p class="tijuca-meta-label">Cost</p><p class="tijuca-meta-val">Free</p></div>
+        <div class="tijuca-meta-item"><p class="tijuca-meta-label">From Airbnb</p><p class="tijuca-meta-val">~11 km / approx 25–30 min</p></div>
+        <div class="tijuca-meta-item"><p class="tijuca-meta-label">Transport</p><p class="tijuca-meta-val">Uber to main park road</p></div>
+        <div class="tijuca-meta-item"><p class="tijuca-meta-label">Combine With</p><p class="tijuca-meta-val">Vista Chinesa, Mesa do Imperador</p></div>
+      </div>
+    </div>
+
+    <h3 class="places-section-h">Additional Tijuca Research</h3>
+    <p style="font-size:13px;color:var(--muted);margin-top:-8px;margin-bottom:16px;">Researched September 2026. Verify operating details before visiting — 2027 Carnival period may affect access.</p>
+
+    <div class="tijuca-card">
+      <div class="tijuca-card-header">
+        <p class="tijuca-name">Pico da Tijuca</p>
+        <span class="tijuca-cat">Summit · Full-Day Hike</span>
+      </div>
+      <p class="tijuca-why">The highest point in Rio de Janeiro at 1,022m. The summit trail through dense Atlantic rainforest takes 4–5 hours return and requires good fitness, trail shoes, and an early start (before 7am in February to avoid afternoon storms). The view from the top — the city, both bays, and the Atlantic — is unmatched. Not a casual outing: this is a committed hiking day. Best suited to the Feb 11–19 extension if not done during Feb 6–11.</p>
+      <div class="food-warning" style="margin:10px 0 0;">Start no later than 7am. February afternoon thunderstorms arrive suddenly and make trails dangerous. Carry 2L water minimum. Hire a registered guide if unfamiliar with unmarked trails inside the park.</div>
+      <div class="tijuca-meta-grid">
+        <div class="tijuca-meta-item"><p class="tijuca-meta-label">Difficulty</p><p class="tijuca-meta-val">Strenuous — full day</p></div>
+        <div class="tijuca-meta-item"><p class="tijuca-meta-label">Duration</p><p class="tijuca-meta-val">4–5 hrs return trail</p></div>
+        <div class="tijuca-meta-item"><p class="tijuca-meta-label">Elevation</p><p class="tijuca-meta-val">1,022m summit</p></div>
+        <div class="tijuca-meta-item"><p class="tijuca-meta-label">From Airbnb</p><p class="tijuca-meta-val">~13 km / approx 30–35 min</p></div>
+        <div class="tijuca-meta-item"><p class="tijuca-meta-label">Cost</p><p class="tijuca-meta-val">Free (park)</p></div>
+        <div class="tijuca-meta-item"><p class="tijuca-meta-label">Transport</p><p class="tijuca-meta-val">Uber to trailhead</p></div>
+        <div class="tijuca-meta-item"><p class="tijuca-meta-label">Best For</p><p class="tijuca-meta-val">Experienced hikers only</p></div>
+        <div class="tijuca-meta-item"><p class="tijuca-meta-label">Source</p><p class="tijuca-meta-val"><a href="https://www.parquetijuca.com.br/" target="_blank" rel="noopener">parquetijuca.com.br</a></p></div>
+      </div>
+    </div>
+
+    <div class="tijuca-card">
+      <div class="tijuca-card-header">
+        <p class="tijuca-name">Mesa do Imperador</p>
+        <span class="tijuca-cat">Viewpoint · Drive-up</span>
+      </div>
+      <p class="tijuca-why">A flat granite plateau inside Tijuca National Park named for Emperor Dom Pedro II, who dined here with his court. Drive-up by Uber, no hiking required. Panoramic views over the southern neighborhoods, the bay, and the forest canopy. Less visited than Vista Chinesa (2km away on the same road) and worth combining with it — the two viewpoints together take less than an hour. Strong combination with Cascatinha for a compact Tijuca half-day.</p>
+      <div class="tijuca-meta-grid">
+        <div class="tijuca-meta-item"><p class="tijuca-meta-label">Category</p><p class="tijuca-meta-val">Viewpoint · Historic site</p></div>
+        <div class="tijuca-meta-item"><p class="tijuca-meta-label">Duration</p><p class="tijuca-meta-val">20–30 min visit</p></div>
+        <div class="tijuca-meta-item"><p class="tijuca-meta-label">Cost</p><p class="tijuca-meta-val">Free</p></div>
+        <div class="tijuca-meta-item"><p class="tijuca-meta-label">From Airbnb</p><p class="tijuca-meta-val">~11 km / approx 25 min</p></div>
+        <div class="tijuca-meta-item"><p class="tijuca-meta-label">Transport</p><p class="tijuca-meta-val">Uber (same road as Vista Chinesa)</p></div>
+        <div class="tijuca-meta-item"><p class="tijuca-meta-label">Combine With</p><p class="tijuca-meta-val">Vista Chinesa, Cascatinha</p></div>
+        <div class="tijuca-meta-item"><p class="tijuca-meta-label">Source</p><p class="tijuca-meta-val"><a href="https://www.parquetijuca.com.br/" target="_blank" rel="noopener">parquetijuca.com.br</a></p></div>
+      </div>
+    </div>
+
+    <div class="tijuca-card">
+      <div class="tijuca-card-header">
+        <p class="tijuca-name">Parque Lage</p>
+        <span class="tijuca-cat">Forest Park · Cultural Center</span>
+      </div>
+      <p class="tijuca-why">An Edwardian-era mansion set inside forest at the base of Corcovado, now housing the Escola de Artes Visuais (School of Visual Arts). The grounds are free to enter and feature ornamental gardens, grottos, an outdoor pool (decorative), and Atlantic rainforest trails that connect directly to Corcovado for experienced hikers. The café inside the central courtyard of the palace is one of Rio's most scenic. A practical companion to a Corcovado visit or a standalone 90-minute forest experience. Technically in the Jardim Botânico neighborhood at the park boundary — on the Tijuca forest edge.</p>
+      <div class="food-tip-green" style="margin:10px 0 0;">The café at Parque Lage (inside the palace courtyard) is excellent and popular — arrive before noon on weekends to secure a table. Serves coffee, juice, light food, and cake in a genuinely extraordinary setting.</div>
+      <div class="tijuca-meta-grid">
+        <div class="tijuca-meta-item"><p class="tijuca-meta-label">Category</p><p class="tijuca-meta-val">Forest park · Café · Art school</p></div>
+        <div class="tijuca-meta-item"><p class="tijuca-meta-label">Duration</p><p class="tijuca-meta-val">1–1.5 hrs</p></div>
+        <div class="tijuca-meta-item"><p class="tijuca-meta-label">Cost</p><p class="tijuca-meta-val">Free (grounds)</p></div>
+        <div class="tijuca-meta-item"><p class="tijuca-meta-label">Address</p><p class="tijuca-meta-val">R. Jardim Botânico, 414</p></div>
+        <div class="tijuca-meta-item"><p class="tijuca-meta-label">From Airbnb</p><p class="tijuca-meta-val">~6 km / approx 15–18 min</p></div>
+        <div class="tijuca-meta-item"><p class="tijuca-meta-label">Transport</p><p class="tijuca-meta-val">Uber to R. Jardim Botânico 414</p></div>
+        <div class="tijuca-meta-item"><p class="tijuca-meta-label">Combine With</p><p class="tijuca-meta-val">Jardim Botânico, Christ the Redeemer</p></div>
+        <div class="tijuca-meta-item"><p class="tijuca-meta-label">Source</p><p class="tijuca-meta-val"><a href="https://www.eavrj.com.br/" target="_blank" rel="noopener">eavrj.com.br</a></p></div>
+      </div>
+    </div>
+
+    <div class="tijuca-card">
+      <div class="tijuca-card-header">
+        <p class="tijuca-name">Açude da Solidão</p>
+        <span class="tijuca-cat">Reservoir · Forest Trail</span>
+      </div>
+      <p class="tijuca-why">A secluded reservoir deep inside Tijuca National Park, surrounded by Atlantic rainforest. Historically used as Rio's water supply in the imperial era. Today it's a peaceful, rarely-crowded destination reachable by a flat 1km walk from the road. The water is clear and the forest here is especially dense and cool. Best suited to visitors seeking genuine forest solitude rather than a viewpoint. Not suitable if afternoon thunderstorms are building (the forest road becomes slippery).</p>
+      <div class="tijuca-meta-grid">
+        <div class="tijuca-meta-item"><p class="tijuca-meta-label">Category</p><p class="tijuca-meta-val">Reservoir · Forest walk</p></div>
+        <div class="tijuca-meta-item"><p class="tijuca-meta-label">Duration</p><p class="tijuca-meta-val">1–2 hrs total</p></div>
+        <div class="tijuca-meta-item"><p class="tijuca-meta-label">Cost</p><p class="tijuca-meta-val">Free</p></div>
+        <div class="tijuca-meta-item"><p class="tijuca-meta-label">From Airbnb</p><p class="tijuca-meta-val">~14 km / approx 30–40 min</p></div>
+        <div class="tijuca-meta-item"><p class="tijuca-meta-label">Transport</p><p class="tijuca-meta-val">Uber into park, flat walk to reservoir</p></div>
+        <div class="tijuca-meta-item"><p class="tijuca-meta-label">Best For</p><p class="tijuca-meta-val">Forest solitude, photography</p></div>
+        <div class="tijuca-meta-item"><p class="tijuca-meta-label">Source</p><p class="tijuca-meta-val"><a href="https://www.parquetijuca.com.br/" target="_blank" rel="noopener">parquetijuca.com.br</a></p></div>
+      </div>
+    </div>
+
+    <div class="tijuca-card">
+      <div class="tijuca-card-header">
+        <p class="tijuca-name">Bom Retiro</p>
+        <span class="tijuca-cat">Forest Clearing · Picnic Area</span>
+      </div>
+      <p class="tijuca-why">A shaded forest clearing in the heart of Tijuca National Park, historically a rest stop on imperial-era trails. A small stream and flat grassy area make it a practical picnic and rest point. Best as part of a Tijuca loop combining Vista Chinesa → Cascatinha → Bom Retiro rather than as a standalone destination. Very accessible for families and those who want to be inside the rainforest without significant effort.</p>
+      <div class="tijuca-meta-grid">
+        <div class="tijuca-meta-item"><p class="tijuca-meta-label">Category</p><p class="tijuca-meta-val">Rest area · Forest clearing</p></div>
+        <div class="tijuca-meta-item"><p class="tijuca-meta-label">Duration</p><p class="tijuca-meta-val">30 min visit</p></div>
+        <div class="tijuca-meta-item"><p class="tijuca-meta-label">Cost</p><p class="tijuca-meta-val">Free</p></div>
+        <div class="tijuca-meta-item"><p class="tijuca-meta-label">From Airbnb</p><p class="tijuca-meta-val">~12 km / approx 25–30 min</p></div>
+        <div class="tijuca-meta-item"><p class="tijuca-meta-label">Transport</p><p class="tijuca-meta-val">Uber into park</p></div>
+        <div class="tijuca-meta-item"><p class="tijuca-meta-label">Combine With</p><p class="tijuca-meta-val">Vista Chinesa, Cascatinha</p></div>
+      </div>
+    </div>
+
+    <div class="tijuca-card">
+      <div class="tijuca-card-header">
+        <p class="tijuca-name">Pedra da Gávea</p>
+        <span class="tijuca-cat">Granite Monolith · Strenuous Hike</span>
+      </div>
+      <p class="tijuca-why">A dramatic 844m granite monolith that dominates the western Rio skyline. The summit view over the Atlantic, Barra da Tijuca, and the city is considered by many to be the best in Rio — unobstructed 360° views without buildings or infrastructure in the way. The hike is genuinely strenuous: 3–4 hours return, requires good fitness, scrambling on granite, and absolute avoidance of afternoon hours in February. Technically within Tijuca National Park at its western edge, above the São Conrado neighborhood. Not suitable during Carnival week given the physical demands — better suited to the Feb 11–19 extension for those with hiking experience.</p>
+      <div class="food-warning" style="margin:10px 0 0;"><strong>Strenuous.</strong> The final section involves unassisted granite scrambling. Guide recommended for first-time visitors. Start no later than 6:30am in February. Do not attempt if afternoon clouds are already building at dawn.</div>
+      <div class="tijuca-meta-grid">
+        <div class="tijuca-meta-item"><p class="tijuca-meta-label">Difficulty</p><p class="tijuca-meta-val">Very strenuous</p></div>
+        <div class="tijuca-meta-item"><p class="tijuca-meta-label">Duration</p><p class="tijuca-meta-val">3–4 hrs return</p></div>
+        <div class="tijuca-meta-item"><p class="tijuca-meta-val">844m summit</p><p class="tijuca-meta-label">Elevation</p></div>
+        <div class="tijuca-meta-item"><p class="tijuca-meta-label">From Airbnb</p><p class="tijuca-meta-val">~13 km / approx 25–35 min</p></div>
+        <div class="tijuca-meta-item"><p class="tijuca-meta-label">Cost</p><p class="tijuca-meta-val">Free (park)</p></div>
+        <div class="tijuca-meta-item"><p class="tijuca-meta-label">Best When</p><p class="tijuca-meta-val">Feb 11–19 extension</p></div>
+        <div class="tijuca-meta-item"><p class="tijuca-meta-label">Source</p><p class="tijuca-meta-val"><a href="https://www.parquetijuca.com.br/" target="_blank" rel="noopener">parquetijuca.com.br</a></p></div>
+      </div>
+    </div>
+
+    <div class="tip tip-gold" style="margin-top:16px;">
+      <span class="tip-icon">★</span>
+      <p><strong>Tijuca planning summary:</strong> For a 2–3 hour Tijuca morning during Feb 6–11, the optimal combination is Uber into the park → Vista Chinesa (drive-up panorama) → Mesa do Imperador (same road, 2km) → Cascatinha Taunay (short waterfall walk) → return Uber. This covers the park's three most accessible highlights before afternoon storms arrive. Parque Lage is a separate, easier option closer to the Airbnb (15 min) for a low-energy day. Pico da Tijuca and Pedra da Gávea are full-day committed hikes best suited to the Feb 11–19 extension.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FEB 6-11 SECTION -->
+<section class="section" id="feb611">
+  <div class="wrap">
+    <p class="section-label">Planning Window 1 · Rio + Carnival</p>
+    <h2 class="section-title">Feb 6–11, 2027</h2>
+    <p class="section-desc">The primary Rio and Carnival planning window. Five nights, February 6–11, 2027 — covering arrival, all three Special Group Sambadrome nights, sightseeing, and Carnival. Our confirmed booking is <strong>Camarote Mar on February 9</strong> only.</p>
+
+    <div class="carnival-confirmed">
+      <p class="carnival-confirmed-title">Our Confirmed Carnival — Camarote Mar</p>
+      <p style="font-size:14px;margin:0 0 8px;">Confirmed purchase for <strong>Tuesday, February 9, 2027</strong> — Special Group Night 3, the final and most prestigious parade night. This booking covers February 9 only. The other Camarote Mar dates (Feb 7, Feb 8) are separate events not covered by this purchase.</p>
+      <div class="carnival-confirmed-grid">
+        <div class="carnival-confirmed-item"><label>Event</label><span>Rio Carnaval 2027</span></div>
+        <div class="carnival-confirmed-item"><label>Experience</label><span>Camarote Mar</span></div>
+        <div class="carnival-confirmed-item"><label>Date</label><span>Tuesday, Feb 9, 2027</span></div>
+        <div class="carnival-confirmed-item"><label>Venue</label><span>Sambódromo da Marquês de Sapucaí</span></div>
+        <div class="carnival-confirmed-item"><label>Sector</label><span>Sector 6</span></div>
+        <div class="carnival-confirmed-item"><label>Address</label><span>R. Marquês de Sapucaí, Santo Cristo, RJ</span></div>
+        <div class="carnival-confirmed-item"><label>Meeting Point</label><span>Othon Palace Copacabana</span></div>
+        <div class="carnival-confirmed-item"><label>Meeting Address</label><span>Av. Atlântica, 3264, Copacabana</span></div>
+        <div class="carnival-confirmed-item"><label>Purchase Status</label><span style="color:var(--green);">✓ Confirmed</span></div>
+      </div>
+    </div>
+
+    <div class="plan-tabs" role="tablist">
+      <button class="plan-tab active" onclick="showPlan611('overview')">Overview</button>
+      <button class="plan-tab" onclick="showPlan611('carnival')">Carnival Planning</button>
+      <button class="plan-tab" onclick="showPlan611('sightseeing')">Sightseeing Days</button>
+      <button class="plan-tab" onclick="showPlan611('transport')">Transport</button>
+    </div>
+
+    <!-- PANEL: OVERVIEW -->
+    <div class="plan-panel active" id="plan611-overview">
+      <div class="tip tip-blue" style="margin-bottom:20px;">
+        <span class="tip-icon">📅</span>
+        <p><strong>Feb 6–11 at a glance:</strong> 5 nights, 6 days. Three Sambadrome nights (Feb 7, 8, 9 — we attend Feb 9). Approximately 3–4 sightseeing blocks across the other days. Our Airbnb is in Copacabana (R. Santa Clara, 405), which serves as the geographic reference point for all distances below.</p>
+      </div>
+
+      <div class="plan-day">
+        <div class="plan-day-hdr hdr-blue">
+          <div class="plan-day-date">Saturday, Feb 6 — Arrival</div>
+          <div class="plan-day-theme">Settle in · First evening</div>
+        </div>
+        <div class="plan-day-body">
+          <div class="plan-row"><div class="plan-label">Context</div><div class="plan-content">Série Ouro parades at Sambadrome tonight (second-division schools). Major blocos citywide. Some road disruptions expected near parade routes.</div></div>
+          <div class="plan-row"><div class="plan-label">Arrival</div><div class="plan-content">Settle in. Walk the Copacabana promenade to orient. Grab pão de queijo + café from a padaria near the Airbnb.</div></div>
+          <div class="plan-row"><div class="plan-label">Evening</div><div class="plan-content">Arpoador Rock for sunset (10 min walk from Airbnb direction of Ipanema). The crowd applauds when the sun drops — free and genuinely Rio. Dinner in Copacabana or Ipanema. Early night.</div></div>
+          <div class="plan-row"><div class="plan-label">Distance</div><div class="plan-content">Arpoador from Airbnb: ~1.4 km / approx 5–8 min walk via Copacabana Beach boardwalk.</div></div>
+        </div>
+      </div>
+
+      <div class="plan-day">
+        <div class="plan-day-hdr hdr-muted">
+          <div class="plan-day-date">Sunday, Feb 7 — Sambadrome Night 1</div>
+          <div class="plan-day-theme">Special Group · First samba schools</div>
+        </div>
+        <div class="plan-day-body">
+          <div class="plan-row"><div class="plan-label">Morning</div><div class="plan-content"><strong>Primary recommendation: Christ the Redeemer (clear sky only).</strong> Uber to Cosme Velho, first train 8am. 2–3 hrs. From Airbnb: ~7 km / approx 20–25 min. If cloudy: Santa Teresa + Selarón + Lapa instead.</div></div>
+          <div class="plan-row"><div class="plan-label">Afternoon</div><div class="plan-content">Santa Teresa wander → Selarón Steps → Lapa arches. Or recover after morning sightseeing. Carnaval Night 1 tonight.</div></div>
+          <div class="plan-row"><div class="plan-label">Note</div><div class="plan-content">Sambadrome Night 1: First 4 Special Group schools. You do not have a ticket for tonight. Blocos across the city, including Simpatia é Quase Amor (~200,000 in Ipanema). Home before late evening.</div></div>
+        </div>
+      </div>
+
+      <div class="plan-day">
+        <div class="plan-day-hdr hdr-muted">
+          <div class="plan-day-date">Monday, Feb 8 — Sambadrome Night 2</div>
+          <div class="plan-day-theme">Special Group · More schools</div>
+        </div>
+        <div class="plan-day-body">
+          <div class="plan-row"><div class="plan-label">Morning</div><div class="plan-content"><strong>Sugarloaf Mountain.</strong> Uber to Praia Vermelha (~7 km / approx 15–20 min from Airbnb). Cable car from 8am. 2.5–3 hrs for both peaks. Or: Cristo if moved from Feb 7 due to clouds.</div></div>
+          <div class="plan-row"><div class="plan-label">Afternoon</div><div class="plan-content">Ipanema Beach, Posto 9 (~1.5 km from Airbnb). Beach 2–3 hrs in the morning or early afternoon. Walk west to Leblon along the sand. Arpoador sunset on return.</div></div>
+          <div class="plan-row"><div class="plan-label">Note</div><div class="plan-content">Sambadrome Night 2 tonight. You do not have a ticket for tonight. Home by 10pm — tomorrow is our Carnival night. Rest.</div></div>
+        </div>
+      </div>
+
+      <div class="plan-day">
+        <div class="plan-day-hdr hdr-red">
+          <div class="plan-day-date">Tuesday, Feb 9 — CAMAROTE MAR ✓</div>
+          <div class="plan-day-theme">Special Group Night 3 · Final &amp; Most Prestigious · Our confirmed booking</div>
+        </div>
+        <div class="plan-day-body">
+          <div class="plan-row"><div class="plan-label">Morning</div><div class="plan-content">Sleep in. No alarm. No sightseeing. The final Special Group parade runs 9pm → 5–6am.</div></div>
+          <div class="plan-row"><div class="plan-label">Afternoon</div><div class="plan-content">Late lunch ~2pm. Hydrate. Pack essentials. Camarote Mar typically provides food and drink within the venue — confirm inclusions from your booking documentation.</div></div>
+          <div class="plan-row"><div class="plan-label">Meeting Point</div><div class="plan-content"><strong>Othon Palace Copacabana, Av. Atlântica, 3264.</strong> Confirm exact meeting time from your booking documentation. From Airbnb (R. Santa Clara, 405): ~300m / approx 3–5 min walk along the beachfront.</div></div>
+          <div class="plan-row"><div class="plan-label">Venue</div><div class="plan-content">Sambódromo da Marquês de Sapucaí, <strong>Sector 6</strong>. Address: R. Marquês de Sapucaí, Santo Cristo, Rio de Janeiro. Camarote Mar organises group transport from the Othon Palace meeting point — confirm transport details from your booking.</div></div>
+          <div class="plan-row"><div class="plan-label">Return</div><div class="plan-content">Camarote Mar typically provides return transport. Confirm with your booking. If returning independently: Metro Line 2 from Praça Onze (runs 24h on parade nights) → transfer at Central → Siqueira Campos (Copa). Walk ~8 min to Airbnb.</div></div>
+        </div>
+      </div>
+
+      <div class="plan-day">
+        <div class="plan-day-hdr hdr-green">
+          <div class="plan-day-date">Wednesday, Feb 10 — Recovery</div>
+          <div class="plan-day-theme">Post-Carnival · Apuração day</div>
+        </div>
+        <div class="plan-day-body">
+          <div class="plan-row"><div class="plan-label">Morning</div><div class="plan-content">Sleep in. No alarm. Açaí delivery or padaria breakfast when ready. Hydrate.</div></div>
+          <div class="plan-row"><div class="plan-label">Afternoon</div><div class="plan-content"><strong>Botanical Garden</strong> (~6 km / approx 15–18 min from Airbnb) — shaded, peaceful, ideal post-Carnival. Open Wednesday (not Monday). 2 hours. Lagoa walk if energy allows. Apuração (champion announcement) ~3pm today — some celebration on the streets.</div></div>
+          <div class="plan-row"><div class="plan-label">Optional</div><div class="plan-content">Mirante Dona Marta late afternoon if feeling recovered (~7 km / 20 min). 30 minutes, free viewpoint, Cristo framed above Guanabara Bay.</div></div>
+        </div>
+      </div>
+
+      <div class="plan-day">
+        <div class="plan-day-hdr hdr-blue">
+          <div class="plan-day-date">Thursday, Feb 11 — Final / Transition</div>
+          <div class="plan-day-theme">Checkout day or start of extension</div>
+        </div>
+        <div class="plan-day-body">
+          <div class="plan-row"><div class="plan-label">Priority</div><div class="plan-content">Whichever must-do hasn't been completed: (1) Cristo if missed; (2) Sugarloaf if missed; (3) <strong>Tijuca — Vista Chinesa + Cascatinha + Mesa do Imperador</strong> — the Atlantic rainforest is Rio's most undervisited highlight for visitors staying in the South Zone.</div></div>
+          <div class="plan-row"><div class="plan-label">Tijuca</div><div class="plan-content">Uber into park → Vista Chinesa → Mesa do Imperador → Cascatinha Taunay. ~10–11 km / approx 25 min from Airbnb. Entire loop: 2–3 hours. Return by 11am.</div></div>
+          <div class="plan-row"><div class="plan-label">Afternoon</div><div class="plan-content">Leblon lunch (Rua Dias Ferreira). Leblon Beach → Arpoador for final sunset. Dinner in Ipanema or Leblon.</div></div>
+          <div class="plan-row"><div class="plan-label">Extension</div><div class="plan-content">If continuing to Feb 11–19: Feb 11 is the transition/overlap date. See the Feb 11–19 tab for options.</div></div>
+        </div>
+      </div>
+    </div><!-- /plan611-overview -->
+
+    <!-- PANEL: CARNIVAL -->
+    <div class="plan-panel" id="plan611-carnival">
+      <h3 class="places-section-h">Camarote Mar — Feb 9, 2027</h3>
+      <div class="carnival-confirmed">
+        <p class="carnival-confirmed-title">Confirmed: Camarote Mar, Sector 6</p>
+        <p style="font-size:14px;margin:0 0 10px;">Our confirmed booking is for <strong>Tuesday, February 9, 2027 only</strong> — Special Group Night 3. This is the final and most prestigious parade night: the last 4 elite samba schools compete and the cumulative energy peaks. The Camarote Mar experience provides a premium, covered viewing area in Sector 6 with food and drink service (confirm inclusions from your booking documentation).</p>
+        <div class="carnival-confirmed-grid">
+          <div class="carnival-confirmed-item"><label>Venue</label><span>Sambódromo da Marquês de Sapucaí</span></div>
+          <div class="carnival-confirmed-item"><label>Sector</label><span>Sector 6</span></div>
+          <div class="carnival-confirmed-item"><label>Address</label><span>R. Marquês de Sapucaí, Santo Cristo, RJ, 20220-007</span></div>
+          <div class="carnival-confirmed-item"><label>Meeting Point</label><span>Othon Palace Copacabana, Av. Atlântica, 3264</span></div>
+          <div class="carnival-confirmed-item"><label>From Airbnb</label><span>~300m walk to meeting point</span></div>
+          <div class="carnival-confirmed-item"><label>Parade Start</label><span>~9:15–9:30pm</span></div>
+          <div class="carnival-confirmed-item"><label>Parade End</label><span>~5–6am</span></div>
+        </div>
+      </div>
+
+      <h3 class="places-section-h">Sambadrome Nights Overview</h3>
+      <p style="font-size:14px;margin-bottom:12px;">Three Special Group nights, Feb 7–9. We have a confirmed booking for Feb 9 only. Feb 7 and 8 are separate events — tickets for those nights would need to be purchased separately if desired.</p>
+      <div class="plan-cluster">
+        <p class="plan-cluster-title">Sunday, Feb 7 — Night 1</p>
+        <p style="font-size:14px;margin:0;">First 4 elite samba schools. Starts ~9pm, ends ~5–6am. We do not have a ticket for this night. Attending blocos during the day is an alternative way to experience Carnival energy.</p>
+      </div>
+      <div class="plan-cluster">
+        <p class="plan-cluster-title">Monday, Feb 8 — Night 2</p>
+        <p style="font-size:14px;margin:0;">Next 4 schools. Peak energy. We do not have a ticket for this night. The remaining 4 schools from Night 2 are considered among the competition's most hotly contested.</p>
+      </div>
+      <div class="plan-cluster" style="border-color:var(--blue);">
+        <p class="plan-cluster-title" style="color:var(--red);">Tuesday, Feb 9 — Night 3 ✓ OUR NIGHT</p>
+        <p style="font-size:14px;margin:0;">Final 4 schools. Most prestigious night — traditional winner is often announced in the days following, but the final night's energy is the highest of the three. <strong>Our confirmed Camarote Mar booking.</strong></p>
+      </div>
+      <div class="plan-cluster">
+        <p class="plan-cluster-title">Saturday, Feb 13 — Champions' Parade</p>
+        <p style="font-size:14px;margin:0;">Top schools parade again after the champion is announced. More festive, less intense. Falls within the Feb 11–19 extension window — worth attending if extending. Separate tickets required.</p>
+      </div>
+    </div><!-- /plan611-carnival -->
+
+    <!-- PANEL: SIGHTSEEING -->
+    <div class="plan-panel" id="plan611-sightseeing">
+      <div class="tip tip-blue" style="margin-bottom:16px;">
+        <span class="tip-icon">📍</span>
+        <p><strong>Approximately 3–4 sightseeing blocks</strong> are available during Feb 6–11, concentrated on Feb 6, 7, 8, 10, and 11. Feb 9 is Carnival day — no sightseeing. All distances are approximate from our Airbnb at R. Santa Clara, 405, Copacabana.</p>
+      </div>
+
+      <h3 class="places-section-h">Geographic Clusters from Airbnb</h3>
+      <div class="plan-cluster">
+        <p class="plan-cluster-title">Cluster A — Corcovado / Santa Teresa / Lapa</p>
+        <p style="font-size:14px;margin:0;">Christ the Redeemer (Cosme Velho, ~7 km / 20 min) → Uber across to Santa Teresa (~15 min) → Selarón Steps → Lapa arches. Natural 6–7 hour sequence. Best: Feb 7 morning (first train 8am clear sky only). Backup if cloudy: reverse order, do Santa Teresa/Lapa first, reschedule Cristo.</p>
+      </div>
+      <div class="plan-cluster">
+        <p class="plan-cluster-title">Cluster B — Sugarloaf / Urca / Mirante Dona Marta</p>
+        <p style="font-size:14px;margin:0;">Sugarloaf cable car base at Praia Vermelha (~7 km / 15–20 min from Airbnb). After descent: Urca seafront walk (15 min). Optional: Mirante Dona Marta (~15 min Uber from Urca). Best: Feb 8 morning. Full loop: 3–4 hours.</p>
+      </div>
+      <div class="plan-cluster">
+        <p class="plan-cluster-title">Cluster C — Ipanema / Arpoador / Leblon</p>
+        <p style="font-size:14px;margin:0;">Ipanema Beach Posto 9 (~1.5 km / 5–10 min walk or Uber from Airbnb). Walk the sand west to Leblon (3.5 km, 30 min). Arpoador Rock on return (~1.4 km from Airbnb). Entirely walkable. Best: Feb 8 afternoon or Feb 11 afternoon.</p>
+      </div>
+      <div class="plan-cluster">
+        <p class="plan-cluster-title">Cluster D — Botanical Garden / Lagoa</p>
+        <p style="font-size:14px;margin:0;">Jardim Botânico (~6 km / 15–18 min from Airbnb). Lagoa Rodrigo de Freitas lakeside walk nearby. Best: Feb 10 recovery day (shaded, gentle, closed Mondays — Wednesday is open). 2–3 hours total.</p>
+      </div>
+      <div class="plan-cluster">
+        <p class="plan-cluster-title">Cluster E — Tijuca National Park</p>
+        <p style="font-size:14px;margin:0;">Vista Chinesa (~10 km / 25 min) + Mesa do Imperador (~11 km / 25 min) + Cascatinha (~11 km / 25–30 min). Uber essential (no metro). Go before 10am — afternoon storms guaranteed in February. Best: Feb 11 morning. 2–3 hours total.</p>
+      </div>
+      <div class="plan-cluster">
+        <p class="plan-cluster-title">Cluster F — Parque Lage (Tijuca edge)</p>
+        <p style="font-size:14px;margin:0;">Forest park at base of Corcovado (~6 km / 15–18 min from Airbnb). Free grounds, excellent café in the palace courtyard. Low-energy option — good for a light recovery day or when combining with Jardim Botânico or Cristo. 1–1.5 hours.</p>
+      </div>
+    </div><!-- /plan611-sightseeing -->
+
+    <!-- PANEL: TRANSPORT -->
+    <div class="plan-panel" id="plan611-transport">
+      <h3 class="places-section-h">Carnival Night Transport — Feb 9</h3>
+      <div class="plan-cluster" style="border-color:var(--blue);">
+        <p class="plan-cluster-title" style="color:var(--blue);">To Camarote Mar — Meeting Point First</p>
+        <p style="font-size:14px;margin:0;"><strong>Walk to meeting point:</strong> Othon Palace Copacabana (Av. Atlântica, 3264) is approximately 300m from R. Santa Clara, 405 — a 3–5 minute walk along the beach avenue. Camarote Mar organises transport from this meeting point to Sector 6 of the Sambadrome. Confirm departure time from your booking documentation. Do not attempt to go to the Sambadrome independently by Uber on a parade night — traffic gridlock is severe.</p>
+      </div>
+      <div class="plan-cluster">
+        <p class="plan-cluster-title">Return from Sambadrome — approx 5–6am</p>
+        <p style="font-size:14px;margin:0;">Camarote Mar may provide return transport — confirm from your booking. If returning independently: Metro Line 2 from <strong>Praça Onze</strong> (runs 24 hours on all three parade nights) → transfer at Central do Brasil → Line 1 → Siqueira Campos (Copa). Walk ~8 min to Airbnb. Do not try to take Uber directly from the Sambadrome exit at 5am — walk 2–3 blocks clear first before opening the app.</p>
+      </div>
+
+      <h3 class="places-section-h">General Transport Notes</h3>
+      <div class="tip tip-blue" style="margin-bottom:12px;">
+        <span class="tip-icon">🚇</span>
+        <p><strong>Metro 24-hour service:</strong> Runs all night on Feb 7, 8, and 9 only. Normal hours all other days. Line 1 serves Copacabana (Siqueira Campos, Cardeal Arcoverde). Line 2 connects to Sambadrome (Praça Onze). Transfer at Central do Brasil.</p>
+      </div>
+      <div class="plan-cluster">
+        <p class="plan-cluster-title">Uber during Carnival week</p>
+        <p style="font-size:14px;margin:0;">Expect 3–8× surge pricing throughout the week. From our Airbnb, always request pickup on interior streets (Rua Barata Ribeiro, Rua Ministro Viveiros de Castro) rather than Av. Atlântica, which closes during major bloco events. Install 99 alongside Uber — having both apps increases availability. Budget approximately R$30–80 per Uber trip within the South Zone depending on surge and destination.</p>
+      </div>
+      <div class="plan-cluster">
+        <p class="plan-cluster-title">Distances from R. Santa Clara, 405 (approximate)</p>
+        <p style="font-size:14px;margin:0;">
+          Arpoador: ~1.4 km, 5–8 min walk ·
+          Ipanema Posto 9: ~1.5 km, 10 min walk ·
+          Siqueira Campos metro: ~800m, 8 min walk ·
+          Sugarloaf cable car base: ~7 km, 15–20 min Uber ·
+          Cristo Cosme Velho: ~7 km, 20–25 min Uber ·
+          Botanical Garden: ~6 km, 15–18 min Uber ·
+          Vista Chinesa: ~10 km, 25 min Uber ·
+          Sambadrome: ~8 km, 25 min (metro strongly preferred)
+        </p>
+      </div>
+    </div><!-- /plan611-transport -->
+
+  </div>
+</section>
+
+<!-- FEB 11-19 SECTION -->
+<section class="section" id="feb1119">
+  <div class="wrap">
+    <p class="section-label">Planning Window 2 · Extension Planning</p>
+    <h2 class="section-title">Feb 11–19, 2027</h2>
+    <p class="section-desc">The extension planning window for those who continue beyond Feb 11. February 11 is the transition/overlap date. The extension may be additional Rio, destinations elsewhere in Brazil, or a combination. Research below covers both options — no destination is recommended over another. The purpose is factual planning information.</p>
+
+    <div class="tip tip-gold" style="margin-bottom:20px;">
+      <span class="tip-icon">📋</span>
+      <p><strong>The extension is not yet decided.</strong> February 11–19 could be more Rio, another Brazilian destination, or a combination. The Champions' Parade on Saturday, February 13 falls within this window and is worth noting for those staying. Research below reflects September 2026 knowledge — verify all logistics and travel times before booking.</p>
+    </div>
+
+    <div class="plan-tabs" role="tablist">
+      <button class="plan-tab active" onclick="showPlan1119('a-rio')">Option A — More Rio</button>
+      <button class="plan-tab" onclick="showPlan1119('b-outside')">Option B — Other Brazil</button>
+      <button class="plan-tab" onclick="showPlan1119('notes')">Planning Notes</button>
+    </div>
+
+    <!-- PANEL: MORE RIO -->
+    <div class="plan-panel active" id="plan1119-a-rio">
+      <div class="plan-option">
+        <p class="plan-option-title">Option A — Additional Rio de Janeiro</p>
+        <p style="font-size:14px;margin:0 0 12px;">Rio has significant depth for a second week. The Feb 6–11 window covers the South Zone highlights at pace. An extended stay allows proper time for Tijuca, deeper culture, the Champions' Parade, and parts of Rio not typically reached in a short visit.</p>
+
+        <h3 class="places-section-h" style="margin-top:0;">Champions' Parade — Saturday, Feb 13</h3>
+        <div class="plan-cluster" style="border-color:var(--gold);">
+          <p class="plan-cluster-title" style="color:var(--gold);">Saturday, Feb 13, 2027</p>
+          <p style="font-size:14px;margin:0;">The top schools parade again after the champion is announced. More festive atmosphere, smaller crowds than the competitive nights, tickets generally easier to obtain. Falls 4 days into the Feb 11–19 window. Source: official LIESA calendar. Separate ticket purchase required — not covered by the Camarote Mar Feb 9 booking.</p>
+        </div>
+
+        <h3 class="places-section-h">Tijuca — Full Day or Multi-Day</h3>
+        <p style="font-size:14px;margin-bottom:12px;">If Tijuca was not completed during Feb 6–11, the extension allows proper time for it. Highlights for a dedicated Tijuca day:</p>
+        <div class="plan-cluster">
+          <p class="plan-cluster-title">Pico da Tijuca — Full Day Hike</p>
+          <p style="font-size:14px;margin:0;">Rio's highest point at 1,022m. Recommended for this window rather than the busy Feb 6–11 period. 4–5 hrs return, early start essential (6:30–7am latest in February). See the Tijuca tab for full details.</p>
+        </div>
+        <div class="plan-cluster">
+          <p class="plan-cluster-title">Pedra da Gávea — Very Strenuous Hike</p>
+          <p style="font-size:14px;margin:0;">844m granite monolith, best view in Rio. 3–4 hours return. Strenuous granite scrambling. Best suited to the extension period rather than during Carnival fatigue. See the Tijuca tab for full details.</p>
+        </div>
+
+        <h3 class="places-section-h">Additional Rio Experiences</h3>
+        <div class="plan-cluster">
+          <p class="plan-cluster-title">Ilha Grande</p>
+          <p style="font-size:14px;margin:0;">A large island ~2.5 hours from Rio by bus + ferry. No cars allowed. Exceptional hiking, crystal clear water, secluded beaches, and Atlantic rainforest. Suitable for 2–3 nights. Not a day trip — requires an overnight stay to justify the travel. Best reached from Conceição de Jacarei or Mangaratiba.</p>
+        </div>
+        <div class="plan-cluster">
+          <p class="plan-cluster-title">Paraty (Paraty)</p>
+          <p style="font-size:14px;margin:0;">A perfectly preserved 18th-century Portuguese colonial town on the Costa Verde, ~4 hours from Rio by bus. Cobblestone streets, colonial churches, excellent seafood, and surrounding Atlantic forest. Justifies 2 nights. Very popular — book accommodation in advance. Bus from Rodoviária Novo Rio or private transfer.</p>
+        </div>
+        <div class="plan-cluster">
+          <p class="plan-cluster-title">Búzios</p>
+          <p style="font-size:14px;margin:0;">A peninsula ~3 hours east of Rio with 23 beaches and a lively restaurant/bar street (Rua das Pedras). Popularised internationally by Brigitte Bardot in the 1960s. Best for beach relaxation. More accessible than Ilha Grande. Justifies 2–3 nights. Bus from Rodoviária Novo Rio.</p>
+        </div>
+      </div>
+    </div><!-- /plan1119-a-rio -->
+
+    <!-- PANEL: OTHER BRAZIL -->
+    <div class="plan-panel" id="plan1119-b-outside">
+      <div class="plan-option">
+        <p class="plan-option-title">Option B — Other Destinations in Brazil</p>
+        <p style="font-size:14px;margin:0 0 12px;">The following destinations are within practical reach of Rio for a Feb 11–19 extension. No destination is ranked or recommended above another — these are factual options for research purposes. Travel times are approximate and should be independently verified. February is peak domestic season in Brazil; book flights and accommodation well in advance.</p>
+
+        <div class="plan-dest">
+          <p class="plan-dest-name">Iguazu Falls (Foz do Iguaçu)</p>
+          <p class="plan-dest-meta">Paraná, Brazil / Misiones, Argentina · ~2 hrs flight from Rio · UNESCO World Heritage Site</p>
+          <p style="font-size:14px;margin:0 0 8px;">The largest waterfall system in the world: 275 individual falls across ~2.7 km, up to 82m high. The Brazilian side offers the panoramic overview; the Argentine side gives close-up access to the falls' face. Most visitors see both sides, requiring one night on each side of the border (easy crossing). 2–3 nights is the standard visit. Flights from Rio Galeão to Foz do Iguaçu International Airport. This is possibly the single most spectacular natural site in South America — justifies a dedicated trip. Source: <a href="https://www.cataratasdoiguacu.com.br/" target="_blank" rel="noopener">cataratasdoiguacu.com.br</a></p>
+          <div class="tijuca-meta-grid" style="margin-top:10px;">
+            <div class="tijuca-meta-item"><p class="tijuca-meta-label">Flight from Rio</p><p class="tijuca-meta-val">~2 hrs (GIG → IGU)</p></div>
+            <div class="tijuca-meta-item"><p class="tijuca-meta-label">Suggested Stay</p><p class="tijuca-meta-val">2–3 nights</p></div>
+            <div class="tijuca-meta-item"><p class="tijuca-meta-label">Feb 11–19 Fit</p><p class="tijuca-meta-val">Yes — strong fit</p></div>
+            <div class="tijuca-meta-item"><p class="tijuca-meta-label">Practical Note</p><p class="tijuca-meta-val">February is peak season — book early</p></div>
+          </div>
+        </div>
+
+        <div class="plan-dest">
+          <p class="plan-dest-name">Fernando de Noronha</p>
+          <p class="plan-dest-meta">Pernambuco · ~2.5 hrs flight from Rio · Marine National Park</p>
+          <p style="font-size:14px;margin:0 0 8px;">A remote volcanic archipelago 350 km off the Brazilian coast, with some of the clearest water and best snorkeling/diving in the South Atlantic. Strictly controlled access (visitor fee + daily environmental tax) means it remains unspoilt. 3–5 nights is the recommended stay to justify the journey and see the main beaches (Baía do Sancho, Praia do Leão, Atalaia). Access via Recife (1 hr connecting flight) or direct from selected cities. Not cheap — accommodation and environmental fees add up — but genuinely extraordinary. Source: <a href="https://www.noronha.pe.gov.br/" target="_blank" rel="noopener">noronha.pe.gov.br</a></p>
+          <div class="tijuca-meta-grid" style="margin-top:10px;">
+            <div class="tijuca-meta-item"><p class="tijuca-meta-label">Flight from Rio</p><p class="tijuca-meta-val">~2.5 hrs (via Recife)</p></div>
+            <div class="tijuca-meta-item"><p class="tijuca-meta-label">Suggested Stay</p><p class="tijuca-meta-val">3–5 nights</p></div>
+            <div class="tijuca-meta-item"><p class="tijuca-meta-label">Feb 11–19 Fit</p><p class="tijuca-meta-val">Yes — tight but workable</p></div>
+            <div class="tijuca-meta-item"><p class="tijuca-meta-label">Practical Note</p><p class="tijuca-meta-val">Daily visitor tax + limited pousadas; book very early</p></div>
+          </div>
+        </div>
+
+        <div class="plan-dest">
+          <p class="plan-dest-name">Salvador, Bahia</p>
+          <p class="plan-dest-meta">Bahia · ~2 hrs flight from Rio · Afro-Brazilian cultural capital</p>
+          <p style="font-size:14px;margin:0 0 8px;">Brazil's most historically and culturally distinctive city — the center of Afro-Brazilian culture, Candomblé, and the birthplace of Brazilian samba. The Pelourinho (historic center, UNESCO World Heritage Site) is extraordinary architecture. Salvador also hosts its own Carnival — one of the largest in Brazil. In 2027, Salvador Carnival overlaps with or falls near our dates (Salvador Carnival typically runs in late February). 3–4 nights recommended to cover Pelourinho, Bonfim church, Itaparica island, and beaches. Source: <a href="https://www.bahia.com.br/" target="_blank" rel="noopener">bahia.com.br</a></p>
+          <div class="tijuca-meta-grid" style="margin-top:10px;">
+            <div class="tijuca-meta-item"><p class="tijuca-meta-label">Flight from Rio</p><p class="tijuca-meta-val">~2 hrs (GIG → SSA)</p></div>
+            <div class="tijuca-meta-item"><p class="tijuca-meta-label">Suggested Stay</p><p class="tijuca-meta-val">3–4 nights</p></div>
+            <div class="tijuca-meta-item"><p class="tijuca-meta-label">Feb 11–19 Fit</p><p class="tijuca-meta-val">Yes</p></div>
+            <div class="tijuca-meta-item"><p class="tijuca-meta-label">Note</p><p class="tijuca-meta-val">Salvador Carnival may run concurrently — verify exact dates</p></div>
+          </div>
+        </div>
+
+        <div class="plan-dest">
+          <p class="plan-dest-name">Florianópolis</p>
+          <p class="plan-dest-meta">Santa Catarina · ~1.5 hrs flight from Rio · Island with 42 beaches</p>
+          <p style="font-size:14px;margin:0 0 8px;">A large island city in southern Brazil with an extraordinary variety of beaches (42 across one island) ranging from surf beaches on the Atlantic side to calm lagoon beaches on the interior. Strong European/German/Italian heritage. The food scene is excellent — especially seafood. February is peak season (warm, busy). Best for beach relaxation and water sports. 3–4 nights sufficient to cover the main beaches. Source: <a href="https://www.turismo.sc.gov.br/" target="_blank" rel="noopener">turismo.sc.gov.br</a></p>
+          <div class="tijuca-meta-grid" style="margin-top:10px;">
+            <div class="tijuca-meta-item"><p class="tijuca-meta-label">Flight from Rio</p><p class="tijuca-meta-val">~1.5 hrs (GIG → FLN)</p></div>
+            <div class="tijuca-meta-item"><p class="tijuca-meta-label">Suggested Stay</p><p class="tijuca-meta-val">3–4 nights</p></div>
+            <div class="tijuca-meta-item"><p class="tijuca-meta-meta-val" style="display:none;"></p><p class="tijuca-meta-label">Feb 11–19 Fit</p><p class="tijuca-meta-val">Yes — strong beach option</p></div>
+            <div class="tijuca-meta-item"><p class="tijuca-meta-label">Note</p><p class="tijuca-meta-val">Peak season — book accommodation well in advance</p></div>
+          </div>
+        </div>
+
+        <div class="plan-dest">
+          <p class="plan-dest-name">Pantanal (via Campo Grande or Cuiabá)</p>
+          <p class="plan-dest-meta">Mato Grosso do Sul / Mato Grosso · ~2 hrs flight from Rio · World's largest tropical wetland</p>
+          <p style="font-size:14px;margin:0 0 8px;">The world's largest tropical wetland — 150,000 km² of flooded plains that supports an extraordinary concentration of wildlife: jaguars, giant otters, hyacinth macaws, caimans, capybaras, and over 650 bird species. February is the wet season (the Pantanal floods, which actually increases wildlife density). Logistics require a dedicated tour operator and 3–4 nights minimum at a lodge. Not a casual trip — this is a deliberate wildlife experience. For nature travellers it is arguably the best wildlife destination in South America. Source: <a href="https://www.brasilpantanal.com.br/" target="_blank" rel="noopener">brasilpantanal.com.br</a></p>
+          <div class="tijuca-meta-grid" style="margin-top:10px;">
+            <div class="tijuca-meta-item"><p class="tijuca-meta-label">Flight from Rio</p><p class="tijuca-meta-val">~2 hrs (GIG → CGR or CGB)</p></div>
+            <div class="tijuca-meta-item"><p class="tijuca-meta-label">Suggested Stay</p><p class="tijuca-meta-val">3–4 nights lodge</p></div>
+            <div class="tijuca-meta-item"><p class="tijuca-meta-label">Feb 11–19 Fit</p><p class="tijuca-meta-val">Yes — requires pre-booking lodge</p></div>
+            <div class="tijuca-meta-item"><p class="tijuca-meta-label">Note</p><p class="tijuca-meta-val">February wet season; book a reputable lodge operator in advance</p></div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /plan1119-b-outside -->
+
+    <!-- PANEL: NOTES -->
+    <div class="plan-panel" id="plan1119-notes">
+      <div class="plan-cluster">
+        <p class="plan-cluster-title">February 11 — Transition Date</p>
+        <p style="font-size:14px;margin:0;">Feb 11 is the overlap date between the two windows. If checking out of the Copacabana Airbnb on Feb 11, a same-day flight to another destination is practical (morning Tijuca + afternoon flight) or a night in Rio before departing Feb 12 is an option. Feb 11 morning Tijuca is the recommended last Rio activity if the extension begins immediately after.</p>
+      </div>
+      <div class="plan-cluster">
+        <p class="plan-cluster-title">Champions' Parade — Feb 13</p>
+        <p style="font-size:14px;margin:0;">Falls in the extension window. If staying in Rio through Feb 13, the Champions' Parade at the Sambadrome is worth attending — more relaxed atmosphere than the competitive nights, tickets more accessible. Separate purchase required; our Camarote Mar booking (Feb 9) does not cover this.</p>
+      </div>
+      <div class="plan-cluster">
+        <p class="plan-cluster-title">Combination Approach</p>
+        <p style="font-size:14px;margin:0;">A hybrid extension is feasible: e.g. 2–3 more nights in Rio (including Champions' Parade on Feb 13) followed by a 4–5 night trip to another destination (Iguazu, Fernando de Noronha, or Salvador) before departing from a different city. This approach is logistically more complex but maximises Brazil coverage.</p>
+      </div>
+      <div class="plan-cluster">
+        <p class="plan-cluster-title">Booking Timing</p>
+        <p style="font-size:14px;margin:0;">February is Brazil's peak domestic travel season (summer holidays). September 2026 is early enough to book ahead for most destinations, but Fernando de Noronha in particular has very limited accommodation and visitor quotas — book as early as possible. Iguazu and Pantanal lodges also fill quickly for February.</p>
+      </div>
+      <div class="tip tip-gold" style="margin-top:16px;">
+        <span class="tip-icon">★</span>
+        <p><strong>Sources used for Feb 11–19 research:</strong> cataratasdoiguacu.com.br (Iguazu), noronha.pe.gov.br (Fernando de Noronha), bahia.com.br (Salvador), turismo.sc.gov.br (Florianópolis), brasilpantanal.com.br (Pantanal). Paraty and Búzios/Ilha Grande from general Rio coastal research. All travel times approximate. Verify directly before booking.</p>
+      </div>
+    </div><!-- /plan1119-notes -->
+
+  </div>
+</section>
+
 <div class="footer">
   <p>Neighborhood, safety, transport, and Carnival schedule sections are based on current research (September 2026).<br>Accommodation section: 0 verified properties — all 10 candidates excluded. Use the search checklist in the Accommodations section to find qualifying properties.</p>
   <p style="margin-top:8px;">
@@ -3272,4 +3909,134 @@ const observer = new IntersectionObserver((entries) => {
   });
 }, { rootMargin: '-40% 0px -55% 0px' });
 sections.forEach(s => observer.observe(s));
+
+// ── Feb 6-11 planning tab switcher ──────────────────────
+function showPlan611(id) {
+  document.querySelectorAll('#feb611 .plan-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('#feb611 .plan-tab').forEach(t => t.classList.remove('active'));
+  const panel = document.getElementById('plan611-' + id);
+  if (panel) panel.classList.add('active');
+  if (event && event.target) event.target.classList.add('active');
+}
+
+// ── Feb 11-19 planning tab switcher ─────────────────────
+function showPlan1119(id) {
+  document.querySelectorAll('#feb1119 .plan-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('#feb1119 .plan-tab').forEach(t => t.classList.remove('active'));
+  const panel = document.getElementById('plan1119-' + id);
+  if (panel) panel.classList.add('active');
+  if (event && event.target) event.target.classList.add('active');
+}
+</script>
+
+<!-- Leaflet map — loaded after page content so it doesn't block rendering -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+(function initRioMap() {
+  var mapEl = document.getElementById('rio-map');
+  if (!mapEl) return;
+
+  // Center on Copacabana / our Airbnb area
+  var map = L.map('rio-map', { zoomControl: true }).setView([-22.958, -43.197], 12);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    maxZoom: 18
+  }).addTo(map);
+
+  // ── Marker icon factories ────────────────────────────
+  function mkIcon(color, label) {
+    return L.divIcon({
+      className: '',
+      html: '<div style="background:' + color + ';width:14px;height:14px;border-radius:50%;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;font-size:7px;color:#fff;font-weight:700;">' + (label||'') + '</div>',
+      iconSize: [14,14],
+      iconAnchor: [7,7],
+      popupAnchor: [0,-10]
+    });
+  }
+  var AIRBNB_COLOR    = '#E74C3C';
+  var CARNIVAL_COLOR  = '#1B4D72';
+  var MEETING_COLOR   = '#8E44AD';
+  var ATTRACT_COLOR   = '#C49A22';
+  var TIJUCA_COLOR    = '#2A6644';
+
+  // ── Popup builder ────────────────────────────────────
+  function popup(name, cat, catClass, desc, addr) {
+    return '<div class="popup-name">' + name + '</div>' +
+           '<div class="popup-cat ' + catClass + '">' + cat + '</div>' +
+           (desc ? '<div class="popup-desc">' + desc + '</div>' : '') +
+           (addr ? '<div class="popup-addr">' + addr + '</div>' : '');
+  }
+
+  // ── Our Airbnb ───────────────────────────────────────
+  L.marker([-22.9718, -43.1831], {icon: mkIcon(AIRBNB_COLOR)})
+    .bindPopup(popup('Our Airbnb — Copacabana', 'Our Accommodation', 'cat-airbnb',
+      'R. Santa Clara, 405 — our base for Feb 6–11, 2027. Primary geographic reference point.',
+      'R. Santa Clara, 405, Copacabana, Rio de Janeiro'))
+    .addTo(map);
+
+  // ── Carnival venues ──────────────────────────────────
+  L.marker([-22.9128, -43.1967], {icon: mkIcon(CARNIVAL_COLOR)})
+    .bindPopup(popup('Sambódromo da Marquês de Sapucaí', 'Carnival Venue', 'cat-carnival',
+      'Main Sambadrome. Special Group parades: Feb 7, 8, 9, 2027. Our booking (Camarote Mar, Sector 6) is on Feb 9.',
+      'R. Marquês de Sapucaí, Santo Cristo, Rio de Janeiro, RJ, 20220-007'))
+    .addTo(map);
+
+  L.marker([-22.9128, -43.1967], {icon: mkIcon(CARNIVAL_COLOR)})
+    .bindPopup(popup('Camarote Mar — Sector 6 ✓', 'Our Confirmed Booking', 'cat-carnival',
+      'Our confirmed Camarote Mar booking. Tuesday, Feb 9, 2027 only. Sector 6, Sambódromo da Marquês de Sapucaí. Purchase confirmed.',
+      'R. Marquês de Sapucaí, Santo Cristo, RJ, 20220-007'));
+  // (Overlaps Sambadrome — same physical location, shown once)
+
+  // ── Camarote Mar meeting point ───────────────────────
+  L.marker([-22.9690, -43.1845], {icon: mkIcon(MEETING_COLOR)})
+    .bindPopup(popup('Camarote Mar Meeting Point — Othon Palace Copacabana', 'Meeting Point (Not the Venue)', 'cat-meeting',
+      'This is the pre-Carnival meeting/assembly point for Camarote Mar transport to the Sambadrome — NOT the Sambadrome itself. Confirm exact meeting time from your booking documentation.',
+      'Av. Atlântica, 3264, Copacabana, Rio de Janeiro, RJ'))
+    .addTo(map);
+
+  // ── Tourist attractions (from #places section) ───────
+  var attractions = [
+    { latlng: [-22.9519, -43.2105], name: 'Christ the Redeemer (Cristo Redentor)', desc: 'Must Do · 10/10. Corcovado Mountain, 709m. Book tram online. First train 8am. Clear mornings only.', addr: 'Parque Nacional da Tijuca, Cosme Velho' },
+    { latlng: [-22.9491, -43.1543], name: 'Sugarloaf Mountain (Pão de Açúcar)', desc: 'Must Do · 9.5/10. Two cable cars to 396m summit. Bay panorama. 8am–9pm daily.', addr: 'Praia General Tibúrcio, Urca' },
+    { latlng: [-22.9892, -43.1882], name: 'Arpoador Rock', desc: 'Must Do · 10/10. Sunset ritual — crowd applauds when the sun disappears. Every clear evening. Free.', addr: 'Between Copacabana and Ipanema' },
+    { latlng: [-22.9877, -43.1990], name: 'Ipanema Beach (Posto 9)', desc: 'Must Do · 9/10. Most culturally significant beach stretch. Morning best. Walkable from Airbnb.', addr: 'Posto 9, Ipanema, Rio de Janeiro' },
+    { latlng: [-22.9707, -43.1840], name: 'Copacabana Beach & Promenade', desc: 'Recommended · 7.5/10. 4km Art Deco mosaic promenade. Best as early morning walk.', addr: 'Copacabana Beach, Rio de Janeiro' },
+    { latlng: [-22.9843, -43.2248], name: 'Leblon Beach & Neighborhood', desc: 'Optional · 8/10. Quieter continuation of Ipanema. Rua Dias Ferreira restaurant strip.', addr: 'Leblon Beach, Rio de Janeiro' },
+    { latlng: [-22.9470, -43.1924], name: 'Mirante Dona Marta', desc: 'Highly Recommended · 8.5/10. Free viewpoint. Cristo framed above Guanabara Bay. 30 min, no queue.', addr: 'Estrada Dona Marta, Botafogo' },
+    { latlng: [-22.9675, -43.2239], name: 'Jardim Botânico (Botanical Garden)', desc: 'Highly Recommended · 8.5/10. 134 imperial palms, 40m tall. Shaded. Closed Mondays. R$35.', addr: 'Rua Jardim Botânico, 1008, Rio de Janeiro' },
+    { latlng: [-22.9742, -43.2087], name: 'Lagoa Rodrigo de Freitas', desc: 'Optional · 7/10. 7.5km lakeside circuit. Easy walk/jog. Combine with Botanical Garden.', addr: 'Av. Epitácio Pessoa, Rio de Janeiro' },
+    { latlng: [-22.9228, -43.1792], name: 'Santa Teresa', desc: 'Must Do · 9/10. Bohemian hillside neighborhood. Cobblestone streets, street art, galleries. Uber up, walk to Lapa.', addr: 'Santa Teresa, Rio de Janeiro' },
+    { latlng: [-22.9175, -43.1800], name: 'Escadaria Selarón (Selarón Steps)', desc: 'Must Do · 8.5/10. 2,000 tiles from 60+ countries. 215 steps. Daytime only.', addr: 'Rua Joaquim Silva, Lapa, Rio de Janeiro' },
+    { latlng: [-22.9182, -43.1773], name: 'Lapa Arches (Arcos da Lapa)', desc: 'Recommended · 8/10. 18th-century aqueduct. Samba bars nearby. Photogenic by day.', addr: 'Arcos da Lapa, Centro, Rio de Janeiro' },
+    { latlng: [-22.9086, -43.1766], name: 'Centro Histórico & Cinelândia', desc: 'Optional · 6.5/10. Teatro Municipal, Biblioteca Nacional. Best on weekdays (quiet on weekends).', addr: 'Cinelândia, Centro, Rio de Janeiro' },
+    { latlng: [-22.9021, -43.2255], name: 'Feira de São Cristóvão', desc: 'Optional · 7.5/10. Huge indoor Northeastern market. Forró music, regional food. Thu–Sun.', addr: 'Campo de São Cristóvão, São Cristóvão' },
+    { latlng: [-22.9155, -43.1797], name: 'Feira do Lavradio (Last Saturday)', desc: 'Optional · 8/10. Antiques, food, samba. Last Saturday monthly. Check if Feb 6 is a Feira day.', addr: 'Rua do Lavradio, Lapa, Rio de Janeiro' }
+  ];
+
+  attractions.forEach(function(a) {
+    L.marker(a.latlng, {icon: mkIcon(ATTRACT_COLOR)})
+      .bindPopup(popup(a.name, 'Tourist Attraction', 'cat-attraction', a.desc, a.addr))
+      .addTo(map);
+  });
+
+  // ── Tijuca locations ─────────────────────────────────
+  var tijuca = [
+    { latlng: [-22.9707, -43.2686], name: 'Vista Chinesa', desc: 'Drive-up viewpoint at 395m inside Tijuca National Park. Panorama of city, forest, and bay. 20 min visit.', addr: 'Estrada da Vista Chinesa, Tijuca National Park' },
+    { latlng: [-22.9597, -43.2748], name: 'Cascatinha Taunay', desc: 'Waterfall accessible via short flat walk from the main park road. 30–45 min. Beautiful photography.', addr: 'Estrada Cascatinha, Tijuca National Park' },
+    { latlng: [-22.9578, -43.2664], name: 'Mesa do Imperador', desc: 'Flat granite plateau, drive-up. Historic imperial picnic site. Panoramic views. Combine with Vista Chinesa (2km).', addr: 'Tijuca National Park (same road as Vista Chinesa)' },
+    { latlng: [-22.9546, -43.2904], name: 'Pico da Tijuca', desc: 'Highest point in Rio at 1,022m. Full-day strenuous hike (4–5 hrs return). Experienced hikers only. Best in Feb 11–19 extension.', addr: 'Tijuca National Park summit' },
+    { latlng: [-22.9617, -43.2183], name: 'Parque Lage', desc: 'Edwardian palace in forest at Corcovado base. Free grounds, excellent café in palace courtyard. 1–1.5 hrs.', addr: 'R. Jardim Botânico, 414, Jardim Botânico' },
+    { latlng: [-22.9684, -43.3047], name: 'Açude da Solidão', desc: 'Secluded reservoir in dense Tijuca forest. 1km flat walk from road. Peaceful, rarely crowded.', addr: 'Tijuca National Park, western sector' },
+    { latlng: [-22.9534, -43.2753], name: 'Bom Retiro', desc: 'Forest clearing with stream. Shaded picnic area. Part of a Tijuca loop with Vista Chinesa and Cascatinha.', addr: 'Tijuca National Park' },
+    { latlng: [-23.0021, -43.2865], name: 'Pedra da Gávea', desc: '844m granite monolith. Best view in Rio. Very strenuous hike (3–4 hrs return). Granite scrambling. Best Feb 11–19 extension.', addr: 'Tijuca National Park, São Conrado edge' }
+  ];
+
+  tijuca.forEach(function(t) {
+    L.marker(t.latlng, {icon: mkIcon(TIJUCA_COLOR)})
+      .bindPopup(popup(t.name, 'Tijuca', 'cat-tijuca', t.desc, t.addr))
+      .addTo(map);
+  });
+
+})();
 </script>
