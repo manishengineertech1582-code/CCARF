@@ -858,6 +858,14 @@ tbody td {
 .popup-directions { display:block; margin-top:8px; font-size:12px; font-weight:700; color:var(--blue,#1B4D72); text-decoration:none; }
 .popup-directions:hover { text-decoration:underline; }
 @media(max-width:600px){ .popup-desc{font-size:13px;} .popup-addr{font-size:12px;} .map-legend{gap:8px;} .map-legend-item{font-size:12px;} }
+#beach-map { height:500px; border-radius:var(--radius); border:1px solid var(--border); overflow:hidden; margin-top:16px; background:#e8e4dd; }
+@media(max-width:600px){ #beach-map{height:50vh;min-height:280px;max-height:420px;} }
+.dot-beach { background:#1A7F9E; border:2px solid #fff; box-shadow:0 1px 3px rgba(0,0,0,0.3); }
+.popup-cat.cat-beach { color:#1A7F9E; }
+.beach-dest-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; margin-bottom:20px; }
+.beach-dest-hdr { padding:14px 20px; background:#1A7F9E; color:#fff; }
+.beach-dest-hdr-title { font-family:'Cormorant Garamond',serif; font-size:24px; font-weight:700; margin:0 0 2px; }
+.beach-dest-hdr-sub { font-size:11px; opacity:0.88; letter-spacing:0.07em; text-transform:uppercase; }
 
 </style>
 
@@ -890,6 +898,7 @@ tbody td {
     <a class="nav-link" href="#food">Food Guide</a>
     <a class="nav-link" href="#tijuca">Tijuca</a>
     <a class="nav-link" href="#feb1119">Feb 11–19</a>
+    <a class="nav-link" href="#beach">Beach Destination</a>
   </div>
 </nav>
 
@@ -3723,6 +3732,220 @@ tbody td {
 
 
 
+<!-- BEACH DESTINATION SECTION -->
+<section class="section" id="beach">
+  <div class="wrap">
+    <p class="section-label">Road Trip Planning · São Paulo → Rio de Janeiro</p>
+    <h2 class="section-title">Beach Destination</h2>
+    <p class="section-desc">Flying into São Paulo, driving toward Rio — the SP–Rio coastal corridor passes through some of Brazil's finest beaches. The route (SP-099 Tamoios highway to the coast, then BR-101 Rio-Santos highway) offers a genuine choice of where to stop. Below are the top 3 destinations worth considering for this specific road trip.</p>
+
+    <!-- Quick Comparison -->
+    <h3 class="places-section-h" style="margin-top:0;">Quick Comparison</h3>
+    <div class="table-wrap">
+      <table style="min-width:600px;">
+        <thead>
+          <tr>
+            <th>Destination</th>
+            <th>São Paulo →</th>
+            <th>→ Rio</th>
+            <th>Suggested Stay</th>
+            <th>Main Advantage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Paraty</strong></td>
+            <td>~4 hrs</td>
+            <td>~2.5 hrs</td>
+            <td>2 nights</td>
+            <td>True midpoint · UNESCO colonial town + beaches</td>
+          </tr>
+          <tr>
+            <td><strong>Ubatuba</strong></td>
+            <td>~2.5 hrs</td>
+            <td>~5 hrs</td>
+            <td>2 nights</td>
+            <td>Most beach variety · closest to SP · best natural setting</td>
+          </tr>
+          <tr>
+            <td><strong>Angra dos Reis</strong></td>
+            <td>~4 hrs</td>
+            <td>~2.5 hrs</td>
+            <td>2 nights</td>
+            <td>365 islands · calm bay · most dramatic scenery</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Best-fit guide -->
+    <div class="plan-day" style="margin-top:20px;margin-bottom:24px;">
+      <div class="plan-day-hdr hdr-muted">
+        <div class="plan-day-date">Best-Fit Guide</div>
+        <div class="plan-day-theme">Choose based on what matters to you</div>
+      </div>
+      <div class="plan-day-body">
+        <div class="plan-row"><div class="plan-label">Easiest Integration</div><div class="plan-content"><strong>Paraty</strong> — true midpoint with roughly equal drives on both sides. No detour. Colonial town adds cultural depth that a pure beach stop lacks.</div></div>
+        <div class="plan-row"><div class="plan-label">Classic Beach</div><div class="plan-content"><strong>Ubatuba</strong> — closest to São Paulo, maximum beach variety. Best if you want 2 full beach days and can manage the longer drive to Rio on departure.</div></div>
+        <div class="plan-row"><div class="plan-label">Special Experience</div><div class="plan-content"><strong>Angra dos Reis</strong> — 365 islands in a sheltered tropical bay. Best if you want one day on a boat among islands rather than a conventional beach holiday.</div></div>
+      </div>
+    </div>
+
+    <!-- CORRIDOR MAP -->
+    <h3 class="places-section-h">Road Trip Corridor Map</h3>
+    <p style="font-size:14px;color:var(--muted);margin:0 0 8px;">All three beach destinations on the SP–Rio coastal corridor. São Paulo and Rio shown as reference points.</p>
+    <div class="map-legend">
+      <div class="map-legend-item"><span class="map-dot dot-beach"></span> Beach Destination</div>
+      <div class="map-legend-item"><span class="map-dot" style="background:#555;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,0.3);"></span> City Reference</div>
+    </div>
+    <div id="beach-map"></div>
+    <button class="map-reset-btn" id="beach-map-reset">&#x21BA; Show All</button>
+    <p class="map-note">Map data © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors · Leaflet · Distances approximate — verify before navigating.</p>
+
+    <!-- DESTINATION CARDS -->
+    <h3 class="places-section-h">Top Choices</h3>
+
+    <!-- Paraty -->
+    <div class="beach-dest-card">
+      <div class="beach-dest-hdr">
+        <div class="beach-dest-hdr-title">Option 1 — Paraty</div>
+        <div class="beach-dest-hdr-sub">Best for easiest road-trip integration · Costa Verde · UNESCO World Heritage</div>
+      </div>
+      <div class="beach-dest-body">
+        <div class="plan-row"><div class="plan-label">Why Consider</div><div class="plan-content">
+          <ul style="margin:4px 0 0;padding-left:18px;">
+            <li>UNESCO World Heritage colonial town — one of Brazil's most beautiful preserved historic centers, with pedestrian-only cobblestone streets</li>
+            <li>True geographic midpoint: ~4 hrs from São Paulo, ~2.5 hrs to Rio</li>
+            <li>Access to exceptional beaches including Praia de Trindade and Praia do Sono</li>
+            <li>Pousadas, restaurants, and daily boat trips to offshore islands available from the town</li>
+          </ul>
+        </div></div>
+        <div class="plan-row"><div class="plan-label">Drive</div><div class="plan-content">
+          <strong>São Paulo → Paraty:</strong> ~4 hrs (approx. 290 km via SP-099 Tamoios highway + BR-101)<br>
+          <strong>Paraty → Rio:</strong> ~2.5 hrs (approx. 250 km via BR-101)
+        </div></div>
+        <div class="plan-row"><div class="plan-label">Stay</div><div class="plan-content">2 nights recommended.</div></div>
+        <div class="plan-row"><div class="plan-label">Beach Experience</div><div class="plan-content">The town sits on a calm bay. The finest beaches — Praia de Trindade (30 min drive, exceptional clear water and rainforest backdrop) and Praia do Sono (short hike from the road) — are among the best on the Costa Verde. Boat trips to offshore islands depart daily from the waterfront.</div></div>
+        <div class="plan-row"><div class="plan-label">February</div><div class="plan-content">February is Paraty's rainiest month. Heavy downpours are common. The historic colonial center historically floods during major rain events. Despite this, the surrounding rainforest is at its most lush and the bay is beautiful. Plan outdoor activities for mornings; have covered pousada time in the afternoons.</div></div>
+        <div class="plan-row"><div class="plan-label">Main Tradeoff</div><div class="plan-content">
+          <ul style="margin:4px 0 0;padding-left:18px;">
+            <li>February is Paraty's wettest month — the highest rain risk of the three options</li>
+            <li>Best beaches require a car or boat trip from the colonial center (not walkable)</li>
+          </ul>
+        </div></div>
+      </div>
+    </div>
+
+    <!-- Ubatuba -->
+    <div class="beach-dest-card">
+      <div class="beach-dest-hdr">
+        <div class="beach-dest-hdr-title">Option 2 — Ubatuba</div>
+        <div class="beach-dest-hdr-sub">Best for classic beach destination · Litoral Norte de São Paulo</div>
+      </div>
+      <div class="beach-dest-body">
+        <div class="plan-row"><div class="plan-label">Why Consider</div><div class="plan-content">
+          <ul style="margin:4px 0 0;padding-left:18px;">
+            <li>~100 beaches across 70 km of coastline — the greatest beach variety on the entire SP–Rio corridor</li>
+            <li>Atlantic rainforest descends directly to the sand on most beaches</li>
+            <li>Closest major beach destination to São Paulo — only 2.5 hrs, the shortest first leg of the three options</li>
+            <li>Less developed than Ilhabela or Búzios — more natural and less commercial</li>
+          </ul>
+        </div></div>
+        <div class="plan-row"><div class="plan-label">Drive</div><div class="plan-content">
+          <strong>São Paulo → Ubatuba:</strong> ~2.5 hrs (approx. 230 km via SP-099 Tamoios highway)<br>
+          <strong>Ubatuba → Rio:</strong> ~5 hrs (approx. 320 km via BR-101, Paraty, Angra dos Reis)
+        </div></div>
+        <div class="plan-row"><div class="plan-label">Stay</div><div class="plan-content">2 nights strongly recommended — one night barely allows for a single beach visit.</div></div>
+        <div class="plan-row"><div class="plan-label">Beach Experience</div><div class="plan-content">Praia do Félix, Praia da Fortaleza, Praia Vermelha do Norte, and Praia Itamambuca are all highly rated. Each beach has a distinct character — from calm bay to open Atlantic surf. Water temperature is 25°C+ in February. The rainforest and granite rock framing is extraordinary.</div></div>
+        <div class="plan-row"><div class="plan-label">February</div><div class="plan-content">Peak summer season. Warm, humid, with brief afternoon storms typical of the Atlantic coastal summer. Water is warm and inviting. Beaches are busy but spread across many options — you can find quieter spots. Most affordable of the three destinations.</div></div>
+        <div class="plan-row"><div class="plan-label">Main Tradeoff</div><div class="plan-content">
+          <ul style="margin:4px 0 0;padding-left:18px;">
+            <li>Ubatuba → Rio is a long 5-hour drive — the most demanding departure day of the three options</li>
+            <li>Best suited for those arriving in São Paulo 3+ days before Carnival starts</li>
+          </ul>
+        </div></div>
+      </div>
+    </div>
+
+    <!-- Angra dos Reis -->
+    <div class="beach-dest-card">
+      <div class="beach-dest-hdr">
+        <div class="beach-dest-hdr-title">Option 3 — Angra dos Reis</div>
+        <div class="beach-dest-hdr-sub">Best for scenic / special experience · Bay of Islands</div>
+      </div>
+      <div class="beach-dest-body">
+        <div class="plan-row"><div class="plan-label">Why Consider</div><div class="plan-content">
+          <ul style="margin:4px 0 0;padding-left:18px;">
+            <li>365 islands in a sheltered tropical bay — one of the most visually dramatic coastlines in Brazil</li>
+            <li>Bay beaches are calm and clear, protected from Atlantic ocean swell</li>
+            <li>Same drive time as Paraty from SP (~4 hrs) and to Rio (~2.5 hrs) — practical midpoint</li>
+            <li>Gateway to Ilha Grande, one of Brazil's most acclaimed islands, accessible by ferry from Angra</li>
+          </ul>
+        </div></div>
+        <div class="plan-row"><div class="plan-label">Drive</div><div class="plan-content">
+          <strong>São Paulo → Angra dos Reis:</strong> ~4 hrs (approx. 300 km via BR-116 Presidente Dutra + SP-055)<br>
+          <strong>Angra dos Reis → Rio:</strong> ~2.5 hrs (approx. 160 km via BR-101)
+        </div></div>
+        <div class="plan-row"><div class="plan-label">Stay</div><div class="plan-content">2 nights recommended — one day should be spent on a boat trip among the islands.</div></div>
+        <div class="plan-row"><div class="plan-label">Beach Experience</div><div class="plan-content">The real attraction is the bay itself. A day boat trip visits calm beaches on uninhabited islands — turquoise water, no infrastructure, genuine tropical bay experience. Town beaches are pleasant, but the 365 islands are what make Angra genuinely different from other destinations on this corridor.</div></div>
+        <div class="plan-row"><div class="plan-label">February</div><div class="plan-content">Hot, humid, and rainy — peak season. The enclosed bay provides shelter from ocean swell, so swimming conditions remain good even during rain. Boat trip operators are plentiful. Book accommodation early; February is heavily booked throughout the region.</div></div>
+        <div class="plan-row"><div class="plan-label">Main Tradeoff</div><div class="plan-content">
+          <ul style="margin:4px 0 0;padding-left:18px;">
+            <li>Best experience requires a boat rental or organized boat trip — adds cost and advance planning</li>
+            <li>Town beaches without a boat trip are pleasant but not the primary reason to choose Angra over Paraty</li>
+          </ul>
+        </div></div>
+      </div>
+    </div>
+
+    <!-- ROAD TRIP ROUTES -->
+    <h3 class="places-section-h">Road Trip Routes</h3>
+    <div class="plan-day" style="margin-bottom:14px;">
+      <div class="plan-day-hdr hdr-muted">
+        <div class="plan-day-date">Via Paraty</div>
+        <div class="plan-day-theme">Easiest integration · balanced on both sides</div>
+      </div>
+      <div class="plan-day-body">
+        <div class="plan-row"><div class="plan-label">Route</div><div class="plan-content">São Paulo → SP-099 Tamoios → Caraguatatuba → coast road → <strong>Paraty</strong> (~4 hrs) → BR-101 → Angra dos Reis → Rio de Janeiro (~2.5 hrs further)</div></div>
+        <div class="plan-row"><div class="plan-label">Total</div><div class="plan-content">~6.5 hrs driving total, split across 2 days with a 2-night Paraty stop.</div></div>
+      </div>
+    </div>
+    <div class="plan-day" style="margin-bottom:14px;">
+      <div class="plan-day-hdr hdr-muted">
+        <div class="plan-day-date">Via Ubatuba</div>
+        <div class="plan-day-theme">Short first day · long second day</div>
+      </div>
+      <div class="plan-day-body">
+        <div class="plan-row"><div class="plan-label">Route</div><div class="plan-content">São Paulo → SP-099 Tamoios → <strong>Ubatuba</strong> (~2.5 hrs) → BR-101 Rio-Santos → Paraty → Angra dos Reis → Rio de Janeiro (~5 hrs further)</div></div>
+        <div class="plan-row"><div class="plan-label">Total</div><div class="plan-content">~7.5 hrs driving total, split across 2 days — shorter drive Day 1, longer drive Day 3.</div></div>
+      </div>
+    </div>
+    <div class="plan-day" style="margin-bottom:14px;">
+      <div class="plan-day-hdr hdr-muted">
+        <div class="plan-day-date">Via Angra dos Reis</div>
+        <div class="plan-day-theme">Island focus · same balance as Paraty</div>
+      </div>
+      <div class="plan-day-body">
+        <div class="plan-row"><div class="plan-label">Route</div><div class="plan-content">São Paulo → BR-116 Presidente Dutra → SP-055 Padre Manoel da Nóbrega → <strong>Angra dos Reis</strong> (~4 hrs) → BR-101 → Rio de Janeiro (~2.5 hrs further)</div></div>
+        <div class="plan-row"><div class="plan-label">Total</div><div class="plan-content">~6.5 hrs driving total, split across 2 days with a 2-night Angra stop.</div></div>
+      </div>
+    </div>
+
+    <!-- RECOMMENDATION -->
+    <h3 class="places-section-h">Recommendation for Planning</h3>
+    <div class="tip tip-blue">
+      <span class="tip-icon">🗺</span>
+      <div>
+        <p style="margin:0 0 8px;"><strong>The key tradeoff is position on the route and what you want from the stop.</strong></p>
+        <p style="margin:0 0 6px;"><strong>Paraty or Angra dos Reis</strong> are the most practical choices for a clean road trip: ~4 hrs from SP, ~2.5 hrs to Rio, balanced on both sides. Choose Paraty for the colonial town experience and easier beach access by car. Choose Angra dos Reis for the island-bay experience and boat trip.</p>
+        <p style="margin:0 0 6px;"><strong>Ubatuba</strong> is the right choice if you want the most beach variety and can accommodate a long 5-hour drive to Rio. Best for those arriving in São Paulo 3 or more days before Carnival begins.</p>
+        <p style="margin:0;"><strong>February rain note:</strong> All three experience summer afternoon rain. Paraty's February rainfall is significantly higher than Ubatuba or Angra — if rain minimisation matters, Ubatuba or Angra have a clear edge.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
 <div class="footer">
   <p>Neighborhood, safety, transport, and Carnival schedule sections are based on current research (September 2026).</p>
   <p style="margin-top:8px;">
@@ -3910,6 +4133,89 @@ function showPlan1119(id) {
   if (resetBtn) {
     resetBtn.addEventListener('click', function() {
       map.setView([-22.958, -43.197], 12);
+    });
+  }
+})();
+</script>
+
+<script>
+(function initBeachMap() {
+  var mapEl = document.getElementById('beach-map');
+  if (!mapEl) return;
+
+  // Center on SP–Rio coastal corridor
+  var bmap = L.map('beach-map', { zoomControl: true }).setView([-23.25, -44.95], 8);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    maxZoom: 18
+  }).addTo(bmap);
+
+  var BEACH_COLOR = '#1A7F9E';
+  var CITY_COLOR  = '#555555';
+
+  function mkIcon(color) {
+    return L.divIcon({
+      className: '',
+      html: '<div style="background:' + color + ';width:22px;height:22px;border-radius:50%;border:2.5px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,0.45);"></div>',
+      iconSize: [22,22],
+      iconAnchor: [11,11],
+      popupAnchor: [0,-13]
+    });
+  }
+
+  function popup(name, cat, catClass, desc, mapsQuery) {
+    var html = '<div class="popup-name">' + name + '</div>' +
+               '<div class="popup-cat ' + catClass + '">' + cat + '</div>' +
+               (desc ? '<div class="popup-desc">' + desc + '</div>' : '');
+    if (mapsQuery) {
+      html += '<a class="popup-directions" href="https://maps.google.com/maps?q=' + encodeURIComponent(mapsQuery) + '" target="_blank" rel="noopener">&#x1F4CD; Get Directions</a>';
+    }
+    return html;
+  }
+
+  // ── City reference markers ───────────────────────────
+  L.marker([-23.5505, -46.6333], {icon: mkIcon(CITY_COLOR)})
+    .bindPopup(popup('São Paulo', 'Starting Point', 'cat-tijuca', 'Departure city. Drive south on SP-099 Tamoios (to Ubatuba) or BR-116 (to Angra / Paraty).', 'São Paulo, Brazil'))
+    .addTo(bmap);
+
+  L.marker([-22.9068, -43.1729], {icon: mkIcon(CITY_COLOR)})
+    .bindPopup(popup('Rio de Janeiro', 'Destination', 'cat-tijuca', 'Final destination. Carnival 2027 base.', 'Rio de Janeiro, Brazil'))
+    .addTo(bmap);
+
+  // ── Beach destination markers ───────────────────────
+  var beachDests = [
+    {
+      latlng: [-23.4337, -45.0838],
+      name: 'Ubatuba',
+      desc: 'Option 2 · ~100 beaches · closest to SP (~2.5 hrs). Best for maximum beach variety. Ubatuba → Rio is ~5 hrs via Paraty and Angra.',
+      mapsQuery: 'Ubatuba, São Paulo, Brazil'
+    },
+    {
+      latlng: [-23.2178, -44.7131],
+      name: 'Paraty',
+      desc: 'Option 1 · UNESCO colonial town + beaches · true midpoint. SP → Paraty ~4 hrs. Paraty → Rio ~2.5 hrs. February is Paraty\'s rainiest month.',
+      mapsQuery: 'Paraty, Rio de Janeiro, Brazil'
+    },
+    {
+      latlng: [-23.0068, -44.3178],
+      name: 'Angra dos Reis',
+      desc: 'Option 3 · 365 islands · calm sheltered bay. SP → Angra ~4 hrs. Angra → Rio ~2.5 hrs. Day boat trip among islands recommended.',
+      mapsQuery: 'Angra dos Reis, Rio de Janeiro, Brazil'
+    }
+  ];
+
+  beachDests.forEach(function(d) {
+    L.marker(d.latlng, {icon: mkIcon(BEACH_COLOR)})
+      .bindPopup(popup(d.name, 'Beach Destination', 'cat-beach', d.desc, d.mapsQuery))
+      .addTo(bmap);
+  });
+
+  // ── Reset button ─────────────────────────────────────
+  var resetBtn = document.getElementById('beach-map-reset');
+  if (resetBtn) {
+    resetBtn.addEventListener('click', function() {
+      bmap.setView([-23.25, -44.95], 8);
     });
   }
 })();
