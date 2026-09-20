@@ -866,6 +866,36 @@ tbody td {
 .beach-dest-hdr { padding:14px 20px; background:#1A7F9E; color:#fff; }
 .beach-dest-hdr-title { font-family:'Cormorant Garamond',serif; font-size:24px; font-weight:700; margin:0 0 2px; }
 .beach-dest-hdr-sub { font-size:11px; opacity:0.88; letter-spacing:0.07em; text-transform:uppercase; }
+/* ── Sightseeing day coding ── */
+.dot-day7 { background:#1B5FA8; border:2px solid #fff; box-shadow:0 1px 3px rgba(0,0,0,0.3); }
+.dot-day8 { background:#1E8A50; border:2px solid #fff; box-shadow:0 1px 3px rgba(0,0,0,0.3); }
+.dot-day9 { background:#C05C00; border:2px solid #fff; box-shadow:0 1px 3px rgba(0,0,0,0.3); }
+.dot-flex { background:#999; border:2px solid #fff; box-shadow:0 1px 3px rgba(0,0,0,0.3); }
+.popup-cat.cat-day7 { color:#1B5FA8; }
+.popup-cat.cat-day8 { color:#1E8A50; }
+.popup-cat.cat-day9 { color:#C05C00; }
+.popup-cat.cat-flex  { color:#888; }
+.day-filter-bar { display:flex; flex-wrap:wrap; gap:8px; margin:0 0 12px; }
+.day-filter-btn { font-family:'Source Sans 3',sans-serif; font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; padding:5px 11px; border-radius:3px; cursor:pointer; border:2px solid transparent; transition:opacity 0.15s; }
+.day-filter-btn.dfb-all  { background:#444; color:#fff; border-color:#444; }
+.day-filter-btn.dfb-feb7 { background:#1B5FA8; color:#fff; border-color:#1B5FA8; }
+.day-filter-btn.dfb-feb8 { background:#1E8A50; color:#fff; border-color:#1E8A50; }
+.day-filter-btn.dfb-feb9 { background:#C05C00; color:#fff; border-color:#C05C00; }
+.day-filter-btn.dfb-inactive { opacity:0.4; }
+/* ── Itinerary section ── */
+.itin-slot { border-bottom:1px solid var(--border); padding:14px 18px; }
+.itin-slot:last-child { border-bottom:none; }
+.itin-time { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:var(--muted); margin-bottom:5px; }
+.itin-place { font-family:'Cormorant Garamond',serif; font-size:19px; font-weight:600; margin:0 0 4px; }
+.itin-details { font-size:13px; line-height:1.55; }
+.itin-details strong { color:var(--ink); }
+.cluster-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:14px 18px; margin-bottom:12px; }
+.cluster-card-title { font-family:'Cormorant Garamond',serif; font-size:18px; font-weight:600; margin:0 0 6px; }
+.cluster-day-badge { display:inline-block; font-size:10px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; padding:2px 8px; border-radius:3px; margin-bottom:8px; }
+.badge-day7 { background:#E8F0F8; color:#1B5FA8; border:1px solid #B8CDE8; }
+.badge-day8 { background:#E8F5EE; color:#1E8A50; border:1px solid #B8D9C8; }
+.badge-day9 { background:#FAF0E6; color:#C05C00; border:1px solid #E8CCAA; }
+.badge-flex { background:var(--faint); color:var(--muted); border:1px solid var(--border); }
 
 </style>
 
@@ -891,6 +921,7 @@ tbody td {
     <a class="nav-link" href="#riomap">Rio Map</a>
     <a class="nav-link" href="#feb611">Feb 6–11</a>
     <a class="nav-link" href="#places">Places of Interest</a>
+    <a class="nav-link" href="#itinerary">Sightseeing</a>
     <a class="nav-link" href="#transit">Public Transportation</a>
     <a class="nav-link" href="#schedule">Schedule</a>
     <a class="nav-link" href="#neighborhoods">Neighborhoods</a>
@@ -908,13 +939,22 @@ tbody td {
   <div class="wrap">
     <p class="section-label">Geographic Planning · Rio de Janeiro</p>
     <h2 class="section-title">Rio Map</h2>
-    <p class="section-desc">All key locations for the Rio portion of the trip — our Airbnb in Copacabana, tourist attractions from the Places of Interest section, Carnival venues, Tijuca, and our confirmed Camarote Mar locations. This map covers Rio de Janeiro only.</p>
+    <p class="section-desc">All key locations for the Rio portion of the trip. Attractions are color-coded by planned sightseeing day. Use the filter buttons to show only a specific day's attractions. Tijuca and Airbnb/Carnival markers are always visible.</p>
 
+    <div class="day-filter-bar">
+      <button class="day-filter-btn dfb-all" id="mapfbtn-all"  onclick="filterMapDay('all')">All Markers</button>
+      <button class="day-filter-btn dfb-feb7 dfb-inactive" id="mapfbtn-feb7" onclick="filterMapDay('feb7')">Feb 7</button>
+      <button class="day-filter-btn dfb-feb8 dfb-inactive" id="mapfbtn-feb8" onclick="filterMapDay('feb8')">Feb 8</button>
+      <button class="day-filter-btn dfb-feb9 dfb-inactive" id="mapfbtn-feb9" onclick="filterMapDay('feb9')">Feb 9 (Half Day)</button>
+    </div>
     <div class="map-legend">
       <div class="map-legend-item"><span class="map-dot dot-airbnb"></span> Our Airbnb</div>
       <div class="map-legend-item"><span class="map-dot dot-carnival"></span> Our Carnival Booking</div>
       <div class="map-legend-item"><span class="map-dot dot-meeting"></span> Meeting Point</div>
-      <div class="map-legend-item"><span class="map-dot dot-attraction"></span> Tourist Attraction</div>
+      <div class="map-legend-item"><span class="map-dot dot-day7"></span> Feb 7 Attractions</div>
+      <div class="map-legend-item"><span class="map-dot dot-day8"></span> Feb 8 Attractions</div>
+      <div class="map-legend-item"><span class="map-dot dot-day9"></span> Feb 9 (Half Day)</div>
+      <div class="map-legend-item"><span class="map-dot dot-flex"></span> Flexible / Not in plan</div>
       <div class="map-legend-item"><span class="map-dot dot-tijuca"></span> Tijuca</div>
     </div>
 
@@ -1857,6 +1897,579 @@ tbody td {
 
   </div><!-- /.wrap -->
 </section><!-- /#places -->
+
+<!-- SIGHTSEEING ITINERARY SECTION -->
+<section class="section" id="itinerary">
+  <div class="wrap">
+    <p class="section-label">3-Day Sightseeing Plan · Feb 7–9, 2027</p>
+    <h2 class="section-title">Geographic Itinerary</h2>
+    <p class="section-desc">Attractions grouped by geography from <strong>R. Santa Clara, 405, Copacabana</strong>. Color-coded to match the map above. Feb 9 is a half-day — Carnival night at Camarote Mar starts in the evening.</p>
+
+    <div class="plan-tabs" role="tablist">
+      <button class="plan-tab active" onclick="showItinerary('overview')">Overview</button>
+      <button class="plan-tab" onclick="showItinerary('feb7')" style="--tab-active-color:#1B5FA8;">Feb 7</button>
+      <button class="plan-tab" onclick="showItinerary('feb8')">Feb 8</button>
+      <button class="plan-tab" onclick="showItinerary('feb9')">Feb 9 (Half Day)</button>
+      <button class="plan-tab" onclick="showItinerary('summary')">Weather &amp; Summary</button>
+    </div>
+
+    <!-- ── OVERVIEW PANEL ── -->
+    <div class="plan-panel active" id="itin-overview">
+
+      <div class="tip tip-blue" style="margin-bottom:20px;">
+        <span class="tip-icon">📍</span>
+        <p><strong>Fixed starting point:</strong> R. Santa Clara, 405, Copacabana. All travel times are from this address. Carnival-period traffic is assumed for Uber estimates — not off-season Google Maps times.</p>
+      </div>
+
+      <!-- Geography Table -->
+      <h3 class="places-section-h" style="margin-top:0;">Travel Times from Airbnb</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Place</th>
+              <th>Direction</th>
+              <th>Distance</th>
+              <th>Uber — Normal</th>
+              <th>Uber — Carnival</th>
+              <th>Walk</th>
+              <th>Visit Duration</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Copacabana Walk</strong></td>
+              <td>Right outside</td>
+              <td>0–0.5 km</td>
+              <td>N/A</td>
+              <td>N/A</td>
+              <td>1–5 min</td>
+              <td>30–90 min</td>
+            </tr>
+            <tr>
+              <td><strong>Arpoador Rock</strong></td>
+              <td>SW</td>
+              <td>1.4 km</td>
+              <td>8–10 min</td>
+              <td>15–20 min</td>
+              <td>12–15 min ✓</td>
+              <td>45–60 min</td>
+            </tr>
+            <tr>
+              <td><strong>Ipanema Beach (Posto 9)</strong></td>
+              <td>SW</td>
+              <td>1.5 km</td>
+              <td>8–12 min</td>
+              <td>15–20 min</td>
+              <td>15 min ✓</td>
+              <td>2–3 hrs</td>
+            </tr>
+            <tr>
+              <td><strong>Sugarloaf Mountain</strong></td>
+              <td>NE (Urca)</td>
+              <td>4.5 km</td>
+              <td>15–20 min</td>
+              <td>25–40 min</td>
+              <td>Not practical</td>
+              <td>2.5–3 hrs</td>
+            </tr>
+            <tr>
+              <td><strong>Mirante Dona Marta</strong></td>
+              <td>NW (Botafogo)</td>
+              <td>3.5 km</td>
+              <td>15–20 min</td>
+              <td>25–35 min</td>
+              <td>Not practical</td>
+              <td>30–45 min</td>
+            </tr>
+            <tr>
+              <td><strong>Botanical Garden</strong></td>
+              <td>W</td>
+              <td>4.5 km</td>
+              <td>15–18 min</td>
+              <td>20–30 min</td>
+              <td>Not practical</td>
+              <td>2 hrs</td>
+            </tr>
+            <tr>
+              <td><strong>Santa Teresa</strong></td>
+              <td>N</td>
+              <td>5 km</td>
+              <td>15–20 min</td>
+              <td>25–40 min</td>
+              <td>Not practical</td>
+              <td>2–3 hrs</td>
+            </tr>
+            <tr>
+              <td><strong>Selarón Steps</strong></td>
+              <td>N (Lapa)</td>
+              <td>5 km</td>
+              <td>15–20 min</td>
+              <td>25–35 min</td>
+              <td>Walk from Santa T.</td>
+              <td>30–45 min</td>
+            </tr>
+            <tr>
+              <td><strong>Lapa Arches</strong></td>
+              <td>N</td>
+              <td>5 km</td>
+              <td>15–20 min</td>
+              <td>25–35 min</td>
+              <td>Walk from Selarón</td>
+              <td>30–60 min</td>
+            </tr>
+            <tr>
+              <td><strong>Christ the Redeemer</strong></td>
+              <td>NW (Cosme Velho)</td>
+              <td>7 km</td>
+              <td>20–25 min</td>
+              <td>35–50 min</td>
+              <td>Not practical</td>
+              <td>2–3 hrs incl. tram</td>
+            </tr>
+            <tr>
+              <td><strong>Tijuca — Vista Chinesa</strong></td>
+              <td>W</td>
+              <td>10 km</td>
+              <td>25–35 min</td>
+              <td>35–50 min</td>
+              <td>Not practical</td>
+              <td>2–3 hrs</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="map-note" style="margin-top:8px;">Carnival-week Uber times assume moderate traffic; parade nights (especially Feb 9) are significantly worse — avoid Uber on or near the Sambadrome route. Book Cristo Redentor tram tickets online in advance. Botanical Garden is <strong>closed Mondays</strong> (Feb 8 is Monday).</p>
+
+      <!-- Geographic Clusters -->
+      <h3 class="places-section-h">Geographic Clusters</h3>
+      <p style="font-size:14px;margin:0 0 16px;color:var(--muted);">Which places belong together based on location and practical travel sequence.</p>
+
+      <div class="cluster-card">
+        <span class="cluster-day-badge badge-day7">Feb 7</span>
+        <div class="cluster-card-title">Cluster A — Northwest Hills + Historic</div>
+        <p style="font-size:13px;margin:0 0 8px;"><strong>Cristo Redentor → Mirante Dona Marta → Santa Teresa → Selarón Steps → Lapa</strong></p>
+        <p style="font-size:13px;margin:0;color:var(--muted);">All in the northwest arc from the Airbnb. Cristo (Cosme Velho) → Mirante Dona Marta (Botafogo hill, 15 min Uber) → Santa Teresa (10 min Uber, same hillside zone) → walk down to Selarón → walk to Lapa. Minimal backtracking. Natural downhill flow from hilltops to street level.</p>
+      </div>
+
+      <div class="cluster-card">
+        <span class="cluster-day-badge badge-day8">Feb 8</span>
+        <div class="cluster-card-title">Cluster B — Bay Views + South Zone Beach</div>
+        <p style="font-size:13px;margin:0 0 8px;"><strong>Sugarloaf Mountain → Ipanema Beach (Posto 9) → Arpoador sunset</strong></p>
+        <p style="font-size:13px;margin:0;color:var(--muted);">Sugarloaf is northeast of the Airbnb; Ipanema is southwest. The natural arc is Sugarloaf in the morning → return through Copa for lunch → Ipanema in the afternoon → walk to Arpoador for sunset. No backtracking. Ipanema and Arpoador are walkable from each other and from the Airbnb.</p>
+      </div>
+
+      <div class="cluster-card">
+        <span class="cluster-day-badge badge-day9">Feb 9 (Half Day)</span>
+        <div class="cluster-card-title">Cluster C — Botanical Garden (Morning Only)</div>
+        <p style="font-size:13px;margin:0 0 8px;"><strong>Botanical Garden → return by noon</strong></p>
+        <p style="font-size:13px;margin:0;color:var(--muted);">West of Airbnb, 15–18 min Uber. Shaded, peaceful, no crowds. Open Tuesdays. 2 hours maximum. Return by noon to rest, eat, and prepare for the Camarote Mar Carnival event. Keep this day intentionally light.</p>
+      </div>
+
+      <div class="cluster-card">
+        <span class="cluster-day-badge badge-flex">Anytime / Flexible</span>
+        <div class="cluster-card-title">Cluster D — South Zone Beach Walk (No Transport)</div>
+        <p style="font-size:13px;margin:0 0 8px;"><strong>Copacabana Promenade → Arpoador → Ipanema</strong></p>
+        <p style="font-size:13px;margin:0;color:var(--muted);">Entirely walkable from the Airbnb. The Copa promenade is right outside the door. Do this any morning (6–7am before the heat) or any evening. No dedicated time slot needed — it fills naturally as a transition between activities.</p>
+      </div>
+
+      <!-- Feira do Lavradio clarification -->
+      <div class="tip tip-red" style="margin-top:8px;">
+        <span class="tip-icon">⚠</span>
+        <div>
+          <p style="margin:0;"><strong>Feira do Lavradio — Does not apply to this trip.</strong> The Feira operates on the <em>last Saturday</em> of each month. February 6, 2027 is the <em>first</em> Saturday of February, not the last. The last Saturday of February 2027 is February 27 — outside this stay entirely. Remove this from your planning.</p>
+        </div>
+      </div>
+
+    </div><!-- /itin-overview -->
+
+    <!-- ── FEB 7 PANEL ── -->
+    <div class="plan-panel" id="itin-feb7">
+
+      <div class="plan-day">
+        <div class="plan-day-hdr" style="background:#1B5FA8;color:#fff;">
+          <div class="plan-day-date">February 7, 2027 — Full Day</div>
+          <div class="plan-day-theme">Northwest Hills · Cristo · Santa Teresa · Historic</div>
+        </div>
+        <div class="plan-day-body">
+          <div class="plan-row"><div class="plan-label">Theme</div><div class="plan-content">Northwest corridor from Airbnb: Cristo Redentor → Mirante Dona Marta → Santa Teresa → Selarón Steps → Lapa. Evening: Arpoador sunset walk.</div></div>
+          <div class="plan-row"><div class="plan-label">Carnival Note</div><div class="plan-content">Sunday, Feb 7 = Sambadrome Night 1. <em>You do not have a ticket tonight.</em> Major bloco: Simpatia é Quase Amor in Ipanema (~200,000 people). Your morning route goes northwest — away from Ipanema. Avoid requesting Uber from Av. Atlântica during bloco hours. Use Rua Barata Ribeiro for pickup.</div></div>
+        </div>
+      </div>
+
+      <!-- Morning: Cristo -->
+      <div class="itin-slot">
+        <div class="itin-time">7:45 am — Depart Airbnb</div>
+        <div class="itin-place">Christ the Redeemer (Cristo Redentor)</div>
+        <div class="itin-details">
+          <strong>Uber to Cosme Velho tram station</strong> — request on Rua Barata Ribeiro (interior street). Allow <strong>30–45 min travel</strong> in Carnival conditions. Arrive Cosme Velho ~8:15am.<br><br>
+          <strong>Tram:</strong> Pre-booked tickets required. Board 8:30am train (trains run from 8am). ~20 min cog railway to summit. <strong>Book online at bondinho.com.br before departure.</strong><br><br>
+          <strong>Why this time:</strong> February cloud cover builds rapidly after 10–11am. Arriving at the summit by 9am gives you the best window. If the summit is clear at 8:50am, you have it. If you wait until 11am, it may be inside a cloud.<br><br>
+          <strong>At summit:</strong> 2 hours — Christ statue, 360° panorama over Guanabara Bay, both ocean beaches, and the Atlantic rainforest.<br><br>
+          <strong>Duration:</strong> ~3 hours total (transport + tram + summit + descent).<br>
+          <strong>Return to Cosme Velho:</strong> ~11:00am
+        </div>
+      </div>
+
+      <!-- Late morning: Mirante Dona Marta -->
+      <div class="itin-slot">
+        <div class="itin-time">11:15 am — From Cosme Velho</div>
+        <div class="itin-place">Mirante Dona Marta</div>
+        <div class="itin-details">
+          <strong>Uber: Cosme Velho → Mirante Dona Marta</strong> — ~15–20 min. Different hill (Morro Dona Marta in Botafogo), different perspective.<br><br>
+          <strong>Why combine with Cristo:</strong> Mirante Dona Marta frames Cristo from below — the exact opposite angle from the summit. You see Cristo rising above the rainforest with Guanabara Bay behind. No queue, free, 30–45 min visit. Staying in the same northwest arc of the city — no backtracking.<br><br>
+          <strong>Duration:</strong> 30–45 min.<br>
+          <strong>Depart:</strong> ~12:00pm
+        </div>
+      </div>
+
+      <!-- Afternoon: Santa Teresa -->
+      <div class="itin-slot">
+        <div class="itin-time">12:15 pm — Uber to Santa Teresa (~15 min)</div>
+        <div class="itin-place">Santa Teresa</div>
+        <div class="itin-details">
+          <strong>Uber from Mirante Dona Marta → Santa Teresa top</strong> — 10–15 min.<br><br>
+          <strong>Lunch in Santa Teresa</strong> (~12:30–1:30pm): Cobblestone streets, excellent restaurants and cafes. Good options at Largo do Guimarães and surrounding streets.<br><br>
+          <strong>Afternoon exploration</strong> (1:30–3:00pm): 1.5 hours wandering the hilltop neighborhood — street art murals, belle époque mansions, local galleries. The best way to experience it is slowly, without a checklist.<br><br>
+          <strong>Duration:</strong> 2.5 hrs (lunch + walk).<br>
+          <strong>Depart:</strong> ~3:00pm — walk downhill toward Selarón Steps.
+        </div>
+      </div>
+
+      <!-- Afternoon: Selarón + Lapa -->
+      <div class="itin-slot">
+        <div class="itin-time">3:00 pm — Walk downhill from Santa Teresa</div>
+        <div class="itin-place">Selarón Steps → Lapa Arches</div>
+        <div class="itin-details">
+          <strong>Walk from Santa Teresa to Selarón Steps:</strong> ~20–30 min downhill through hillside streets. Rua Joaquim Murtinho is the main descent route.<br><br>
+          <strong>Selarón Steps</strong> (3:20–4:00pm): 215 steps, 2,000 tiles from 60+ countries. 40 min is enough. Daytime only — gets very crowded midday; 3pm is better.<br><br>
+          <strong>Walk to Lapa Arches</strong> (10 min from Selarón base):<br>
+          <strong>Lapa Arches</strong> (4:00–5:00pm): 18th-century aqueduct, now used as a tram viaduct. Quiet and photogenic by day — very different atmosphere from the nightlife that takes over after 10pm.<br><br>
+          <strong>Uber home from Lapa</strong> (~5:00pm): Request on a side street away from the arches. Expect 25–35 min in Carnival conditions.<br>
+          <strong>Back at Airbnb:</strong> ~5:30pm
+        </div>
+      </div>
+
+      <!-- Evening -->
+      <div class="itin-slot">
+        <div class="itin-time">5:30 pm — Rest at Airbnb</div>
+        <div class="itin-place">Rest + Freshen Up</div>
+        <div class="itin-details">1.5 hrs at Airbnb. This is a long day — rest matters. Dinner: any restaurant near the Airbnb or delivery.</div>
+      </div>
+
+      <div class="itin-slot">
+        <div class="itin-time">7:00 pm — Walk from Airbnb (12–15 min)</div>
+        <div class="itin-place">Arpoador Rock — Sunset</div>
+        <div class="itin-details">
+          Walk to Arpoador: Av. Atlântica south toward Ipanema, 12–15 min. Arrive ~30 min before sunset.<br><br>
+          <strong>Sunset in February:</strong> approximately 7:25–7:35pm. The crowd gathers and applauds when the sun disappears below the horizon. Free, walkable, and one of the most genuine Rio experiences possible.<br><br>
+          Walk home after. Dinner in Copacabana or Ipanema.
+        </div>
+      </div>
+
+      <div class="tip tip-gold" style="margin:16px 0;">
+        <span class="tip-icon">📊</span>
+        <div>
+          <p style="margin:0 0 4px;"><strong>Feb 7 Summary:</strong></p>
+          <p style="margin:0;font-size:13px;">Sightseeing: ~7.5 hrs &nbsp;·&nbsp; Transport: ~2.5 hrs &nbsp;·&nbsp; Away from Airbnb: ~12 hrs (7:45am–8pm) &nbsp;·&nbsp; Backtracking: Low &nbsp;·&nbsp; Pace: Moderate &nbsp;·&nbsp; Evening: Arpoador is a 15 min walk, no transport needed.</p>
+        </div>
+      </div>
+
+      <div class="tip tip-red" style="margin-bottom:0;">
+        <span class="tip-icon">☁</span>
+        <div>
+          <p style="margin:0;"><strong>If cloudy on Feb 7:</strong> Skip Cristo (don't waste it on cloud). Start with Santa Teresa → Selarón → Lapa in the morning. Do Mirante Dona Marta in the afternoon (5 min, so even partly cloudy is OK). Move Cristo to Feb 8 morning and swap Sugarloaf to Feb 7 afternoon.</p>
+        </div>
+      </div>
+
+    </div><!-- /itin-feb7 -->
+
+    <!-- ── FEB 8 PANEL ── -->
+    <div class="plan-panel" id="itin-feb8">
+
+      <div class="plan-day">
+        <div class="plan-day-hdr" style="background:#1E8A50;color:#fff;">
+          <div class="plan-day-date">February 8, 2027 — Full Day</div>
+          <div class="plan-day-theme">Bay Views · Sugarloaf · Ipanema Beach · Arpoador</div>
+        </div>
+        <div class="plan-day-body">
+          <div class="plan-row"><div class="plan-label">Theme</div><div class="plan-content">Sugarloaf Mountain (bay panorama) → Ipanema Beach Posto 9 → Arpoador sunset. Natural flow: northeast out to Urca, then southwest back through the beach strip.</div></div>
+          <div class="plan-row"><div class="plan-label">Key Constraint</div><div class="plan-content"><strong>Botanical Garden is CLOSED Mondays.</strong> Feb 8 is Monday. Do not plan the Botanical Garden on this day.</div></div>
+          <div class="plan-row"><div class="plan-label">Carnival Note</div><div class="plan-content">Monday Feb 8 = Sambadrome Night 2. You do not attend tonight. Monday blocos are lighter than weekend days — less street congestion than Feb 7. Be home by 10pm: tomorrow is your Carnival night. Rest is essential.</div></div>
+        </div>
+      </div>
+
+      <!-- Morning: Sugarloaf -->
+      <div class="itin-slot">
+        <div class="itin-time">8:00 am — Depart Airbnb</div>
+        <div class="itin-place">Sugarloaf Mountain (Pão de Açúcar)</div>
+        <div class="itin-details">
+          <strong>Uber to Praia General Tibúrcio, Urca</strong> — request on Rua Barata Ribeiro. Allow 25–40 min in Carnival traffic. Arrive ~8:30am at cable car base.<br><br>
+          <strong>Cable car access:</strong> No advance booking needed (unlike Cristo). Tickets at the base. First cable car operates from 8am. Buy online at bondinho.com.br/en to save queue time.<br><br>
+          <strong>Two cable cars:</strong> First to Morro da Urca (220m), second to Pão de Açúcar summit (396m). Views of Guanabara Bay, downtown Rio, the ocean, and the mountains. A completely different perspective from Cristo — looking across the bay, not down over the city.<br><br>
+          <strong>Why go early:</strong> Same February cloud logic as Cristo — morning is clearer. Cable cars run until 9pm so you could go late afternoon, but morning is safer.<br><br>
+          <strong>Duration:</strong> 2.5–3 hrs (both cable cars + views + descent).<br>
+          <strong>Back at Urca:</strong> ~11:30am
+        </div>
+      </div>
+
+      <!-- Lunch -->
+      <div class="itin-slot">
+        <div class="itin-time">11:45 am — Uber from Urca toward Copa</div>
+        <div class="itin-place">Lunch</div>
+        <div class="itin-details">
+          Uber from Urca to Copacabana or Botafogo — 15–20 min. Lunch at any padaria or restaurant near the Airbnb or slightly west toward Ipanema.<br><br>
+          <strong>Suggested timing:</strong> Eat by 12:30–1:00pm before heading to Ipanema.
+        </div>
+      </div>
+
+      <!-- Afternoon: Ipanema -->
+      <div class="itin-slot">
+        <div class="itin-time">1:00 pm</div>
+        <div class="itin-place">Ipanema Beach — Posto 9</div>
+        <div class="itin-details">
+          Walk from Copa lunch area (~15 min) or short Uber to General Osório/Posto 9 area.<br><br>
+          <strong>Posto 9 specifics:</strong> The stretch in front of Rua Farme de Amoedo — historically the gathering point for intellectuals, artists, and Rio's LGBTQ+ community since the 1960s. Different character from Copacabana. The water is swimmable in February (25°C+).<br><br>
+          <strong>Beach time:</strong> 2.5 hrs, enough to swim, observe, have água de coco and queijo coalho from vendors.<br><br>
+          <strong>Walk west optional:</strong> After beach, walk along the sand to Leblon (30 min, 3.5 km) — Leblon beach is quieter and has good Dois Irmãos hill views from the western end.<br><br>
+          <strong>Return walk:</strong> Walk back east toward Arpoador (~20 min).<br>
+          <strong>Depart toward Arpoador:</strong> ~3:30pm
+        </div>
+      </div>
+
+      <!-- Afternoon rest -->
+      <div class="itin-slot">
+        <div class="itin-time">3:30 pm — Walk 10 min from Ipanema</div>
+        <div class="itin-place">Arpoador / Copacabana Walk / Rest</div>
+        <div class="itin-details">
+          Walk the beach boardwalk from Ipanema back toward Copacabana via Arpoador (~20–30 min). This is the Copacabana Beachfront Walk — no dedicated time needed, just walk it as you return. Back at Airbnb by ~4:30pm. Rest 2–3 hours.
+        </div>
+      </div>
+
+      <!-- Evening: Arpoador sunset -->
+      <div class="itin-slot">
+        <div class="itin-time">7:00 pm — Walk from Airbnb (12–15 min)</div>
+        <div class="itin-place">Arpoador Rock — Sunset</div>
+        <div class="itin-details">
+          Same as Feb 7 evening. Walk, arrive before sunset (~7:25–7:35pm), crowd gathers and applauds. Walk home. <strong>Early dinner — get to bed early tonight. Tomorrow is Carnival.</strong>
+        </div>
+      </div>
+
+      <div class="tip tip-gold" style="margin:16px 0;">
+        <span class="tip-icon">📊</span>
+        <div>
+          <p style="margin:0 0 4px;"><strong>Feb 8 Summary:</strong></p>
+          <p style="margin:0;font-size:13px;">Sightseeing: ~6.5 hrs &nbsp;·&nbsp; Transport: ~1.5 hrs &nbsp;·&nbsp; Away from Airbnb: ~11 hrs (8am–7pm) &nbsp;·&nbsp; Backtracking: Low (Urca → Copa → Ipanema → Arpoador is a natural arc) &nbsp;·&nbsp; Pace: Moderate-Relaxed</p>
+        </div>
+      </div>
+
+      <div class="tip tip-red">
+        <span class="tip-icon">☁</span>
+        <div>
+          <p style="margin:0;"><strong>If Feb 8 is the clearest morning:</strong> Move Cristo to Feb 8 morning instead of Sugarloaf. Move Sugarloaf to Feb 7 afternoon (after Santa Teresa cluster). Sugarloaf in partial cloud is still worthwhile; Cristo in cloud is not.</p>
+        </div>
+      </div>
+
+    </div><!-- /itin-feb8 -->
+
+    <!-- ── FEB 9 PANEL ── -->
+    <div class="plan-panel" id="itin-feb9">
+
+      <div class="plan-day">
+        <div class="plan-day-hdr" style="background:#C05C00;color:#fff;">
+          <div class="plan-day-date">February 9, 2027 — Half Day</div>
+          <div class="plan-day-theme">Botanical Garden Morning · Rest · Carnival Night</div>
+        </div>
+        <div class="plan-day-body">
+          <div class="plan-row"><div class="plan-label">This Evening</div><div class="plan-content"><strong>Camarote Mar — Carnival Night.</strong> The final and most prestigious Special Group parade. Starts ~9pm, runs until 5–6am. Meeting point: Othon Palace Copacabana, Av. Atlântica 3264 (~300m walk from Airbnb). Confirm exact meeting time from your booking documentation.</div></div>
+          <div class="plan-row"><div class="plan-label">Objective</div><div class="plan-content">See one worthwhile thing. Return home comfortably by noon. Rest the entire afternoon. Do not over-plan this day.</div></div>
+        </div>
+      </div>
+
+      <div class="tip tip-blue" style="margin-bottom:16px;">
+        <span class="tip-icon">📅</span>
+        <p style="margin:0;"><strong>Recommended option: Botanical Garden.</strong> Open Tuesdays. Shaded, peaceful, low physical demand. 2 hours of walking among 134 imperial palm trees and tropical gardens — the ideal low-stress morning before a late-night Carnival event.</p>
+      </div>
+
+      <!-- Morning: Botanical Garden -->
+      <div class="itin-slot">
+        <div class="itin-time">9:00 am — Depart Airbnb</div>
+        <div class="itin-place">Jardim Botânico (Botanical Garden)</div>
+        <div class="itin-details">
+          <strong>Uber to R. Jardim Botânico, 1008</strong> — 15–20 min in Carnival conditions. Arrive ~9:20am.<br><br>
+          <strong>Entry:</strong> R$35 (verify current price). No advance booking needed.<br><br>
+          <strong>What to see:</strong> The imperial palm avenue — 134 palms, 40m tall, aligned with Corcovado behind. The orchid section, the Victoria amazonica water lilies (giant), and the bromeliarium are highlights. The garden is shaded and cooler than the beachfront in February heat.<br><br>
+          <strong>Duration:</strong> 2 hours maximum — don't rush it, but don't extend it either.<br><br>
+          <strong>Uber home:</strong> 11:15am.<br>
+          <strong>Back at Airbnb:</strong> ~11:45am
+        </div>
+      </div>
+
+      <!-- The rest of the day -->
+      <div class="itin-slot">
+        <div class="itin-time">11:45 am onward — At Airbnb</div>
+        <div class="itin-place">Lunch · Rest · Carnival Preparation</div>
+        <div class="itin-details">
+          <strong>12:00–1:30pm:</strong> Lunch at leisure. Nearby padaria or delivery. Eat well — the Camarote Mar provides food and drink inside the venue but confirm inclusions from your booking documentation.<br><br>
+          <strong>1:30–4:00pm:</strong> Rest. Nap if possible. The parade runs until 5–6am — sleep now.<br><br>
+          <strong>4:00–6:00pm:</strong> Shower, change, pack a small bag (ID, cash, phone charger, light layers for cold early morning).<br><br>
+          <strong>6:00–6:30pm:</strong> Light dinner or snack.<br><br>
+          <strong>Confirm meeting time from booking documentation</strong> — Camarote Mar meeting at Othon Palace Copacabana typically 1–2 hrs before parade start (~7–8pm). Othon Palace (Av. Atlântica, 3264) is 300m from R. Santa Clara, 405 — 5 min walk.<br><br>
+          <strong>Walk to meeting point.</strong>
+        </div>
+      </div>
+
+      <div class="tip tip-gold" style="margin:16px 0 0;">
+        <span class="tip-icon">📊</span>
+        <div>
+          <p style="margin:0 0 4px;"><strong>Feb 9 Summary:</strong></p>
+          <p style="margin:0;font-size:13px;">Sightseeing: ~2 hrs &nbsp;·&nbsp; Transport: ~40 min &nbsp;·&nbsp; Away from Airbnb: ~3 hrs (9am–12noon) &nbsp;·&nbsp; Backtracking: None &nbsp;·&nbsp; Pace: Very Relaxed</p>
+        </div>
+      </div>
+
+    </div><!-- /itin-feb9 -->
+
+    <!-- ── WEATHER & SUMMARY PANEL ── -->
+    <div class="plan-panel" id="itin-summary">
+
+      <!-- Weather swap -->
+      <h3 class="places-section-h" style="margin-top:0;">Weather Swap Strategy</h3>
+      <p style="font-size:14px;margin:0 0 16px;color:var(--muted);">Check the forecast each evening. The key decision is Cristo vs. Sugarloaf on which morning is clearest.</p>
+
+      <div class="plan-day" style="margin-bottom:14px;">
+        <div class="plan-day-hdr hdr-muted">
+          <div class="plan-day-date">If Feb 7 is clear</div>
+          <div class="plan-day-theme">Default plan</div>
+        </div>
+        <div class="plan-day-body">
+          <div class="plan-row"><div class="plan-label">Feb 7</div><div class="plan-content"><strong>Cristo first</strong> (8am). Then Mirante Dona Marta → Santa Teresa → Selarón → Lapa. Evening: Arpoador sunset.</div></div>
+          <div class="plan-row"><div class="plan-label">Feb 8</div><div class="plan-content"><strong>Sugarloaf</strong> (8am). Then Ipanema Beach. Evening: Arpoador sunset. Works in partial cloud.</div></div>
+        </div>
+      </div>
+
+      <div class="plan-day" style="margin-bottom:14px;">
+        <div class="plan-day-hdr hdr-muted">
+          <div class="plan-day-date">If Feb 7 is cloudy</div>
+          <div class="plan-day-theme">Swap Cristo to Feb 8</div>
+        </div>
+        <div class="plan-day-body">
+          <div class="plan-row"><div class="plan-label">Feb 7</div><div class="plan-content"><strong>Skip Cristo.</strong> Do Santa Teresa → Selarón → Lapa in the morning (weather-independent). Sugarloaf in the afternoon. Evening: Arpoador if it clears.</div></div>
+          <div class="plan-row"><div class="plan-label">Feb 8</div><div class="plan-content"><strong>Cristo first</strong> (8am, if clear). Mirante Dona Marta. Afternoon: Ipanema Beach. Evening: Arpoador.</div></div>
+        </div>
+      </div>
+
+      <div class="plan-day" style="margin-bottom:24px;">
+        <div class="plan-day-hdr hdr-muted">
+          <div class="plan-day-date">Both Feb 7 and 8 are cloudy</div>
+          <div class="plan-day-theme">Prioritize by weather sensitivity</div>
+        </div>
+        <div class="plan-day-body">
+          <div class="plan-row"><div class="plan-label">Rule</div><div class="plan-content">Do Sugarloaf on the clearer of the two days — it remains worthwhile even in partial cloud (the bay view still impresses). Save Cristo for the clearest possible window. Do not attempt Cristo if solidly overcast — views are the entire point.</div></div>
+          <div class="plan-row"><div class="plan-label">Arpoador</div><div class="plan-content">Skip if raining. Attempt on any clear evening. The 15-min walk is trivial — check conditions at 7pm and decide.</div></div>
+          <div class="plan-row"><div class="plan-label">Mirante Dona Marta</div><div class="plan-content">Quick 30-min stop. Include on whichever day you do the hilltop attractions. Can move to Feb 9 morning if it doesn't fit.</div></div>
+        </div>
+      </div>
+
+      <!-- Weather sensitivity summary -->
+      <div class="table-wrap" style="margin-bottom:24px;">
+        <table style="min-width:500px;">
+          <thead>
+            <tr>
+              <th>Attraction</th>
+              <th>Weather Sensitivity</th>
+              <th>Action if Cloudy</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Cristo Redentor</strong></td><td><span class="tag tag-limited">Critical</span></td><td>Move to the clearest available morning. Skip entirely if solidly overcast.</td></tr>
+            <tr><td><strong>Sugarloaf</strong></td><td><span class="tag tag-moderate">High</span></td><td>Still worthwhile in partial cloud. Bay silhouette visible even in mist.</td></tr>
+            <tr><td><strong>Mirante Dona Marta</strong></td><td><span class="tag tag-moderate">High</span></td><td>Best clear, but quick visit — acceptable even in partial cloud.</td></tr>
+            <tr><td><strong>Arpoador Sunset</strong></td><td><span class="tag tag-moderate">High</span></td><td>Skip if raining. Try any clear evening — it's always a 15-min walk.</td></tr>
+            <tr><td><strong>Santa Teresa / Selarón / Lapa</strong></td><td><span class="tag tag-excellent">None</span></td><td>Any weather. Covered areas and cobblestone streets work in light rain.</td></tr>
+            <tr><td><strong>Ipanema Beach</strong></td><td><span class="tag tag-good">Low</span></td><td>Swimming is fine in light rain. Walking the beach works in any conditions.</td></tr>
+            <tr><td><strong>Botanical Garden</strong></td><td><span class="tag tag-excellent">None</span></td><td>Shaded and beautiful in any weather. Ideal in heat or light rain.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- What doesn't fit -->
+      <h3 class="places-section-h">Places Not in the Feb 7–9 Plan</h3>
+
+      <div class="cluster-card">
+        <span class="cluster-day-badge" style="background:#F5F0E8;color:#888;border:1px solid #DDD;">Not in Feb 7–9 Plan</span>
+        <div class="cluster-card-title">Tijuca National Park — Vista Chinesa / Cascatinha</div>
+        <p style="font-size:13px;margin:0 0 6px;"><strong>Why it doesn't fit:</strong> 10 km west of the Airbnb — the furthest destination on the list. Requires a dedicated 2–3 hour morning. Adding it to Feb 7 or Feb 8 would make those already-full days too long.</p>
+        <p style="font-size:13px;margin:0;color:var(--muted);"><strong>Where it belongs:</strong> Feb 11 morning (departure/transition day). Uber in → Vista Chinesa → Mesa do Imperador → Cascatinha Taunay → Uber home by 11am. The complete Tijuca half-day in one efficient slot. See the Tijuca tab for details.</p>
+      </div>
+
+      <div class="cluster-card">
+        <span class="cluster-day-badge" style="background:#F5F0E8;color:#888;border:1px solid #DDD;">No Dedicated Slot Needed</span>
+        <div class="cluster-card-title">Copacabana Beachfront Walk</div>
+        <p style="font-size:13px;margin:0;color:var(--muted);">Right outside the Airbnb. Walk it any morning before 8am (sunrise, cool, quiet) or any evening as a transition. Do not plan a dedicated half-day for it — you will walk it naturally throughout the stay.</p>
+      </div>
+
+      <div class="cluster-card">
+        <span class="cluster-day-badge" style="background:#FDF0EC;color:#D63B10;border:1px solid #F4B8A8;">Does Not Apply</span>
+        <div class="cluster-card-title">Feira do Lavradio</div>
+        <p style="font-size:13px;margin:0;"><strong>Feb 6, 2027 is not a Feira do Lavradio date.</strong> The Feira runs on the last Saturday of each month. February 6 is the <em>first</em> Saturday of February 2027. The last Saturday is February 27, 2027 — well outside this stay. Remove from the itinerary entirely.</p>
+      </div>
+
+      <!-- Final summary table -->
+      <h3 class="places-section-h">Final Recommended Structure</h3>
+      <div class="table-wrap">
+        <table style="min-width:600px;">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Geographic Area</th>
+              <th>Places</th>
+              <th>Sightseeing</th>
+              <th>Transport</th>
+              <th>Pace</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Feb 7</strong></td>
+              <td>Northwest Hills + Historic</td>
+              <td>Cristo · Mirante Dona Marta · Santa Teresa · Selarón · Lapa · Arpoador</td>
+              <td>~7.5 hrs</td>
+              <td>~2.5 hrs</td>
+              <td>Moderate</td>
+            </tr>
+            <tr>
+              <td><strong>Feb 8</strong></td>
+              <td>Bay Views + South Zone Beach</td>
+              <td>Sugarloaf · Ipanema Posto 9 · Copa Walk · Arpoador</td>
+              <td>~6.5 hrs</td>
+              <td>~1.5 hrs</td>
+              <td>Moderate–Relaxed</td>
+            </tr>
+            <tr>
+              <td><strong>Feb 9 (½ day)</strong></td>
+              <td>Jardim Botânico / West</td>
+              <td>Botanical Garden</td>
+              <td>~2 hrs</td>
+              <td>~40 min</td>
+              <td>Very Relaxed</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="tip tip-blue" style="margin-top:16px;">
+        <span class="tip-icon">✓</span>
+        <div>
+          <p style="margin:0 0 4px;"><strong>Best Geographic Groupings (confirmed):</strong></p>
+          <p style="margin:0;font-size:13px;">1. Cristo + Mirante Dona Marta (same NW corridor, sequential) &nbsp;·&nbsp; 2. Santa Teresa + Selarón Steps + Lapa (same hillside, walk-down sequence) &nbsp;·&nbsp; 3. Sugarloaf + Ipanema (NE out, SW back — natural arc) &nbsp;·&nbsp; 4. Arpoador + Copa Walk (walkable from Airbnb, no transport) &nbsp;·&nbsp; 5. Botanical Garden + Lagoa (same neighborhood — Lagoa is optional filler)</p>
+        </div>
+      </div>
+
+    </div><!-- /itin-summary -->
+
+  </div>
+</section><!-- /#itinerary -->
+
 <!-- PUBLIC TRANSPORTATION SECTION -->
 <section class="section" id="transit">
   <div class="wrap">
@@ -3978,6 +4591,37 @@ function showNbhd(id) {
   event.target.classList.add('active');
 }
 
+// ── Map day filter ───────────────────────────────────────
+function filterMapDay(day) {
+  // Update button states
+  ['all','feb7','feb8','feb9'].forEach(function(d) {
+    var btn = document.getElementById('mapfbtn-' + d);
+    if (btn) {
+      if (d === day) btn.classList.remove('dfb-inactive');
+      else btn.classList.add('dfb-inactive');
+    }
+  });
+  // Show/hide attraction markers
+  if (typeof attractionMarkers !== 'undefined' && typeof map !== 'undefined') {
+    attractionMarkers.forEach(function(ref) {
+      if (day === 'all' || ref.day === day) {
+        if (!map.hasLayer(ref.marker)) ref.marker.addTo(map);
+      } else {
+        if (map.hasLayer(ref.marker)) map.removeLayer(ref.marker);
+      }
+    });
+  }
+}
+
+// ── Itinerary section tab switcher ──────────────────────
+function showItinerary(id) {
+  document.querySelectorAll('#itinerary .plan-panel').forEach(function(p) { p.classList.remove('active'); });
+  document.querySelectorAll('#itinerary .plan-tab').forEach(function(t) { t.classList.remove('active'); });
+  var panel = document.getElementById('itin-' + id);
+  if (panel) panel.classList.add('active');
+  if (event && event.target) event.target.classList.add('active');
+}
+
 // Active nav link on scroll
 const sections = document.querySelectorAll('section[id]');
 const navLinks = document.querySelectorAll('.nav-link');
@@ -4085,29 +4729,41 @@ function showPlan1119(id) {
       'Othon Palace Copacabana, Av. Atlântica 3264, Copacabana, Rio de Janeiro, RJ'))
     .addTo(map);
 
-  // ── Tourist attractions (from #places section) ───────
+  // ── Day-coded color constants ─────────────────────────
+  var DAY7_COLOR = '#1B5FA8';
+  var DAY8_COLOR = '#1E8A50';
+  var DAY9_COLOR = '#C05C00';
+  var FLEX_COLOR = '#999999';
+
+  // ── Tourist attractions — color-coded by sightseeing day ──
   var attractions = [
-    { latlng: [-22.9519, -43.2105], name: 'Christ the Redeemer (Cristo Redentor)', desc: 'Must Do · 10/10. Corcovado Mountain, 709m. Book tram online. First train 8am. Clear mornings only.', addr: 'Parque Nacional da Tijuca, Cosme Velho' },
-    { latlng: [-22.9491, -43.1543], name: 'Sugarloaf Mountain (Pão de Açúcar)', desc: 'Must Do · 9.5/10. Two cable cars to 396m summit. Bay panorama. 8am–9pm daily.', addr: 'Praia General Tibúrcio, Urca' },
-    { latlng: [-22.9892, -43.1882], name: 'Arpoador Rock', desc: 'Must Do · 10/10. Sunset ritual — crowd applauds when the sun disappears. Every clear evening. Free.', addr: 'Between Copacabana and Ipanema' },
-    { latlng: [-22.9877, -43.1990], name: 'Ipanema Beach (Posto 9)', desc: 'Must Do · 9/10. Most culturally significant beach stretch. Morning best. Walkable from Airbnb.', addr: 'Posto 9, Ipanema, Rio de Janeiro' },
-    { latlng: [-22.9707, -43.1840], name: 'Copacabana Beach & Promenade', desc: 'Recommended · 7.5/10. 4km Art Deco mosaic promenade. Best as early morning walk.', addr: 'Copacabana Beach, Rio de Janeiro' },
-    { latlng: [-22.9843, -43.2248], name: 'Leblon Beach & Neighborhood', desc: 'Optional · 8/10. Quieter continuation of Ipanema. Rua Dias Ferreira restaurant strip.', addr: 'Leblon Beach, Rio de Janeiro' },
-    { latlng: [-22.9470, -43.1924], name: 'Mirante Dona Marta', desc: 'Highly Recommended · 8.5/10. Free viewpoint. Cristo framed above Guanabara Bay. 30 min, no queue.', addr: 'Estrada Dona Marta, Botafogo' },
-    { latlng: [-22.9675, -43.2239], name: 'Jardim Botânico (Botanical Garden)', desc: 'Highly Recommended · 8.5/10. 134 imperial palms, 40m tall. Shaded. Closed Mondays. R$35.', addr: 'Rua Jardim Botânico, 1008, Rio de Janeiro' },
-    { latlng: [-22.9742, -43.2087], name: 'Lagoa Rodrigo de Freitas', desc: 'Optional · 7/10. 7.5km lakeside circuit. Easy walk/jog. Combine with Botanical Garden.', addr: 'Av. Epitácio Pessoa, Rio de Janeiro' },
-    { latlng: [-22.9228, -43.1792], name: 'Santa Teresa', desc: 'Must Do · 9/10. Bohemian hillside neighborhood. Cobblestone streets, street art, galleries. Uber up, walk to Lapa.', addr: 'Santa Teresa, Rio de Janeiro' },
-    { latlng: [-22.9175, -43.1800], name: 'Escadaria Selarón (Selarón Steps)', desc: 'Must Do · 8.5/10. 2,000 tiles from 60+ countries. 215 steps. Daytime only.', addr: 'Rua Joaquim Silva, Lapa, Rio de Janeiro' },
-    { latlng: [-22.9182, -43.1773], name: 'Lapa Arches (Arcos da Lapa)', desc: 'Recommended · 8/10. 18th-century aqueduct. Samba bars nearby. Photogenic by day.', addr: 'Arcos da Lapa, Centro, Rio de Janeiro' },
-    { latlng: [-22.9086, -43.1766], name: 'Centro Histórico & Cinelândia', desc: 'Optional · 6.5/10. Teatro Municipal, Biblioteca Nacional. Best on weekdays (quiet on weekends).', addr: 'Cinelândia, Centro, Rio de Janeiro' },
-    { latlng: [-22.9021, -43.2255], name: 'Feira de São Cristóvão', desc: 'Optional · 7.5/10. Huge indoor Northeastern market. Forró music, regional food. Thu–Sun.', addr: 'Campo de São Cristóvão, São Cristóvão' },
-    { latlng: [-22.9155, -43.1797], name: 'Feira do Lavradio (Last Saturday)', desc: 'Optional · 8/10. Antiques, food, samba. Last Saturday monthly. Check if Feb 6 is a Feira day.', addr: 'Rua do Lavradio, Lapa, Rio de Janeiro' }
+    { latlng: [-22.9519, -43.2105], name: 'Christ the Redeemer (Cristo Redentor)', desc: 'Must Do · 10/10. Corcovado Mountain, 709m. Book tram online. First train 8am. Clear mornings only. Weather-sensitive — go on clearest morning.', addr: 'Parque Nacional da Tijuca, Cosme Velho', day: 'feb7', slot: 'Feb 7 · Morning (weather priority)', catClass: 'cat-day7' },
+    { latlng: [-22.9491, -43.1543], name: 'Sugarloaf Mountain (Pão de Açúcar)', desc: 'Must Do · 9.5/10. Two cable cars to 396m summit. Bay panorama. 8am–9pm daily. Weather-sensitive.', addr: 'Praia General Tibúrcio, Urca', day: 'feb8', slot: 'Feb 8 · Morning', catClass: 'cat-day8' },
+    { latlng: [-22.9892, -43.1882], name: 'Arpoador Rock', desc: 'Must Do · 10/10. Sunset ritual — crowd applauds when the sun disappears. Walk 12–15 min from Airbnb. Every clear evening. Free.', addr: 'Between Copacabana and Ipanema', day: 'feb8', slot: 'Feb 8 · Evening (walkable from Airbnb)', catClass: 'cat-day8' },
+    { latlng: [-22.9877, -43.1990], name: 'Ipanema Beach (Posto 9)', desc: 'Must Do · 9/10. Most culturally significant beach stretch in Rio. Walkable from Airbnb (~15 min).', addr: 'Posto 9, Ipanema, Rio de Janeiro', day: 'feb8', slot: 'Feb 8 · Afternoon', catClass: 'cat-day8' },
+    { latlng: [-22.9707, -43.1840], name: 'Copacabana Beach & Promenade', desc: 'Recommended · 7.5/10. 4km Art Deco mosaic promenade. Literally outside the Airbnb — no transport needed. Best 6–8am or evening.', addr: 'Copacabana Beach, Rio de Janeiro', day: 'flex', slot: 'Anytime — no transport needed', catClass: 'cat-flex' },
+    { latlng: [-22.9843, -43.2248], name: 'Leblon Beach & Neighborhood', desc: 'Optional · 8/10. Quieter continuation of Ipanema. Rua Dias Ferreira restaurant strip. Walk west from Ipanema.', addr: 'Leblon Beach, Rio de Janeiro', day: 'flex', slot: 'Anytime — combine with Ipanema walk', catClass: 'cat-flex' },
+    { latlng: [-22.9470, -43.1924], name: 'Mirante Dona Marta', desc: 'Highly Recommended · 8.5/10. Free viewpoint — Cristo framed above Guanabara Bay. 30–45 min, no queue. On the way back from Cristo direction.', addr: 'Estrada Dona Marta, Botafogo', day: 'feb7', slot: 'Feb 7 · Late Morning (combine with Cristo)', catClass: 'cat-day7' },
+    { latlng: [-22.9675, -43.2239], name: 'Jardim Botânico (Botanical Garden)', desc: 'Highly Recommended · 8.5/10. 134 imperial palms, 40m tall. Shaded, peaceful. CLOSED MONDAYS. Open Feb 9 (Tuesday). R$35.', addr: 'Rua Jardim Botânico, 1008, Rio de Janeiro', day: 'feb9', slot: 'Feb 9 · Morning (half-day before Carnival)', catClass: 'cat-day9' },
+    { latlng: [-22.9742, -43.2087], name: 'Lagoa Rodrigo de Freitas', desc: 'Optional · 7/10. 7.5km lakeside circuit. Easy walk/jog. Not in the 3-day plan but easily combined with Botanical Garden.', addr: 'Av. Epitácio Pessoa, Rio de Janeiro', day: 'flex', slot: 'Flexible — combine with Botanical Garden', catClass: 'cat-flex' },
+    { latlng: [-22.9228, -43.1792], name: 'Santa Teresa', desc: 'Must Do · 9/10. Bohemian hillside neighborhood. Cobblestone streets, street art, galleries. Uber up — walk down to Selarón and Lapa.', addr: 'Santa Teresa, Rio de Janeiro', day: 'feb7', slot: 'Feb 7 · Afternoon (after Cristo + Dona Marta)', catClass: 'cat-day7' },
+    { latlng: [-22.9175, -43.1800], name: 'Escadaria Selarón (Selarón Steps)', desc: 'Must Do · 8.5/10. 2,000 tiles from 60+ countries. 215 steps. Walk down from Santa Teresa — 20–30 min downhill.', addr: 'Rua Joaquim Silva, Lapa, Rio de Janeiro', day: 'feb7', slot: 'Feb 7 · Afternoon (walk from Santa Teresa)', catClass: 'cat-day7' },
+    { latlng: [-22.9182, -43.1773], name: 'Lapa Arches (Arcos da Lapa)', desc: 'Recommended · 8/10. 18th-century aqueduct. Walk from Selarón Steps (~10 min). Quiet and photogenic by day.', addr: 'Arcos da Lapa, Centro, Rio de Janeiro', day: 'feb7', slot: 'Feb 7 · Late Afternoon (walk from Selarón)', catClass: 'cat-day7' },
+    { latlng: [-22.9086, -43.1766], name: 'Centro Histórico & Cinelândia', desc: 'Optional · 6.5/10. Teatro Municipal, Biblioteca Nacional. NOT in the 3-day sightseeing plan.', addr: 'Cinelândia, Centro, Rio de Janeiro', day: 'flex', slot: 'Not in Feb 7–9 plan', catClass: 'cat-flex' },
+    { latlng: [-22.9021, -43.2255], name: 'Feira de São Cristóvão', desc: 'Optional · 7.5/10. Huge indoor Northeastern market. Forró music, regional food. Thu–Sun. NOT in the 3-day plan.', addr: 'Campo de São Cristóvão, São Cristóvão', day: 'flex', slot: 'Not in Feb 7–9 plan', catClass: 'cat-flex' },
+    { latlng: [-22.9155, -43.1797], name: 'Feira do Lavradio (Last Saturday)', desc: 'NOTE: Feb 6, 2027 is the FIRST Saturday of February — NOT the last. The Feira do Lavradio runs on the LAST Saturday monthly. Last Saturday in Feb 2027 = Feb 27. This attraction does NOT apply to this trip.', addr: 'Rua do Lavradio, Lapa, Rio de Janeiro', day: 'flex', slot: 'Not applicable — Feb 6 is not a Feira day', catClass: 'cat-flex' }
   ];
 
+  // Store references for day filtering
+  var attractionMarkers = [];
+
   attractions.forEach(function(a) {
-    L.marker(a.latlng, {icon: mkIcon(ATTRACT_COLOR)})
-      .bindPopup(popup(a.name, 'Tourist Attraction', 'cat-attraction', a.desc, a.addr, a.addr + ', Rio de Janeiro'))
-      .addTo(map);
+    var color = a.day === 'feb7' ? DAY7_COLOR : a.day === 'feb8' ? DAY8_COLOR : a.day === 'feb9' ? DAY9_COLOR : FLEX_COLOR;
+    var catLabel = a.slot ? ('Tourist Attraction · ' + a.slot) : 'Tourist Attraction';
+    var m = L.marker(a.latlng, {icon: mkIcon(color)})
+      .bindPopup(popup(a.name, catLabel, a.catClass || 'cat-attraction', a.desc, a.addr, a.addr + ', Rio de Janeiro'));
+    m.addTo(map);
+    attractionMarkers.push({marker: m, day: a.day});
   });
 
   // ── Tijuca locations ─────────────────────────────────
