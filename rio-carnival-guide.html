@@ -951,11 +951,11 @@ tbody td {
       <div class="map-legend-item"><span class="map-dot dot-airbnb"></span> Our Airbnb</div>
       <div class="map-legend-item"><span class="map-dot dot-carnival"></span> Our Carnival Booking</div>
       <div class="map-legend-item"><span class="map-dot dot-meeting"></span> Meeting Point</div>
-      <div class="map-legend-item"><span class="map-dot dot-day7"></span> Feb 7 Attractions</div>
-      <div class="map-legend-item"><span class="map-dot dot-day8"></span> Feb 8 Attractions</div>
-      <div class="map-legend-item"><span class="map-dot dot-day9"></span> Feb 9 (Half Day)</div>
-      <div class="map-legend-item"><span class="map-dot dot-flex"></span> Flexible / Not in plan</div>
-      <div class="map-legend-item"><span class="map-dot dot-tijuca"></span> Tijuca</div>
+      <div id="legend-day7" class="map-legend-item"><span class="map-dot dot-day7"></span> Feb 7 Attractions</div>
+      <div id="legend-day8" class="map-legend-item"><span class="map-dot dot-day8"></span> Feb 8 Attractions</div>
+      <div id="legend-day9" class="map-legend-item"><span class="map-dot dot-day9"></span> Feb 9 (Half Day)</div>
+      <div id="legend-flex" class="map-legend-item"><span class="map-dot dot-flex"></span> Flexible / Not in plan</div>
+      <div id="legend-tijuca" class="map-legend-item"><span class="map-dot dot-tijuca"></span> Tijuca</div>
     </div>
 
     <div id="rio-map"></div>
@@ -4601,15 +4601,53 @@ function filterMapDay(day) {
       else btn.classList.add('dfb-inactive');
     }
   });
-  // Show/hide attraction markers
-  if (typeof attractionMarkers !== 'undefined' && typeof map !== 'undefined') {
-    attractionMarkers.forEach(function(ref) {
-      if (day === 'all' || ref.day === day) {
-        if (!map.hasLayer(ref.marker)) ref.marker.addTo(map);
+
+  var map = window.rioMap;
+  var attractionMarkers = window.rioAttractionMarkers;
+  var tijucaMarkers = window.rioTijucaMarkers;
+  if (!map || !attractionMarkers) return;
+
+  // Show/hide attraction markers; collect visible ones for viewport fit
+  var visibleMarkers = [];
+  attractionMarkers.forEach(function(ref) {
+    var show = day === 'all' || ref.day === day;
+    if (show) {
+      if (!map.hasLayer(ref.marker)) ref.marker.addTo(map);
+      visibleMarkers.push(ref.marker);
+    } else {
+      if (map.hasLayer(ref.marker)) map.removeLayer(ref.marker);
+    }
+  });
+
+  // Tijuca markers: visible only on 'all'
+  if (tijucaMarkers) {
+    tijucaMarkers.forEach(function(m) {
+      if (day === 'all') {
+        if (!map.hasLayer(m)) m.addTo(map);
       } else {
-        if (map.hasLayer(ref.marker)) map.removeLayer(ref.marker);
+        if (map.hasLayer(m)) map.removeLayer(m);
       }
     });
+  }
+
+  // Legend: hide/show day-specific entries
+  var legendVis = {
+    'legend-day7':  day === 'all' || day === 'feb7',
+    'legend-day8':  day === 'all' || day === 'feb8',
+    'legend-day9':  day === 'all' || day === 'feb9',
+    'legend-flex':  day === 'all',
+    'legend-tijuca': day === 'all'
+  };
+  Object.keys(legendVis).forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.style.display = legendVis[id] ? '' : 'none';
+  });
+
+  // Fit viewport to visible markers, or restore full view for 'all'
+  if (day === 'all') {
+    map.setView([-22.958, -43.197], 12);
+  } else if (visibleMarkers.length > 0) {
+    map.fitBounds(L.featureGroup(visibleMarkers).getBounds(), {padding: [50, 50], maxZoom: 14});
   }
 }
 
@@ -4663,7 +4701,7 @@ function showPlan1119(id) {
   if (!mapEl) return;
 
   // Center on Copacabana / our Airbnb area
-  var map = L.map('rio-map', { zoomControl: true }).setView([-22.958, -43.197], 12);
+  var map = window.rioMap = L.map('rio-map', { zoomControl: true }).setView([-22.958, -43.197], 12);
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
@@ -4754,8 +4792,8 @@ function showPlan1119(id) {
     { latlng: [-22.9155, -43.1797], name: 'Feira do Lavradio (Last Saturday)', desc: 'NOTE: Feb 6, 2027 is the FIRST Saturday of February — NOT the last. The Feira do Lavradio runs on the LAST Saturday monthly. Last Saturday in Feb 2027 = Feb 27. This attraction does NOT apply to this trip.', addr: 'Rua do Lavradio, Lapa, Rio de Janeiro', day: 'flex', slot: 'Not applicable — Feb 6 is not a Feira day', catClass: 'cat-flex' }
   ];
 
-  // Store references for day filtering
-  var attractionMarkers = [];
+  // Store references for day filtering (exposed globally for filterMapDay)
+  var attractionMarkers = window.rioAttractionMarkers = [];
 
   attractions.forEach(function(a) {
     var color = a.day === 'feb7' ? DAY7_COLOR : a.day === 'feb8' ? DAY8_COLOR : a.day === 'feb9' ? DAY9_COLOR : FLEX_COLOR;
@@ -4778,10 +4816,12 @@ function showPlan1119(id) {
     { latlng: [-23.0021, -43.2865], name: 'Pedra da Gávea', desc: '844m granite monolith. Best view in Rio. Very strenuous hike (3–4 hrs return). Granite scrambling. Best Feb 11–19 extension.', addr: 'Tijuca National Park, São Conrado edge' }
   ];
 
+  var tijucaMarkers = window.rioTijucaMarkers = [];
   tijuca.forEach(function(t) {
-    L.marker(t.latlng, {icon: mkIcon(TIJUCA_COLOR)})
+    var tm = L.marker(t.latlng, {icon: mkIcon(TIJUCA_COLOR)})
       .bindPopup(popup(t.name, 'Tijuca', 'cat-tijuca', t.desc, t.addr, t.name + ', ' + t.addr))
       .addTo(map);
+    tijucaMarkers.push(tm);
   });
 
   // ── Reset / Show All button ──────────────────────────
