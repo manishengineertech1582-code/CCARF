@@ -821,6 +821,7 @@ tbody td {
 .plan-tab { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:7px 14px; font-size:13px; font-weight:600; cursor:pointer; color:var(--muted); transition:all .15s; }
 .plan-tab:hover { border-color:var(--gold); color:var(--gold); }
 .plan-tab.active { background:var(--gold); border-color:var(--gold); color:#fff; }
+.plan-tab-summary { border-color:var(--gold); color:var(--gold); font-weight:700; }
 .plan-panel { display:none; }
 .plan-panel.active { display:block; }
 .plan-day { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; margin-bottom:16px; }
@@ -989,12 +990,227 @@ tbody td {
     </div>
 
     <div class="plan-tabs" role="tablist">
+      <button class="plan-tab plan-tab-summary" onclick="showPlan611('summary')">At a Glance ★</button>
       <button class="plan-tab active" onclick="showPlan611('overview')">Overview</button>
       <button class="plan-tab" onclick="showPlan611('daily')">Day-by-Day Itinerary</button>
       <button class="plan-tab" onclick="showPlan611('carnival')">Carnival Planning</button>
       <button class="plan-tab" onclick="showPlan611('sightseeing')">Sightseeing Days</button>
       <button class="plan-tab" onclick="showPlan611('transport')">Transport</button>
     </div>
+
+    <!-- PANEL: SUMMARY (At a Glance) -->
+    <div class="plan-panel" id="plan611-summary">
+      <style>
+        .sum-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap:14px; }
+        .sum-card { border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; background:var(--surface); }
+        .sum-hdr { padding:10px 14px; }
+        .sum-hdr-city { font-size:10px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; opacity:.75; margin-bottom:2px; }
+        .sum-hdr-date { font-family:'Cormorant Garamond',serif; font-size:17px; font-weight:700; line-height:1.2; }
+        .sum-hdr-theme { font-size:11px; opacity:.8; margin-top:3px; }
+        .sum-body { padding:8px 0; }
+        .sum-row { display:flex; align-items:flex-start; gap:8px; padding:5px 14px; border-top:1px solid var(--faint); font-size:12.5px; line-height:1.35; }
+        .sum-row:first-child { border-top:none; }
+        .sum-icon { flex-shrink:0; width:20px; text-align:center; font-size:14px; margin-top:1px; }
+        .sum-time { flex-shrink:0; color:var(--muted); font-size:11px; min-width:72px; padding-top:1px; }
+        .sum-text { color:var(--ink); }
+        .sum-badge { display:inline-block; font-size:10px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; padding:1px 6px; border-radius:3px; vertical-align:middle; margin-left:4px; }
+        .badge-confirmed { background:color-mix(in srgb, var(--red) 15%, transparent); color:var(--red); }
+        .badge-optional  { background:color-mix(in srgb, var(--gold) 15%, transparent); color:var(--gold); }
+        .badge-verify    { background:color-mix(in srgb, var(--muted) 15%, transparent); color:var(--muted); }
+        @media(max-width:600px){ .sum-grid { grid-template-columns:1fr; } .sum-time { min-width:60px; } }
+      </style>
+
+      <p style="font-size:13px;color:var(--muted);margin:0 0 14px;">9 days · São Paulo → Rio de Janeiro → Iguazu Falls. One glance per day.</p>
+
+      <div class="sum-grid">
+
+        <!-- FEB 5 -->
+        <div class="sum-card">
+          <div class="sum-hdr" style="background:var(--faint);">
+            <div class="sum-hdr-city">São Paulo · Day 1</div>
+            <div class="sum-hdr-date">Fri, Feb 5</div>
+            <div class="sum-hdr-theme">International arrival · Rest</div>
+          </div>
+          <div class="sum-body">
+            <div class="sum-row"><div class="sum-icon">✈️</div><div class="sum-time">Variable</div><div class="sum-text">Arrive GRU · immigration · transfer to hotel</div></div>
+            <div class="sum-row"><div class="sum-icon">🏨</div><div class="sum-time">Afternoon</div><div class="sum-text">Check in · rest · rehydrate</div></div>
+            <div class="sum-row"><div class="sum-icon">🍽️</div><div class="sum-time">Evening</div><div class="sum-text">Light dinner near hotel</div></div>
+            <div class="sum-row"><div class="sum-icon">🌙</div><div class="sum-time">Night</div><div class="sum-text">Sleep · fly to Rio tomorrow</div></div>
+          </div>
+        </div>
+
+        <!-- FEB 6 -->
+        <div class="sum-card">
+          <div class="sum-hdr" style="background:color-mix(in srgb,var(--blue) 12%,transparent);">
+            <div class="sum-hdr-city">Rio de Janeiro · Day 2</div>
+            <div class="sum-hdr-date">Sat, Feb 6</div>
+            <div class="sum-hdr-theme">Arrival · Copacabana · Arpoador</div>
+          </div>
+          <div class="sum-body">
+            <div class="sum-row"><div class="sum-icon">✈️</div><div class="sum-time">Morning</div><div class="sum-text">GRU → GIG (~1h) · arrive Rio</div></div>
+            <div class="sum-row"><div class="sum-icon">🏨</div><div class="sum-time">Late morning</div><div class="sum-text">Airbnb check-in · R. Santa Clara 405</div></div>
+            <div class="sum-row"><div class="sum-icon">🏖️</div><div class="sum-time">Afternoon</div><div class="sum-text">Copacabana beachfront walk</div></div>
+            <div class="sum-row"><div class="sum-icon">🌅</div><div class="sum-time">6:30–7:30 PM</div><div class="sum-text">Arpoador sunset</div></div>
+            <div class="sum-row"><div class="sum-icon">🍽️</div><div class="sum-time">7:30 PM</div><div class="sum-text">Dinner near Airbnb</div></div>
+            <div class="sum-row"><div class="sum-icon">🌙</div><div class="sum-time">9:30 PM</div><div class="sum-text">Sleep · early alarm tomorrow</div></div>
+          </div>
+        </div>
+
+        <!-- FEB 7 -->
+        <div class="sum-card">
+          <div class="sum-hdr" style="background:color-mix(in srgb,var(--blue) 12%,transparent);">
+            <div class="sum-hdr-city">Rio de Janeiro · Day 3</div>
+            <div class="sum-hdr-date">Sun, Feb 7</div>
+            <div class="sum-hdr-theme">Cristo · Santa Teresa · Lapa</div>
+          </div>
+          <div class="sum-body">
+            <div class="sum-row"><div class="sum-icon">⏰</div><div class="sum-time">6:30 AM</div><div class="sum-text">Wake up</div></div>
+            <div class="sum-row"><div class="sum-icon">🚗</div><div class="sum-time">7:30 AM</div><div class="sum-text">Leave Airbnb</div></div>
+            <div class="sum-row"><div class="sum-icon">🗿</div><div class="sum-time">8:30–10:30 AM</div><div class="sum-text">Cristo Redentor (first tram)</div></div>
+            <div class="sum-row"><div class="sum-icon">🌄</div><div class="sum-time">10:45–11:30 AM</div><div class="sum-text">Mirante Dona Marta</div></div>
+            <div class="sum-row"><div class="sum-icon">🏘️</div><div class="sum-time">11:45 AM–1:30 PM</div><div class="sum-text">Santa Teresa + lunch (Aprazível)</div></div>
+            <div class="sum-row"><div class="sum-icon">🎨</div><div class="sum-time">2:00–2:45 PM</div><div class="sum-text">Selarón Steps</div></div>
+            <div class="sum-row"><div class="sum-icon">🏛️</div><div class="sum-time">2:45–3:15 PM</div><div class="sum-text">Lapa Arches</div></div>
+            <div class="sum-row"><div class="sum-icon">🏨</div><div class="sum-time">4:00–6:30 PM</div><div class="sum-text">Airbnb rest</div></div>
+            <div class="sum-row"><div class="sum-icon">🌅</div><div class="sum-time">~7:00 PM</div><div class="sum-text">Arpoador sunset</div></div>
+            <div class="sum-row"><div class="sum-icon">🍽️</div><div class="sum-time">7:30 PM</div><div class="sum-text">Dinner</div></div>
+          </div>
+        </div>
+
+        <!-- FEB 8 -->
+        <div class="sum-card">
+          <div class="sum-hdr" style="background:color-mix(in srgb,var(--green) 12%,transparent);">
+            <div class="sum-hdr-city">Rio de Janeiro · Day 4</div>
+            <div class="sum-hdr-date">Mon, Feb 8</div>
+            <div class="sum-hdr-theme">Sargento Pimenta bloco · Sugarloaf</div>
+          </div>
+          <div class="sum-body">
+            <div class="sum-row"><div class="sum-icon">⏰</div><div class="sum-time">6:30 AM</div><div class="sum-text">Wake up</div></div>
+            <div class="sum-row"><div class="sum-icon">🚇</div><div class="sum-time">7:00 AM</div><div class="sum-text">Leave Airbnb → Flamengo</div></div>
+            <div class="sum-row"><div class="sum-icon">🎉</div><div class="sum-time">8:00 AM–1:30 PM</div><div class="sum-text"><strong>Sargento Pimenta bloco</strong> — Aterro do Flamengo</div></div>
+            <div class="sum-row"><div class="sum-icon">🚠</div><div class="sum-time">2:00–5:30 PM</div><div class="sum-text">Sugarloaf Mountain</div></div>
+            <div class="sum-row"><div class="sum-icon">🚿</div><div class="sum-time">6:00–7:00 PM</div><div class="sum-text">Shower · rest at Airbnb</div></div>
+            <div class="sum-row"><div class="sum-icon">🍽️</div><div class="sum-time">7:30 PM</div><div class="sum-text">Dinner · early night</div></div>
+            <div class="sum-row"><div class="sum-icon">🌙</div><div class="sum-time">10:00 PM</div><div class="sum-text">Sleep · Carnival tomorrow</div></div>
+          </div>
+        </div>
+
+        <!-- FEB 9 -->
+        <div class="sum-card" style="border-color:var(--red);">
+          <div class="sum-hdr" style="background:color-mix(in srgb,var(--red) 12%,transparent);">
+            <div class="sum-hdr-city">Rio de Janeiro · Day 5</div>
+            <div class="sum-hdr-date">Tue, Feb 9 <span class="sum-badge badge-confirmed">Camarote Mar ✓</span></div>
+            <div class="sum-hdr-theme">Urca morning · Carnival night · Sambadrome</div>
+          </div>
+          <div class="sum-body">
+            <div class="sum-row"><div class="sum-icon">⏰</div><div class="sum-time">8:00 AM</div><div class="sum-text">Wake up</div></div>
+            <div class="sum-row"><div class="sum-icon">🚗</div><div class="sum-time">8:45 AM</div><div class="sum-text">Leave Airbnb</div></div>
+            <div class="sum-row"><div class="sum-icon">🏖️</div><div class="sum-time">9:00–9:15 AM</div><div class="sum-text">Praia Vermelha</div></div>
+            <div class="sum-row"><div class="sum-icon">🥾</div><div class="sum-time">9:15–10:00 AM</div><div class="sum-text">Pista Cláudio Coutinho</div></div>
+            <div class="sum-row"><div class="sum-icon">🌊</div><div class="sum-time">10:40–11:30 AM</div><div class="sum-text">Mureta da Urca</div></div>
+            <div class="sum-row"><div class="sum-icon">🏨</div><div class="sum-time">11:30 AM</div><div class="sum-text">Return to Airbnb</div></div>
+            <div class="sum-row"><div class="sum-icon">🍽️</div><div class="sum-time">12:30–1:30 PM</div><div class="sum-text">Lunch</div></div>
+            <div class="sum-row"><div class="sum-icon">😴</div><div class="sum-time">1:30–3:30 PM</div><div class="sum-text"><strong>Mandatory rest / nap</strong></div></div>
+            <div class="sum-row"><div class="sum-icon">👔</div><div class="sum-time">3:30–5:00 PM</div><div class="sum-text">Get ready</div></div>
+            <div class="sum-row"><div class="sum-icon">🍽️</div><div class="sum-time">5:30 PM</div><div class="sum-text">Dinner</div></div>
+            <div class="sum-row"><div class="sum-icon">📍</div><div class="sum-time">~7:00 PM</div><div class="sum-text">Othon Palace meeting point</div></div>
+            <div class="sum-row"><div class="sum-icon">🚌</div><div class="sum-time">~8:00 PM</div><div class="sum-text">Group transport → Sambódromo</div></div>
+            <div class="sum-row" style="background:color-mix(in srgb,var(--red) 8%,transparent);"><div class="sum-icon">🎭</div><div class="sum-time">~9 PM–6 AM</div><div class="sum-text"><strong>CAMAROTE MAR — Sector 6</strong></div></div>
+          </div>
+        </div>
+
+        <!-- FEB 10 -->
+        <div class="sum-card">
+          <div class="sum-hdr" style="background:color-mix(in srgb,var(--green) 12%,transparent);">
+            <div class="sum-hdr-city">Rio → Iguazu · Day 6</div>
+            <div class="sum-hdr-date">Wed, Feb 10</div>
+            <div class="sum-hdr-theme">Recovery · Checkout · GIG → IGU</div>
+          </div>
+          <div class="sum-body">
+            <div class="sum-row"><div class="sum-icon">😴</div><div class="sum-time">5 AM–noon</div><div class="sum-text">Sleep · no alarm</div></div>
+            <div class="sum-row"><div class="sum-icon">🍽️</div><div class="sum-time">1:30–3:00 PM</div><div class="sum-text">Brunch near Airbnb only</div></div>
+            <div class="sum-row"><div class="sum-icon">🏆</div><div class="sum-time">~3:00 PM</div><div class="sum-text">Apuração — Carnival champion announced</div></div>
+            <div class="sum-row"><div class="sum-icon">🧳</div><div class="sum-time">3:00–4:30 PM</div><div class="sum-text">Pack · prepare for Iguazu</div></div>
+            <div class="sum-row"><div class="sum-icon">🏨</div><div class="sum-time">4:30–5:00 PM</div><div class="sum-text">Airbnb checkout (arrange late checkout in advance)</div></div>
+            <div class="sum-row"><div class="sum-icon">🚗</div><div class="sum-time">5:00 PM</div><div class="sum-text">Uber to GIG · ~45–55 min · R$80–120</div></div>
+            <div class="sum-row"><div class="sum-icon">✈️</div><div class="sum-time">~7:30–8:30 PM</div><div class="sum-text">Flight GIG → IGU (~2h20m) <span class="sum-badge badge-verify">verify</span></div></div>
+            <div class="sum-row"><div class="sum-icon">🏨</div><div class="sum-time">~10:30–11:30 PM</div><div class="sum-text">Hotel check-in · Foz do Iguaçu · sleep</div></div>
+          </div>
+        </div>
+
+        <!-- FEB 11 -->
+        <div class="sum-card" style="border-color:var(--blue);">
+          <div class="sum-hdr" style="background:color-mix(in srgb,var(--blue) 12%,transparent);">
+            <div class="sum-hdr-city">Iguazu — Brazilian Side · Day 7</div>
+            <div class="sum-hdr-date">Thu, Feb 11</div>
+            <div class="sum-hdr-theme">Parque Nacional do Iguaçu · Full day</div>
+          </div>
+          <div class="sum-body">
+            <div class="sum-row"><div class="sum-icon">⏰</div><div class="sum-time">7:00 AM</div><div class="sum-text">Wake up</div></div>
+            <div class="sum-row"><div class="sum-icon">🍳</div><div class="sum-time">7:30 AM</div><div class="sum-text">Breakfast at hotel (included)</div></div>
+            <div class="sum-row"><div class="sum-icon">🚗</div><div class="sum-time">8:30–9:00 AM</div><div class="sum-text">Leave hotel → park entrance</div></div>
+            <div class="sum-row"><div class="sum-icon">🌊</div><div class="sum-time">9:00 AM–12:30 PM</div><div class="sum-text">Trilha das Cataratas — full trail</div></div>
+            <div class="sum-row"><div class="sum-icon">🚤</div><div class="sum-time">Optional</div><div class="sum-text">Macuco Safari (pre-book) <span class="sum-badge badge-optional">optional</span></div></div>
+            <div class="sum-row"><div class="sum-icon">🍽️</div><div class="sum-time">12:30–1:30 PM</div><div class="sum-text">Lunch · Porto Canoas (inside park)</div></div>
+            <div class="sum-row"><div class="sum-icon">🦜</div><div class="sum-time">2:00–3:30 PM</div><div class="sum-text">Parque das Aves <span class="sum-badge badge-optional">optional</span></div></div>
+            <div class="sum-row"><div class="sum-icon">🏨</div><div class="sum-time">4:30–5:00 PM</div><div class="sum-text">Return to hotel · rest</div></div>
+            <div class="sum-row"><div class="sum-icon">🍽️</div><div class="sum-time">7:00 PM</div><div class="sum-text">Dinner · hotel restaurant</div></div>
+            <div class="sum-row"><div class="sum-icon">🌙</div><div class="sum-time">9:30–10:00 PM</div><div class="sum-text">Sleep · 6:30 AM alarm tomorrow</div></div>
+          </div>
+        </div>
+
+        <!-- FEB 12 -->
+        <div class="sum-card" style="border-color:var(--blue);">
+          <div class="sum-hdr" style="background:color-mix(in srgb,#1B5FA8 12%,transparent);">
+            <div class="sum-hdr-city">Iguazu — Argentine Side · Day 8</div>
+            <div class="sum-hdr-date">Fri, Feb 12</div>
+            <div class="sum-hdr-theme">Parque Nacional Iguazú · Border crossing</div>
+          </div>
+          <div class="sum-body">
+            <div class="sum-row"><div class="sum-icon">⏰</div><div class="sum-time">6:30 AM</div><div class="sum-text">Wake up · passport ready</div></div>
+            <div class="sum-row"><div class="sum-icon">🍳</div><div class="sum-time">7:00 AM</div><div class="sum-text">Breakfast</div></div>
+            <div class="sum-row"><div class="sum-icon">🚗</div><div class="sum-time">7:30 AM</div><div class="sum-text">Leave hotel</div></div>
+            <div class="sum-row"><div class="sum-icon">🇧🇷</div><div class="sum-time">~7:50 AM</div><div class="sum-text">Brazil border exit</div></div>
+            <div class="sum-row"><div class="sum-icon">🇦🇷</div><div class="sum-time">~8:15 AM</div><div class="sum-text">Argentina entry</div></div>
+            <div class="sum-row"><div class="sum-icon">🚂</div><div class="sum-time">9:30–9:45 AM</div><div class="sum-text">Train → Garganta del Diablo</div></div>
+            <div class="sum-row"><div class="sum-icon">💦</div><div class="sum-time">10:00–10:45 AM</div><div class="sum-text"><strong>Devil's Throat</strong> — total spray</div></div>
+            <div class="sum-row"><div class="sum-icon">🥾</div><div class="sum-time">11:00 AM–1:00 PM</div><div class="sum-text">Lower Circuit</div></div>
+            <div class="sum-row"><div class="sum-icon">🍽️</div><div class="sum-time">1:00–2:00 PM</div><div class="sum-text">Lunch · park restaurant</div></div>
+            <div class="sum-row"><div class="sum-icon">🥾</div><div class="sum-time">2:00–3:30 PM</div><div class="sum-text">Upper Circuit</div></div>
+            <div class="sum-row"><div class="sum-icon">🚗</div><div class="sum-time">3:45–4:30 PM</div><div class="sum-text">Leave park → border</div></div>
+            <div class="sum-row"><div class="sum-icon">🛂</div><div class="sum-time">4:30–5:30 PM</div><div class="sum-text">Border crossing → Brazil</div></div>
+            <div class="sum-row"><div class="sum-icon">🏨</div><div class="sum-time">~6:00 PM</div><div class="sum-text">Hotel · shower · rest</div></div>
+            <div class="sum-row"><div class="sum-icon">🍽️</div><div class="sum-time">7:30 PM</div><div class="sum-text">Dinner</div></div>
+            <div class="sum-row"><div class="sum-icon">🌙</div><div class="sum-time">10:00 PM</div><div class="sum-text">Sleep</div></div>
+          </div>
+        </div>
+
+        <!-- FEB 13 -->
+        <div class="sum-card">
+          <div class="sum-hdr" style="background:var(--faint);">
+            <div class="sum-hdr-city">Departure · Day 9</div>
+            <div class="sum-hdr-date">Sat, Feb 13</div>
+            <div class="sum-hdr-theme">Hotel checkout · IGU → onward</div>
+          </div>
+          <div class="sum-body">
+            <div class="sum-row"><div class="sum-icon">🍳</div><div class="sum-time">Morning</div><div class="sum-text">Breakfast at hotel</div></div>
+            <div class="sum-row"><div class="sum-icon">🏨</div><div class="sum-time">Morning</div><div class="sum-text">Hotel checkout · bags to reception</div></div>
+            <div class="sum-row"><div class="sum-icon">🦜</div><div class="sum-time">Optional</div><div class="sum-text">Parque das Aves — only if afternoon flight <span class="sum-badge badge-optional">optional</span></div></div>
+            <div class="sum-row"><div class="sum-icon">🚗</div><div class="sum-time">Timed to flight</div><div class="sum-text">Transfer to IGU Airport · ~25–30 min</div></div>
+            <div class="sum-row"><div class="sum-icon">✈️</div><div class="sum-time">Afternoon</div><div class="sum-text">Flight IGU → GIG or GRU <span class="sum-badge badge-verify">verify</span></div></div>
+          </div>
+        </div>
+
+      </div><!-- /sum-grid -->
+
+      <div style="margin-top:18px;padding:10px 14px;background:var(--faint);border-radius:var(--radius);font-size:12px;color:var(--muted);line-height:1.6;">
+        <strong style="color:var(--ink);">Key confirmations:</strong>
+        Camarote Mar · Feb 9 · Sector 6 ✓ confirmed &nbsp;·&nbsp;
+        Late Airbnb checkout Feb 10 — arrange with host at booking &nbsp;·&nbsp;
+        GIG → IGU evening flight — book when 2027 schedules publish (~Oct 2026) &nbsp;·&nbsp;
+        Macuco Safari Feb 11 — sells out in February, book early
+      </div>
+    </div><!-- /plan611-summary -->
 
     <!-- PANEL: OVERVIEW -->
     <div class="plan-panel active" id="plan611-overview">
