@@ -932,6 +932,7 @@ tbody td {
     <a class="nav-link" href="#tijuca">Tijuca</a>
     <a class="nav-link" href="#feb1119">Feb 11–19</a>
     <a class="nav-link" href="#beach">Beach Destination</a>
+    <a class="nav-link" href="#top10">Top 10 Destinations</a>
   </div>
 </nav>
 
@@ -6523,6 +6524,327 @@ tbody td {
 
   </div>
 </section>
+
+<!-- TOP 10 TOURIST DESTINATIONS SECTION -->
+<section class="section" id="top10">
+  <div class="wrap">
+    <p class="section-label">Brazil · Once-in-a-Lifetime Travel</p>
+    <h2 class="section-title">Top 10 Tourist Destinations</h2>
+    <p class="section-desc">Ten Brazilian destinations genuinely worth considering for a first — and possibly only — visit to Brazil. Rio de Janeiro and Iguazu Falls are already part of this trip and are excluded below. These 10 are numbered for readability, not ranked by absolute importance — each covers a fundamentally different side of Brazil.</p>
+
+    <style>
+      .top10-grid { display:flex; flex-direction:column; gap:16px; margin-top:4px; }
+      .top10-card { border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; background:var(--surface); }
+      .top10-hdr { display:flex; align-items:flex-start; gap:14px; padding:14px 16px 10px; border-bottom:1px solid var(--faint); }
+      .top10-num { flex-shrink:0; width:36px; height:36px; border-radius:50%; background:var(--blue); color:#fff; font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:700; display:flex; align-items:center; justify-content:center; margin-top:2px; }
+      .top10-title-block { flex:1; }
+      .top10-name { font-family:'Cormorant Garamond',serif; font-size:21px; font-weight:700; color:var(--ink); line-height:1.15; }
+      .top10-region { font-size:11px; color:var(--muted); font-weight:600; letter-spacing:.06em; text-transform:uppercase; margin-top:2px; }
+      .top10-why { font-size:13.5px; color:var(--ink); line-height:1.55; padding:10px 16px; border-bottom:1px solid var(--faint); }
+      .top10-meta { display:grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap:0; }
+      .top10-meta-cell { padding:9px 16px; border-right:1px solid var(--faint); border-top:1px solid var(--faint); }
+      .top10-meta-cell:last-child { border-right:none; }
+      .top10-meta-label { font-size:10px; font-weight:700; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); margin-bottom:3px; }
+      .top10-meta-val { font-size:12.5px; color:var(--ink); line-height:1.4; }
+      .top10-exp { padding:10px 16px; border-top:1px solid var(--faint); }
+      .top10-exp-label { font-size:10px; font-weight:700; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); margin-bottom:5px; }
+      .top10-exp ul { margin:0; padding-left:16px; font-size:12.5px; color:var(--ink); line-height:1.6; }
+      .feb-good { color:#2A6644; font-weight:600; }
+      .feb-ok { color:#C49A22; font-weight:600; }
+      .feb-note { color:#D63B10; font-weight:600; }
+      @media(max-width:600px){ .top10-meta { grid-template-columns:1fr 1fr; } .top10-meta-cell { border-right:none; } .top10-meta-cell:nth-child(odd) { border-right:1px solid var(--faint); } }
+    </style>
+
+    <div class="top10-grid">
+
+      <!-- 1. Fernando de Noronha -->
+      <div class="top10-card" style="border-color:var(--blue);">
+        <div class="top10-hdr">
+          <div class="top10-num">1</div>
+          <div class="top10-title-block">
+            <div class="top10-name">Fernando de Noronha</div>
+            <div class="top10-region">Pernambuco · Atlantic Ocean · 350 km offshore</div>
+          </div>
+        </div>
+        <div class="top10-why">A UNESCO World Heritage archipelago and federal marine protected area — legally limited to ~500 visitors per day, which is the point. Brazil's finest beaches (Baía do Sancho, Praia do Leão) are consistently ranked among the best on earth. The marine ecosystem is extraordinary: spinner dolphins, sea turtles, reef sharks, and some of South America's best diving and snorkeling. Nothing in Brazil quite compares to this combination of pristine protected beaches, clear water, and wildlife.</div>
+        <div class="top10-exp">
+          <div class="top10-exp-label">Key experiences</div>
+          <ul>
+            <li>Baía do Sancho — consistently rated one of the world's top beaches</li>
+            <li>Diving or snorkeling with spinner dolphins and sea turtles</li>
+            <li>Forte dos Remédios and volcanic geology</li>
+            <li>Mirante dos Golfinhos sunrise dolphin viewing</li>
+            <li>Boat tours around the archipelago</li>
+          </ul>
+        </div>
+        <div class="top10-meta">
+          <div class="top10-meta-cell"><div class="top10-meta-label">Ideal stay</div><div class="top10-meta-val">4–6 days</div></div>
+          <div class="top10-meta-cell"><div class="top10-meta-label">Access from Rio</div><div class="top10-meta-val">Fly GIG → Recife (REC) → Noronha (FEN) · ~4h total · book well ahead · limited seats</div></div>
+          <div class="top10-meta-cell"><div class="top10-meta-label">February</div><div class="top10-meta-val"><span class="feb-good">Good</span> — sea turtle nesting peak season, dolphin activity high; rainy season brings brief afternoon showers but water remains warm and clear</div></div>
+          <div class="top10-meta-cell"><div class="top10-meta-label">Adds vs. Rio + Iguazu</div><div class="top10-meta-val">Pristine protected marine ecosystem, dramatically different beaches, marine wildlife — nothing in the main itinerary compares</div></div>
+        </div>
+      </div>
+
+      <!-- 2. Amazon / Manaus -->
+      <div class="top10-card">
+        <div class="top10-hdr">
+          <div class="top10-num" style="background:var(--green);">2</div>
+          <div class="top10-title-block">
+            <div class="top10-name">Amazon Rainforest / Manaus</div>
+            <div class="top10-region">Amazonas · North Brazil</div>
+          </div>
+        </div>
+        <div class="top10-why">The world's largest tropical rainforest covers more than half of Brazil and is one of the most biodiverse ecosystems on earth. Manaus is the primary gateway — a city of 2 million people 1,500 km inland from the Atlantic, reachable only by plane or multi-day river boat. The "Meeting of the Waters" (where the dark Rio Negro meets the pale Amazon for kilometers without mixing) is one of Brazil's most iconic natural spectacles. The rainforest experience here is completely distinct from anything at Rio or Iguazu.</div>
+        <div class="top10-exp">
+          <div class="top10-exp-label">Key experiences</div>
+          <ul>
+            <li>Meeting of the Waters (Encontro das Águas) — Negro meets Amazon</li>
+            <li>Jungle lodge stays with guided night walks and wildlife spotting</li>
+            <li>Piranha fishing and pink river dolphin encounters</li>
+            <li>Teatro Amazonas opera house — Belle Époque rubber-boom landmark</li>
+            <li>Flooded forest (igapó) canoe tours during high-water season</li>
+          </ul>
+        </div>
+        <div class="top10-meta">
+          <div class="top10-meta-cell"><div class="top10-meta-label">Ideal stay</div><div class="top10-meta-val">4–5 days (2 in Manaus, 2–3 in jungle lodge)</div></div>
+          <div class="top10-meta-cell"><div class="top10-meta-label">Access from Rio</div><div class="top10-meta-val">Fly GIG → MAO (Manaus) · ~4h direct · LATAM, Azul, GOL · daily flights</div></div>
+          <div class="top10-meta-cell"><div class="top10-meta-label">February</div><div class="top10-meta-val"><span class="feb-good">Good</span> — high-water season (Feb–May); flooded forest accessible by canoe, pink dolphins more visible; heat and humidity are high year-round</div></div>
+          <div class="top10-meta-cell"><div class="top10-meta-label">Adds vs. Rio + Iguazu</div><div class="top10-meta-val">Amazon rainforest — the defining Brazilian ecosystem, entirely absent from the main itinerary</div></div>
+        </div>
+      </div>
+
+      <!-- 3. Pantanal -->
+      <div class="top10-card">
+        <div class="top10-hdr">
+          <div class="top10-num" style="background:var(--green);">3</div>
+          <div class="top10-title-block">
+            <div class="top10-name">Pantanal</div>
+            <div class="top10-region">Mato Grosso do Sul / Mato Grosso · Central-West Brazil</div>
+          </div>
+        </div>
+        <div class="top10-why">The world's largest tropical wetland — roughly the size of France — is Brazil's best wildlife destination and one of the finest on earth for wildlife observation. Unlike the Amazon's dense canopy, the Pantanal's open wetlands make spotting jaguars, giant otters, tapirs, capybaras, caimans, and hundreds of bird species genuinely accessible. The Transpantaneira Road in the northern Pantanal is world-famous for wildlife density. UNESCO Biosphere Reserve.</div>
+        <div class="top10-exp">
+          <div class="top10-exp-label">Key experiences</div>
+          <ul>
+            <li>Jaguar spotting — Pantanal has the world's highest jaguar density</li>
+            <li>Giant otters, capybaras, tapirs, giant anteaters</li>
+            <li>Caimans and 650+ bird species (hyacinth macaws, jabiru storks)</li>
+            <li>Boat safaris on the Paraguay River</li>
+            <li>Fazenda (ranch) lodge stays on working cattle ranches</li>
+          </ul>
+        </div>
+        <div class="top10-meta">
+          <div class="top10-meta-cell"><div class="top10-meta-label">Ideal stay</div><div class="top10-meta-val">3–5 days</div></div>
+          <div class="top10-meta-cell"><div class="top10-meta-label">Access from Rio</div><div class="top10-meta-val">Fly GIG → Campo Grande (CGR) or Cuiabá (CGB) · ~2h · then lodge transfer (~2–3h road)</div></div>
+          <div class="top10-meta-cell"><div class="top10-meta-label">February</div><div class="top10-meta-val"><span class="feb-ok">Acceptable</span> — peak wet season; flooding limits road access and some areas. Dry season (Jul–Oct) is superior for wildlife. February is workable but requires lodge research on accessibility</div></div>
+          <div class="top10-meta-cell"><div class="top10-meta-label">Adds vs. Rio + Iguazu</div><div class="top10-meta-val">World-class wildlife in an entirely different ecosystem — jaguar, giant otters, massive bird diversity; nothing like this anywhere in the main itinerary</div></div>
+        </div>
+      </div>
+
+      <!-- 4. Lençóis Maranhenses -->
+      <div class="top10-card">
+        <div class="top10-hdr">
+          <div class="top10-num" style="background:var(--gold);">4</div>
+          <div class="top10-title-block">
+            <div class="top10-name">Lençóis Maranhenses</div>
+            <div class="top10-region">Maranhão · Northeast Brazil · National Park</div>
+          </div>
+        </div>
+        <div class="top10-why">One of Brazil's most visually extraordinary landscapes: vast white sand dunes stretching 70 km along the coast, filled seasonally with thousands of fresh, clear turquoise and blue lagoons. This ecosystem exists nowhere else on earth — the combination of coastal dunes and rainfall-fed lagoons produces a surreal landscape that looks like a desert and a lake district simultaneously. A UNESCO Biosphere Reserve candidate with no comparable equivalent in the world.</div>
+        <div class="top10-exp">
+          <div class="top10-exp-label">Key experiences</div>
+          <ul>
+            <li>Swimming in the crystal lagoons (Lagoa Azul, Lagoa Bonita)</li>
+            <li>Walking the white dune fields at sunrise or sunset</li>
+            <li>4WD jeep tours through the park</li>
+            <li>Barreirinhas town as the main base</li>
+            <li>Lagoa da Gaivota panoramic viewpoint</li>
+          </ul>
+        </div>
+        <div class="top10-meta">
+          <div class="top10-meta-cell"><div class="top10-meta-label">Ideal stay</div><div class="top10-meta-val">2–3 days</div></div>
+          <div class="top10-meta-cell"><div class="top10-meta-label">Access from Rio</div><div class="top10-meta-val">Fly GIG → São Luís (SLZ) · ~3h · then 4WD transfer ~3–4h to Barreirinhas</div></div>
+          <div class="top10-meta-cell"><div class="top10-meta-label">February</div><div class="top10-meta-val"><span class="feb-good">Peak season</span> — February is the best month; lagoons are at maximum fill from December rains. This is exactly when the landscape is most spectacular</div></div>
+          <div class="top10-meta-cell"><div class="top10-meta-label">Adds vs. Rio + Iguazu</div><div class="top10-meta-val">Unique landform found nowhere else on earth — white dune fields with swimming lagoons; no equivalent anywhere in the itinerary</div></div>
+        </div>
+      </div>
+
+      <!-- 5. Salvador -->
+      <div class="top10-card">
+        <div class="top10-hdr">
+          <div class="top10-num" style="background:var(--red);">5</div>
+          <div class="top10-title-block">
+            <div class="top10-name">Salvador</div>
+            <div class="top10-region">Bahia · Northeast Brazil · former Portuguese colonial capital</div>
+          </div>
+        </div>
+        <div class="top10-why">Brazil's first colonial capital and the historic center of Afro-Brazilian culture. The Pelourinho (UNESCO World Heritage Site) is one of Latin America's best-preserved colonial districts — baroque churches, colorful colonial buildings, and the living culture of candomblé (Afro-Brazilian religion), capoeira, and axé music. Salvador's Carnival, centered on trio elétrico trucks, is one of the largest street parties on earth and runs the same week as Rio Carnival — a genuinely different Carnival experience.</div>
+        <div class="top10-exp">
+          <div class="top10-exp-label">Key experiences</div>
+          <ul>
+            <li>Pelourinho historic district — UNESCO baroque architecture</li>
+            <li>Carnival Salvador — February, world's largest street Carnival by attendance</li>
+            <li>Candomblé ceremonies and Afro-Brazilian cultural centers</li>
+            <li>Capoeira performances at the Mercado Modelo</li>
+            <li>Elevador Lacerda and Baía de Todos os Santos viewpoints</li>
+          </ul>
+        </div>
+        <div class="top10-meta">
+          <div class="top10-meta-cell"><div class="top10-meta-label">Ideal stay</div><div class="top10-meta-val">3–4 days</div></div>
+          <div class="top10-meta-cell"><div class="top10-meta-label">Access from Rio</div><div class="top10-meta-val">Fly GIG → SSA (Salvador) · ~2h direct · daily flights on Gol, LATAM, Azul</div></div>
+          <div class="top10-meta-cell"><div class="top10-meta-label">February</div><div class="top10-meta-val"><span class="feb-good">Peak event</span> — Salvador Carnival runs the same week as Rio Carnival (Feb 7–11). Combining both is logistically complex; visiting before or after is recommended</div></div>
+          <div class="top10-meta-cell"><div class="top10-meta-label">Adds vs. Rio + Iguazu</div><div class="top10-meta-val">Afro-Brazilian cultural depth, UNESCO colonial history, entirely different Carnival tradition — nothing equivalent in the main itinerary</div></div>
+        </div>
+      </div>
+
+      <!-- 6. Chapada Diamantina -->
+      <div class="top10-card">
+        <div class="top10-hdr">
+          <div class="top10-num" style="background:var(--green);">6</div>
+          <div class="top10-title-block">
+            <div class="top10-name">Chapada Diamantina</div>
+            <div class="top10-region">Bahia · Central Brazil · National Park</div>
+          </div>
+        </div>
+        <div class="top10-why">Brazil's premier hiking destination — a national park of mesas, canyons, waterfalls, caves, and crystal-clear natural pools in the interior of Bahia. Lençóis town is the base for multi-day treks to the Morro do Pai Inácio plateau, the underground blue lagoons of Gruta da Pratinha and Poço Azul, and the Cachoeira do Buracão waterfall canyon. Offers a fundamentally different experience from Brazil's coast — Atlantic rainforest remnants, endemic wildlife, and dramatic highland scenery.</div>
+        <div class="top10-exp">
+          <div class="top10-exp-label">Key experiences</div>
+          <ul>
+            <li>Morro do Pai Inácio — mesa plateau with panoramic views</li>
+            <li>Poço Azul and Gruta da Pratinha — underground turquoise cave pools</li>
+            <li>Cachoeira do Buracão waterfall and canyon walk</li>
+            <li>Fumaça waterfall — one of Brazil's highest, visible from the rim</li>
+            <li>Multi-day trekking routes (Vale do Pati)</li>
+          </ul>
+        </div>
+        <div class="top10-meta">
+          <div class="top10-meta-cell"><div class="top10-meta-label">Ideal stay</div><div class="top10-meta-val">4–5 days</div></div>
+          <div class="top10-meta-cell"><div class="top10-meta-label">Access from Rio</div><div class="top10-meta-val">Fly GIG → SSA (Salvador) · ~2h · then 7h bus or 1h flight to Lençóis (LEC)</div></div>
+          <div class="top10-meta-cell"><div class="top10-meta-label">February</div><div class="top10-meta-val"><span class="feb-good">Good</span> — rainy season brings waterfalls to maximum volume; trails can be muddy but spectacular; Poço Azul and Pratinha remain accessible; waterfalls at peak</div></div>
+          <div class="top10-meta-cell"><div class="top10-meta-label">Adds vs. Rio + Iguazu</div><div class="top10-meta-val">Highland national park, mountain hiking, underground cave pools, canyons — a completely interior Brazil experience absent from the coast/falls itinerary</div></div>
+        </div>
+      </div>
+
+      <!-- 7. Ouro Preto -->
+      <div class="top10-card">
+        <div class="top10-hdr">
+          <div class="top10-num" style="background:var(--gold);">7</div>
+          <div class="top10-title-block">
+            <div class="top10-name">Ouro Preto</div>
+            <div class="top10-region">Minas Gerais · Southeast Brazil · UNESCO World Heritage City</div>
+          </div>
+        </div>
+        <div class="top10-why">Brazil's finest surviving colonial baroque city — a UNESCO World Heritage Site since 1980 and one of the most architecturally intact 18th-century cities in the Americas. Built on gold-rush wealth in the 1700s, Ouro Preto's steep cobblestone hills are lined with baroque churches (13 UNESCO-protected), including the masterworks of sculptor Aleijadinho. The Museu da Inconfidência marks the site of Brazil's first independence movement. Entirely different from Rio's modernism and Iguazu's nature.</div>
+        <div class="top10-exp">
+          <div class="top10-exp-label">Key experiences</div>
+          <ul>
+            <li>Igreja de São Francisco de Assis — Aleijadinho's baroque masterpiece</li>
+            <li>Praça Tiradentes and Museu da Inconfidência</li>
+            <li>Walking the colonial streetscape — cobblestones, baroque churches, fountains</li>
+            <li>Minas Gerais cuisine (pão de queijo, feijão tropeiro)</li>
+            <li>Day trips to Mariana and Congonhas (Aleijadinho prophets)</li>
+          </ul>
+        </div>
+        <div class="top10-meta">
+          <div class="top10-meta-cell"><div class="top10-meta-label">Ideal stay</div><div class="top10-meta-val">2 days</div></div>
+          <div class="top10-meta-cell"><div class="top10-meta-label">Access from Rio</div><div class="top10-meta-val">Bus from GIG or Novo Rio terminal · ~6.5h · or fly GIG → BHZ (Belo Horizonte) ~1h + 1.5h road transfer</div></div>
+          <div class="top10-meta-cell"><div class="top10-meta-label">February</div><div class="top10-meta-val"><span class="feb-good">Excellent</span> — Ouro Preto runs one of Brazil's most atmospheric Carnivals (smaller than Rio, known for cultural events); summer is warm but manageable; fully accessible year-round</div></div>
+          <div class="top10-meta-cell"><div class="top10-meta-label">Adds vs. Rio + Iguazu</div><div class="top10-meta-val">Portuguese colonial baroque heritage — the only UNESCO colonial city on this itinerary; 18th-century architecture and Brazilian history unavailable in Rio or Iguazu</div></div>
+        </div>
+      </div>
+
+      <!-- 8. Jericoacoara -->
+      <div class="top10-card">
+        <div class="top10-hdr">
+          <div class="top10-num" style="background:var(--blue);">8</div>
+          <div class="top10-title-block">
+            <div class="top10-name">Jericoacoara</div>
+            <div class="top10-region">Ceará · Northeast Brazil · National Park</div>
+          </div>
+        </div>
+        <div class="top10-why">One of Brazil's most distinctive beach destinations — a small village with sand streets inside a national park, accessible only by 4WD across dunes or via unpaved road. The setting is unusually dramatic: sand dunes descending to the sea, freshwater lagoons (Lagoa do Paraíso, Lagoa Azul) 20 km inland, and the famous Pedra Furada rock arch. Conde Nast and Lonely Planet consistently list it among the world's most beautiful beaches. The village retains an authentic, relatively uncommercialized character rare for a destination of this calibre.</div>
+        <div class="top10-exp">
+          <div class="top10-exp-label">Key experiences</div>
+          <ul>
+            <li>Sunset on the Duna do Pôr do Sol (daily ritual, every visitor)</li>
+            <li>Lagoa do Paraíso — translucent freshwater lagoon with hammocks</li>
+            <li>Pedra Furada rock arch on the beach</li>
+            <li>4WD dune crossing to reach the village</li>
+            <li>Kitesurfing and windsurfing (peak Dec–Feb)</li>
+          </ul>
+        </div>
+        <div class="top10-meta">
+          <div class="top10-meta-cell"><div class="top10-meta-label">Ideal stay</div><div class="top10-meta-val">3–4 days</div></div>
+          <div class="top10-meta-cell"><div class="top10-meta-label">Access from Rio</div><div class="top10-meta-val">Fly GIG → Fortaleza (FOR) · ~3.5h · then 4WD transfer ~4h or bus + 4WD</div></div>
+          <div class="top10-meta-cell"><div class="top10-meta-val"><span class="feb-ok">Acceptable</span> — Feb is the transition from peak wind season to low season; winds ease slightly. Beach and lagoons remain beautiful; less crowded than Jan. Rainy season starts March–April.</div><div class="top10-meta-label">February</div></div>
+          <div class="top10-meta-cell"><div class="top10-meta-label">Adds vs. Rio + Iguazu</div><div class="top10-meta-val">Northeast beach with dunes and lagoons — an entirely different coastal landscape from Rio's urban beaches; the village remoteness and lagoon combination is unique</div></div>
+        </div>
+      </div>
+
+      <!-- 9. Bonito -->
+      <div class="top10-card">
+        <div class="top10-hdr">
+          <div class="top10-num" style="background:var(--green);">9</div>
+          <div class="top10-title-block">
+            <div class="top10-name">Bonito</div>
+            <div class="top10-region">Mato Grosso do Sul · Central-West Brazil</div>
+          </div>
+        </div>
+        <div class="top10-why">Brazil's leading eco-tourism destination, built around rivers of extraordinary clarity — filtered through limestone bedrock to a turquoise transparency that makes snorkeling among fish in natural rivers genuinely otherworldly. The Río Sucuri and Rio da Prata are the signature experiences. All activities require guided booking through the municipal tourism system (entry caps protect the ecosystem). Frequently listed alongside the Amazon and Pantanal as one of Brazil's three essential nature destinations.</div>
+        <div class="top10-exp">
+          <div class="top10-exp-label">Key experiences</div>
+          <ul>
+            <li>Snorkeling Rio da Prata — crystal river with hundreds of dourado and pacu</li>
+            <li>Flutuação (river float) on the Río Sucuri</li>
+            <li>Abismo Anhumas — rappel into a cave lake with stalactites (advanced)</li>
+            <li>Gruta do Lago Azul — cave with brilliant blue underground lake</li>
+            <li>Lagoa Misteriosa — flooded cenote with 220m depth</li>
+          </ul>
+        </div>
+        <div class="top10-meta">
+          <div class="top10-meta-cell"><div class="top10-meta-label">Ideal stay</div><div class="top10-meta-val">3–4 days</div></div>
+          <div class="top10-meta-cell"><div class="top10-meta-label">Access from Rio</div><div class="top10-meta-val">Fly GIG → Campo Grande (CGR) · ~2h · then 5h bus or rental car (or Charter flight to Bonito airport)</div></div>
+          <div class="top10-meta-cell"><div class="top10-meta-label">February</div><div class="top10-meta-val"><span class="feb-note">Caveat</span> — February is rainy season; heavy rain can cloud river visibility, reducing the snorkeling experience significantly. Dry season (Jun–Sep) is optimal. If visiting in Feb, check river conditions on arrival</div></div>
+          <div class="top10-meta-cell"><div class="top10-meta-label">Adds vs. Rio + Iguazu</div><div class="top10-meta-val">Crystal-clear limestone river snorkeling and cave systems — a completely different water experience from the falls at Iguazu; the transparency is unlike anything else in Brazil</div></div>
+        </div>
+      </div>
+
+      <!-- 10. Recife / Olinda -->
+      <div class="top10-card">
+        <div class="top10-hdr">
+          <div class="top10-num" style="background:var(--red);">10</div>
+          <div class="top10-title-block">
+            <div class="top10-name">Recife &amp; Olinda</div>
+            <div class="top10-region">Pernambuco · Northeast Brazil · UNESCO World Heritage (Olinda)</div>
+          </div>
+        </div>
+        <div class="top10-why">Two complementary cities 6 km apart. Olinda is a UNESCO-listed colonial hilltop town with whitewashed baroque churches, a thriving arts scene, and one of Brazil's most beloved Carnivals — characterized by giant puppet figures (bonecos gigantes), frevo music, and street processions through colonial alleys. Recife (capital of Pernambuco) is the economic and cultural center of the Northeast, with the Recife Antigo historic district and a vibrant regional food culture centered on seafood and tapioca. Pernambuco is also the state containing Fernando de Noronha.</div>
+        <div class="top10-exp">
+          <div class="top10-exp-label">Key experiences</div>
+          <ul>
+            <li>Olinda Carnival — giant puppet figures, frevo, street processions (February)</li>
+            <li>Olinda colonial architecture — 13 baroque churches on the UNESCO list</li>
+            <li>Recife Antigo — historic waterfront district and nightlife</li>
+            <li>Instituto Ricardo Brennand — world-class museum in a medieval castle</li>
+            <li>Northeast cuisine — moqueca pernambucana, tapioca, carne de sol</li>
+          </ul>
+        </div>
+        <div class="top10-meta">
+          <div class="top10-meta-cell"><div class="top10-meta-label">Ideal stay</div><div class="top10-meta-val">2–3 days</div></div>
+          <div class="top10-meta-cell"><div class="top10-meta-label">Access from Rio</div><div class="top10-meta-val">Fly GIG → REC (Recife/Guararapes) · ~3h direct · daily flights Gol, LATAM, Azul</div></div>
+          <div class="top10-meta-cell"><div class="top10-meta-label">February</div><div class="top10-meta-val"><span class="feb-good">Peak event</span> — Olinda Carnival (same week as Rio Carnival) is one of Brazil's most celebrated. The two Carnivals coincide, so combining requires planning. Visit before or after the Rio trip</div></div>
+          <div class="top10-meta-cell"><div class="top10-meta-label">Adds vs. Rio + Iguazu</div><div class="top10-meta-val">Northeast Carnival tradition, UNESCO baroque colonial culture, Afro-Brazilian Pernambuco roots — distinct from Rio's Sambadrome tradition and Bahia's axé music</div></div>
+        </div>
+      </div>
+
+    </div><!-- /top10-grid -->
+
+    <div style="margin-top:20px;padding:12px 16px;background:var(--faint);border-radius:var(--radius);font-size:12.5px;color:var(--muted);line-height:1.6;">
+      <strong style="color:var(--ink);">Note on ranking:</strong> These 10 are numbered for readability, not presented as a strict scientific ranking. Each represents a fundamentally different Brazilian experience. The selection prioritises once-in-a-lifetime value, geographic diversity, and experience uniqueness — not proximity to Rio or general popularity. Sources: Visit Brasil, UNESCO World Heritage List, IBAMA, Lonely Planet Brazil, National Geographic Travel, Condé Nast Traveler, September 2026.
+    </div>
+
+  </div><!-- /.wrap -->
+</section><!-- /#top10 -->
 
 <div class="footer">
   <p>Neighborhood, safety, transport, and Carnival schedule sections are based on current research (September 2026).</p>
