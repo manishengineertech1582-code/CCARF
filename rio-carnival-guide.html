@@ -933,6 +933,7 @@ tbody td {
     <a class="nav-link" href="#feb1119">Feb 11–19</a>
     <a class="nav-link" href="#beach">Beach Destination</a>
     <a class="nav-link" href="#top10">Top 10 Destinations</a>
+    <a class="nav-link" href="#iguazu">Iguazu Falls</a>
   </div>
 </nav>
 
@@ -7211,4 +7212,363 @@ function showPlan1119(id) {
     });
   }
 })();
+</script>
+
+<!-- ══ IGUAZU FALLS ══════════════════════════════════════════════════════ -->
+<section class="section" id="iguazu">
+  <div class="wrap">
+    <p class="section-label">Iguazu Falls · Feb 10–14, 2026</p>
+    <h2 class="section-title">Iguazu Falls</h2>
+    <p class="section-desc">4 days at one of the world's great natural wonders — 275 waterfalls spanning 2.7 km on the Brazil–Argentina border. Base: Foz do Iguaçu, Brazilian side. Arrive Feb 10 (~7 PM), depart Feb 14 (7:55 PM).</p>
+
+    <div class="plan-tabs" role="tablist">
+      <button class="plan-tab active" onclick="showIguazu('itinerary', this)">Day-by-Day</button>
+      <button class="plan-tab" onclick="showIguazu('practical', this)">Practical Info</button>
+      <button class="plan-tab" onclick="showIguazu('food', this)">Food &amp; Health</button>
+    </div>
+
+    <!-- ── DAY-BY-DAY ─────────────────────────────────────────── -->
+    <div class="plan-panel active" id="iguazu-itinerary">
+      <style>
+        .igz-day { border:1px solid var(--border); border-radius:var(--radius); background:var(--surface); margin-bottom:12px; overflow:hidden; }
+        .igz-day-hdr { display:flex; align-items:center; gap:14px; padding:14px 18px; border-bottom:1px solid var(--faint); background:var(--faint); }
+        .igz-day-num { width:40px; height:40px; border-radius:50%; background:var(--blue); color:#fff; font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+        .igz-day-title { font-family:'Cormorant Garamond',serif; font-size:21px; font-weight:700; line-height:1.15; margin:0; }
+        .igz-day-sub { font-size:12px; color:var(--muted); margin:0; font-weight:600; letter-spacing:.04em; text-transform:uppercase; }
+        .igz-day-body { padding:16px 18px; }
+        .igz-items { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px; }
+        .igz-items li { font-size:14px; line-height:1.5; padding-left:18px; position:relative; color:var(--ink); }
+        .igz-items li::before { content:'▸'; position:absolute; left:0; color:var(--blue); font-size:11px; top:3px; }
+        .igz-tip { margin-top:12px; font-size:13px; background:var(--blue-bg); border-left:3px solid var(--blue); border-radius:0 var(--radius) var(--radius) 0; padding:8px 12px; color:var(--muted); line-height:1.5; }
+        .igz-warn { margin-top:10px; font-size:13px; background:var(--gold-bg); border-left:3px solid var(--gold); border-radius:0 var(--radius) var(--radius) 0; padding:8px 12px; color:var(--muted); line-height:1.5; }
+        .igz-day.igz-hl .igz-day-num { background:var(--green); }
+        .igz-day.igz-hl { border-color:var(--green); }
+      </style>
+
+      <!-- Day 1 -->
+      <div class="igz-day">
+        <div class="igz-day-hdr">
+          <div class="igz-day-num">1</div>
+          <div>
+            <p class="igz-day-sub">Tuesday · February 10</p>
+            <p class="igz-day-title">Arrival — Foz do Iguaçu</p>
+          </div>
+        </div>
+        <div class="igz-day-body">
+          <ul class="igz-items">
+            <li><strong>~7:00 PM</strong> — Land at IGU Airport (Cataratas del Iguazú International). Domestic arrival — no immigration formalities, already cleared at São Paulo</li>
+            <li><strong>~7:45 PM</strong> — Taxi/Uber to hotel (~20 min, R$50–80 from airport)</li>
+            <li><strong>~9:00 PM</strong> — Dinner near hotel. Try pão de queijo, açaí bowl, or a local vegetarian buffet (por kilo)</li>
+            <li>Rest up — full days ahead in the heat and humidity</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Day 2 -->
+      <div class="igz-day igz-hl">
+        <div class="igz-day-hdr">
+          <div class="igz-day-num">2</div>
+          <div>
+            <p class="igz-day-sub">Wednesday · February 11</p>
+            <p class="igz-day-title">Argentine Side — Full Day</p>
+          </div>
+        </div>
+        <div class="igz-day-body">
+          <ul class="igz-items">
+            <li><strong>7:00 AM</strong> — Leave hotel. Cross Tancredo Neves Bridge to Puerto Iguazú, Argentina (public bus from TTU terminal ~R$15, or guided day-tour from hotel with transfers)</li>
+            <li><strong>~9:00 AM</strong> — Enter Iguazú National Park (park opens 8 AM). Entry fee separate from Brazilian park</li>
+            <li><strong>9:00–11:00 AM</strong> — <strong>Circuito Superior:</strong> walk above the falls — panoramic views of Bossetti, Dos Hermanas, and San Martín falls from above</li>
+            <li><strong>11:00 AM–1:00 PM</strong> — <strong>Circuito Inferior:</strong> walk at water level through heavy mist. Free boat crossing to <strong>Isla San Martín</strong> — a small island surrounded by falls on three sides</li>
+            <li><strong>1:00–2:00 PM</strong> — Lunch at <strong>La Selva</strong> restaurant inside the park (pasta, salads — specify "sin carne, sin pollo, sin pescado" when ordering)</li>
+            <li><strong>2:00–4:00 PM</strong> — <strong>Eco-Train → Garganta del Diablo (Devil's Throat).</strong> 10-min train ride, then 1.1 km catwalk directly above the world's most powerful waterfall — engulfed in mist and sound</li>
+            <li><strong>4:00–6:00 PM</strong> — <strong>Gran Aventura boat ride</strong> (optional, book in advance ~$90,000 ARS): jungle truck safari + Zodiac ride directly under San Martín Falls. You get completely drenched. Min age 12</li>
+            <li><strong>~7:30 PM</strong> — Cross back to Brazil. Dinner in Foz</li>
+          </ul>
+          <div class="igz-tip">⏰ Park hours 8 AM–6 PM. Last Eco-Train to Devil's Throat departs 5:30 PM. Arrive at opening to avoid midday crowds. Keep US passport accessible — needed at both immigration posts crossing in and out.</div>
+          <div class="igz-warn">💧 February = peak water volume. Devil's Throat spray soaks you from 50m away. Wear quick-dry clothes, carry a poncho, and keep your phone in a waterproof bag the entire day.</div>
+        </div>
+      </div>
+
+      <!-- Day 3 -->
+      <div class="igz-day igz-hl">
+        <div class="igz-day-hdr">
+          <div class="igz-day-num">3</div>
+          <div>
+            <p class="igz-day-sub">Thursday · February 12</p>
+            <p class="igz-day-title">Brazilian Side + Parque das Aves</p>
+          </div>
+        </div>
+        <div class="igz-day-body">
+          <ul class="igz-items">
+            <li><strong>8:30 AM</strong> — Enter Iguaçu National Park, Brazilian side. Entry ~R$86. Bus Line 120 from Foz TTU (~R$5) or taxi (R$50–80)</li>
+            <li><strong>9:00 AM–12:00 PM</strong> — Walk the 1.2 km panoramic trail. The Brazilian side gives the <strong>full horseshoe view</strong> — all 275 falls laid out across the horizon. An elevator descends to a platform at the base of the falls where spray completely drenches you</li>
+            <li><strong>12:00 PM</strong> — Lunch at <strong>Porto Canoas</strong> restaurant inside the park — open terrace over the river, good vegetarian salads and pasta</li>
+            <li><strong>1:30–4:00 PM</strong> — <strong>Parque das Aves (Bird Park)</strong>: 400m walk from park entrance, entry ~R$80. Walk-through aviaries with 1,020+ birds from 150 species — toucans, macaws, and parrots fly around and land on you. One of the finest bird parks in South America. Allow 2 hours</li>
+            <li><strong>Evening</strong> — Optional: <strong>Rafain Churrascaria Dinner Show</strong> (7:30 PM) — Latin dance show with extensive vegetarian buffet options. Book ahead</li>
+          </ul>
+          <div class="igz-tip">Argentina puts you IN the falls; Brazil shows you THE falls — both perspectives are essential and complement each other perfectly. Don't skip Parque das Aves.</div>
+        </div>
+      </div>
+
+      <!-- Day 4 -->
+      <div class="igz-day">
+        <div class="igz-day-hdr">
+          <div class="igz-day-num">4</div>
+          <div>
+            <p class="igz-day-sub">Friday · February 13</p>
+            <p class="igz-day-title">Itaipu Dam + Three Borders</p>
+          </div>
+        </div>
+        <div class="igz-day-body">
+          <ul class="igz-items">
+            <li><strong>9:00 AM–12:00 PM</strong> — <strong>Itaipu Hydroelectric Dam</strong> (~12 km north of Foz, taxi ~R$30). One of the world's largest dams — generates 20% of Brazil's electricity. Panoramic Tour: 1.5 hrs, R$56. Special Circuit inside the dam: 2.5 hrs, R$100+ (book in advance)</li>
+            <li><strong>2:00 PM</strong> — <strong>Hito Tres Fronteiras</strong> (Three Borders Landmark) — where Brazil, Argentina, and Paraguay meet. Riverside walk, craft stalls, monument for each country. Free</li>
+            <li><strong>3:30–7:00 PM (optional)</strong> — <strong>Ciudad del Este, Paraguay</strong>: 7 km across the Friendship Bridge. 3,500+ duty-free stores selling electronics, perfumes, clothing. Tours from Foz hotels include transfers and border logistics</li>
+            <li><strong>Evening</strong> — Dinner in Foz: <strong>Cantina da Bea</strong> (vegetarian buffet) or <strong>Pop Art Café</strong></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Day 5 -->
+      <div class="igz-day">
+        <div class="igz-day-hdr">
+          <div class="igz-day-num">5</div>
+          <div>
+            <p class="igz-day-sub">Saturday · February 14 — Valentine's Day</p>
+            <p class="igz-day-title">Morning Free · Departure 7:55 PM</p>
+          </div>
+        </div>
+        <div class="igz-day-body">
+          <ul class="igz-items">
+            <li><strong>Morning</strong> — Relax by the hotel pool, last-minute souvenirs, or visit <strong>Ecomuseu de Itaipu</strong> (cultural/environmental museum of the dam region, 1–2 hrs)</li>
+            <li><strong>5:30 PM</strong> — Check out and head to IGU Airport on Avenida das Cataratas (~20 min from most hotels)</li>
+            <li><strong>7:55 PM</strong> — Departure from IGU Airport (Foz do Iguaçu, Brazil)</li>
+          </ul>
+          <div class="igz-warn">IGU is a small airport. Arrive by 6:00–6:15 PM at latest for a 7:55 PM departure — allow 90 minutes for check-in and security.</div>
+        </div>
+      </div>
+    </div><!-- /iguazu-itinerary -->
+
+    <!-- ── PRACTICAL INFO ──────────────────────────────────────── -->
+    <div class="plan-panel" id="iguazu-practical">
+      <style>
+        .igz-info-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(260px,1fr)); gap:12px; margin-bottom:24px; }
+        .igz-info-card { border:1px solid var(--border); border-radius:var(--radius); background:var(--surface); padding:16px 18px; }
+        .igz-info-card h4 { font-family:'Cormorant Garamond',serif; font-size:18px; font-weight:700; margin:0 0 10px; }
+        .igz-info-card ul { margin:0; padding:0 0 0 16px; display:flex; flex-direction:column; gap:5px; }
+        .igz-info-card li { font-size:13.5px; line-height:1.45; }
+        .igz-htable { width:100%; border-collapse:collapse; font-size:13.5px; margin-bottom:28px; }
+        .igz-htable th { text-align:left; padding:8px 12px; font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); border-bottom:2px solid var(--border); }
+        .igz-htable td { padding:10px 12px; border-bottom:1px solid var(--faint); vertical-align:top; }
+        .igz-htable tr:last-child td { border-bottom:none; }
+        .igz-badge { display:inline-block; font-size:10px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; padding:2px 8px; border-radius:3px; }
+        .igz-badge-lux { background:var(--gold); color:#fff; }
+        .igz-badge-mid { background:var(--green); color:#fff; }
+        .igz-badge-bgt { background:var(--muted); color:#fff; }
+        .igz-check { border:1px solid var(--border); border-radius:var(--radius); background:var(--surface); padding:18px 20px; list-style:none; margin:0; padding-left:20px; display:flex; flex-direction:column; gap:8px; }
+        .igz-check li { font-size:14px; line-height:1.45; }
+      </style>
+
+      <h3 style="font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;margin:0 0 6px;">Hotels Near the Falls</h3>
+      <p style="font-size:13.5px;color:var(--muted);margin:0 0 16px;">February is peak summer + Valentine's weekend. Prices will be at the upper end — book early. The Belmond is the only hotel inside the national park (after-hours falls access).</p>
+      <table class="igz-htable">
+        <thead><tr><th>Hotel</th><th>Distance to Falls</th><th>Est. Price / Night (Feb)</th><th></th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Hotel das Cataratas (Belmond)</strong><br><span style="font-size:12px;color:var(--muted);">After-hours park access, colonial architecture, 2 pools, fine dining</span></td>
+            <td>Inside Iguaçu National Park — walking distance</td>
+            <td>$625 – $1,800+</td>
+            <td><span class="igz-badge igz-badge-lux">Luxury</span></td>
+          </tr>
+          <tr>
+            <td><strong>Sanma Hotel</strong><br><span style="font-size:12px;color:var(--muted);">5-star resort, full spa, 2 restaurants, ecological trail</span></td>
+            <td>400 m from park entrance (Av. das Cataratas)</td>
+            <td>$180 – $280</td>
+            <td><span class="igz-badge igz-badge-mid">Best Value</span></td>
+          </tr>
+          <tr>
+            <td><strong>Viale Cataratas Hotel</strong><br><span style="font-size:12px;color:var(--muted);">2 outdoor pools, spa, free breakfast, poolside bar</span></td>
+            <td>Av. das Cataratas, 5-min taxi to park</td>
+            <td>$100 – $200</td>
+            <td><span class="igz-badge igz-badge-mid">Mid-Range</span></td>
+          </tr>
+          <tr>
+            <td><strong>Canzi Cataratas Hotel</strong><br><span style="font-size:12px;color:var(--muted);">Walking distance to Parque das Aves</span></td>
+            <td>Av. das Cataratas, near Bird Park</td>
+            <td>From $38</td>
+            <td><span class="igz-badge igz-badge-bgt">Budget</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 style="font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;margin:0 0 14px;">Border Crossing — Foz do Iguaçu → Puerto Iguazú</h3>
+      <div class="igz-info-grid">
+        <div class="igz-info-card">
+          <h4>How to Cross</h4>
+          <ul>
+            <li>Cross via <strong>Tancredo Neves International Bridge</strong> (15 km from Foz city center)</li>
+            <li>Public bus from TTU terminal: ~R$15, 30 min + immigration stops</li>
+            <li>Guided hotel day-tour: most convenient — handles all transfers and logistics</li>
+            <li>Allow 1.5–2 hours total crossing time</li>
+          </ul>
+        </div>
+        <div class="igz-info-card">
+          <h4>Documents &amp; Visas</h4>
+          <ul>
+            <li>Keep US passport accessible all day — needed at both immigration posts</li>
+            <li><strong>Argentina:</strong> No visa required for US citizens</li>
+            <li><strong>Brazil:</strong> eVisa required (applied before travel at brazil.vfsevisa.com · $80.90)</li>
+            <li>Exit stamp (Brazil) → Entry stamp (Argentina) → reverse on return</li>
+          </ul>
+        </div>
+        <div class="igz-info-card">
+          <h4>Currency</h4>
+          <ul>
+            <li><strong>Brazil — Real (BRL):</strong> ~6 BRL per USD. ATMs widely available in Foz</li>
+            <li><strong>Argentina — Peso (ARS):</strong> USD cash widely accepted and often preferred on the Argentine side</li>
+            <li><strong>Paraguay — Guaraní (PYG):</strong> USD and BRL accepted in most Ciudad del Este stores</li>
+          </ul>
+        </div>
+        <div class="igz-info-card">
+          <h4>Getting Around Foz</h4>
+          <ul>
+            <li>Uber works well in the city and to the park</li>
+            <li>Bus Line 120: Foz city center → Brazilian park (~R$5, 40 min)</li>
+            <li>Taxi to park: R$50–80 one way (~20 min)</li>
+            <li>Hotels on Av. das Cataratas often have shuttle service</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3 style="font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;margin:0 0 12px;">Pre-Travel Checklist</h3>
+      <div style="border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);padding:18px 20px;">
+        <ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:9px;">
+          <li style="font-size:14px;">☐ <strong>Brazil eVisa</strong> — apply at <a href="https://brazil.vfsevisa.com" target="_blank">brazil.vfsevisa.com</a> · $80.90 · allow 5 business days processing</li>
+          <li style="font-size:14px;">☐ <strong>Yellow Fever vaccine</strong> — at a travel clinic, at least 10 days before departure (required if visiting Paraguay)</li>
+          <li style="font-size:14px;">☐ <strong>Hepatitis A + Typhoid vaccines</strong> — CDC recommended for all Brazil travelers</li>
+          <li style="font-size:14px;">☐ <strong>Book hotel early</strong> — Valentine's weekend fills fast. Belmond should be booked months ahead</li>
+          <li style="font-size:14px;">☐ <strong>Book Gran Aventura boat ride</strong> — sells out in peak season; reserve online before travel</li>
+          <li style="font-size:14px;">☐ <strong>Pre-purchase Argentine park entry</strong> — skip queues, especially for Devil's Throat train</li>
+        </ul>
+      </div>
+    </div><!-- /iguazu-practical -->
+
+    <!-- ── FOOD & HEALTH ───────────────────────────────────────── -->
+    <div class="plan-panel" id="iguazu-food">
+      <style>
+        .igz-food-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(260px,1fr)); gap:12px; margin-bottom:24px; }
+        .igz-food-card { border:1px solid var(--border); border-radius:var(--radius); background:var(--surface); padding:16px 18px; }
+        .igz-food-card h4 { font-family:'Cormorant Garamond',serif; font-size:18px; font-weight:700; margin:0 0 8px; }
+        .igz-food-card ul { margin:0; padding:0 0 0 16px; display:flex; flex-direction:column; gap:4px; }
+        .igz-food-card li { font-size:13.5px; line-height:1.5; }
+        .igz-health-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(195px,1fr)); gap:10px; margin:14px 0 20px; }
+        .igz-hcell { border:1px solid var(--border); border-radius:var(--radius); padding:12px 14px; background:var(--surface); }
+        .igz-hcell .hl { font-size:11px; font-weight:700; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); margin:0 0 4px; }
+        .igz-hcell .hv { font-size:14px; font-weight:700; margin:0 0 4px; }
+        .igz-hcell .hn { font-size:12px; color:var(--muted); margin:0; line-height:1.4; }
+        .hv-hi { color:var(--red); } .hv-ok { color:var(--green); } .hv-md { color:var(--gold); }
+      </style>
+
+      <h3 style="font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;margin:0 0 6px;">Vegetarian Food Guide</h3>
+      <p style="font-size:14px;color:var(--muted);margin:0 0 18px;">Being fully vegetarian is straightforward in Foz. Brazil has a strong <em>por kilo</em> (pay-by-weight) buffet culture — vegetarian options are always abundant. Specify no meat clearly when ordering in Argentina.</p>
+
+      <div class="igz-food-grid">
+        <div class="igz-food-card">
+          <h4>Inside the Parks</h4>
+          <ul>
+            <li><strong>Porto Canoas</strong> (Brazilian side) — terrace restaurant, vegetarian salads, pasta, river views. Good quality</li>
+            <li><strong>La Selva</strong> (Argentine side) — pasta and salads; say <em>"sin carne, sin pollo, sin pescado"</em></li>
+            <li><strong>Kiosks</strong> on both trails — pão de queijo, fresh fruit, coconut water, granola bars</li>
+          </ul>
+        </div>
+        <div class="igz-food-card">
+          <h4>Foz do Iguaçu City</h4>
+          <ul>
+            <li><strong>Cantina da Bea</strong> — all-you-can-eat heavily vegetarian buffet. Best dinner option</li>
+            <li><strong>Cheiro Verde</strong> — dedicated vegetarian/vegan buffet (por kilo)</li>
+            <li><strong>Pop Art Café</strong> — vegan and vegetarian café, gluten-free options. Great for breakfast</li>
+            <li><strong>La Strega</strong> — Italian, full vegan menu: pumpkin ravioli, vegetable pasta</li>
+            <li><strong>Vô Luiz Pizzeria</strong> — excellent vegetarian pizzas and pasta</li>
+          </ul>
+        </div>
+        <div class="igz-food-card">
+          <h4>Puerto Iguazú, Argentina</h4>
+          <ul>
+            <li><strong>The Argentine Experience</strong> — vegetarian empanadas, interactive dinner. Book in advance</li>
+            <li><strong>Terra Wok &amp; Grill</strong> — varied menu, vegetarian-friendly</li>
+          </ul>
+          <p style="font-size:13px;margin:10px 0 0;color:var(--muted);">Ordering tip: <strong>"Soy vegetariano/a — sin carne, sin pollo, sin pescado"</strong> (no meat, no chicken, no fish).</p>
+        </div>
+        <div class="igz-food-card">
+          <h4>Brazilian Staples — Naturally Vegetarian</h4>
+          <ul>
+            <li><strong>Pão de queijo</strong> — warm cheese bread, found everywhere</li>
+            <li><strong>Açaí bowls</strong> — thick açaí with granola, banana, honey</li>
+            <li><strong>Tapioca crepes</strong> — cheese or coconut-filled</li>
+            <li><strong>Fresh sucos</strong> — maracujá, mango, guava, caju juices</li>
+            <li><strong>Vitaminas</strong> — thick blended tropical fruit shakes</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3 style="font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;margin:0 0 4px;">Health &amp; Disease Risk</h3>
+      <p style="font-size:13.5px;color:var(--muted);margin:0 0 4px;">Consult a travel health clinic at least 4–6 weeks before departure to get vaccinated in time.</p>
+      <div class="igz-health-grid">
+        <div class="igz-hcell">
+          <p class="hl">Yellow Fever</p>
+          <p class="hv hv-hi">Vaccine Recommended</p>
+          <p class="hn">Get at a travel clinic ≥10 days before travel. Proof required for Paraguay entry after being in Brazil.</p>
+        </div>
+        <div class="igz-hcell">
+          <p class="hl">Malaria</p>
+          <p class="hv hv-ok">No Risk</p>
+          <p class="hn">CDC confirms zero malaria risk in Foz do Iguaçu. No medication needed.</p>
+        </div>
+        <div class="igz-hcell">
+          <p class="hl">Dengue</p>
+          <p class="hv hv-hi">Present — Feb Peak</p>
+          <p class="hn">Use DEET repellent 30%+ all day. Aedes mosquitoes bite during daylight hours, not just at night.</p>
+        </div>
+        <div class="igz-hcell">
+          <p class="hl">Hepatitis A</p>
+          <p class="hv hv-hi">Vaccine Recommended</p>
+          <p class="hn">CDC recommends for all travelers to Brazil regardless of itinerary.</p>
+        </div>
+        <div class="igz-hcell">
+          <p class="hl">Typhoid</p>
+          <p class="hv hv-md">Vaccine Recommended</p>
+          <p class="hn">Especially relevant when eating local or street food. Shot or 2-week oral course.</p>
+        </div>
+        <div class="igz-hcell">
+          <p class="hl">Zika</p>
+          <p class="hv hv-md">Low Risk</p>
+          <p class="hn">Present at low levels. Consult doctor if pregnant or planning to become pregnant.</p>
+        </div>
+      </div>
+
+      <div style="border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);padding:16px 18px;">
+        <p style="font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin:0 0 10px;">What to Pack</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:4px 20px;">
+          <p style="font-size:13.5px;margin:3px 0;">☐ Poncho (buy in park ~$5 or bring your own)</p>
+          <p style="font-size:13.5px;margin:3px 0;">☐ Quick-dry shorts and t-shirts</p>
+          <p style="font-size:13.5px;margin:3px 0;">☐ Waterproof sandals (Chacos, Tevas)</p>
+          <p style="font-size:13.5px;margin:3px 0;">☐ Waterproof dry bag for phone and camera</p>
+          <p style="font-size:13.5px;margin:3px 0;">☐ DEET repellent 30%+ (Sawyer / Off! Deep Woods)</p>
+          <p style="font-size:13.5px;margin:3px 0;">☐ Sunscreen SPF 50 + wide-brim hat + sunglasses</p>
+          <p style="font-size:13.5px;margin:3px 0;">☐ Spare set of clothes in a sealed dry bag</p>
+          <p style="font-size:13.5px;margin:3px 0;">☐ Oral rehydration salts for heat/humidity days</p>
+        </div>
+      </div>
+    </div><!-- /iguazu-food -->
+
+  </div>
+</section>
+
+<script>
+function showIguazu(tab, btn) {
+  document.querySelectorAll('#iguazu .plan-panel').forEach(function(p) { p.classList.remove('active'); });
+  document.querySelectorAll('#iguazu .plan-tab').forEach(function(t) { t.classList.remove('active'); });
+  document.getElementById('iguazu-' + tab).classList.add('active');
+  if (btn) btn.classList.add('active');
+}
 </script>
