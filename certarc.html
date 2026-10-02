@@ -255,6 +255,7 @@ button{font-family:inherit}
       <button data-nav="cheatsheet" onclick="go('cheatsheet')">Cheat Sheet</button>
       <button data-nav="portal" onclick="go('portal')">Learning Portal</button>
       <button data-nav="tiny" onclick="go('tiny')">Tiny</button>
+      <button data-nav="guide" onclick="go('guide')">Guide</button>
     </nav>
     <button class="theme-btn" id="themeBtn" title="Toggle theme">◐</button>
   </div>
@@ -456,6 +457,7 @@ button{font-family:inherit}
 
   <!-- CHEAT SHEET -->
   <section class="view" id="v-tiny"></section>
+  <section class="view" id="v-guide"></section>
   <section class="view" id="v-cheatsheet">
     <style>
       #v-cheatsheet .cs-hero{text-align:center;padding:22px 0 4px}
@@ -3781,6 +3783,7 @@ function go(v){
   if(v==='exams') renderExams();
   if(v==='portal') renderPortal();
   if(v==='tiny') renderTiny();
+  if(v==='guide') renderGuide();
 }
 
 /* ============ home ============ */
@@ -3977,6 +3980,97 @@ function startTiny(which){
   renderRun();
   document.querySelectorAll('.nav button').forEach(function(b){b.classList.toggle('on', b.dataset.nav==='tiny');});
 }
+
+function renderGuide(){
+  var el=document.getElementById('v-guide');
+  el.innerHTML = `
+<div class="setup"><div class="hero">
+<h1 style="font-size:30px">Claude Certified Architect &mdash; Foundations</h1>
+<p>Official Exam Guide &middot; Version 1.0 &middot; Effective July 2026 &middot; Exam code: CCAR-F</p>
+</div>
+
+<div class="card pad" style="margin-bottom:18px">
+<h2>About This Certification</h2>
+<p>The Claude Certified Architect &ndash; Foundations certification validates that practitioners can make informed decisions about tradeoffs when implementing real-world solutions with Claude. The exam tests foundational knowledge across <b>Claude Code</b>, the <b>Claude Agent SDK</b>, the <b>Claude API</b>, and <b>Model Context Protocol (MCP)</b> &mdash; the core technologies used to build production-grade applications with Claude.</p>
+<p>Questions are grounded in realistic scenarios drawn from actual customer use cases. Candidates must demonstrate not only conceptual knowledge but practical judgment about architecture, configuration, and tradeoffs in production deployments.</p>
+</div>
+
+<div class="card pad" style="margin-bottom:18px">
+<h2>Exam Details at a Glance</h2>
+<table style="width:100%;border-collapse:collapse;font-size:14px">
+<tr><td style="padding:8px;border-bottom:1px solid var(--line);color:var(--ink-3)">Credential</td><td style="padding:8px;border-bottom:1px solid var(--line)"><b>Claude Certified Architect &ndash; Foundations</b></td></tr>
+<tr><td style="padding:8px;border-bottom:1px solid var(--line);color:var(--ink-3)">Exam code</td><td style="padding:8px;border-bottom:1px solid var(--line)">CCAR-F</td></tr>
+<tr><td style="padding:8px;border-bottom:1px solid var(--line);color:var(--ink-3)">Number of items</td><td style="padding:8px;border-bottom:1px solid var(--line)">60</td></tr>
+<tr><td style="padding:8px;border-bottom:1px solid var(--line);color:var(--ink-3)">Item format</td><td style="padding:8px;border-bottom:1px solid var(--line)">Multiple-choice and multiple-response; each item states how many responses to select</td></tr>
+<tr><td style="padding:8px;border-bottom:1px solid var(--line);color:var(--ink-3)">Exam structure</td><td style="padding:8px;border-bottom:1px solid var(--line)">4 scenarios drawn from a bank of 6</td></tr>
+<tr><td style="padding:8px;border-bottom:1px solid var(--line);color:var(--ink-3)">Time limit</td><td style="padding:8px;border-bottom:1px solid var(--line)">120 minutes</td></tr>
+<tr><td style="padding:8px;border-bottom:1px solid var(--line);color:var(--ink-3)">Delivery</td><td style="padding:8px;border-bottom:1px solid var(--line)">Proctored: online proctored and/or test center</td></tr>
+<tr><td style="padding:8px;border-bottom:1px solid var(--line);color:var(--ink-3)">Passing score</td><td style="padding:8px;border-bottom:1px solid var(--line)"><b>720</b> on a scale of 100&ndash;1,000</td></tr>
+<tr><td style="padding:8px;border-bottom:1px solid var(--line);color:var(--ink-3)">Exam fee</td><td style="padding:8px;border-bottom:1px solid var(--line)">$125 USD</td></tr>
+<tr><td style="padding:8px;color:var(--ink-3)">Validity period</td><td style="padding:8px">12 months from award date</td></tr>
+</table>
+</div>
+
+<div class="card pad" style="margin-bottom:18px">
+<h2>Exam Content Outline (Blueprint)</h2>
+<table style="width:100%;border-collapse:collapse;font-size:14px">
+<tr style="background:var(--bg)"><th style="padding:8px;text-align:left">Domain</th><th style="padding:8px;text-align:left">Content Domain</th><th style="padding:8px;text-align:right">Weight</th></tr>
+<tr><td style="padding:8px;border-bottom:1px solid var(--line)">1</td><td style="padding:8px;border-bottom:1px solid var(--line)">Agentic Architecture &amp; Orchestration</td><td style="padding:8px;border-bottom:1px solid var(--line);text-align:right"><b>27%</b></td></tr>
+<tr><td style="padding:8px;border-bottom:1px solid var(--line)">2</td><td style="padding:8px;border-bottom:1px solid var(--line)">Tool Design &amp; MCP Integration</td><td style="padding:8px;border-bottom:1px solid var(--line);text-align:right"><b>18%</b></td></tr>
+<tr><td style="padding:8px;border-bottom:1px solid var(--line)">3</td><td style="padding:8px;border-bottom:1px solid var(--line)">Claude Code Configuration &amp; Workflows</td><td style="padding:8px;border-bottom:1px solid var(--line);text-align:right"><b>20%</b></td></tr>
+<tr><td style="padding:8px;border-bottom:1px solid var(--line)">4</td><td style="padding:8px;border-bottom:1px solid var(--line)">Prompt Engineering &amp; Structured Output</td><td style="padding:8px;border-bottom:1px solid var(--line);text-align:right"><b>20%</b></td></tr>
+<tr><td style="padding:8px;">5</td><td style="padding:8px;">Context Management &amp; Reliability</td><td style="padding:8px;text-align:right"><b>15%</b></td></tr>
+</table>
+</div>
+
+<div class="card pad" style="margin-bottom:18px">
+<h2>The 6 Exam Scenarios</h2>
+<p>During the exam, 4 scenarios are presented at random from these 6:</p>
+<ol style="line-height:1.7;font-size:14px">
+<li><b>Customer Support Resolution Agent</b> &mdash; Agent SDK with MCP tools (get_customer, lookup_order, process_refund, escalate_to_human). Target 80%+ first-contact resolution.</li>
+<li><b>Code Generation with Claude Code</b> &mdash; Slash commands, CLAUDE.md, plan mode vs direct execution.</li>
+<li><b>Multi-Agent Research System</b> &mdash; Coordinator delegating to web search, document analysis, synthesis, and report subagents.</li>
+<li><b>Developer Productivity with Claude</b> &mdash; Codebase exploration, legacy systems, boilerplate, built-in tools + MCP.</li>
+<li><b>Claude Code for CI/CD</b> &mdash; Automated code review, test generation, PR feedback with actionable prompts.</li>
+<li><b>Structured Data Extraction</b> &mdash; JSON schemas, validation, edge cases, downstream integration.</li>
+</ol>
+</div>
+
+<div class="card pad" style="margin-bottom:18px">
+<h2>How the Exam Is Scored</h2>
+<p>Criterion-referenced: you are measured against a fixed performance standard, not against other candidates. Passing score <b>720/1000</b> was set by subject-matter experts judging minimally-qualified performance. Your score report shows pass/fail, scaled score, and percent-correct by domain (for feedback only).</p>
+</div>
+
+<div class="card pad" style="margin-bottom:18px">
+<h2>Key Policies</h2>
+<ul style="line-height:1.7;font-size:14px">
+<li><b>Retakes:</b> 14 days after 1st fail, 30 days after 2nd, 90 days after 3rd. Max 4 attempts per 12 months. Fee applies each time.</li>
+<li><b>Rescheduling:</b> Up to 24 hours before; changes within 24 hours forfeit the fee.</li>
+<li><b>ID:</b> Valid government-issued photo ID, name must match registration exactly.</li>
+<li><b>Recertification:</b> Valid 12 months. Free non-proctored renewal assessment on the Partner Academy if renewed on time; otherwise retake the full exam.</li>
+<li><b>NDA:</b> All exam content is confidential Anthropic property. No disclosure, reproduction, or distribution.</li>
+</ul>
+</div>
+
+<div class="card pad" style="margin-bottom:18px">
+<h2>Preparation Exercises (from the guide)</h2>
+<ol style="line-height:1.7;font-size:14px">
+<li><b>Build a multi-tool agent</b> with escalation logic: MCP tools, agentic loop on stop_reason, structured errors, programmatic hooks.</li>
+<li><b>Configure Claude Code for a team:</b> CLAUDE.md hierarchy, <code>.claude/rules/</code> with glob patterns, skills with <code>context: fork</code>, MCP servers.</li>
+<li><b>Build a structured extraction pipeline:</b> JSON schemas via tool_use, validation-retry loops, batch API with custom_id handling.</li>
+<li><b>Design a multi-agent research pipeline:</b> coordinator + subagents, parallel Task calls, structured error propagation, provenance-preserving synthesis.</li>
+</ol>
+</div>
+
+<div class="card pad" style="margin-bottom:18px">
+<h2>Out-of-Scope Topics (will NOT appear)</h2>
+<p style="font-size:14px;color:var(--ink-3)">Fine-tuning models &middot; API auth/billing &middot; Language/framework implementation details &middot; MCP server hosting/infra &middot; Model internals/training &middot; Embeddings/vector DBs &middot; Computer use &middot; Vision/image analysis &middot; Streaming &middot; Rate limits/pricing math &middot; OAuth &middot; Cloud provider configs &middot; Prompt caching internals &middot; Tokenization specifics</p>
+</div>
+
+<p style="text-align:center;color:var(--ink-3);font-size:12.5px;margin:24px 0">Source: <i>Claude Certified Architect &ndash; Foundations Exam Guide</i>, v1.0, July 2026. This guide is subject to change without notice.</p>
+</div>`;
+}
+
 
 
 function buildPaper(group){
