@@ -3972,7 +3972,10 @@ function startTiny(which){
   practiceState={running:true,group:'Tiny',questions:shuffle(pool.slice()),answers:{},flags:{},cur:0,
     endAt:Date.now()+120*60*1000,timerId:null,submitted:false};
   practiceState.timerId=setInterval(tickTimer,1000);
+  go('practice');
   renderRun();
+  // Keep Tiny nav highlighted since these are Tiny questions
+  document.querySelectorAll('.nav button').forEach(function(b){b.classList.toggle('on', b.dataset.nav==='tiny');});
 }
 
 
