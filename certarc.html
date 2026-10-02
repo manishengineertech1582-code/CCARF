@@ -350,7 +350,7 @@ button{font-family:inherit}
 
       #v-portal .lp-panel{display:none;animation:fade .2s ease}
       #v-portal .lp-panel.on{display:block}
-      #v-portal .lp-section-label{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);font-weight:700;margin:20px 2px 12px}
+      #v-portal .lp-section-label{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);font-weight:700;margin:20px 2px 12px}.lp-subhead{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);margin:20px 0 4px;padding-top:16px;border-top:1px solid var(--line)}.lp-subhead:first-child{margin-top:0;padding-top:0;border-top:none}
       #v-portal .lp-list{display:flex;flex-direction:column;gap:12px}
 
       #v-portal .lp-item{background:var(--surface);border:1px solid var(--border);border-radius:13px;box-shadow:var(--shadow);padding:16px 18px;display:flex;gap:16px;align-items:flex-start;justify-content:space-between}
@@ -6312,6 +6312,7 @@ var LP_DATA={
     {t:'Search: Claude CCA certification prep', d:'Community study videos and walkthroughs for the Claude Certified Architect Foundations exam.', b:['Community'], u:'https://www.youtube.com/results?search_query=claude+certified+architect+certification+exam+prep', tags:'cca certification prep videos architect', ccaf:true}
   ],
   peaceofcode:[
+    {sub:"CCAR-F \u2014 Full Course (Foundations)"},
     {t:"Intro: Claude Certified Architect Full Course",d:"Course overview and exam breakdown \u2014 what the CCAR-F covers and how to prepare.",b:["Free"],u:"https://www.youtube.com/watch?v=rcpNFm_poQs",tags:"peace of code youtube video intro claude certified architect full course overview",ccaf:true},
     {t:"Ep 01: Agentic Loop and stop_reason Explained",d:"49 min. The 4-stage agentic loop, stop_reason tool_use vs end_turn, the messages array, and 3 exam-tested anti-patterns with code fixes.",b:["Free", "D1"],u:"https://www.youtube.com/watch?v=ldqOnljDINc",tags:"peace of code youtube video ep 01 agentic loop and stop_reason explained d1",ccaf:true},
     {t:"Ep 02: Multi-Agent Systems and Coordinator Patterns Explained",d:"32 min. Hub-and-spoke topology, the coordinator's four responsibilities, Task tool permission matrix, parallel vs sequential subagents.",b:["Free", "D1"],u:"https://www.youtube.com/watch?v=ejPWvBcc_DU",tags:"peace of code youtube video ep 02 multi-agent systems and coordinator patterns explained d1",ccaf:true},
@@ -6334,7 +6335,17 @@ var LP_DATA={
     {t:"Ep 19: Subagent Error Propagation and Context Management",d:"42 min. Subagent error propagation, silent failure modes, and context management.",b:["Free", "D5"],u:"https://www.youtube.com/watch?v=MqnElZw6NYk",tags:"peace of code youtube video ep 19 subagent error propagation and context management d5",ccaf:true},
     {t:"Ep 20: When AI Needs a Human",d:"51 min. Escalation triggers \u2014 when the agent must hand off to a human.",b:["Free", "D5"],u:"https://www.youtube.com/watch?v=tsIxzFg76Nw",tags:"peace of code youtube video ep 20 when ai needs a human d5",ccaf:true},
     {t:"Bonus: Exam Questions Solved: Exam Traps",d:"1h. Exam questions solved with explanations \u2014 official sample questions and common exam traps.",b:["Free", "Practice"],u:"https://www.youtube.com/watch?v=-NymqBcFy6E",tags:"peace of code youtube video bonus exam questions solved: exam traps practice",ccaf:true},
-    {t:"Extra: Claude Certified Architect vs Developer: What Nobody Tells You",d:"How the Architect and Developer certifications differ (2026 update).",b:["Free"],u:"https://www.youtube.com/watch?v=BcFZckORlWM",tags:"peace of code youtube video extra claude certified architect vs developer: what nobody tells you overview",ccaf:true}
+    {t:"Extra: Claude Certified Architect vs Developer: What Nobody Tells You",d:"How the Architect and Developer certifications differ (2026 update).",b:["Free"],u:"https://www.youtube.com/watch?v=BcFZckORlWM",tags:"peace of code youtube video extra claude certified architect vs developer: what nobody tells you overview",ccaf:true},
+    {sub:"CCAR-P \u2014 Full Course (Professional)"},
+    {t:"CCAR-P Intro: Course Launch & Exam Breakdown",d:"Course launch and full exam breakdown \u2014 the 7 CCAR-P domains, Foundations vs Professional, scoring traps, and the 17-episode course map.",b:["Free", "CCAR-P"],u:"https://www.youtube.com/watch?v=uF5QSu6Nw-8",tags:"peace of code youtube video ccar-p professional ccar-p intro course launch & exam breakdown",ccaf:false},
+    {t:"CCAR-P Ep 01: Solution Design & Architecture",d:"Domain 1 of the Professional exam: how to design production-grade Claude solutions and architecture tradeoffs.",b:["Free", "CCAR-P"],u:"https://www.youtube.com/watch?v=JY0M4RZKh9c",tags:"peace of code youtube video ccar-p professional ccar-p ep 01 solution design & architecture",ccaf:false},
+    {t:"CCAR-P Ep 02: Architecture Patterns",d:"Domain 1: architecture patterns for production Claude solutions \u2014 choosing the right structural approach.",b:["Free", "CCAR-P"],u:"https://www.youtube.com/watch?v=SGR8IWO28Lg",tags:"peace of code youtube video ccar-p professional ccar-p ep 02 architecture patterns",ccaf:false},
+    {t:"CCAR-P Ep 03: Decomposition Techniques & Business Value",d:"Domain 1: decomposition techniques and tying architecture decisions to business value.",b:["Free", "CCAR-P"],u:"https://www.youtube.com/watch?v=bYRxZ1Gn52o",tags:"peace of code youtube video ccar-p professional ccar-p ep 03 decomposition techniques & business value",ccaf:false},
+    {t:"CCAR-P Ep 04: Model Selection & System Prompts",d:"Domain 2: model selection and system prompt design for the Professional exam.",b:["Free", "CCAR-P"],u:"https://www.youtube.com/watch?v=CaXX8l3QlNY",tags:"peace of code youtube video ccar-p professional ccar-p ep 04 model selection & system prompts",ccaf:false},
+    {t:"CCAR-P Ep 05: Prompt Engineering, Context Windows & Caching",d:"Domain 2: prompt engineering, context windows, and prompt caching.",b:["Free", "CCAR-P"],u:"https://www.youtube.com/watch?v=9JqzNnY7cxc",tags:"peace of code youtube video ccar-p professional ccar-p ep 05 prompt engineering, context windows & caching",ccaf:false},
+    {t:"CCAR-P Ep 06: RAG Pipelines, Chunking & Retrieval",d:"Domain 3: RAG pipelines \u2014 chunking strategies and retrieval.",b:["Free", "CCAR-P"],u:"https://www.youtube.com/watch?v=fadDUxsFEMw",tags:"peace of code youtube video ccar-p professional ccar-p ep 06 rag pipelines, chunking & retrieval",ccaf:false},
+    {t:"CCAR-P Ep 07: MCP, Auth & Capability Bloat",d:"Domain 3: MCP integration, auth patterns, and avoiding capability bloat.",b:["Free", "CCAR-P"],u:"https://www.youtube.com/watch?v=VaCb6AhJcV0",tags:"peace of code youtube video ccar-p professional ccar-p ep 07 mcp, auth & capability bloat",ccaf:false},
+    {t:"CCAR-P Ep 08: Agent Observability, Monitoring & Latency Tradeoffs",d:"Domain 3: agent observability, monitoring, and latency tradeoffs.",b:["Free", "CCAR-P"],u:"https://www.youtube.com/watch?v=AiAAlanHkQE",tags:"peace of code youtube video ccar-p professional ccar-p ep 08 agent observability, monitoring & latency tradeoffs",ccaf:false}
   ],
   community:[
     {t:'Anthropic news & announcements', d:'Official blog — product launches, research papers, safety updates, and company news. The primary source for what\'s new.', b:['Official'], u:'https://www.anthropic.com/news', tags:'news blog announcements', ccaf:false},
@@ -6409,6 +6420,7 @@ var lpBuilt=false, lpTab='products', lpIntCat='all';
 function lpEsc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
 function lpResourceCard(r, catLabel){
+  if(r.sub) return '<div class="lp-subhead">'+lpEsc(r.sub)+'</div>';
   var badges=(r.b||[]).map(function(x){return '<span class="lp-badge '+lpBadgeCls(x)+'">'+lpEsc(x)+'</span>';}).join('');
   var cat=catLabel?'<span class="lp-badge cat">'+lpEsc(catLabel)+'</span>':'';
   var ccaf=r.ccaf?'<span class="lp-badge ccaf" title="Useful for Claude Certified Architect — Foundations">★ Recommended for CCA-F</span>':'';
@@ -6511,6 +6523,7 @@ function lpApplySearch(raw){
   /* resource sections */
   Object.keys(LP_DATA).forEach(function(sec){
     LP_DATA[sec].forEach(function(r){
+      if(r.sub) return;
       var hay=(r.t+' '+r.d+' '+(r.tags||'')+' '+(r.b||[]).join(' ')+' '+LP_CAT_LABEL[sec]+(r.ccaf?' cca-f ccaf recommended':'')).toLowerCase();
       if(hay.indexOf(q)>=0) hits.push(lpResourceCard(r, LP_CAT_LABEL[sec]));
     });
