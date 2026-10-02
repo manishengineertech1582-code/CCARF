@@ -3769,7 +3769,12 @@ function colorFor(group,domain){
   return COLORS[idx % COLORS.length];
 }
 function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-function fmtCode(s){ return esc(s).replace(/`([^`]+)`/g,'<code>$1</code>'); }
+function fmtCode(s){
+  var h = esc(s).replace(/`([^`]+)`/g,'<code>$1</code>');
+  h = h.replace(/\((code\.claude\.com|platform\.claude\.com|modelcontextprotocol\.io|docs\.anthropic\.com)\)/g,
+    '(<a href="https://$1" target="_blank" rel="noopener">$1</a>)');
+  return h;
+}
 function arrEq(a,b){ if(a.length!==b.length)return false; var x=a.slice().sort(),y=b.slice().sort(); return x.every(function(v,i){return v===y[i];}); }
 
 /* ============ routing ============ */
