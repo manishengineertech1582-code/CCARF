@@ -4142,53 +4142,66 @@ function startMath(which){
   renderRun();
   document.querySelectorAll('.nav button').forEach(function(b){b.classList.toggle('on', b.dataset.nav==='math');});
 }
+function tinyLoadAttempts(){
+  try{ var raw=localStorage.getItem('certarcTinyAttemptsV1'); if(!raw) return {}; var d=JSON.parse(raw); return (d && typeof d==='object') ? d : {}; }catch(err){ return {}; }
+}
+function tinySaveAttempts(all){
+  try{ localStorage.setItem('certarcTinyAttemptsV1', JSON.stringify(all)); }catch(err){}
+}
+function tinyRecordAttempt(ps){
+  if(!ps.testKey || !ps.questions || !ps.questions.length) return;
+  var correct=0;
+  ps.questions.forEach(function(q){ var picked=ps.answers[q._i]||[]; if(arrEq(picked,q.answer)&&picked.length>0) correct++; });
+  var total=ps.questions.length; var pct=Math.round(correct/total*100); var scaled=Math.round(100+correct/total*900);
+  var all=tinyLoadAttempts(); var arr=all[ps.testKey]||[];
+  arr.push({ts:Date.now(),pct:pct,correct:correct,total:total,scaled:scaled});
+  all[ps.testKey]=arr; tinySaveAttempts(all);
+}
+function tinyShowHistory(key){
+  var el=document.getElementById('tinyHist-'+key);
+  if(el){ el.style.display=(el.style.display==='none'?'block':'none'); }
+}
+function tinyTestCard(key,title,meta,startCall){
+  var attempts=(tinyLoadAttempts()[key]||[]);
+  var best=null; attempts.forEach(function(a){ if(best===null||a.pct>best) best=a.pct; });
+  var bestLine=attempts.length ? 'Best '+best+'% \u00b7 '+attempts.length+' attempt'+(attempts.length>1?'s':'') : 'Not started';
+  var hist=attempts.length ? attempts.slice().reverse().map(function(a,i){
+    return '<div style="font-size:13px;color:var(--ink-2);padding:3px 0">Attempt '+(attempts.length-i)+' \u00b7 '+esc(new Date(a.ts).toLocaleString())+' \u00b7 '+a.pct+'% ('+a.correct+' of '+a.total+' correct \u00b7 scaled \u2248 '+a.scaled+')</div>';
+  }).join('') : '<div style="font-size:13px;color:var(--ink-3)">No attempts yet.</div>';
+  return '<div class="card pad" style="margin-bottom:12px"><div style="display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap">'+
+    '<div><h4 style="margin:0">'+title+'</h4>'+
+    '<p style="margin:4px 0;color:var(--ink-3);font-size:13px">'+meta+'</p>'+
+    '<p style="margin:0;font-size:13px">'+bestLine+'</p></div>'+
+    '<div style="display:flex;gap:8px;flex-wrap:wrap">'+
+      '<button class="btn" onclick="'+startCall+'">'+(attempts.length?'Retake':'Start')+'</button>'+
+      '<button class="btn ghost sm" onclick="tinyShowHistory(\''+key+'\')"'+(attempts.length?'':' disabled')+'>Results</button>'+
+    '</div></div>'+
+    '<div id="tinyHist-'+key+'" style="display:none;margin-top:10px"><div style="font-weight:600;font-size:13px;margin-bottom:4px">Attempt history ('+attempts.length+')</div>'+hist+'</div></div>';
+}
 function renderTiny(){
   var el=document.getElementById('v-tiny');
-  var fTests=[1,2,3,4,5].map(function(t){
+  var fCards=[1,2,3,4,5].map(function(t){
     var count=Q.filter(function(q){return q.group==='Tiny' && q.test===t;}).length;
-    return '<button class="pick" data-t="'+t+'"><span class="r"></span><div><h4>Practice Test '+t+'</h4>'+
-      '<p>Foundations \u00b7 '+count+' questions \u00b7 120 minutes</p></div></button>';
-  }).join('');
-  var pTests=[1,2,3,4,5].map(function(t){
+    return tinyTestCard('tiny-f-'+t,'Practice Test '+t,'Foundations \u00b7 '+count+' questions \u00b7 120 minutes',"startTiny('"+t+"')");
+  }).join('')+tinyTestCard('tiny-f-all','Mixed \u2014 all five tests','300 questions \u00b7 60 drawn at random \u00b7 120 minutes',"startTiny('all')");
+  var pCards=[1,2,3,4,5].map(function(t){
     var count=Q.filter(function(q){return q.group==='TinyPro' && q.test===t;}).length;
-    return '<button class="pick" data-pt="'+t+'"><span class="r"></span><div><h4>Practice Test '+t+' \u2014 Professional</h4>'+
-      '<p>Professional \u00b7 '+count+' questions \u00b7 120 minutes</p></div></button>';
-  }).join('');
+    return tinyTestCard('tiny-p-'+t,'Practice Test '+t+' \u2014 Professional','Professional \u00b7 '+count+' questions \u00b7 120 minutes',"startTinyPro('"+t+"')");
+  }).join('')+tinyTestCard('tiny-p-all','Mixed \u2014 all five tests','315 questions \u00b7 63 drawn at random \u00b7 120 minutes',"startTinyPro('all')");
   el.innerHTML='<div class="setup"><div class="hero"><h1 style="font-size:30px">Tiny \u2014 Practice Tests</h1>'+
     '<p>All practice test questions with exact answer keys and rationales.</p></div>'+
     '<div class="subtabs"><button class="subtab on" data-st="ccarf">CCAR-F</button>'+
     '<button class="subtab" data-st="ccarp">CCAR-P</button></div>'+
-    '<div class="subpanel on" id="sp-ccarf">'+
-      '<div class="opt-cards" id="tinyCards">'+fTests+
-      '<button class="pick" data-t="all"><span class="r"></span><div><h4>Mixed \u2014 all five tests</h4><p>300 questions \u00b7 60 drawn at random \u00b7 120 minutes</p></div></button>'+
-      '</div>'+
-      '<div style="text-align:center"><button class="btn" id="tinyStartBtn" disabled>Start exam \u2192</button></div>'+
-    '</div>'+
-    '<div class="subpanel" id="sp-ccarp">'+
-      '<div class="opt-cards" id="tinyProCards">'+pTests+
-      '<button class="pick" data-pt="all"><span class="r"></span><div><h4>Mixed \u2014 both tests</h4><p>315 questions \u00b7 63 drawn at random \u00b7 120 minutes</p></div></button>'+
-      '</div>'+
-      '<div style="text-align:center"><button class="btn" id="tinyProStartBtn" disabled>Start exam \u2192</button></div>'+
-    '</div>'+
-    '<p style="text-align:center;color:var(--ink-3);font-size:12.5px;margin-top:16px">Select-two questions require both correct options. No partial credit.</p></div>';
+    '<div class="subpanel on" id="sp-ccarf"><div id="tinyCards">'+fCards+'</div></div>'+
+    '<div class="subpanel" id="sp-ccarp"><div id="tinyProCards">'+pCards+'</div></div>'+
+    '<p style="text-align:center;color:var(--ink-3);font-size:12.5px;margin-top:16px">Select-two questions require both correct options. No partial credit.</p>'+
+    '<p style="text-align:center;color:var(--ink-3);font-size:12.5px;margin-top:4px">Attempts are stored in this browser only \u2014 best scores and history do not sync to other devices or browsers.</p></div>';
   el.querySelectorAll('.subtab').forEach(function(t){ t.onclick=function(){
     el.querySelectorAll('.subtab').forEach(function(x){x.classList.remove('on');});
     t.classList.add('on');
     el.querySelectorAll('.subpanel').forEach(function(p){p.classList.remove('on');});
     document.getElementById('sp-'+t.dataset.st).classList.add('on');
   };});
-  var chosen=null;
-  el.querySelectorAll('#tinyCards .pick').forEach(function(p){p.onclick=function(){
-    el.querySelectorAll('#tinyCards .pick').forEach(function(x){x.classList.remove('on');});
-    p.classList.add('on'); chosen=p.dataset.t; document.getElementById('tinyStartBtn').disabled=false;
-  };});
-  document.getElementById('tinyStartBtn').onclick=function(){ if(chosen) startTiny(chosen); };
-  var pChosen=null;
-  el.querySelectorAll('#tinyProCards .pick').forEach(function(p){p.onclick=function(){
-    el.querySelectorAll('#tinyProCards .pick').forEach(function(x){x.classList.remove('on');});
-    p.classList.add('on'); pChosen=p.dataset.pt; document.getElementById('tinyProStartBtn').disabled=false;
-  };});
-  document.getElementById('tinyProStartBtn').onclick=function(){ if(pChosen) startTinyPro(pChosen); };
 }
 function startTinyPro(which){
   var pool;
@@ -4199,7 +4212,7 @@ function startTinyPro(which){
     var t=parseInt(which,10);
     pool=Q.filter(function(q){return q.group==='TinyPro' && q.test===t;});
   }
-  practiceState={running:true,group:'TinyPro',questions:shuffle(pool.slice()),answers:{},flags:{},cur:0,
+  practiceState={running:true,group:'TinyPro',testKey:(which==='all'?'tiny-p-all':'tiny-p-'+which),questions:shuffle(pool.slice()),answers:{},flags:{},cur:0,
     endAt:Date.now()+120*60*1000,timerId:null,submitted:false};
   practiceState.timerId=setInterval(tickTimer,1000);
   go('practice');
@@ -4215,7 +4228,7 @@ function startTiny(which){
     var t=parseInt(which,10);
     pool=Q.filter(function(q){return q.group==='Tiny' && q.test===t;});
   }
-  practiceState={running:true,group:'Tiny',questions:shuffle(pool.slice()),answers:{},flags:{},cur:0,
+  practiceState={running:true,group:'Tiny',testKey:(which==='all'?'tiny-f-all':'tiny-f-'+which),questions:shuffle(pool.slice()),answers:{},flags:{},cur:0,
     endAt:Date.now()+120*60*1000,timerId:null,submitted:false};
   practiceState.timerId=setInterval(tickTimer,1000);
   go('practice');
@@ -4343,6 +4356,7 @@ function confirmSubmit(){
 }
 function submitPractice(){
   var ps=practiceState; ps.submitted=true; ps.running=false; clearInterval(ps.timerId);
+  tinyRecordAttempt(ps);
   renderResults();
 }
 function renderResults(){
