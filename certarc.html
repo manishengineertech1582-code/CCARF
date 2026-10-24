@@ -4372,6 +4372,8 @@ function renderResults(){
   var pct=Math.round(correct/ps.questions.length*100);
   var scaled=Math.round(100+correct/ps.questions.length*900); /* 100-1000 scaled feel */
   var pass=pct>=80;
+  ps.reviewFilter='all';
+  var missed=ps.questions.filter(function(q){ var picked=ps.answers[q._i]||[]; return !(arrEq(picked,q.answer)&&picked.length>0); }).length;
   var rows=Object.values(byD).sort(function(a,b){return a.domain-b.domain;}).map(function(d){
     var p=Math.round(d.ok/d.n*100); var col=colorFor(d.group,d.domain); var weak=p<75;
     return '<div class="row"><span class="nm"><span class="dom-tag" style="width:18px;height:16px;display:inline-grid;vertical-align:-3px;background:'+col+'">D'+d.domain+'</span> '+esc(d.name)+'</span>'+
@@ -4388,19 +4390,39 @@ function renderResults(){
     '<div class="card pad"><div class="dbreak">'+rows+'</div></div>'+
     '<div style="text-align:center;margin-top:22px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">'+
       '<button class="btn" onclick="reviewPractice()">Review answers</button>'+
+      ((ps.group==='Tiny'||ps.group==='TinyPro') ? '<button class="btn ghost" onclick="practiceState.reviewFilter=\'incorrect\';reviewPractice()">Review what you missed ('+missed+')</button>' : '')+
       '<button class="btn ghost" onclick="practiceState.running=false;renderSetup()">New exam</button></div>'+
     '<div id="reviewArea"></div>';
   window.scrollTo(0,0);
 }
 function reviewPractice(){
   var ps=practiceState;
-  var html='<div class="section-h"><h2 style="font-size:17px">Answer review</h2><span class="hint">'+ps.questions.length+' questions</span></div>';
-  html+=ps.questions.map(function(q){
-    var picked=ps.answers[q._i]||[]; studyPick[q._i]=picked; return qCardHTML(q,'study');
-  }).join('');
+  var isTiny=(ps.group==='Tiny'||ps.group==='TinyPro');
+  var filter=isTiny ? (ps.reviewFilter||'all') : 'all';
+  var isOk=function(q){ var picked=ps.answers[q._i]||[]; return arrEq(picked,q.answer)&&picked.length>0; };
+  var counts={all:ps.questions.length,correct:0,incorrect:0};
+  ps.questions.forEach(function(q){ if(isOk(q)) counts.correct++; else counts.incorrect++; });
+  var list=ps.questions;
+  if(isTiny && filter==='correct') list=ps.questions.filter(isOk);
+  if(isTiny && filter==='incorrect') list=ps.questions.filter(function(q){ return !isOk(q); });
+  var html='<div class="section-h"><h2 style="font-size:17px">Answer review</h2><span class="hint">'+(isTiny && filter!=='all' ? list.length+' of '+ps.questions.length+' questions' : ps.questions.length+' questions')+'</span></div>';
+  if(isTiny){
+    html+='<div class="subtabs" style="justify-content:flex-start;margin:0 0 14px">'+
+      '<button class="subtab'+(filter==='all'?' on':'')+'" onclick="practiceState.reviewFilter=\'all\';reviewPractice()">All questions ('+counts.all+')</button>'+
+      '<button class="subtab'+(filter==='correct'?' on':'')+'" onclick="practiceState.reviewFilter=\'correct\';reviewPractice()">Correct ('+counts.correct+')</button>'+
+      '<button class="subtab'+(filter==='incorrect'?' on':'')+'" onclick="practiceState.reviewFilter=\'incorrect\';reviewPractice()">Incorrect or unanswered ('+counts.incorrect+')</button>'+
+    '</div>';
+  }
+  if(list.length===0){
+    html+='<div class="card pad" style="text-align:center;color:var(--ink-2)">'+(filter==='correct'?'No correct answers yet.':'No incorrect or unanswered questions - nice work.')+'</div>';
+  } else {
+    html+=list.map(function(q){
+      var picked=ps.answers[q._i]||[]; studyPick[q._i]=picked; return qCardHTML(q,'study');
+    }).join('');
+  }
   var area=document.getElementById('reviewArea'); area.innerHTML=html;
   /* auto-lock each with the exam answer shown */
-  ps.questions.forEach(function(q){ lockCard(q._i, ps.answers[q._i]||[], (ps.answers[q._i]||[]).length===0); });
+  list.forEach(function(q){ lockCard(q._i, ps.answers[q._i]||[], (ps.answers[q._i]||[]).length===0); });
   area.scrollIntoView({behavior:'smooth'});
 }
 
