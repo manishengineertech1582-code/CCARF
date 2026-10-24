@@ -433,7 +433,7 @@ button{font-family:inherit}
         <p class="lp-section-label" style="margin-top:26px">CCA Foundations — exam domain breakdown</p>
         <div class="lp-domain-grid" id="lp-domains"></div>
       </div>
-      <div class="lp-panel" id="lp-panel-videos"><p class="lp-section-label">Official channels, playlists, and curated tutorials</p><div class="lp-list" id="lp-list-videos"></div></div>       <div class="lp-panel" id="lp-panel-peaceofcode"><p class="lp-section-label">Free CCAR-F video course — 23 episodes by Peace Of Code covering every exam domain</p><div class="lp-list" id="lp-list-peaceofcode"></div></div>
+      <div class="lp-panel" id="lp-panel-videos"><p class="lp-section-label">Official channels, playlists, and curated tutorials</p><div class="lp-list" id="lp-list-videos"></div></div>       <div class="lp-panel" id="lp-panel-peaceofcode"><p class="lp-section-label">Free CCAR-F video course — 23 episodes covering every exam domain</p><div class="lp-list" id="lp-list-peaceofcode"></div></div>
       <div class="lp-panel" id="lp-panel-interview">
         <p class="lp-section-label">Sample interview questions — click any question to expand the answer</p>
         <div class="lp-filter-row" id="lpIntFilters"></div>
@@ -3785,7 +3785,7 @@ var GROUP_META = {
   Paper5:{code:'CCAR-F', name:'Drill Bank — Mock Paper 5',
     facts:[['Questions','17'],['Duration','34 min'],['Passing','—'],['Format','MC + multi-select']],
     examCount:17},
-  MATH:{code:'CCAR-F', name:'Matthew Purcell — Practice Question Set',
+  MATH:{code:'CCAR-F', name:'Practice Question Set',
     facts:[['Questions','60'],['Duration','120 min'],['Passing','720 / 1000'],['Format','MC + multi-select']],
     examCount:60},
   Community:{code:'CCAR-F', name:'Open Study Kit — Community Questions',
@@ -4039,7 +4039,7 @@ function renderMock(){
       '<div class="opt-cards"><button class="pick on"><span class="r"></span><div><h4>Community Questions \u2014 Open Study Kit</h4>'+
       '<p>Foundations \u00b7 '+cCount+' questions \u00b7 '+cMulti+' multi-select \u00b7 self-paced</p></div></button></div>'+
       '<div style="text-align:center"><button class="btn" id="communityStartBtn">Start \u2192</button></div>'+
-      '<p style="text-align:center;color:var(--ink-3);font-size:12.5px;margin-top:16px">71 scenario-based questions from the MIT-licensed CCAR-F open study kit. No timer \u2014 practice at your own pace.</p>'+
+      '<p style="text-align:center;color:var(--ink-3);font-size:12.5px;margin-top:16px">71 scenario-based questions from the MIT-licensed CCAR-F open study kit. Elapsed timer only \u2014 practice at your own pace, no time limit.</p>'+
     '</div></div>';
   el.querySelectorAll('.subtab').forEach(function(t){ t.onclick=function(){
     el.querySelectorAll('.subtab').forEach(function(x){x.classList.remove('on');});
@@ -4066,7 +4066,7 @@ function startPaper(n){
 function startCommunity(){
   var pool=Q.filter(function(q){return q.group==='Community';});
   practiceState={running:true,group:'Community',questions:shuffle(pool.slice()),answers:{},flags:{},cur:0,
-    endAt:null,timerId:null,submitted:false};
+    endAt:null,startAt:Date.now(),timerId:null,submitted:false};
   practiceState.timerId=setInterval(tickTimer,1000);
   go('practice');
   renderRun();
@@ -4091,8 +4091,8 @@ function renderMath(){
     return '<button class="pick" data-s="'+s+'"><span class="r"></span><div><h4>Scenario '+s+' \u2014 '+titles[s]+'</h4>'+
       '<p>Foundations \u00b7 '+n+' questions \u00b7 20 minutes</p></div></button>';
   }).join('');
-  el.innerHTML='<div class="setup"><div class="hero"><h1 style="font-size:30px">MATH \u2014 Matthew Purcell Practice Set</h1>'+
-    '<p>60 original CCAR-F practice questions by Matthew Purcell (Practice Question Set v2) \u2014 all six scenarios, blueprint-weighted across the five domains, with the full answer key and rationales.</p></div>'+
+  el.innerHTML='<div class="setup"><div class="hero"><h1 style="font-size:30px">MATH \u2014 Practice Set</h1>'+
+    '<p>60 original CCAR-F practice questions (Practice Question Set v2) \u2014 all six scenarios, blueprint-weighted across the five domains, with the full answer key and rationales.</p></div>'+
     '<div class="subtabs"><button class="subtab on" data-st="mathfull">Full Exam</button>'+
     '<button class="subtab" data-st="mathscen">By Scenario</button>'+
     '<button class="subtab" data-st="mathstudy">Study All</button></div>'+
@@ -4281,7 +4281,7 @@ function startPractice(group){
   renderRun();
 }
 function tickTimer(){
-  if(!practiceState.endAt){ var tt=document.getElementById('timer'); if(tt){ tt.textContent='--:--'; } return; }
+  if(!practiceState.endAt){ var tt=document.getElementById('timer'); if(tt){ if(practiceState.startAt){ var el=Math.max(0,Math.floor((Date.now()-practiceState.startAt)/1000)); var em=Math.floor(el/60), es=el%60; tt.textContent=(em<10?'0':'')+em+':'+(es<10?'0':'')+es; } else { tt.textContent='Self-paced'; } } return; }
   var left=Math.max(0,Math.floor((practiceState.endAt-Date.now())/1000));
   var t=document.getElementById('timer');
   if(t){ var m=Math.floor(left/60),s=left%60; t.textContent=(m<10?'0':'')+m+':'+(s<10?'0':'')+s; t.classList.toggle('low',left<=300); }
@@ -6165,7 +6165,7 @@ var LP_TABS=[
   {id:'learning',   label:'Learning',      icon:'◈'},
   {id:'certs',      label:'Certifications',icon:'✦'},
   {id:'videos',     label:'Videos',        icon:'▷'},
-  {id:'peaceofcode',label:'Peace Of Code', icon:'▶'},
+  {id:'peaceofcode',label:'Video Course', icon:'▶'},
   {id:'interview',  label:'Interview Q&A', icon:'?'},
   {id:'certqa',     label:'Cert Practice', icon:'✓'},
   {id:'community',  label:'Community',      icon:'◍'}
@@ -6253,39 +6253,39 @@ var LP_DATA={
   ],
   peaceofcode:[
     {sub:"CCAR-F \u2014 Full Course (Foundations)"},
-    {t:"Intro: Claude Certified Architect Full Course",d:"Course overview and exam breakdown \u2014 what the CCAR-F covers and how to prepare.",b:["Free"],u:"https://www.youtube.com/watch?v=rcpNFm_poQs",tags:"peace of code youtube video intro claude certified architect full course overview",ccaf:true},
-    {t:"Ep 01: Agentic Loop and stop_reason Explained",d:"49 min. The 4-stage agentic loop, stop_reason tool_use vs end_turn, the messages array, and 3 exam-tested anti-patterns with code fixes.",b:["Free", "D1"],u:"https://www.youtube.com/watch?v=ldqOnljDINc",tags:"peace of code youtube video ep 01 agentic loop and stop_reason explained d1",ccaf:true},
-    {t:"Ep 02: Multi-Agent Systems and Coordinator Patterns Explained",d:"32 min. Hub-and-spoke topology, the coordinator's four responsibilities, Task tool permission matrix, parallel vs sequential subagents.",b:["Free", "D1"],u:"https://www.youtube.com/watch?v=ejPWvBcc_DU",tags:"peace of code youtube video ep 02 multi-agent systems and coordinator patterns explained d1",ccaf:true},
-    {t:"Ep 03: Subagent Context Passing and Session Management",d:"33 min. Why subagents start blank, passing context to subagents, claim-source mappings, session management and --resume.",b:["Free", "D1"],u:"https://www.youtube.com/watch?v=a2N6vKdQUfE",tags:"peace of code youtube video ep 03 subagent context passing and session management d1",ccaf:true},
-    {t:"Ep 04: Multi-Agent System in Python and Claude SDK (Hands On)",d:"12 min. Hands-on: building a multi-agent system in Python with the Claude Agent SDK.",b:["Free", "D1"],u:"https://www.youtube.com/watch?v=e7ijjK173zI",tags:"peace of code youtube video ep 04 multi-agent system in python and claude sdk (hands on) d1",ccaf:true},
-    {t:"Ep 05: PreToolUse, PostToolUse Hooks and Task Decomposition",d:"PreToolUse and PostToolUse hooks, task decomposition \u2014 programmatic gates vs prompt-based control.",b:["Free", "D1"],u:"https://www.youtube.com/watch?v=JJBcpwpsKzk",tags:"peace of code youtube video ep 05 pretooluse, posttooluse hooks and task decomposition d1",ccaf:true},
-    {t:"Ep 06: Tool Descriptions and Tool Misrouting Explained",d:"24 min. Tool description anatomy, overlapping descriptions and tool misrouting, troubleshooting misselection.",b:["Free", "D2"],u:"https://www.youtube.com/watch?v=s1j1vTnCKns",tags:"peace of code youtube video ep 06 tool descriptions and tool misrouting explained d2",ccaf:true},
-    {t:"Ep 07: Agent Error Handling and tool_choice Explained",d:"38 min. Structured errors (is_error, errorCategory, isRetryable), transient/validation/business/permission failures, tool_choice.",b:["Free", "D2"],u:"https://www.youtube.com/watch?v=eZj6FtTVV58",tags:"peace of code youtube video ep 07 agent error handling and tool_choice explained d2",ccaf:true},
-    {t:"Ep 08: MCP Servers, Config and More",d:"1h 29m. MCP servers deep-dive: project-level vs user-level config, diagnosing scope mismatches.",b:["Free", "D2"],u:"https://www.youtube.com/watch?v=IVUxGTxSuH8",tags:"peace of code youtube video ep 08 mcp servers, config and more d2",ccaf:true},
-    {t:"Ep 09: Claude Built-in Tools Explained",d:"35 min. Claude's built-in tools explained \u2014 what they do and when the agent should use them.",b:["Free", "D2"],u:"https://www.youtube.com/watch?v=eh-xxQpfBBY",tags:"peace of code youtube video ep 09 claude built-in tools explained d2",ccaf:true},
-    {t:"Ep 10: CLAUDE.md Hierarchy and Config Rules",d:"31 min. CLAUDE.md 3-level hierarchy (user/project/directory), @imports, .claude/rules, fixing ignored team conventions.",b:["Free", "D3"],u:"https://www.youtube.com/watch?v=qIee1aqSAwY",tags:"peace of code youtube video ep 10 claude.md hierarchy and config rules d3",ccaf:true},
-    {t:"Ep 11: Custom Slash Commands and Skills",d:"33 min. Custom slash commands and agent skills \u2014 how they're created and loaded, when to use each.",b:["Free", "D3"],u:"https://www.youtube.com/watch?v=v3tMqTmgg2Q",tags:"peace of code youtube video ep 11 custom slash commands and skills d3",ccaf:true},
-    {t:"Ep 12: Plan Mode vs Execute",d:"51 min. Plan Mode vs direct execution, the Explore subagent, iterative refinement patterns.",b:["Free", "D3"],u:"https://www.youtube.com/watch?v=q-n1cut5e7c",tags:"peace of code youtube video ep 12 plan mode vs execute d3",ccaf:true},
-    {t:"Ep 13: Claude Code CI/CD Pipelines",d:"31 min. The -p flag, fabricated-flag exam traps, running Claude Code in CI/CD pipelines.",b:["Free", "D3"],u:"https://www.youtube.com/watch?v=GWCnDhgH840",tags:"peace of code youtube video ep 13 claude code ci/cd pipelines d3",ccaf:true},
-    {t:"Ep 14: Prompt Engineering: Explicit Criteria and False Positives",d:"34 min. Explicit match criteria, why confidence thresholds fail, categorical REPORT/SKIP patterns.",b:["Free", "D4"],u:"https://www.youtube.com/watch?v=HqwULqy1egw",tags:"peace of code youtube video ep 14 prompt engineering: explicit criteria and false positives d4",ccaf:true},
-    {t:"Ep 15: Few-Shot Prompting Explained",d:"27 min. Few-shot prompting: when to reach for examples and how many to include.",b:["Free", "D4"],u:"https://www.youtube.com/watch?v=FbIcU6YFrhw",tags:"peace of code youtube video ep 15 few-shot prompting explained d4",ccaf:true},
-    {t:"Ep 16: Structured Output and JSON Schema",d:"36 min. Structured output with JSON Schema \u2014 optional, nullable, and enum fields.",b:["Free", "D4"],u:"https://www.youtube.com/watch?v=CaDaLn7DcQ0",tags:"peace of code youtube video ep 16 structured output and json schema d4",ccaf:true},
-    {t:"Ep 17: Batch API and Multi-Pass Review",d:"34 min. Batch API (50% cheaper, no latency SLA) and multi-pass review patterns.",b:["Free", "D4"],u:"https://www.youtube.com/watch?v=BXs7QoLQxX0",tags:"peace of code youtube video ep 17 batch api and multi-pass review d4",ccaf:true},
-    {t:"Ep 18: Why AI Agents Forget: Context Engineering",d:"Context engineering: why agents forget, progressive summarization, lost-in-the-middle, trimming tool results.",b:["Free", "D5"],u:"https://www.youtube.com/watch?v=7kaJdZ7veDs",tags:"peace of code youtube video ep 18 why ai agents forget: context engineering d5",ccaf:true},
-    {t:"Ep 19: Subagent Error Propagation and Context Management",d:"42 min. Subagent error propagation, silent failure modes, and context management.",b:["Free", "D5"],u:"https://www.youtube.com/watch?v=MqnElZw6NYk",tags:"peace of code youtube video ep 19 subagent error propagation and context management d5",ccaf:true},
-    {t:"Ep 20: When AI Needs a Human",d:"51 min. Escalation triggers \u2014 when the agent must hand off to a human.",b:["Free", "D5"],u:"https://www.youtube.com/watch?v=tsIxzFg76Nw",tags:"peace of code youtube video ep 20 when ai needs a human d5",ccaf:true},
-    {t:"Bonus: Exam Questions Solved: Exam Traps",d:"1h. Exam questions solved with explanations \u2014 official sample questions and common exam traps.",b:["Free", "Practice"],u:"https://www.youtube.com/watch?v=-NymqBcFy6E",tags:"peace of code youtube video bonus exam questions solved: exam traps practice",ccaf:true},
-    {t:"Extra: Claude Certified Architect vs Developer: What Nobody Tells You",d:"How the Architect and Developer certifications differ (2026 update).",b:["Free"],u:"https://www.youtube.com/watch?v=BcFZckORlWM",tags:"peace of code youtube video extra claude certified architect vs developer: what nobody tells you overview",ccaf:true},
+    {t:"Intro: Claude Certified Architect Full Course",d:"Course overview and exam breakdown \u2014 what the CCAR-F covers and how to prepare.",b:["Free"],u:"https://www.youtube.com/watch?v=rcpNFm_poQs",tags:"video course youtube video intro claude certified architect full course overview",ccaf:true},
+    {t:"Ep 01: Agentic Loop and stop_reason Explained",d:"49 min. The 4-stage agentic loop, stop_reason tool_use vs end_turn, the messages array, and 3 exam-tested anti-patterns with code fixes.",b:["Free", "D1"],u:"https://www.youtube.com/watch?v=ldqOnljDINc",tags:"video course youtube video ep 01 agentic loop and stop_reason explained d1",ccaf:true},
+    {t:"Ep 02: Multi-Agent Systems and Coordinator Patterns Explained",d:"32 min. Hub-and-spoke topology, the coordinator's four responsibilities, Task tool permission matrix, parallel vs sequential subagents.",b:["Free", "D1"],u:"https://www.youtube.com/watch?v=ejPWvBcc_DU",tags:"video course youtube video ep 02 multi-agent systems and coordinator patterns explained d1",ccaf:true},
+    {t:"Ep 03: Subagent Context Passing and Session Management",d:"33 min. Why subagents start blank, passing context to subagents, claim-source mappings, session management and --resume.",b:["Free", "D1"],u:"https://www.youtube.com/watch?v=a2N6vKdQUfE",tags:"video course youtube video ep 03 subagent context passing and session management d1",ccaf:true},
+    {t:"Ep 04: Multi-Agent System in Python and Claude SDK (Hands On)",d:"12 min. Hands-on: building a multi-agent system in Python with the Claude Agent SDK.",b:["Free", "D1"],u:"https://www.youtube.com/watch?v=e7ijjK173zI",tags:"video course youtube video ep 04 multi-agent system in python and claude sdk (hands on) d1",ccaf:true},
+    {t:"Ep 05: PreToolUse, PostToolUse Hooks and Task Decomposition",d:"PreToolUse and PostToolUse hooks, task decomposition \u2014 programmatic gates vs prompt-based control.",b:["Free", "D1"],u:"https://www.youtube.com/watch?v=JJBcpwpsKzk",tags:"video course youtube video ep 05 pretooluse, posttooluse hooks and task decomposition d1",ccaf:true},
+    {t:"Ep 06: Tool Descriptions and Tool Misrouting Explained",d:"24 min. Tool description anatomy, overlapping descriptions and tool misrouting, troubleshooting misselection.",b:["Free", "D2"],u:"https://www.youtube.com/watch?v=s1j1vTnCKns",tags:"video course youtube video ep 06 tool descriptions and tool misrouting explained d2",ccaf:true},
+    {t:"Ep 07: Agent Error Handling and tool_choice Explained",d:"38 min. Structured errors (is_error, errorCategory, isRetryable), transient/validation/business/permission failures, tool_choice.",b:["Free", "D2"],u:"https://www.youtube.com/watch?v=eZj6FtTVV58",tags:"video course youtube video ep 07 agent error handling and tool_choice explained d2",ccaf:true},
+    {t:"Ep 08: MCP Servers, Config and More",d:"1h 29m. MCP servers deep-dive: project-level vs user-level config, diagnosing scope mismatches.",b:["Free", "D2"],u:"https://www.youtube.com/watch?v=IVUxGTxSuH8",tags:"video course youtube video ep 08 mcp servers, config and more d2",ccaf:true},
+    {t:"Ep 09: Claude Built-in Tools Explained",d:"35 min. Claude's built-in tools explained \u2014 what they do and when the agent should use them.",b:["Free", "D2"],u:"https://www.youtube.com/watch?v=eh-xxQpfBBY",tags:"video course youtube video ep 09 claude built-in tools explained d2",ccaf:true},
+    {t:"Ep 10: CLAUDE.md Hierarchy and Config Rules",d:"31 min. CLAUDE.md 3-level hierarchy (user/project/directory), @imports, .claude/rules, fixing ignored team conventions.",b:["Free", "D3"],u:"https://www.youtube.com/watch?v=qIee1aqSAwY",tags:"video course youtube video ep 10 claude.md hierarchy and config rules d3",ccaf:true},
+    {t:"Ep 11: Custom Slash Commands and Skills",d:"33 min. Custom slash commands and agent skills \u2014 how they're created and loaded, when to use each.",b:["Free", "D3"],u:"https://www.youtube.com/watch?v=v3tMqTmgg2Q",tags:"video course youtube video ep 11 custom slash commands and skills d3",ccaf:true},
+    {t:"Ep 12: Plan Mode vs Execute",d:"51 min. Plan Mode vs direct execution, the Explore subagent, iterative refinement patterns.",b:["Free", "D3"],u:"https://www.youtube.com/watch?v=q-n1cut5e7c",tags:"video course youtube video ep 12 plan mode vs execute d3",ccaf:true},
+    {t:"Ep 13: Claude Code CI/CD Pipelines",d:"31 min. The -p flag, fabricated-flag exam traps, running Claude Code in CI/CD pipelines.",b:["Free", "D3"],u:"https://www.youtube.com/watch?v=GWCnDhgH840",tags:"video course youtube video ep 13 claude code ci/cd pipelines d3",ccaf:true},
+    {t:"Ep 14: Prompt Engineering: Explicit Criteria and False Positives",d:"34 min. Explicit match criteria, why confidence thresholds fail, categorical REPORT/SKIP patterns.",b:["Free", "D4"],u:"https://www.youtube.com/watch?v=HqwULqy1egw",tags:"video course youtube video ep 14 prompt engineering: explicit criteria and false positives d4",ccaf:true},
+    {t:"Ep 15: Few-Shot Prompting Explained",d:"27 min. Few-shot prompting: when to reach for examples and how many to include.",b:["Free", "D4"],u:"https://www.youtube.com/watch?v=FbIcU6YFrhw",tags:"video course youtube video ep 15 few-shot prompting explained d4",ccaf:true},
+    {t:"Ep 16: Structured Output and JSON Schema",d:"36 min. Structured output with JSON Schema \u2014 optional, nullable, and enum fields.",b:["Free", "D4"],u:"https://www.youtube.com/watch?v=CaDaLn7DcQ0",tags:"video course youtube video ep 16 structured output and json schema d4",ccaf:true},
+    {t:"Ep 17: Batch API and Multi-Pass Review",d:"34 min. Batch API (50% cheaper, no latency SLA) and multi-pass review patterns.",b:["Free", "D4"],u:"https://www.youtube.com/watch?v=BXs7QoLQxX0",tags:"video course youtube video ep 17 batch api and multi-pass review d4",ccaf:true},
+    {t:"Ep 18: Why AI Agents Forget: Context Engineering",d:"Context engineering: why agents forget, progressive summarization, lost-in-the-middle, trimming tool results.",b:["Free", "D5"],u:"https://www.youtube.com/watch?v=7kaJdZ7veDs",tags:"video course youtube video ep 18 why ai agents forget: context engineering d5",ccaf:true},
+    {t:"Ep 19: Subagent Error Propagation and Context Management",d:"42 min. Subagent error propagation, silent failure modes, and context management.",b:["Free", "D5"],u:"https://www.youtube.com/watch?v=MqnElZw6NYk",tags:"video course youtube video ep 19 subagent error propagation and context management d5",ccaf:true},
+    {t:"Ep 20: When AI Needs a Human",d:"51 min. Escalation triggers \u2014 when the agent must hand off to a human.",b:["Free", "D5"],u:"https://www.youtube.com/watch?v=tsIxzFg76Nw",tags:"video course youtube video ep 20 when ai needs a human d5",ccaf:true},
+    {t:"Bonus: Exam Questions Solved: Exam Traps",d:"1h. Exam questions solved with explanations \u2014 official sample questions and common exam traps.",b:["Free", "Practice"],u:"https://www.youtube.com/watch?v=-NymqBcFy6E",tags:"video course youtube video bonus exam questions solved: exam traps practice",ccaf:true},
+    {t:"Extra: Claude Certified Architect vs Developer: What Nobody Tells You",d:"How the Architect and Developer certifications differ (2026 update).",b:["Free"],u:"https://www.youtube.com/watch?v=BcFZckORlWM",tags:"video course youtube video extra claude certified architect vs developer: what nobody tells you overview",ccaf:true},
     {sub:"CCAR-P \u2014 Full Course (Professional)"},
-    {t:"CCAR-P Intro: Course Launch & Exam Breakdown",d:"Course launch and full exam breakdown \u2014 the 7 CCAR-P domains, Foundations vs Professional, scoring traps, and the 17-episode course map.",b:["Free", "CCAR-P"],u:"https://www.youtube.com/watch?v=uF5QSu6Nw-8",tags:"peace of code youtube video ccar-p professional ccar-p intro course launch & exam breakdown",ccaf:false},
-    {t:"CCAR-P Ep 01: Solution Design & Architecture",d:"Domain 1 of the Professional exam: how to design production-grade Claude solutions and architecture tradeoffs.",b:["Free", "CCAR-P"],u:"https://www.youtube.com/watch?v=JY0M4RZKh9c",tags:"peace of code youtube video ccar-p professional ccar-p ep 01 solution design & architecture",ccaf:false},
-    {t:"CCAR-P Ep 02: Architecture Patterns",d:"Domain 1: architecture patterns for production Claude solutions \u2014 choosing the right structural approach.",b:["Free", "CCAR-P"],u:"https://www.youtube.com/watch?v=SGR8IWO28Lg",tags:"peace of code youtube video ccar-p professional ccar-p ep 02 architecture patterns",ccaf:false},
-    {t:"CCAR-P Ep 03: Decomposition Techniques & Business Value",d:"Domain 1: decomposition techniques and tying architecture decisions to business value.",b:["Free", "CCAR-P"],u:"https://www.youtube.com/watch?v=bYRxZ1Gn52o",tags:"peace of code youtube video ccar-p professional ccar-p ep 03 decomposition techniques & business value",ccaf:false},
-    {t:"CCAR-P Ep 04: Model Selection & System Prompts",d:"Domain 2: model selection and system prompt design for the Professional exam.",b:["Free", "CCAR-P"],u:"https://www.youtube.com/watch?v=CaXX8l3QlNY",tags:"peace of code youtube video ccar-p professional ccar-p ep 04 model selection & system prompts",ccaf:false},
-    {t:"CCAR-P Ep 05: Prompt Engineering, Context Windows & Caching",d:"Domain 2: prompt engineering, context windows, and prompt caching.",b:["Free", "CCAR-P"],u:"https://www.youtube.com/watch?v=9JqzNnY7cxc",tags:"peace of code youtube video ccar-p professional ccar-p ep 05 prompt engineering, context windows & caching",ccaf:false},
-    {t:"CCAR-P Ep 06: RAG Pipelines, Chunking & Retrieval",d:"Domain 3: RAG pipelines \u2014 chunking strategies and retrieval.",b:["Free", "CCAR-P"],u:"https://www.youtube.com/watch?v=fadDUxsFEMw",tags:"peace of code youtube video ccar-p professional ccar-p ep 06 rag pipelines, chunking & retrieval",ccaf:false},
-    {t:"CCAR-P Ep 07: MCP, Auth & Capability Bloat",d:"Domain 3: MCP integration, auth patterns, and avoiding capability bloat.",b:["Free", "CCAR-P"],u:"https://www.youtube.com/watch?v=VaCb6AhJcV0",tags:"peace of code youtube video ccar-p professional ccar-p ep 07 mcp, auth & capability bloat",ccaf:false},
-    {t:"CCAR-P Ep 08: Agent Observability, Monitoring & Latency Tradeoffs",d:"Domain 3: agent observability, monitoring, and latency tradeoffs.",b:["Free", "CCAR-P"],u:"https://www.youtube.com/watch?v=AiAAlanHkQE",tags:"peace of code youtube video ccar-p professional ccar-p ep 08 agent observability, monitoring & latency tradeoffs",ccaf:false}
+    {t:"CCAR-P Intro: Course Launch & Exam Breakdown",d:"Course launch and full exam breakdown \u2014 the 7 CCAR-P domains, Foundations vs Professional, scoring traps, and the 17-episode course map.",b:["Free", "CCAR-P"],u:"https://www.youtube.com/watch?v=uF5QSu6Nw-8",tags:"video course youtube video ccar-p professional ccar-p intro course launch & exam breakdown",ccaf:false},
+    {t:"CCAR-P Ep 01: Solution Design & Architecture",d:"Domain 1 of the Professional exam: how to design production-grade Claude solutions and architecture tradeoffs.",b:["Free", "CCAR-P"],u:"https://www.youtube.com/watch?v=JY0M4RZKh9c",tags:"video course youtube video ccar-p professional ccar-p ep 01 solution design & architecture",ccaf:false},
+    {t:"CCAR-P Ep 02: Architecture Patterns",d:"Domain 1: architecture patterns for production Claude solutions \u2014 choosing the right structural approach.",b:["Free", "CCAR-P"],u:"https://www.youtube.com/watch?v=SGR8IWO28Lg",tags:"video course youtube video ccar-p professional ccar-p ep 02 architecture patterns",ccaf:false},
+    {t:"CCAR-P Ep 03: Decomposition Techniques & Business Value",d:"Domain 1: decomposition techniques and tying architecture decisions to business value.",b:["Free", "CCAR-P"],u:"https://www.youtube.com/watch?v=bYRxZ1Gn52o",tags:"video course youtube video ccar-p professional ccar-p ep 03 decomposition techniques & business value",ccaf:false},
+    {t:"CCAR-P Ep 04: Model Selection & System Prompts",d:"Domain 2: model selection and system prompt design for the Professional exam.",b:["Free", "CCAR-P"],u:"https://www.youtube.com/watch?v=CaXX8l3QlNY",tags:"video course youtube video ccar-p professional ccar-p ep 04 model selection & system prompts",ccaf:false},
+    {t:"CCAR-P Ep 05: Prompt Engineering, Context Windows & Caching",d:"Domain 2: prompt engineering, context windows, and prompt caching.",b:["Free", "CCAR-P"],u:"https://www.youtube.com/watch?v=9JqzNnY7cxc",tags:"video course youtube video ccar-p professional ccar-p ep 05 prompt engineering, context windows & caching",ccaf:false},
+    {t:"CCAR-P Ep 06: RAG Pipelines, Chunking & Retrieval",d:"Domain 3: RAG pipelines \u2014 chunking strategies and retrieval.",b:["Free", "CCAR-P"],u:"https://www.youtube.com/watch?v=fadDUxsFEMw",tags:"video course youtube video ccar-p professional ccar-p ep 06 rag pipelines, chunking & retrieval",ccaf:false},
+    {t:"CCAR-P Ep 07: MCP, Auth & Capability Bloat",d:"Domain 3: MCP integration, auth patterns, and avoiding capability bloat.",b:["Free", "CCAR-P"],u:"https://www.youtube.com/watch?v=VaCb6AhJcV0",tags:"video course youtube video ccar-p professional ccar-p ep 07 mcp, auth & capability bloat",ccaf:false},
+    {t:"CCAR-P Ep 08: Agent Observability, Monitoring & Latency Tradeoffs",d:"Domain 3: agent observability, monitoring, and latency tradeoffs.",b:["Free", "CCAR-P"],u:"https://www.youtube.com/watch?v=AiAAlanHkQE",tags:"video course youtube video ccar-p professional ccar-p ep 08 agent observability, monitoring & latency tradeoffs",ccaf:false}
   ],
   community:[
     {t:'Anthropic news & announcements', d:'Official blog — product launches, research papers, safety updates, and company news. The primary source for what\'s new.', b:['Official'], u:'https://www.anthropic.com/news', tags:'news blog announcements', ccaf:false},
@@ -6381,7 +6381,7 @@ function lpQaCard(item){
   '</div>';
 }
 
-var LP_CAT_LABEL={products:'Products',docs:'Documentation',learning:'Learning',certs:'Certifications',videos:'Videos',peaceofcode:'Peace Of Code',community:'Community'};
+var LP_CAT_LABEL={products:'Products',docs:'Documentation',learning:'Learning',certs:'Certifications',videos:'Videos',peaceofcode:'Video Course',community:'Community'};
 
 function renderPortal(){
   if(lpBuilt) return;
