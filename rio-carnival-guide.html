@@ -381,6 +381,11 @@ a:hover { text-decoration: underline; }
   color: var(--blue);
 }
 .metro-card p { font-size: 14px; color: var(--muted); margin: 0 0 6px; }
+/* Camarotes map only: body text must inherit the card colour.
+   Without this, the muted-grey paragraph colour above wins over the
+   white text set on the coloured sector cards, making them unreadable. */
+#camarotes .metro-card { color: var(--ink); }
+#camarotes .metro-card p { color: inherit; font-size: 15px; line-height: 1.5; }
 .metro-card .duration {
   font-family: 'Cormorant Garamond', serif;
   font-size: 28px;
@@ -5672,7 +5677,7 @@ tbody td {
 
     <h3>Sambódromo da Marquês de Sapucaí — schematic, not to scale</h3>
     <p>Parade runs left to right: Concentration / start → Apotheosis. Even sectors face odd sectors across the runway. Sector 6 faces Sector 7. Box sizes are equal for readability only — they do not show real distances or camarote footprints.</p>
-    <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:10px;">
+    <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:10px;align-items:start;">
       <div class="metro-card"><h4>Sector 2</h4><p>Even side. Also Camarote Nº1.</p><p>Start of the parade.</p></div>
       <div class="metro-card"><h4>Sector 4</h4><p>Even side.</p></div>
       <div class="metro-card" style="background:#2f7d6b;color:#fff;border-color:#2f7d6b;"><h4 style="color:#fff;">★ Sector 6 — CAMAROTE MAR</h4><p>Benchmark only. Largest balcony. Central, near the judges.</p><p>◆ Judges booth</p></div>
@@ -5681,7 +5686,7 @@ tbody td {
       <div class="metro-card"><h4>Sector 12</h4><p>End. Allocated chairs.</p></div>
     </div>
     <p style="text-align:center;font-weight:700;">— PARADE RUNWAY — START → APOTHEOSIS —</p>
-    <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:10px;">
+    <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:10px;align-items:start;">
       <div class="metro-card" style="background:#c0392b;color:#fff;border-color:#c0392b;"><h4 style="color:#fff;">Sector 3 — PORTELA</h4><p>Early. First bateria area. Near the concentration area.</p><p>◆ Judges booth</p></div>
       <div class="metro-card"><h4>Sector 5</h4><p>Odd side.</p></div>
       <div class="metro-card" style="background:#2e6da4;color:#fff;border-color:#2e6da4;"><h4 style="color:#fff;">Sector 7 — LOUNGE CARIOCA ★</h4><p>Selected option. Directly opposite Camarote Mar. Also VerdeRosa.</p><p>◆ Judges booth</p></div>
