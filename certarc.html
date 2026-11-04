@@ -6885,6 +6885,7 @@ Q.forEach(function(q,i){ q._i=i; });
 
 var GROUPS = ['Foundations','Professional','Tiny','Mock','MATH','CGuide1','CGuide2','CGuide3','CGuide4','CGuide5'];
 var GROUP_META = {
+  MPRAC:{code:'CCAR-F', name:'Domain Practice', facts:[['Questions','60'],['Duration','120 min'],['Passing','720 / 1000'],['Format','MC + multi-select']], examCount:60},
   Foundations:{code:'CCAR-F', name:'Claude Certified Architect - Foundations',
     facts:[['Questions','60'],['Duration','120 min'],['Passing','720 / 1000'],['Format','Multiple choice']],
     examCount:60},
@@ -6986,6 +6987,7 @@ function domainsOf(group){
   return Object.values(m).sort(function(a,b){return a.id-b.id;});
 }
 function colorFor(group,domain){
+  if(group==='MPRAC') return COLORS[(domain-1)%COLORS.length];
   var list=domainsOf(group); var idx=list.findIndex(function(d){return d.id===domain;});
   return COLORS[idx % COLORS.length];
 }
@@ -10085,110 +10087,21 @@ function practiceNext(){_pracIdx++;practiceShow();}
 
 
 /* ===== MATH DOMAIN PRACTICE ENGINE ===== */
-var _mpList=[],_mpIdx=0,_mpCorrect=0,_mpAnswered=0,_mpDom=0,_mpSetIdx=0,_mpTimerId=null,_mpEndAt=0;
-function _mpFmt(ms){var t=Math.max(0,Math.ceil(ms/1000)),m=Math.floor(t/60),r=t%60;return (m<10?'0':'')+m+':'+(r<10?'0':'')+r;}
-function _mpTick(){
-  var el=document.getElementById('mp-timer');
-  if(!el){clearInterval(_mpTimerId);_mpTimerId=null;return;}
-  var left=_mpEndAt-Date.now();
-  el.textContent=_mpFmt(left);
-  el.classList.toggle('low',left<=5*60*1000);
-  if(left<=0){clearInterval(_mpTimerId);_mpTimerId=null;mathPracticeFinish(true);}
-}
-function mathPracticeFinish(timeUp){
-  if(_mpTimerId){clearInterval(_mpTimerId);_mpTimerId=null;}
-  var card=document.getElementById('mp-card');
-  if(!card)return;
-  var pct=_mpAnswered?Math.round(100*_mpCorrect/_mpAnswered):0;
-  card.innerHTML='<div style="text-align:center;padding:40px 0">'+
-    '<h3 style="margin-bottom:8px">'+(timeUp?'Time is up!':'Set complete!')+'</h3>'+
-    '<p style="color:var(--ink-2)">Score: '+_mpCorrect+' / '+_mpAnswered+' answered ('+pct+'%) &middot; '+_mpList.length+' questions in set</p>'+
-    '<button class="btn" onclick="mathPracticeBack()" style="margin-top:16px">Back to sets</button></div>';
-  var b=document.getElementById('mp-bar');if(b)b.style.width='100%';
-}
 function mathPracticeStart(domain,setIdx){
   var pool=PRACTICE_Q.filter(function(q){return domain===0||q.domain===domain;});
   var slice=pool.slice(setIdx*60,Math.min((setIdx+1)*60,pool.length));
-  _mpList=slice.slice().sort(function(){return Math.random()-.5;});
-  _mpIdx=0;_mpCorrect=0;_mpAnswered=0;_mpDom=domain;_mpSetIdx=setIdx;
-  if(_mpTimerId){clearInterval(_mpTimerId);_mpTimerId=null;}
-  _mpEndAt=Date.now()+_mpList.length*2*60*1000;
-  /* switch MATH to practice-mode view */
-  var dnames={1:'D1 Agentic',2:'D2 MCP &amp; Tools',3:'D3 Claude Code',4:'D4 Prompting',5:'D5 Context',6:'D6 Advanced API'};
-  var el=document.getElementById('v-math');
-  el.innerHTML='<div id="mp-wrap" style="max-width:720px;margin:0 auto;padding:20px 0">'+
-    '<div style="display:flex;align-items:center;gap:12px;margin-bottom:18px">'+
-      '<button onclick="mathPracticeBack()" style="background:var(--surface);border:1px solid var(--border);'+
-        'border-radius:8px;padding:6px 14px;cursor:pointer;font-size:13px;color:var(--ink-2)">'+
-        '&#8592; Back to sets</button>'+
-      '<span style="font-size:13px;color:var(--ink-3)">'+
-        (dnames[domain]||'All')+' &middot; Set '+(setIdx+1)+' &middot; '+_mpList.length+' questions'+
-      '</span>'+
-    '</div>'+
-    '<div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;padding:10px 14px;background:var(--surface);border:1px solid var(--border);border-radius:12px">'+
-      '<span class="timer" id="mp-timer">'+_mpFmt(_mpList.length*2*60*1000)+'</span>'+
-      '<div class="prac-progress" style="flex:1;margin:0"><div class="prac-progress-bar" id="mp-bar" style="width:0%"></div></div>'+
-      '<span id="mp-count" style="font-size:12.5px;color:var(--ink-3);font-family:\'IBM Plex Mono\',monospace">1 / '+_mpList.length+'</span>'+
-      '<button class="btn" onclick="if(confirm(\'Submit this set now?\'))mathPracticeFinish(false)" style="padding:7px 16px">Submit</button>'+
-    '</div>'+
-    '<div class="prac-card" id="mp-card">'+
-      '<div class="prac-meta" id="mp-meta"></div>'+
-      '<div class="prac-stem" id="mp-stem" style="font-size:15.5px;line-height:1.6;margin-bottom:18px"></div>'+
-      '<div class="prac-opts" id="mp-opts"></div>'+
-      '<div class="prac-rationale" id="mp-rat"></div>'+
-      '<div class="prac-nav" style="margin-top:18px">'+
-        '<span class="prac-score" id="mp-score"></span>'+
-        '<button class="btn" id="mp-next" onclick="mathPracticeNext()" style="display:none">Next &#8594;</button>'+
-      '</div>'+
-    '</div>'+
-  '</div>';
-  _mpTimerId=setInterval(_mpTick,1000);
-  mathPracticeShow();
-}
-function mathPracticeShow(){
-  var q=_mpList[_mpIdx];
-  if(!q){mathPracticeFinish(false);return;}
-  var dcls={1:'d1',2:'d2',3:'d3',4:'d4',5:'d5',6:'d6'};
-  var dnames2={1:'D1 Agentic',2:'D2 MCP',3:'D3 Code',4:'D4 Prompt',5:'D5 Context',6:'Advanced API'};
-  document.getElementById('mp-meta').innerHTML=
-    '<span class="prac-badge '+(dcls[q.domain]||'d1')+'">'+(dnames2[q.domain]||'D?')+'</span>'+
-    '<span class="prac-badge diff-'+(q.difficulty||'basic')+'">'+(q.difficulty||'basic')+'</span>'+
-    '<span style="margin-left:auto;font-size:12px;color:var(--ink-3)">'+(_mpIdx+1)+' / '+_mpList.length+'</span>';
-  document.getElementById('mp-stem').textContent=q.question;
-  var opts='';
-  q.options.forEach(function(o){
-    opts+='<button class="prac-opt" onclick="mathPracticeAnswer(this,\''+o.l+'\')">'+
-          '<span class="opt-key">'+o.l+'</span><span>'+o.t+'</span></button>';
+  var qs=slice.map(function(q,i){
+    return {_i:1000000+setIdx*100+i, group:'MPRAC', domain:q.domain, domainName:q.domainName,
+      select:q.answer.length>1?'multi':'single', question:q.question, options:q.options,
+      answer:q.answer, rationale:q.rationale, reference:q.reference, refLabel:q.refLabel};
   });
-  document.getElementById('mp-opts').innerHTML=opts;
-  document.getElementById('mp-rat').className='prac-rationale';
-  document.getElementById('mp-next').style.display='none';
-  document.getElementById('mp-score').textContent=_mpAnswered?
-    (_mpCorrect+'/'+_mpAnswered+' correct ('+Math.round(100*_mpCorrect/_mpAnswered)+'%)'):'';
-  document.getElementById('mp-bar').style.width=Math.round(100*_mpIdx/_mpList.length)+'%';
-  var cn=document.getElementById('mp-count');if(cn)cn.textContent=(_mpIdx+1)+' / '+_mpList.length;
+  practiceState={running:true,group:'MPRAC',questions:shuffle(qs),answers:{},flags:{},cur:0,
+    endAt:Date.now()+Math.max(qs.length,1)*2*60*1000,timerId:null,submitted:false};
+  practiceState.timerId=setInterval(tickTimer,1000);
+  go('practice');
+  renderRun();
+  document.querySelectorAll('.nav button').forEach(function(b){b.classList.toggle('on', b.dataset.nav==='math');});
 }
-function mathPracticeAnswer(btn,key){
-  var q=_mpList[_mpIdx];
-  document.querySelectorAll('#mp-opts .prac-opt').forEach(function(b){b.disabled=true;});
-  var correct=q.answer.indexOf(key)!==-1;
-  btn.classList.add(correct?'correct':'wrong');
-  if(!correct){
-    document.querySelectorAll('#mp-opts .prac-opt').forEach(function(b){
-      if(b.querySelector('.opt-key').textContent===q.answer[0])b.classList.add('correct');
-    });
-  }
-  _mpAnswered++;if(correct)_mpCorrect++;
-  if(q.rationale){
-    var r=document.getElementById('mp-rat');
-    r.textContent=q.rationale;
-    r.className='prac-rationale show';
-  }
-  document.getElementById('mp-next').style.display='';
-  document.getElementById('mp-score').textContent=_mpCorrect+'/'+_mpAnswered+' correct ('+Math.round(100*_mpCorrect/_mpAnswered)+'%)';
-}
-function mathPracticeNext(){_mpIdx++;mathPracticeShow();}
-function mathPracticeBack(){if(_mpTimerId){clearInterval(_mpTimerId);_mpTimerId=null;}renderMath();}
 
 
 renderHome();
