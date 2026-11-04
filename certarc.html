@@ -1,3 +1,4 @@
+  if(!q){mathPracticeFinish(false);return;}
 <!doctype html>
 <html lang="en">
 <head>
@@ -10085,12 +10086,34 @@ function practiceNext(){_pracIdx++;practiceShow();}
 
 
 /* ===== MATH DOMAIN PRACTICE ENGINE ===== */
-var _mpList=[],_mpIdx=0,_mpCorrect=0,_mpAnswered=0,_mpDom=0,_mpSetIdx=0;
+var _mpList=[],_mpIdx=0,_mpCorrect=0,_mpAnswered=0,_mpDom=0,_mpSetIdx=0,_mpTimerId=null,_mpEndAt=0;
+function _mpFmt(ms){var t=Math.max(0,Math.ceil(ms/1000)),m=Math.floor(t/60),r=t%60;return (m<10?'0':'')+m+':'+(r<10?'0':'')+r;}
+function _mpTick(){
+  var el=document.getElementById('mp-timer');
+  if(!el){clearInterval(_mpTimerId);_mpTimerId=null;return;}
+  var left=_mpEndAt-Date.now();
+  el.textContent=_mpFmt(left);
+  el.classList.toggle('low',left<=5*60*1000);
+  if(left<=0){clearInterval(_mpTimerId);_mpTimerId=null;mathPracticeFinish(true);}
+}
+function mathPracticeFinish(timeUp){
+  if(_mpTimerId){clearInterval(_mpTimerId);_mpTimerId=null;}
+  var card=document.getElementById('mp-card');
+  if(!card)return;
+  var pct=_mpAnswered?Math.round(100*_mpCorrect/_mpAnswered):0;
+  card.innerHTML='<div style="text-align:center;padding:40px 0">'+
+    '<h3 style="margin-bottom:8px">'+(timeUp?'Time is up!':'Set complete!')+'</h3>'+
+    '<p style="color:var(--ink-2)">Score: '+_mpCorrect+' / '+_mpAnswered+' answered ('+pct+'%) &middot; '+_mpList.length+' questions in set</p>'+
+    '<button class="btn" onclick="mathPracticeBack()" style="margin-top:16px">Back to sets</button></div>';
+  var b=document.getElementById('mp-bar');if(b)b.style.width='100%';
+}
 function mathPracticeStart(domain,setIdx){
   var pool=PRACTICE_Q.filter(function(q){return domain===0||q.domain===domain;});
   var slice=pool.slice(setIdx*60,Math.min((setIdx+1)*60,pool.length));
   _mpList=slice.slice().sort(function(){return Math.random()-.5;});
   _mpIdx=0;_mpCorrect=0;_mpAnswered=0;_mpDom=domain;_mpSetIdx=setIdx;
+  if(_mpTimerId){clearInterval(_mpTimerId);_mpTimerId=null;}
+  _mpEndAt=Date.now()+_mpList.length*2*60*1000;
   /* switch MATH to practice-mode view */
   var dnames={1:'D1 Agentic',2:'D2 MCP &amp; Tools',3:'D3 Claude Code',4:'D4 Prompting',5:'D5 Context',6:'D6 Advanced API'};
   var el=document.getElementById('v-math');
@@ -10103,7 +10126,12 @@ function mathPracticeStart(domain,setIdx){
         (dnames[domain]||'All')+' &middot; Set '+(setIdx+1)+' &middot; '+_mpList.length+' questions'+
       '</span>'+
     '</div>'+
-    '<div class="prac-progress" style="margin-bottom:16px"><div class="prac-progress-bar" id="mp-bar" style="width:0%"></div></div>'+
+    '<div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;padding:10px 14px;background:var(--surface);border:1px solid var(--border);border-radius:12px">'+
+      '<span class="timer" id="mp-timer">'+_mpFmt(_mpList.length*2*60*1000)+'</span>'+
+      '<div class="prac-progress" style="flex:1;margin:0"><div class="prac-progress-bar" id="mp-bar" style="width:0%"></div></div>'+
+      '<span id="mp-count" style="font-size:12.5px;color:var(--ink-3);font-family:\'IBM Plex Mono\',monospace">1 / '+_mpList.length+'</span>'+
+      '<button class="btn" onclick="if(confirm(\'Submit this set now?\'))mathPracticeFinish(false)" style="padding:7px 16px">Submit</button>'+
+    '</div>'+
     '<div class="prac-card" id="mp-card">'+
       '<div class="prac-meta" id="mp-meta"></div>'+
       '<div class="prac-stem" id="mp-stem" style="font-size:15.5px;line-height:1.6;margin-bottom:18px"></div>'+
@@ -10115,6 +10143,7 @@ function mathPracticeStart(domain,setIdx){
       '</div>'+
     '</div>'+
   '</div>';
+  _mpTimerId=setInterval(_mpTick,1000);
   mathPracticeShow();
 }
 function mathPracticeShow(){
@@ -10147,6 +10176,7 @@ function mathPracticeShow(){
   document.getElementById('mp-score').textContent=_mpAnswered?
     (_mpCorrect+'/'+_mpAnswered+' correct ('+Math.round(100*_mpCorrect/_mpAnswered)+'%)'):'';
   document.getElementById('mp-bar').style.width=Math.round(100*_mpIdx/_mpList.length)+'%';
+  var cn=document.getElementById('mp-count');if(cn)cn.textContent=(_mpIdx+1)+' / '+_mpList.length;
 }
 function mathPracticeAnswer(btn,key){
   var q=_mpList[_mpIdx];
@@ -10168,7 +10198,7 @@ function mathPracticeAnswer(btn,key){
   document.getElementById('mp-score').textContent=_mpCorrect+'/'+_mpAnswered+' correct ('+Math.round(100*_mpCorrect/_mpAnswered)+'%)';
 }
 function mathPracticeNext(){_mpIdx++;mathPracticeShow();}
-function mathPracticeBack(){renderMath();}
+function mathPracticeBack(){if(_mpTimerId){clearInterval(_mpTimerId);_mpTimerId=null;}renderMath();}
 
 
 renderHome();
