@@ -722,6 +722,28 @@ button{font-family:inherit}
 #v-studypath .sg-acard .sg-code{margin:2px 0 0;font-size:12px;padding:4px 9px;flex:none}
 #v-studypath .sg-acard b{display:block;font-size:15.5px;font-weight:800;color:var(--ink);line-height:1.35}
 #v-studypath .sg-acard small{display:block;font-size:13px;color:var(--ink-3);margin-top:3px}
+
+/* wide layout + notes styled like study-guide articles */
+#v-studypath{width:min(1480px,calc(100vw - 48px));max-width:none;margin-left:50%;transform:translateX(-50%);box-sizing:border-box}
+#v-studypath .sg-layout{grid-template-columns:290px minmax(0,1fr);gap:48px}
+#v-studypath .sg-prose{max-width:none}
+#v-studypath .sg-main{min-width:0}
+#v-studypath .sp-panel .sp-section{margin:0}
+#v-studypath .sp-panel .sub{font-family:"Manrope",sans-serif;font-size:30px!important;line-height:1.2;font-weight:800;letter-spacing:-.02em;text-transform:none!important;color:var(--ink)!important;margin:44px 0 14px}
+#v-studypath .sp-panel .sg-hide+.sp-section .sub:first-child{margin-top:0}
+#v-studypath .sp-panel .sp-section>.card,#v-studypath .sp-panel .card.pad{background:none;border:0;border-radius:0;box-shadow:none;padding:0;margin:0}
+#v-studypath .sp-panel .sp-card{background:none;border:0;border-left:3px solid var(--border);border-radius:0;box-shadow:none;padding:2px 0 2px 18px}
+#v-studypath .sp-panel .sp-card.hi{border-left-color:var(--accent)}
+#v-studypath .sp-panel .sp-card h4{font-size:19px;font-weight:800;margin:0 0 10px}
+#v-studypath .sp-panel .sp-grid{gap:28px;margin:6px 0 16px}
+#v-studypath .sp-panel .kc,#v-studypath .sp-panel .warn,#v-studypath .sp-panel .trap{border-radius:0 10px 10px 0;margin:18px 0}
+#v-studypath .sp-panel table{border-collapse:collapse;width:100%}
+#v-studypath .sp-panel table th{background:var(--surface-2);color:var(--ink);font-weight:800;text-align:left;padding:10px 14px;border-bottom:1px solid var(--border)}
+#v-studypath .sp-panel table td{padding:12px 14px;border-bottom:1px solid var(--border)}
+#v-studypath .sp-panel pre{background:var(--surface-2);border:1px solid var(--border);border-radius:14px}
+#v-studypath .sp-panel h3,#v-studypath .sp-panel h4{font-family:"Manrope",sans-serif}
+#v-studypath .sp-panel ul,#v-studypath .sp-panel ol{padding-left:26px}
+@media(max-width:860px){#v-studypath{width:calc(100vw - 24px)}#v-studypath .sg-layout{grid-template-columns:1fr;gap:20px}}
 </style>
 
 <div class="sp-hero">
