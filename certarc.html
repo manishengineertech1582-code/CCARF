@@ -7195,7 +7195,10 @@ var GROUP_META = {
     examCount:60},
   MockNewF:{code:'CCARF', name:'CCAR-F Practice — Paper F (Q121–170)',
     facts:[['Questions','50'],['Duration','120 min'],['Passing','-'],['Format','MC + multi-select']],
-    examCount:50}
+    examCount:50},
+  MockNewG:{code:'CCARF', name:'CCAR-F Practice — Paper G',
+    facts:[['Questions','60'],['Duration','120 min'],['Passing','-'],['Format','MC']],
+    examCount:60}
 };
 /* domain weights that mirror the blueprints (used for weighted paper) */
 var WEIGHTS = {
@@ -7212,7 +7215,8 @@ var WEIGHTS = {
   CGuide5:{1:14,2:11,3:12,4:12,5:11},
   MockNewD:{1:16,2:11,3:12,4:12,5:9},
   MockNewE:{1:16,2:11,3:12,4:12,5:9},
-  MockNewF:{1:16,2:11,3:12,4:12,5:9}
+  MockNewF:{1:16,2:11,3:12,4:12,5:9},
+  MockNewG:{1:16,2:11,3:12,4:12,5:9}
 };
 var COLORS = ['#0097a7','#2e86c1','#6d4ac4','#c0562a','#1b4f8a','#0f766e','#4f46e5'];
 
@@ -7508,6 +7512,7 @@ function renderMockNew(){
   var dCount=Q.filter(function(q){return q.group==='MockNewD';}).length;
   var eCount=Q.filter(function(q){return q.group==='MockNewE';}).length;
   var fCount=Q.filter(function(q){return q.group==='MockNewF';}).length;
+  var gCount=Q.filter(function(q){return q.group==='MockNewG';}).length;
   el.innerHTML='<div class="setup"><div class="hero"><h1 style="font-size:30px">Mock New — Exam Practice</h1>'+
     '<p>CCA Prep questions (Papers A–C) from claudecertprep.com, plus 170 CCAR-F practice questions by Florian Steiner (Papers D–F) — timed, 120 minutes per paper.</p></div>'+
     '<div class="subtabs">'+
@@ -7517,6 +7522,7 @@ function renderMockNew(){
       '<button class="subtab" data-st="mnd">Paper D (1-60)</button>'+
       '<button class="subtab" data-st="mne">Paper E (61-120)</button>'+
       '<button class="subtab" data-st="mnf">Paper F (121-170)</button>'+
+      '<button class="subtab" data-st="mng">Paper G (1-60)</button>'+
     '</div>'+
     '<div class="subpanel on" id="sp-mna">'+
       '<div class="opt-cards"><button class="pick on"><span class="r"></span><div><h4>Paper A — Questions 1-57</h4>'+
@@ -7553,6 +7559,12 @@ function renderMockNew(){
       '<p>CCAR-F Practice (Florian Steiner) — '+fCount+' questions — mixed select — 120 minutes</p></div></button></div>'+
       '<div style="text-align:center"><button class="btn" id="mnfStartBtn">Start exam →</button></div>'+
       '<p style="text-align:center;color:var(--ink-3);font-size:12.5px;margin-top:16px">Multi-select questions require all correct options. No feedback until you submit.</p>'+
+    '</div>'+
+    '<div class="subpanel" id="sp-mng">'+
+      '<div class="opt-cards"><button class="pick on"><span class="r"></span><div><h4>Paper G — Questions 1-60</h4>'+
+      '<p>CCAR-F Practice — '+gCount+' questions — single-select — 120 minutes</p></div></button></div>'+
+      '<div style="text-align:center"><button class="btn" id="mngStartBtn">Start exam →</button></div>'+
+      '<p style="text-align:center;color:var(--ink-3);font-size:12.5px;margin-top:16px">No feedback until you submit. Full score breakdown and explanation review at the end.</p>'+
     '</div></div>';
   el.querySelectorAll('.subtab').forEach(function(t){ t.onclick=function(){
     el.querySelectorAll('.subtab').forEach(function(x){x.classList.remove('on');});
@@ -7566,6 +7578,7 @@ function renderMockNew(){
   document.getElementById('mndStartBtn').onclick=function(){ startMockNew('MockNewD'); };
   document.getElementById('mneStartBtn').onclick=function(){ startMockNew('MockNewE'); };
   document.getElementById('mnfStartBtn').onclick=function(){ startMockNew('MockNewF'); };
+  document.getElementById('mngStartBtn').onclick=function(){ startMockNew('MockNewG'); };
 }
 function startMockNew(grp){
   var pool=Q.filter(function(q){return q.group===grp;});
