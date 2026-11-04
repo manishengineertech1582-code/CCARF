@@ -345,6 +345,9 @@ button{font-family:inherit}
 #v-practice .prac-badge.d4{color:#fbbf24}
 #v-practice .prac-badge.d5{color:#f87171}
 #v-practice .prac-badge.d6{color:#fb923c}
+#v-math .mp-db{padding:9px 14px;border-radius:10px;border:1px solid var(--border);background:var(--surface);cursor:pointer;font-size:12.5px;font-weight:600;color:var(--ink-2);text-align:center;line-height:1.4;min-width:100px}
+#v-math .mp-db.act{background:var(--accent);color:#fff;border-color:var(--accent)}
+#v-math .mp-db small{font-weight:400;opacity:.85}
 #v-practice .prac-badge.diff-basic{color:var(--ink-3);border-color:var(--border)}
 #v-practice .prac-badge.diff-intermediate{color:#fbbf24;border-color:#fbbf24}
 #v-practice .prac-badge.diff-advanced{color:#f87171;border-color:#f87171}
@@ -7244,7 +7247,27 @@ function renderGuideExams(){
         '<p style="text-align:center;color:var(--ink-3);font-size:12.5px;margin-top:16px">This exam has not been added yet. Its questions will appear here once it has been extracted.</p>'+
       '</div>';
     }).join('')+
-  '</div>';
+  '<div class="subpanel" id="sp-mathprac">'+
+  '<div style="margin-bottom:14px">'+
+    '<div class="sub" style="margin-bottom:10px">Select a domain</div>'+
+    '<div id="mp-domain-row" style="display:flex;gap:8px;flex-wrap:wrap">'+
+      '<button class="mp-db act" data-d="1">D1 Agentic<br><small>319 Q &middot; 6 sets</small></button>'+
+      '<button class="mp-db" data-d="2">D2 MCP &amp; Tools<br><small>216 Q &middot; 4 sets</small></button>'+
+      '<button class="mp-db" data-d="3">D3 Claude Code<br><small>255 Q &middot; 5 sets</small></button>'+
+      '<button class="mp-db" data-d="4">D4 Prompting<br><small>270 Q &middot; 5 sets</small></button>'+
+      '<button class="mp-db" data-d="5">D5 Context<br><small>314 Q &middot; 6 sets</small></button>'+
+      '<button class="mp-db" data-d="6">D6 Advanced API<br><small>20 Q &middot; 1 set</small></button>'+
+    '</div>'+
+  '</div>'+
+  '<div id="mp-sets-row" class="opt-cards"></div>'+
+  '<div style="text-align:center;margin-top:14px">'+
+    '<button class="btn" id="mpStartBtn" disabled>Start practice &#8594;</button>'+
+  '</div>'+
+  '<p style="text-align:center;color:var(--ink-3);font-size:12.5px;margin-top:12px">'+
+    '60 questions per set &middot; instant feedback &middot; explanations included'+
+  '</p>'+
+</div>'+
+'</div>';
   el.querySelectorAll('.subtab').forEach(function(t){ t.onclick=function(){
     el.querySelectorAll('.subtab').forEach(function(x){x.classList.remove('on');});
     t.classList.add('on');
@@ -7376,7 +7399,47 @@ function renderMath(){
     el.querySelectorAll('#math2ScenCards .pick').forEach(function(x){x.classList.remove('on');});
     p.classList.add('on'); s2Chosen=p.dataset.s; document.getElementById('math2ScenStartBtn').disabled=false;
   };});
-  document.getElementById('math2ScenStartBtn').onclick=function(){ if(s2Chosen) startMath2(s2Chosen); };
+
+  /* ── Domain Practice handlers ── */
+  var _mpChosenDomain=1, _mpChosenSet=0;
+  var _mpSetSizes={1:6,2:4,3:5,4:5,5:6,6:1};
+  var _mpSetCounts={1:319,2:216,3:255,4:270,5:314,6:20};
+  var _mpDnames={1:'D1 Agentic',2:'D2 MCP',3:'D3 Code',4:'D4 Prompt',5:'D5 Context',6:'D6 Advanced'};
+  function _mpRenderSets(d){
+    var total=_mpSetCounts[d], sets=_mpSetSizes[d];
+    var html='';
+    for(var i=0;i<sets;i++){
+      var from=i*60+1, to=Math.min((i+1)*60, total);
+      html+='<button class="pick mp-set" data-si="'+i+'"><span class="r"></span>'+
+            '<div><h4>Set '+(i+1)+'</h4>'+
+            '<p>'+_mpDnames[d]+' &middot; Q'+from+'–'+to+' &middot; '+(to-from+1)+' questions</p></div></button>';
+    }
+    document.getElementById('mp-sets-row').innerHTML=html;
+    document.getElementById('mpStartBtn').disabled=true;
+    _mpChosenSet=0;
+    document.querySelectorAll('#sp-mathprac .mp-set').forEach(function(b){
+      b.onclick=function(){
+        document.querySelectorAll('#sp-mathprac .mp-set').forEach(function(x){x.classList.remove('on');});
+        b.classList.add('on');
+        _mpChosenSet=parseInt(b.dataset.si);
+        document.getElementById('mpStartBtn').disabled=false;
+      };
+    });
+  }
+  document.querySelectorAll('#sp-mathprac .mp-db').forEach(function(b){
+    b.onclick=function(){
+      document.querySelectorAll('#sp-mathprac .mp-db').forEach(function(x){x.classList.remove('act');});
+      b.classList.add('act');
+      _mpChosenDomain=parseInt(b.dataset.d);
+      _mpRenderSets(_mpChosenDomain);
+    };
+  });
+  _mpRenderSets(1);  /* init with D1 */
+  document.getElementById('mpStartBtn').onclick=function(){
+    mathPracticeStart(_mpChosenDomain, _mpChosenSet);
+  };
+
+    document.getElementById('math2ScenStartBtn').onclick=function(){ if(s2Chosen) startMath2(s2Chosen); };
   var m2StudyDone=false;
   document.getElementById('math2StudyBtn').onclick=function(){
     var list=document.getElementById('math2StudyList');
@@ -9870,6 +9933,94 @@ function practiceAnswer(btn,key){
   document.getElementById('prac-score').textContent=_pracCorrect+'/'+_pracAnswered+' correct ('+Math.round(100*_pracCorrect/_pracAnswered)+'%)';
 }
 function practiceNext(){_pracIdx++;practiceShow();}
+
+
+/* ===== MATH DOMAIN PRACTICE ENGINE ===== */
+var _mpList=[],_mpIdx=0,_mpCorrect=0,_mpAnswered=0,_mpDom=0,_mpSetIdx=0;
+function mathPracticeStart(domain,setIdx){
+  var pool=PRACTICE_Q.filter(function(q){return domain===0||q.domain===domain;});
+  var slice=pool.slice(setIdx*60,Math.min((setIdx+1)*60,pool.length));
+  _mpList=slice.slice().sort(function(){return Math.random()-.5;});
+  _mpIdx=0;_mpCorrect=0;_mpAnswered=0;_mpDom=domain;_mpSetIdx=setIdx;
+  /* switch MATH to practice-mode view */
+  var dnames={1:'D1 Agentic',2:'D2 MCP &amp; Tools',3:'D3 Claude Code',4:'D4 Prompting',5:'D5 Context',6:'D6 Advanced API'};
+  var el=document.getElementById('v-math');
+  el.innerHTML='<div id="mp-wrap" style="max-width:720px;margin:0 auto;padding:20px 0">'+
+    '<div style="display:flex;align-items:center;gap:12px;margin-bottom:18px">'+
+      '<button onclick="mathPracticeBack()" style="background:var(--surface);border:1px solid var(--border);'+
+        'border-radius:8px;padding:6px 14px;cursor:pointer;font-size:13px;color:var(--ink-2)">'+
+        '&#8592; Back to sets</button>'+
+      '<span style="font-size:13px;color:var(--ink-3)">'+
+        (dnames[domain]||'All')+' &middot; Set '+(setIdx+1)+' &middot; '+_mpList.length+' questions'+
+      '</span>'+
+    '</div>'+
+    '<div class="prac-progress" style="margin-bottom:16px"><div class="prac-progress-bar" id="mp-bar" style="width:0%"></div></div>'+
+    '<div class="prac-card" id="mp-card">'+
+      '<div class="prac-meta" id="mp-meta"></div>'+
+      '<div class="prac-stem" id="mp-stem" style="font-size:15.5px;line-height:1.6;margin-bottom:18px"></div>'+
+      '<div class="prac-opts" id="mp-opts"></div>'+
+      '<div class="prac-rationale" id="mp-rat"></div>'+
+      '<div class="prac-nav" style="margin-top:18px">'+
+        '<span class="prac-score" id="mp-score"></span>'+
+        '<button class="btn" id="mp-next" onclick="mathPracticeNext()" style="display:none">Next &#8594;</button>'+
+      '</div>'+
+    '</div>'+
+  '</div>';
+  mathPracticeShow();
+}
+function mathPracticeShow(){
+  var q=_mpList[_mpIdx];
+  if(!q){
+    document.getElementById('mp-card').innerHTML=
+      '<div style="text-align:center;padding:40px 0">'+
+        '<h3 style="margin-bottom:8px">Set complete!</h3>'+
+        '<p style="color:var(--ink-2)">Score: '+_mpCorrect+' / '+_mpAnswered+
+        ' ('+Math.round(100*_mpCorrect/_mpAnswered)+'%)</p>'+
+        '<button class="btn" onclick="mathPracticeBack()" style="margin-top:16px">Back to sets</button>'+
+      '</div>';
+    return;
+  }
+  var dcls={1:'d1',2:'d2',3:'d3',4:'d4',5:'d5',6:'d6'};
+  var dnames2={1:'D1 Agentic',2:'D2 MCP',3:'D3 Code',4:'D4 Prompt',5:'D5 Context',6:'Advanced API'};
+  document.getElementById('mp-meta').innerHTML=
+    '<span class="prac-badge '+(dcls[q.domain]||'d1')+'">'+(dnames2[q.domain]||'D?')+'</span>'+
+    '<span class="prac-badge diff-'+(q.difficulty||'basic')+'">'+(q.difficulty||'basic')+'</span>'+
+    '<span style="margin-left:auto;font-size:12px;color:var(--ink-3)">'+(_mpIdx+1)+' / '+_mpList.length+'</span>';
+  document.getElementById('mp-stem').textContent=q.question;
+  var opts='';
+  q.options.forEach(function(o){
+    opts+='<button class="prac-opt" onclick="mathPracticeAnswer(this,\''+o.l+'\')">'+
+          '<span class="opt-key">'+o.l+'</span><span>'+o.t+'</span></button>';
+  });
+  document.getElementById('mp-opts').innerHTML=opts;
+  document.getElementById('mp-rat').className='prac-rationale';
+  document.getElementById('mp-next').style.display='none';
+  document.getElementById('mp-score').textContent=_mpAnswered?
+    (_mpCorrect+'/'+_mpAnswered+' correct ('+Math.round(100*_mpCorrect/_mpAnswered)+'%)'):'';
+  document.getElementById('mp-bar').style.width=Math.round(100*_mpIdx/_mpList.length)+'%';
+}
+function mathPracticeAnswer(btn,key){
+  var q=_mpList[_mpIdx];
+  document.querySelectorAll('#mp-opts .prac-opt').forEach(function(b){b.disabled=true;});
+  var correct=q.answer.indexOf(key)!==-1;
+  btn.classList.add(correct?'correct':'wrong');
+  if(!correct){
+    document.querySelectorAll('#mp-opts .prac-opt').forEach(function(b){
+      if(b.querySelector('.opt-key').textContent===q.answer[0])b.classList.add('correct');
+    });
+  }
+  _mpAnswered++;if(correct)_mpCorrect++;
+  if(q.rationale){
+    var r=document.getElementById('mp-rat');
+    r.textContent=q.rationale;
+    r.className='prac-rationale show';
+  }
+  document.getElementById('mp-next').style.display='';
+  document.getElementById('mp-score').textContent=_mpCorrect+'/'+_mpAnswered+' correct ('+Math.round(100*_mpCorrect/_mpAnswered)+'%)';
+}
+function mathPracticeNext(){_mpIdx++;mathPracticeShow();}
+function mathPracticeBack(){renderMath();}
+
 
 renderHome();
 go('home');
