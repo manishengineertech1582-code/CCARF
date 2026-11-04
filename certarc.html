@@ -3747,9 +3747,10 @@ var SG_DATA=[{"key":"foundations","name":"Foundations","tasks":[{"id":"F1","name
     var heading=h&&first&&first.contains(h)?h.textContent.trim():lab;
     if(first&&h&&first.contains(h)) first.classList.add('sg-hide');
     var m=lab.match(/^([DF]\d+(?:\.\d+)?)\s+(.*)$/);
-    return {kind:'panel',id:t.dataset.sp,tab:t,code:m?m[1]:'',short:m?m[2]:lab,heading:heading,k:'notes'};
+    return {kind:'panel',id:t.dataset.sp,tab:t,code:m?m[1]:'',short:m?m[2]:lab,heading:heading,k:(t.dataset.sp==='guide'||t.dataset.sp==='myresults')?'strategy':'notes'};
   });
-  DOMS.push({k:'notes',name:'Lesson Notes & Exam Strategy',wt:'',ico:'N',items:notes,tasks:null});
+  DOMS.unshift({k:'strategy',name:'Exam Strategy & Results',wt:'',ico:'S',items:notes.filter(function(i){return i.k==='strategy';}),tasks:null});
+  DOMS.push({k:'notes',name:'Lesson Notes',wt:'',ico:'N',items:notes.filter(function(i){return i.k==='notes';}),tasks:null});
   var all=[];DOMS.forEach(function(d){all=all.concat(d.items);});
   var byId={};all.forEach(function(i){byId[i.id]=i;});
   var panels=[].slice.call(root.querySelectorAll('.sp-panel'));
