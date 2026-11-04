@@ -270,6 +270,7 @@ button{font-family:inherit}
       <button data-nav="exercises" onclick="go('exercises')">Exercises</button>
       <button data-nav="curriculum" onclick="go('curriculum')">Curriculum</button>
       <button data-nav="studyreader" onclick="go('studyreader')">Study Reader</button>
+      <button data-nav="studypath" onclick="go('studypath')">Study Path</button>
     </nav>
     <button class="theme-btn" id="themeBtn" title="Toggle theme">o</button>
   </div>
@@ -481,6 +482,361 @@ button{font-family:inherit}
   <section class="view" id="v-exercises"></section>
   <section class="view" id="v-curriculum"></section>
   <section class="view" id="v-studyreader"></section>
+<section class="view" id="v-studypath">
+<style>
+#v-studypath{max-width:860px;margin:0 auto}
+#v-studypath .sp-hero{text-align:center;padding:22px 0 6px}
+#v-studypath .sp-hero h1{font-size:30px;letter-spacing:-.02em}
+#v-studypath .sp-hero p{color:var(--ink-2);max-width:60ch;margin:8px auto 0;font-size:15px}
+#v-studypath .sp-tabs{display:flex;gap:6px;flex-wrap:wrap;margin:22px 0 0}
+#v-studypath .sp-tab{background:var(--surface-2);border:1px solid var(--border);color:var(--ink-2);padding:8px 16px;border-radius:9px;font-size:13.5px;font-weight:600;cursor:pointer;font-family:"Sora","IBM Plex Sans",sans-serif}
+#v-studypath .sp-tab:hover{border-color:var(--accent);color:var(--accent)}
+#v-studypath .sp-tab.on{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+#v-studypath .sp-panel{display:none;margin-top:20px}
+#v-studypath .sp-panel.on{display:block;animation:fade .22s ease}
+#v-studypath .sp-section{margin:28px 0 10px}
+#v-studypath .sp-section h2{font-size:20px;letter-spacing:-.01em;margin-bottom:4px}
+#v-studypath .sp-section .sub{font-size:12.5px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.08em;font-weight:600;margin-bottom:12px}
+#v-studypath .kc{background:var(--accent-soft);border-left:3px solid var(--accent);border-radius:0 10px 10px 0;padding:11px 16px;font-size:13.5px;color:var(--ink);line-height:1.6;margin:14px 0}
+#v-studypath .kc b{color:var(--accent)}
+#v-studypath .warn{background:var(--bad-bg);border-left:3px solid var(--bad);border-radius:0 10px 10px 0;padding:11px 16px;font-size:13.5px;color:var(--ink-2);line-height:1.6;margin:14px 0}
+#v-studypath .warn b{color:var(--bad)}
+#v-studypath .sp-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0}
+@media(max-width:680px){#v-studypath .sp-grid{grid-template-columns:1fr}}
+#v-studypath .sp-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px;box-shadow:var(--shadow)}
+#v-studypath .sp-card h4{font-size:14px;margin:0 0 7px;color:var(--ink)}
+#v-studypath .sp-card p,#v-studypath .sp-card li{font-size:13.2px;color:var(--ink-2);line-height:1.6;margin:4px 0}
+#v-studypath .sp-card ul{margin:6px 0;padding-left:18px}
+#v-studypath .sp-card.hi{border-color:var(--accent);border-left-width:3px}
+#v-studypath .sp-stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:14px 0}
+@media(max-width:600px){#v-studypath .sp-stat-row{grid-template-columns:repeat(2,1fr)}}
+#v-studypath .sp-stat{background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:14px 15px;text-align:center;box-shadow:var(--shadow)}
+#v-studypath .sp-stat .n{font-family:"Sora","IBM Plex Sans",sans-serif;font-size:28px;font-weight:700;color:var(--accent);line-height:1}
+#v-studypath .sp-stat .label{font-size:11.5px;color:var(--ink-3);margin-top:5px;text-transform:uppercase;letter-spacing:.06em}
+#v-studypath pre.sp-code{background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;font-family:"IBM Plex Mono",monospace;font-size:12px;line-height:1.6;color:var(--ink);overflow-x:auto;margin:12px 0;white-space:pre}
+#v-studypath table.sp-t{width:100%;border-collapse:collapse;font-size:13px;margin:12px 0}
+#v-studypath table.sp-t th{text-align:left;padding:7px 10px;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-3);border-bottom:2px solid var(--border)}
+#v-studypath table.sp-t td{padding:8px 10px;border-bottom:1px solid var(--border);color:var(--ink-2);vertical-align:top;font-size:13px}
+#v-studypath table.sp-t td:first-child{font-weight:600;color:var(--ink);white-space:nowrap}
+#v-studypath .trap{background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:11px 15px;font-size:13px;color:var(--ink-2);line-height:1.55;margin:7px 0}
+#v-studypath .trap b{color:var(--bad)}
+#v-studypath .checklist{list-style:none;padding:0;margin:10px 0}
+#v-studypath .checklist li{font-size:13.2px;color:var(--ink-2);line-height:1.55;padding:6px 0 6px 26px;position:relative;border-bottom:1px solid var(--border)}
+#v-studypath .checklist li:last-child{border-bottom:none}
+#v-studypath .checklist li::before{content:"☐";position:absolute;left:0;color:var(--accent);font-size:14px}
+#v-studypath .quiz-box{background:var(--surface);border:2px solid var(--accent);border-radius:13px;padding:20px 22px;margin:16px 0}
+#v-studypath .quiz-box .q-label{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);font-weight:700;margin-bottom:8px}
+#v-studypath .quiz-box .q-text{font-size:14px;color:var(--ink);line-height:1.6;margin-bottom:12px}
+#v-studypath .quiz-box .q-opt{font-size:13.2px;color:var(--ink-2);padding:5px 0;line-height:1.5}
+#v-studypath .quiz-box .q-opt b{color:var(--ink);font-family:"IBM Plex Mono",monospace}
+</style>
+
+<div class="sp-hero">
+  <div class="eyebrow">CCAR-F · Study Path</div>
+  <h1>Domain Lessons &amp; Exam Strategy</h1>
+  <p>Technical prep content for the Claude Certified Architect — Foundations exam.</p>
+</div>
+
+<div class="sp-tabs">
+  <button class="sp-tab on" data-sp="guide">Exam Strategy</button>
+  <button class="sp-tab" data-sp="d2t1">D2.1 Tool Descriptions</button>
+</div>
+
+<!-- ===== PANEL: EXAM STRATEGY ===== -->
+<div class="sp-panel on" id="sp-guide">
+
+  <div class="sp-section">
+    <div class="sub">Exam at a glance</div>
+    <div class="sp-stat-row">
+      <div class="sp-stat"><div class="n">60</div><div class="label">Questions</div></div>
+      <div class="sp-stat"><div class="n">120</div><div class="label">Minutes</div></div>
+      <div class="sp-stat"><div class="n">720</div><div class="label">Pass score / 1000</div></div>
+      <div class="sp-stat"><div class="n">4 of 6</div><div class="label">Scenarios</div></div>
+    </div>
+    <div class="card pad" style="margin-top:4px">
+      <table class="sp-t">
+        <tr><th>Detail</th><th>Value</th></tr>
+        <tr><td>Format</td><td>Multiple-choice and multiple-response (each question states how many answers to select)</td></tr>
+        <tr><td>Scenario structure</td><td>4 scenarios picked at random from a set of 6 — each scenario sets up ~15 questions</td></tr>
+        <tr><td>Delivery</td><td>Proctored — online or Pearson VUE test center</td></tr>
+        <tr><td>Retake wait</td><td>14 days between attempts; fee applies each time</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="sp-section">
+    <div class="sub">What the exam actually tests</div>
+    <div class="card pad">
+      <p style="font-size:14px;color:var(--ink);margin:0 0 10px">The exam does not test memory. It tests <b>judgment</b>: two to four options would all work to some degree. Your job is to pick the <i>best</i> one given the stated constraint.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0">The deciding detail is almost always in the question's <b>last sentence</b> ("most reliable", "without adding new rules", "least latency"). Read that sentence first, then read the scenario.</p>
+    </div>
+
+    <div class="kc"><b>Key trap:</b> Trusting engineering intuition. The most autonomous or most capable option is almost never the answer. Autonomy is a cost, not a feature.</div>
+
+    <div class="sp-section" style="margin-top:16px">
+      <div class="sub">Judgment framework — eliminate with these four labels</div>
+      <div class="sp-grid">
+        <div class="sp-card hi">
+          <h4>Narrower</h4>
+          <p>The option fixes only part of the problem stated in the question.</p>
+        </div>
+        <div class="sp-card hi">
+          <h4>Probabilistic</h4>
+          <p>It makes the failure <em>less likely</em> but doesn't prevent it. The scenario needs a guarantee — use code or a hook, not an instruction.</p>
+        </div>
+        <div class="sp-card hi">
+          <h4>Heavier</h4>
+          <p>It works, but adds cost, latency, or extra components not required by the constraint.</p>
+        </div>
+        <div class="sp-card hi">
+          <h4>Trades something away</h4>
+          <p>It fixes the stated problem but breaks another requirement also stated in the question.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sp-section">
+    <div class="sub">Time management</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">2 minutes per question. Check pace every 10 questions.</p>
+      <table class="sp-t">
+        <tr><th>Checkpoint</th><th>Target time elapsed</th></tr>
+        <tr><td>Q10</td><td>20 min</td></tr>
+        <tr><td>Q20</td><td>40 min</td></tr>
+        <tr><td>Q40</td><td>80 min</td></tr>
+        <tr><td>Q50</td><td>100 min</td></tr>
+      </table>
+      <ul style="margin:10px 0 0;padding-left:18px">
+        <li style="font-size:13px;color:var(--ink-2);margin:4px 0">Read the scenario setup carefully <em>once</em> — it covers ~15 questions, so time spent upfront saves time per question.</li>
+        <li style="font-size:13px;color:var(--ink-2);margin:4px 0">If stuck after 90 seconds: apply the four-label framework, pick your best option, flag for review, move on.</li>
+        <li style="font-size:13px;color:var(--ink-2);margin:4px 0">Real exam questions are longer than most practice questions. Practice under a timer with long, scenario-based questions.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="sp-section">
+    <div class="sub">The six exam scenarios — prepare all six, four appear</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">Every question belongs to one of six scenarios from Chapter 5 of the official exam guide. For each scenario, know its setting, its tools, its goals, and its constraints. When you recognize a scenario, you only need to skim its setup — saving minutes.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0">Example: <em>Customer Support Resolution Agent</em> uses <code>get_customer</code>, <code>lookup_order</code>, <code>process_refund</code>, <code>escalate_to_human</code> and targets 80%+ first-contact resolution.</p>
+    </div>
+  </div>
+
+  <div class="sp-section">
+    <div class="sub">Preparation steps</div>
+    <div class="sp-grid">
+      <div class="sp-card">
+        <h4>01 · Understand the exam</h4>
+        <p>Read the official CCAR-F exam guide (PDF). Note domain weights, scenario list, question format. This is the ground truth — not the practice questions.</p>
+      </div>
+      <div class="sp-card">
+        <h4>02 · Start with theory</h4>
+        <p>Three Anthropic Academy courses cover most of the exam: <em>Claude Code in Action</em>, <em>Building with the Claude API</em>, <em>Introduction to Model Context Protocol</em>. Do the exercises, not just the videos.</p>
+      </div>
+      <div class="sp-card">
+        <h4>03 · Build practical skills</h4>
+        <p>Work through the official exam guide's preparation chapter and exercises. Use Jupyter notebooks to experiment with tool use, hooks, and structured output.</p>
+      </div>
+      <div class="sp-card" style="border-color:var(--accent);border-left-width:3px">
+        <h4>04 · Turn theory into exam-ready judgment ← 90% of success</h4>
+        <p>Practice eliminating options with the four-label framework. Read the last sentence of each question first. Identify <em>which constraint</em> is being tested before looking at options.</p>
+      </div>
+      <div class="sp-card">
+        <h4>05 · Know the six scenarios</h4>
+        <p>Study each scenario's tools, goals, and constraints. Under exam conditions, recognizing a scenario saves time and frames every question in that set.</p>
+      </div>
+      <div class="sp-card">
+        <h4>06 · Check your readiness</h4>
+        <p>Use the sample questions in Chapter 9 of the official guide to calibrate difficulty. High mock scores on simpler practice sets do not predict real exam results — compare question length and language complexity.</p>
+      </div>
+    </div>
+    <div class="warn"><b>Warning:</b> Scoring 88–95% on mock exams with short questions does not mean you will pass. The real exam questions are longer and harder to parse. Practice with long, scenario-based questions under a 120-minute timer before booking.</div>
+  </div>
+
+</div><!-- /sp-guide -->
+
+<!-- ===== PANEL: D2.1 ===== -->
+<div class="sp-panel" id="sp-d2t1">
+
+  <div class="sp-section">
+    <div class="sub">Domain 2 · Tool Design and MCP Integration · 18% of exam</div>
+    <h2>Topic 2.1 — Tool Descriptions and Boundaries</h2>
+    <p style="font-size:13.2px;color:var(--ink-2);margin:4px 0 0">Appears in: <em>Customer Support Resolution Agent</em>, <em>Multi-Agent Research System</em>, <em>Developer Productivity with Claude</em> scenarios.</p>
+  </div>
+
+  <div class="sp-section">
+    <div class="sub">What you need to know</div>
+    <div class="kc"><b>Key concept:</b> Claude chooses a tool by reading its name and description. When it picks the wrong tool, fix the interface first — write fuller descriptions, rename the tool, or split it. If the descriptions are already good, look for keyword rules in the system prompt.</div>
+  </div>
+
+  <div class="sp-section">
+    <div class="sub">Descriptions are the primary selection signal</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">The docs: <em>"Provide extremely detailed descriptions. This is by far the most important factor in tool performance."</em> A one-line description leaves Claude with many open questions about behavior and usage.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0">All descriptions are loaded into the agent's context, so they collectively steer agents toward effective tool-calling behaviors. Even small refinements yield dramatic improvements.</p>
+    </div>
+    <div class="kc"><b>Key concept:</b> Thin descriptions make the choice among similar tools unreliable — fix the description first.</div>
+  </div>
+
+  <div class="sp-section">
+    <div class="sub">What a good description contains</div>
+    <div class="sp-grid">
+      <div class="sp-card">
+        <h4>Required elements</h4>
+        <ul>
+          <li>Purpose of the tool</li>
+          <li>Input format it accepts</li>
+          <li>What it returns</li>
+          <li>When to use it instead of similar tools</li>
+          <li>Boundary — what it will <em>not</em> do</li>
+          <li>Edge cases with example queries</li>
+        </ul>
+      </div>
+      <div class="sp-card">
+        <h4>Writing style</h4>
+        <p>Write for a reader who lacks your context. Explain specialized query formats and niche terminology explicitly. Think: how would you describe this tool to a new hire?</p>
+      </div>
+    </div>
+
+    <div class="sub" style="margin-top:16px">Poor vs. good description (same tool)</div>
+    <div class="sp-grid">
+      <div class="sp-card warn" style="background:var(--bad-bg);border-color:var(--bad-bd)">
+        <h4 style="color:var(--bad)">Poor</h4>
+        <pre class="sp-code" style="margin:6px 0 0">Gets the stock price for a ticker.</pre>
+      </div>
+      <div class="sp-card" style="border-color:var(--good);border-left-width:3px">
+        <h4 style="color:var(--good)">Good</h4>
+        <pre class="sp-code" style="margin:6px 0 0">Retrieves the current stock price for a
+given ticker symbol. The ticker must be
+a valid symbol on a major US exchange.
+Returns the latest trade price in USD.
+Use it when the user asks about the
+current price of a specific stock. It
+will not provide any other information
+about the stock or company.</pre>
+      </div>
+    </div>
+    <div class="kc"><b>Key concept:</b> A description states purpose, input format, output, when to use the tool instead of its neighbours, and where it stops (the boundary).</div>
+  </div>
+
+  <div class="sp-section">
+    <div class="sub">Fixing overlapping tools</div>
+    <div class="card pad" style="margin-bottom:12px">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 6px">Symptom: <em>"Claude calls tool A when you wanted tool B."</em> Cause: Description ambiguity. Fix: Sharpen descriptions. Differentiate tools by <b>WHEN to use them</b>, not only WHAT they do.</p>
+    </div>
+
+    <div class="sp-grid">
+      <div class="sp-card">
+        <h4>Move 1 — Differentiate</h4>
+        <p>Each description names its own territory and points away from the neighbour.</p>
+        <pre class="sp-code">search_web_results: Use for live web
+  pages returned by search. Not for
+  uploaded PDFs; use read_uploaded_document.
+
+read_uploaded_document: Use for PDFs
+  the user uploaded. Not for search
+  results; use search_web_results.</pre>
+      </div>
+      <div class="sp-card">
+        <h4>Move 2 — Rename</h4>
+        <p>When the name itself hides the job, rewriting the description is not enough.</p>
+        <p><code>analyze_content</code> → <code>extract_web_results</code> with a web-specific description.</p>
+      </div>
+      <div class="sp-card">
+        <h4>Move 3 — Split</h4>
+        <p>A generic tool that does several jobs has no clear contract.</p>
+        <p><code>analyze_document</code> → <code>extract_data_points</code> + <code>summarize_content</code> + <code>verify_claim_against_source</code></p>
+        <p>Each has one purpose, defined input, and defined output.</p>
+      </div>
+      <div class="sp-card">
+        <h4>Exam vs. docs distinction</h4>
+        <p>The docs recommend grouping related actions into one tool (action parameter) to reduce ambiguity. The exam recommends splitting when one tool serves <em>different purposes with different inputs and outputs</em>. Both aim at one clear purpose per tool.</p>
+        <p style="margin-top:6px"><b>Under exam conditions:</b> pick splitting when one tool serves different purposes.</p>
+      </div>
+    </div>
+    <div class="kc"><b>Key concept:</b> Say when to use each tool; rename a tool whose name hides its job; split a tool that serves several purposes.</div>
+  </div>
+
+  <div class="sp-section">
+    <div class="sub">System prompt can override good descriptions</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">The system prompt is read together with tool descriptions. A keyword rule — <code>"When the user mentions a document, use analyze_document"</code> — ties a word to a tool. A request about "the document the search returned" now goes to the wrong tool, however good the descriptions are.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0">Audit: read the system prompt for keyword triggers and tool-forcing emphasis. Remove or reword them so the descriptions decide. Run this audit after any change to the tool interface.</p>
+    </div>
+    <div class="kc"><b>Key concept:</b> When the descriptions are good and the choice is still wrong, look for keyword rules in the system prompt.</div>
+  </div>
+
+  <div class="sp-section">
+    <div class="sub">Exam traps — options that lose</div>
+    <div class="trap"><b>Force the tool with tool_choice.</b> Guarantees one call at one step. Does not help Claude choose for the next request, and catches requests meant for the other tool.</div>
+    <div class="trap"><b>Add few-shot examples of correct routing.</b> Can help, but leaves the ambiguous descriptions in place and adds tokens to every call.</div>
+    <div class="trap"><b>Add a classifier or routing layer.</b> Bypasses the model's own selection instead of fixing what the model reads.</div>
+    <div class="trap"><b>Add a PreToolUse hook that blocks the wrong tool.</b> Hooks enforce rules. They do not make the right tool recognisable.</div>
+    <div class="trap"><b>Add a keyword rule to the system prompt.</b> "Whenever the user mentions the web, use extract_web_results" is a new keyword rule — the very thing that creates unintended associations.</div>
+    <div class="trap"><b>Rewrite descriptions but keep the names.</b> analyze_content and analyze_document still sound the same.</div>
+    <div class="trap"><b>Conclude descriptions don't matter.</b> Often a keyword rule in the system prompt is overriding them.</div>
+  </div>
+
+  <div class="sp-section">
+    <div class="sub">Worked example — Multi-Agent Research System</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>Situation:</b> Synthesis agent has two tools: <code>analyze_content</code> ("Analyzes content and returns findings") and <code>analyze_document</code> ("Analyzes a document and returns findings"). About half of the web results go to <code>analyze_document</code>, which expects an uploaded PDF and returns empty findings.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>Root cause:</b> Near-identical names and descriptions. Nothing tells Claude that one tool is for web results and the other for uploaded documents.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>Fix:</b> Rename <code>analyze_content</code> → <code>extract_web_results</code>. Give it a web-specific description: input is a search result with a URL and snippet, output is findings with the source URL, not for uploaded files. Give <code>analyze_document</code> the mirror boundary. Then read the system prompt for rules such as "analyze every document" that point at the old tool name.</p>
+      <div class="kc" style="margin:10px 0 0"><b>Pattern:</b> Rename + differentiate descriptions + audit system prompt. In that order.</div>
+    </div>
+  </div>
+
+  <div class="sp-section">
+    <div class="sub">Checklist</div>
+    <ul class="checklist">
+      <li>Does each description state purpose, input format, output, and when to use it instead of neighbours?</li>
+      <li>Does it state a boundary — what the tool will not do?</li>
+      <li>Do two names or descriptions say nearly the same thing? → Differentiate and rename.</li>
+      <li>Does one tool serve several purposes with different inputs and outputs? → Split it.</li>
+      <li>Are the descriptions already good while the choice is still wrong? → Read the system prompt for keyword rules.</li>
+      <li>Does the option fix the interface, or work around it with a forced call, a hook, or a router?</li>
+      <li>Does the option add examples or rules that leave the ambiguity in place?</li>
+    </ul>
+  </div>
+
+  <div class="sp-section">
+    <div class="sub">Quiz</div>
+    <div class="quiz-box">
+      <div class="q-label">Today's quiz · Topic 2.1</div>
+      <div class="q-text"><b>Scenario:</b> Multi-Agent Research System. The document analysis subagent has three tools: <code>extract_data_points</code>, <code>summarize_content</code> and <code>verify_claim_against_source</code>. Each tool's description states its purpose, inputs, outputs and when to use it. The subagent's system prompt contains the line:<br><br><code>"When a request mentions a summary, call summarize_content."</code><br><br>Requests to check a claim from a summary against its source document keep going to <code>summarize_content</code>.<br><br><b>What is the most effective fix?</b></div>
+      <div class="q-opt"><b>A.</b> Add five few-shot examples to the system prompt that show claim checks being routed to <code>verify_claim_against_source</code>.</div>
+      <div class="q-opt"><b>B.</b> Remove the keyword instruction about summaries from the system prompt and let the tool descriptions decide.</div>
+      <div class="q-opt"><b>C.</b> Set <code>tool_choice</code> to force <code>verify_claim_against_source</code> on the subagent's first tool call for every request.</div>
+      <div class="q-opt"><b>D.</b> Add example queries and an edge case about claims quoted from summaries to the <code>verify_claim_against_source</code> description.</div>
+      <details style="margin-top:14px">
+        <summary style="font-size:13px;color:var(--accent);cursor:pointer;font-weight:600">Show answer</summary>
+        <div style="margin-top:10px;padding:12px 14px;background:var(--good-bg);border:1px solid var(--good-bd);border-radius:9px;font-size:13.2px;color:var(--ink-2);line-height:1.6">
+          <b style="color:var(--good)">Answer: B.</b> The descriptions are already good. The root cause is a keyword rule in the system prompt tying "summary" to <code>summarize_content</code>. Removing that rule lets the descriptions do their job.<br><br>
+          <b>Why others lose:</b> A adds examples but leaves the keyword rule in place — the rule still fires first. C forces the tool on every first call, catching requests that should go to other tools. D improves the description but the keyword rule still overrides it.
+        </div>
+      </details>
+    </div>
+  </div>
+
+</div><!-- /sp-d2t1 -->
+
+<script>
+(function(){
+  var tabs=document.querySelectorAll('#v-studypath .sp-tab');
+  tabs.forEach(function(t){
+    t.onclick=function(){
+      tabs.forEach(function(x){x.classList.remove('on');});
+      t.classList.add('on');
+      document.querySelectorAll('#v-studypath .sp-panel').forEach(function(p){p.classList.remove('on');});
+      document.getElementById('sp-'+t.dataset.sp).classList.add('on');
+    };
+  });
+})();
+</script>
+</section>
+
   <section class="view" id="v-cheatsheet">
     <style>
       #v-cheatsheet .cs-hero{text-align:center;padding:22px 0 4px}
