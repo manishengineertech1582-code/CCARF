@@ -7495,6 +7495,26 @@ function renderMath(){
       '<div id="math2StudyList" style="display:none;margin-top:14px"></div>'+
       '<p style="text-align:center;color:var(--ink-3);font-size:12.5px;margin-top:16px">Multi-select questions require all correct options. No partial credit.</p>'+
       '</div>'+
+    '<div class="subpanel" id="sp-mathprac">'+
+    '<div style="margin-bottom:14px">'+
+      '<div class="sub" style="margin-bottom:10px">Select a domain</div>'+
+      '<div id="mp-domain-row" style="display:flex;gap:8px;flex-wrap:wrap">'+
+        '<button class="mp-db act" data-d="1">D1 Agentic<br><small>319 Q &middot; 6 sets</small></button>'+
+        '<button class="mp-db" data-d="2">D2 MCP &amp; Tools<br><small>216 Q &middot; 4 sets</small></button>'+
+        '<button class="mp-db" data-d="3">D3 Claude Code<br><small>255 Q &middot; 5 sets</small></button>'+
+        '<button class="mp-db" data-d="4">D4 Prompting<br><small>270 Q &middot; 5 sets</small></button>'+
+        '<button class="mp-db" data-d="5">D5 Context<br><small>314 Q &middot; 6 sets</small></button>'+
+        '<button class="mp-db" data-d="6">D6 Advanced API<br><small>20 Q &middot; 1 set</small></button>'+
+      '</div>'+
+    '</div>'+
+    '<div id="mp-sets-row" class="opt-cards"></div>'+
+    '<div style="text-align:center;margin-top:14px">'+
+      '<button class="btn" id="mpStartBtn" disabled>Start practice &#8594;</button>'+
+    '</div>'+
+    '<p style="text-align:center;color:var(--ink-3);font-size:12.5px;margin-top:12px">'+
+      '60 questions per set &middot; instant feedback &middot; explanations included'+
+    '</p>'+
+  '</div>'+
     '</div>';
   var studyDone=false;
   el.querySelectorAll('.subtab').forEach(function(t){ t.onclick=function(){
