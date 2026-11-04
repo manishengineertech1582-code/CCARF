@@ -1,4 +1,3 @@
-  if(!q){mathPracticeFinish(false);return;}
 <!doctype html>
 <html lang="en">
 <head>
@@ -10148,16 +10147,7 @@ function mathPracticeStart(domain,setIdx){
 }
 function mathPracticeShow(){
   var q=_mpList[_mpIdx];
-  if(!q){
-    document.getElementById('mp-card').innerHTML=
-      '<div style="text-align:center;padding:40px 0">'+
-        '<h3 style="margin-bottom:8px">Set complete!</h3>'+
-        '<p style="color:var(--ink-2)">Score: '+_mpCorrect+' / '+_mpAnswered+
-        ' ('+Math.round(100*_mpCorrect/_mpAnswered)+'%)</p>'+
-        '<button class="btn" onclick="mathPracticeBack()" style="margin-top:16px">Back to sets</button>'+
-      '</div>';
-    return;
-  }
+  if(!q){mathPracticeFinish(false);return;}
   var dcls={1:'d1',2:'d2',3:'d3',4:'d4',5:'d5',6:'d6'};
   var dnames2={1:'D1 Agentic',2:'D2 MCP',3:'D3 Code',4:'D4 Prompt',5:'D5 Context',6:'Advanced API'};
   document.getElementById('mp-meta').innerHTML=
