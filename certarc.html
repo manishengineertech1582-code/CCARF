@@ -540,6 +540,7 @@ button{font-family:inherit}
 <div class="sp-tabs">
   <button class="sp-tab on" data-sp="guide">Exam Strategy</button>
   <button class="sp-tab" data-sp="d2t1">D2.1 Tool Descriptions</button>
+  <button class="sp-tab" data-sp="d1t1">D1.1 Agentic Loops</button>
   <button class="sp-tab" data-sp="myresults">My Results</button>
 </div>
 
@@ -822,6 +823,161 @@ read_uploaded_document: Use for PDFs
   </div>
 
 </div><!-- /sp-d2t1 -->
+
+<!-- ===== PANEL: D1.1 ===== -->
+<div class="sp-panel" id="sp-d1t1">
+
+  <div class="sp-section">
+    <div class="sub">Domain 1 · Agentic Architecture and Orchestration · 27% of exam</div>
+    <h2>Topic 1.1 — Agentic Loops</h2>
+    <p style="font-size:13.2px;color:var(--ink-2);margin:4px 0 0">Appears in: <em>Customer Support Resolution Agent</em>, <em>Multi-Agent Research System</em>, <em>Developer Productivity with Claude</em> scenarios.</p>
+  </div>
+
+  <div class="sp-section">
+    <div class="sub">The loop runs on one field: stop_reason</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 10px">Claude never runs a tool itself. It emits a structured request; your code runs the tool and sends the result back. The official docs describe this as "a while loop keyed on <code>stop_reason</code>".</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>One iteration — four steps:</b></p>
+      <ol style="margin:0 0 10px;padding-left:20px;font-size:13.2px;color:var(--ink-2);line-height:1.7">
+        <li>Send a request with tool definitions and the messages so far.</li>
+        <li>Read <code>stop_reason</code>. If it is <code>"tool_use"</code>, the response holds one or more <code>tool_use</code> blocks.</li>
+        <li>Run each requested tool.</li>
+        <li>Append the assistant turn and the results, then call Claude again.</li>
+      </ol>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0">When <code>stop_reason</code> is <code>"end_turn"</code>, Claude has finished. The loop exits.</p>
+    </div>
+
+    <pre class="sp-code">while True:
+    response = client.messages.create(
+        model=MODEL, max_tokens=1024,
+        tools=tools, messages=messages)
+
+    if response.stop_reason == "tool_use":
+        # one tool_result per tool_use block
+        results = run_tools(response.content)
+        messages.append({"role": "assistant",
+                         "content": response.content})
+        messages.append({"role": "user",
+                         "content": results})
+        continue
+
+    if response.stop_reason == "end_turn":
+        return response
+
+    return handle_other(response)   # max_tokens, refusal, etc.</pre>
+
+    <div class="warn" style="margin-top:10px"><b>Key trap:</b> A response can hold text <em>and</em> tool calls together — "Let me look that up" plus a <code>tool_use</code> block. The text says nothing about whether the task is finished. Only <code>stop_reason</code> does.</div>
+    <div class="kc"><b>Key concept:</b> The loop decides on <code>stop_reason</code> alone. It continues on <code>"tool_use"</code> and ends on <code>"end_turn"</code>.</div>
+  </div>
+
+  <div class="sp-section">
+    <div class="sub">Tool results go back into the conversation</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">Claude reasons only over what is in its request. A tool result that stays in your application's logs does not exist for Claude.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">After running the tools, the loop appends <b>two messages in this order:</b></p>
+      <ol style="margin:0 0 10px;padding-left:20px;font-size:13.2px;color:var(--ink-2);line-height:1.7">
+        <li>The <b>assistant turn</b>: the full <code>response.content</code>, including every <code>tool_use</code> block.</li>
+        <li>A <b>user turn</b> with one <code>tool_result</code> block per call, each naming the <code>tool_use_id</code> it answers.</li>
+      </ol>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0">The next request carries: original messages + assistant response + user message with tool results. This is how new information shapes Claude's next step.</p>
+    </div>
+    <div class="kc"><b>Key concept:</b> Append the assistant turn and then the tool results on every iteration. The history is Claude's only record of what happened.</div>
+  </div>
+
+  <div class="sp-section">
+    <div class="sub">Claude picks the next tool — not your code</div>
+    <div class="sp-grid">
+      <div class="sp-card hi">
+        <h4>Model-driven loop</h4>
+        <p>Your code defines which tools exist. Claude decides which to call next, based on the conversation and each new result.</p>
+        <p>Use for <b>open-ended problems</b> where the number of steps cannot be predicted in advance.</p>
+      </div>
+      <div class="sp-card">
+        <h4>Scripted workflow</h4>
+        <p>The sequence is fixed in code: step 1, then 2, then 3, whatever the results say.</p>
+        <p>Use when the task is fully predictable and all steps are known in advance.</p>
+      </div>
+    </div>
+    <div class="kc"><b>Key concept:</b> Open-ended work gets a model-driven loop. A single ordering rule gets a gate on that one step — not a full script replacing the loop.</div>
+  </div>
+
+  <div class="sp-section">
+    <div class="sub">Exam vs. documentation</div>
+    <div class="card pad">
+      <table class="sp-t">
+        <tr><th>stop_reason</th><th>Exam treatment</th></tr>
+        <tr><td><code>"end_turn"</code></td><td>Task finished — return the response.</td></tr>
+        <tr><td><code>"tool_use"</code></td><td>Run tools, append results, continue.</td></tr>
+        <tr><td><code>"max_tokens"</code></td><td>Guard hit — count as failure, not success.</td></tr>
+        <tr><td><code>"refusal"</code> / other</td><td>Handle separately — count as failure.</td></tr>
+      </table>
+      <p style="font-size:13px;color:var(--ink-2);margin:10px 0 0">Under exam conditions: pick the option that exits on <code>"end_turn"</code>. Treat iteration/cost caps as guards against runaway loops — hitting one is a failure, not a finished task.</p>
+    </div>
+  </div>
+
+  <div class="sp-section">
+    <div class="sub">Exam traps — options that lose</div>
+    <div class="trap"><b>Stop when the text says "done" or "resolved".</b> Wording varies and can appear mid-task or never. Branch on <code>stop_reason</code>.</div>
+    <div class="trap"><b>Return any response that contains text.</b> Text can come with tool calls, so the loop quits mid-task. Check <code>stop_reason</code>, not whether text is present.</div>
+    <div class="trap"><b>Ask Claude to end with TASK_COMPLETE and stop on that string.</b> Still natural-language parsing. Branch on <code>stop_reason</code> instead.</div>
+    <div class="trap"><b>Raise the iteration cap from 10 to 50.</b> Only moves the limit. The cap should never have been the exit condition.</div>
+    <div class="trap"><b>A hook that ends the session when a tool result contains "resolved".</b> Text parsing moved into a hook. The loop's exit still belongs on <code>stop_reason</code>.</div>
+    <div class="trap"><b>A second model call that judges whether the task is complete.</b> Adds machinery for an answer <code>stop_reason</code> already gives. Use the field.</div>
+    <div class="trap"><b>Replace the loop with a fixed sequence for an open-ended agent.</b> Throws away adaptability to fix one ordering rule.</div>
+  </div>
+
+  <div class="sp-section">
+    <div class="sub">Worked example — Customer Support Resolution Agent</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>Symptom:</b> The loop sometimes ends a run halfway. The customer gets "Let me check that order for you" and nothing more. Logs show the last response had <code>stop_reason: "tool_use"</code> — Claude had asked for the order lookup, and the loop never ran it.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>Tempting fixes that lose:</b> tell Claude in the prompt to always finish, or have it end with <code>TASK_COMPLETE</code> and stop on that string.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>Root cause:</b> The loop returns the first response that contains a text block. Claude can send text and a <code>tool_use</code> block in the same response — text presence says nothing about whether the task is finished.</p>
+      <div class="kc" style="margin:8px 0 0"><b>Fix:</b> Branch on <code>stop_reason</code>. Run tools and continue on <code>"tool_use"</code>. Return only on <code>"end_turn"</code>. Wrong options change the prompt, parse a marker string, or add a second model call.</div>
+    </div>
+  </div>
+
+  <div class="sp-section">
+    <div class="sub">Checklist</div>
+    <ul class="checklist">
+      <li>What is <code>stop_reason</code> in the last response — does the loop branch on it?</li>
+      <li>Does anything other than <code>"end_turn"</code> end the loop as a success: a phrase, a marker, a text block, a cap?</li>
+      <li>If there is a cap, does hitting it count as a failure rather than a finished task?</li>
+      <li>Does each request carry the assistant turn and the <code>tool_result</code> turn from the previous iteration?</li>
+      <li>Can Claude see the tool result it needs, or does it stay in code or logs?</li>
+      <li>Is the task open-ended, or are all steps known in advance?</li>
+      <li>Is the real problem one ordering rule that a gate on one step would fix?</li>
+      <li>Does the option fix the cause, or move the problem to another layer: prompt, hook, or fixed sequence?</li>
+    </ul>
+  </div>
+
+  <div class="sp-section">
+    <div class="sub">Quiz</div>
+    <div class="quiz-box">
+      <div class="q-label">Today's quiz · Topic 1.1</div>
+      <div class="q-text"><b>Developer Productivity with Claude.</b> Your team's code-explorer command runs its own loop on the Messages API. It defines two tools, Grep and Read, and runs them itself; Claude picks which files to Read from the Grep matches. The loop continues while <code>stop_reason</code> is <code>"tool_use"</code>, returns the answer on <code>"end_turn"</code>, and fails after 25 passes. Each log line is one request; <em>messages</em> is the number of entries in the list sent.<br><br>
+<pre class="sp-code" style="margin:8px 0">question: "Where is the retry policy set?"
+pass 1   stop_reason=tool_use  Grep "retry_policy"  messages=1
+pass 2   stop_reason=tool_use  Grep "retry_policy"  messages=1
+pass 3   stop_reason=tool_use  Grep "retry_policy"  messages=1
+(passes 4 to 24 are the same)
+pass 25  stop_reason=tool_use  Grep "retry_policy"  messages=1
+run failed: 25-pass limit reached</pre>
+      <b>What is the most effective fix?</b></div>
+      <div class="q-opt"><b>A.</b> Remove the 25-pass limit, so the loop keeps calling Claude until <code>stop_reason</code> is <code>"end_turn"</code>.</div>
+      <div class="q-opt"><b>B.</b> Append each assistant turn and its <code>tool_result</code> turn to the messages list, and send the full list every time.</div>
+      <div class="q-opt"><b>C.</b> Expand the Grep tool description to say that repeating a search returns the same matches.</div>
+      <div class="q-opt"><b>D.</b> Send the question with a short code-written summary of the earlier Grep results every time.</div>
+      <details style="margin-top:14px">
+        <summary style="font-size:13px;color:var(--accent);cursor:pointer;font-weight:600">Show answer</summary>
+        <div style="margin-top:10px;padding:12px 14px;background:var(--good-bg);border:1px solid var(--good-bd);border-radius:9px;font-size:13.2px;color:var(--ink-2);line-height:1.6">
+          <b style="color:var(--good)">Answer: B.</b> Every pass sends <code>messages=1</code> — only the original question. The loop is not appending the assistant turn and tool results, so Claude has no memory of what it already searched. It repeats the same Grep indefinitely. Appending both turns each iteration gives Claude the history it needs to pick the next step (Read a matched file) rather than re-issuing the same Grep.<br><br>
+          <b>Why others lose:</b> A removes the guard but leaves the history bug — the loop still runs the same Grep until some other limit stops it. C improves the Grep description but doesn't fix the missing history — Claude still cannot see prior results. D hardcodes a summary in the application, which is a scripted workaround for a missing conversation history; the right fix is to send the actual history.
+        </div>
+      </details>
+    </div>
+  </div>
+
+</div><!-- /sp-d1t1 -->
 
 <!-- ===== PANEL: MY RESULTS ===== -->
 <div class="sp-panel" id="sp-myresults">
