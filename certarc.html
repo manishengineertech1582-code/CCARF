@@ -247,6 +247,7 @@ button{font-family:inherit}
 #v-exams .p-study .reflex>li{position:relative;padding-left:34px;font-size:13.8px;line-height:1.55;color:var(--ink-2)}
 #v-exams .p-study .reflex>li::before{counter-increment:rfx;content:counter(rfx);position:absolute;left:0;top:0;width:23px;height:23px;border-radius:50%;background:var(--accent);color:var(--accent-ink);font-size:12px;font-weight:700;display:grid;place-items:center;font-family:"IBM Plex Mono",monospace}
 </style>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 <div class="topbar">
@@ -622,6 +623,73 @@ button{font-family:inherit}
 #v-studypath .quiz-box .q-text{font-size:14px;color:var(--ink);line-height:1.6;margin-bottom:12px}
 #v-studypath .quiz-box .q-opt{font-size:13.2px;color:var(--ink-2);padding:5px 0;line-height:1.5}
 #v-studypath .quiz-box .q-opt b{color:var(--ink);font-family:"IBM Plex Mono",monospace}
+
+/* ===== Study guide skin (certified-architect.com look) ===== */
+#v-studypath{--bg:#faf7f2;--surface:#ffffff;--surface-2:#f1ede6;--border:#e6e0d6;--ink:#1c1917;--ink-2:#44403c;--ink-3:#78716c;--accent:#a3472a;--accent-ink:#fff;--accent-soft:#f8ece6;--bad:#b42318;--bad-bg:#fdecea;
+  max-width:1240px;background:var(--bg);color:var(--ink);border-radius:18px;padding:28px 30px 40px;font-family:"Manrope","IBM Plex Sans",-apple-system,sans-serif}
+#v-studypath .sp-hero,#v-studypath .sp-tabs{display:none}
+#v-studypath h1,#v-studypath h2,#v-studypath h3,#v-studypath h4{font-family:"Manrope","Sora",sans-serif;color:var(--ink);letter-spacing:-.02em}
+#v-studypath .sg-eyebrow{font-size:11.5px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}
+#v-studypath .sg-landing h1{font-size:44px;line-height:1.1;font-weight:800;margin:10px 0 12px;max-width:16ch}
+#v-studypath .sg-landing .sg-lede{font-size:17px;color:var(--ink-2);max-width:60ch;margin:0 0 26px;line-height:1.6}
+#v-studypath .sg-dcard{display:grid;grid-template-columns:1fr 200px;background:var(--surface);border:1px solid var(--border);border-radius:18px;overflow:hidden;margin-bottom:18px;cursor:pointer;transition:box-shadow .15s,border-color .15s}
+#v-studypath .sg-dcard:hover{box-shadow:0 8px 24px rgba(60,40,20,.08);border-color:#d8cfc0}
+#v-studypath .sg-dcard .sg-dmain{padding:24px 28px}
+#v-studypath .sg-dcard .sg-ico{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:9px;background:var(--accent-soft);color:var(--accent);font-weight:800;font-size:13px}
+#v-studypath .sg-dcard .sg-wt{font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-left:10px}
+#v-studypath .sg-dcard h3{font-size:24px;font-weight:800;margin:12px 0 14px}
+#v-studypath .sg-chips{display:flex;flex-wrap:wrap;gap:7px}
+#v-studypath .sg-chip{background:var(--surface-2);border-radius:7px;padding:4px 10px;font-size:12px;color:var(--ink-2);font-weight:600}
+#v-studypath .sg-chip b{font-weight:800;color:var(--ink);margin-right:5px}
+#v-studypath .sg-dside{background:var(--surface-2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:18px;text-align:center}
+#v-studypath .sg-dside .n{font-size:36px;font-weight:800;color:var(--accent);line-height:1}
+#v-studypath .sg-dside .l{font-size:10.5px;letter-spacing:.2em;color:var(--ink-3);font-weight:700}
+#v-studypath .sg-dside .e{margin-top:10px;font-size:13px;font-weight:800;color:var(--accent)}
+#v-studypath .sg-layout{display:none;grid-template-columns:270px minmax(0,1fr);gap:34px;align-items:start}
+#v-studypath.sg-reading .sg-layout{display:grid}
+#v-studypath.sg-reading .sg-landing{display:none}
+#v-studypath .sg-side{position:sticky;top:12px;max-height:calc(100vh - 24px);overflow:auto;padding-right:6px}
+#v-studypath .sg-side details{border-bottom:1px solid var(--border);padding:6px 0}
+#v-studypath .sg-side summary{cursor:pointer;font-size:13px;font-weight:800;color:var(--ink);padding:8px 8px;list-style:none;border-radius:8px}
+#v-studypath .sg-side summary::-webkit-details-marker{display:none}
+#v-studypath .sg-side summary:hover{background:var(--surface-2)}
+#v-studypath .sg-side a{display:block;font-size:13px;color:var(--ink-2);padding:7px 10px 7px 14px;border-radius:8px;cursor:pointer;line-height:1.35;font-weight:500}
+#v-studypath .sg-side a b{font-weight:800;color:var(--ink-3);margin-right:6px}
+#v-studypath .sg-side a:hover{background:var(--surface-2)}
+#v-studypath .sg-side a.on{background:var(--accent-soft);color:var(--accent);font-weight:800}
+#v-studypath .sg-side a.on b{color:var(--accent)}
+#v-studypath .sg-crumb{font-size:13px;color:var(--ink-2);display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:22px}
+#v-studypath .sg-crumb a{cursor:pointer;color:var(--ink-2)}
+#v-studypath .sg-crumb a:hover{color:var(--accent)}
+#v-studypath .sg-crumb .cur{font-weight:800;color:var(--ink)}
+#v-studypath .sg-crumb i{font-style:normal;color:var(--ink-3)}
+#v-studypath .sg-code{display:inline-block;background:var(--accent-soft);color:var(--accent);font-family:"IBM Plex Mono",monospace;font-weight:700;font-size:13px;padding:5px 11px;border-radius:7px;margin:10px 10px 0 0}
+#v-studypath .sg-task{font-size:13px;color:var(--ink-2)}
+#v-studypath .sg-title{font-size:38px;line-height:1.15;font-weight:800;margin:18px 0 26px}
+#v-studypath .sp-panel{margin-top:0}
+#v-studypath .sp-panel>.sp-section:first-child.sg-hide{display:none}
+#v-studypath .sp-panel p,#v-studypath .sp-panel li{font-size:16.5px!important;line-height:1.8!important;color:var(--ink-2)}
+#v-studypath .sp-panel p b,#v-studypath .sp-panel li b{color:var(--ink)}
+#v-studypath .sp-panel td,#v-studypath .sp-panel th{font-size:14.5px!important;line-height:1.6!important}
+#v-studypath .sp-panel .sub{font-size:11.5px;color:var(--accent);letter-spacing:.14em;font-weight:800}
+#v-studypath .sp-section h2{font-size:28px;font-weight:800;margin:36px 0 10px}
+#v-studypath .sp-panel .card,#v-studypath .sp-card,#v-studypath .quiz-box{background:var(--surface);border:1px solid var(--border);border-radius:14px;box-shadow:none}
+#v-studypath .quiz-box{border-width:1px;border-left:4px solid var(--accent)}
+#v-studypath .sp-panel code{background:var(--surface-2);border-radius:5px;padding:1px 6px;font-size:.9em;color:var(--ink)}
+#v-studypath .sg-pn{display:flex;justify-content:space-between;gap:14px;margin-top:44px;padding-top:22px;border-top:1px solid var(--border)}
+#v-studypath .sg-pn a{flex:1;max-width:48%;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 18px;cursor:pointer;font-size:14px;font-weight:700;color:var(--ink)}
+#v-studypath .sg-pn a small{display:block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-bottom:4px;font-weight:800}
+#v-studypath .sg-pn a:hover{border-color:var(--accent)}
+#v-studypath .sg-pn a.next{text-align:right;margin-left:auto}
+@media(max-width:860px){
+  #v-studypath{padding:18px 14px 30px}
+  #v-studypath .sg-landing h1{font-size:32px}
+  #v-studypath .sg-dcard{grid-template-columns:1fr}
+  #v-studypath .sg-dside{flex-direction:row;justify-content:space-between;padding:12px 22px}
+  #v-studypath .sg-layout{grid-template-columns:1fr}
+  #v-studypath .sg-side{position:static;max-height:none}
+  #v-studypath .sg-title{font-size:28px}
+}
 </style>
 
 <div class="sp-hero">
@@ -3605,6 +3673,98 @@ Please re-extract with these corrections."</pre>
   });
 })();
 </script>
+
+<script>
+(function(){
+  var root=document.getElementById('v-studypath');
+  var tabs=[].slice.call(root.querySelectorAll('.sp-tab'));
+  var DOMS=[
+    {k:'F',name:'Foundations',wt:'',ico:'F'},
+    {k:'1',name:'Agentic Architecture & Orchestration',wt:'Exam weight 27%',ico:'D1'},
+    {k:'2',name:'Tool Design & MCP Integration',wt:'Exam weight 18%',ico:'D2'},
+    {k:'3',name:'Claude Code Configuration',wt:'Exam weight 20%',ico:'D3'},
+    {k:'4',name:'Prompt Engineering & Optimization',wt:'Exam weight 20%',ico:'D4'},
+    {k:'5',name:'Context Management & Reliability',wt:'Exam weight 15%',ico:'D5'},
+    {k:'S',name:'Exam Strategy & Results',wt:'',ico:'S'}
+  ];
+  function esc(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;');}
+  var items=tabs.map(function(t){
+    var lab=t.textContent.trim(), m, k='S', code='', title=lab;
+    if((m=lab.match(/^D(\d)\.(\d+)\s+(.*)$/))){k=m[1];code='D'+m[1]+'.'+m[2];title=m[3];}
+    else if((m=lab.match(/^F(\d+)\s+(.*)$/))){k='F';code='F'+m[1];title=m[2];}
+    var panel=document.getElementById('sp-'+t.dataset.sp);
+    var h=panel&&panel.querySelector('.sp-section:first-child h2');
+    var first=panel&&panel.firstElementChild;
+    var heading=h&&first&&first.contains(h)?h.textContent.trim():lab;
+    if(first&&h&&first.contains(h)) first.classList.add('sg-hide');
+    return {tab:t,id:t.dataset.sp,label:lab,k:k,code:code,short:title,heading:heading,panel:panel,
+      n:m?(parseInt(m[2]||m[1],10)):0};
+  });
+  DOMS.forEach(function(d){
+    d.items=items.filter(function(i){return i.k===d.k;});
+    if(d.k!=='S') d.items.sort(function(a,b){return a.n-b.n;});
+  });
+  var panels=[].slice.call(root.querySelectorAll('.sp-panel'));
+  var landing=document.createElement('div'); landing.className='sg-landing';
+  landing.innerHTML='<div class="sg-eyebrow">Curriculum</div><h1>Claude Certified Architect – Foundations (CCA-F) Study Guide</h1>'+
+    '<p class="sg-lede">Master the 5 domains of the Claude Certified Architect – Foundations (CCA-F) exam through deep, focused study.</p>'+
+    DOMS.filter(function(d){return d.items.length;}).map(function(d){
+      return '<div class="sg-dcard" data-d="'+d.k+'"><div class="sg-dmain"><span class="sg-ico">'+d.ico+'</span>'+
+        (d.wt?'<span class="sg-wt">'+d.wt+'</span>':'')+'<h3>'+esc(d.name)+'</h3><div class="sg-chips">'+
+        d.items.map(function(i){return '<span class="sg-chip"><b>'+(i.code||'•')+'</b>'+esc(i.short)+'</span>';}).join('')+
+        '</div></div><div class="sg-dside"><div class="n">'+d.items.length+'</div><div class="l">ARTICLES</div><div class="e">Enter Domain →</div></div></div>';
+    }).join('');
+  var layout=document.createElement('div'); layout.className='sg-layout';
+  var side=document.createElement('nav'); side.className='sg-side';
+  var main=document.createElement('div'); main.className='sg-main';
+  var head=document.createElement('div'); head.className='sg-head';
+  var pn=document.createElement('div'); pn.className='sg-pn';
+  side.innerHTML='<div class="sg-eyebrow" style="padding:4px 8px 10px;cursor:pointer" id="sgHome">← All domains</div>'+
+    DOMS.filter(function(d){return d.items.length;}).map(function(d){
+      return '<details data-d="'+d.k+'"><summary>'+esc(d.name)+'</summary>'+d.items.map(function(i){
+        return '<a data-sp="'+i.id+'"><b>'+(i.code||'')+'</b>'+esc(i.short)+'</a>';}).join('')+'</details>';
+    }).join('');
+  main.appendChild(head);
+  panels.forEach(function(p){main.appendChild(p);});
+  main.appendChild(pn);
+  layout.appendChild(side); layout.appendChild(main);
+  var anchor=root.querySelector('.sp-tabs');
+  anchor.parentNode.insertBefore(landing,anchor.nextSibling);
+  anchor.parentNode.insertBefore(layout,landing.nextSibling);
+
+  function dom(i){return DOMS.filter(function(d){return d.k===i.k;})[0];}
+  function show(id){
+    var it=items.filter(function(i){return i.id===id;})[0]; if(!it) return;
+    it.tab.click();
+    root.classList.add('sg-reading');
+    var d=dom(it);
+    head.innerHTML='<div class="sg-crumb"><a id="sgC0">CCA-F Study Guide</a><i>›</i><a data-d="'+d.k+'" class="sgC1">'+esc(d.name)+'</a>'+
+      (it.code?'<i>›</i><span class="cur">'+it.code+'</span>':'')+'</div>'+
+      '<div class="sg-eyebrow">CCA-F Study Guide · '+esc(d.name)+'</div>'+
+      (it.code?'<span class="sg-code">'+it.code+'</span><span class="sg-task">Task '+it.code.replace(/^D/,'')+'</span>':'')+
+      '<h1 class="sg-title">'+esc(it.heading)+'</h1>';
+    head.querySelector('#sgC0').onclick=home;
+    head.querySelector('.sgC1').onclick=function(){show(d.items[0].id);};
+    side.querySelectorAll('a').forEach(function(a){a.classList.toggle('on',a.dataset.sp===id);});
+    side.querySelectorAll('details').forEach(function(x){if(x.dataset.d===d.k)x.open=true;});
+    var all=[]; DOMS.forEach(function(x){all=all.concat(x.items);});
+    var ix=all.indexOf(it), pv=all[ix-1], nx=all[ix+1];
+    pn.innerHTML=(pv?'<a class="prev" data-sp="'+pv.id+'"><small>← Previous</small>'+esc((pv.code?pv.code+' · ':'')+pv.short)+'</a>':'<span></span>')+
+      (nx?'<a class="next" data-sp="'+nx.id+'"><small>Next →</small>'+esc((nx.code?nx.code+' · ':'')+nx.short)+'</a>':'');
+    root.scrollIntoView({block:'start'});
+  }
+  function home(){root.classList.remove('sg-reading');root.scrollIntoView({block:'start'});}
+  landing.addEventListener('click',function(e){
+    var c=e.target.closest('.sg-dcard'); if(!c) return;
+    var d=DOMS.filter(function(x){return x.k===c.dataset.d;})[0]; show(d.items[0].id);
+  });
+  root.addEventListener('click',function(e){
+    var a=e.target.closest('.sg-side a, .sg-pn a'); if(a&&a.dataset.sp){show(a.dataset.sp);}
+  });
+  root.querySelector('#sgHome').onclick=home;
+})();
+</script>
+
 </section>
 
   <section class="view" id="v-cheatsheet">
