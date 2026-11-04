@@ -540,6 +540,7 @@ button{font-family:inherit}
 <div class="sp-tabs">
   <button class="sp-tab on" data-sp="guide">Exam Strategy</button>
   <button class="sp-tab" data-sp="d2t1">D2.1 Tool Descriptions</button>
+  <button class="sp-tab" data-sp="myresults">My Results</button>
 </div>
 
 <!-- ===== PANEL: EXAM STRATEGY ===== -->
@@ -821,6 +822,162 @@ read_uploaded_document: Use for PDFs
   </div>
 
 </div><!-- /sp-d2t1 -->
+
+<!-- ===== PANEL: MY RESULTS ===== -->
+<div class="sp-panel" id="sp-myresults">
+
+  <div class="sp-section">
+    <div class="sub">Oct 30, 2026 — Attempt 1</div>
+    <div class="sp-stat-row">
+      <div class="sp-stat"><div class="n">690</div><div class="label">Your score</div></div>
+      <div class="sp-stat"><div class="n">720</div><div class="label">Pass mark</div></div>
+      <div class="sp-stat"><div class="n">800</div><div class="label">Target</div></div>
+      <div class="sp-stat"><div class="n">+110</div><div class="label">Points needed</div></div>
+    </div>
+    <div class="kc">Fixing the 9 zero-scored objectives alone is worth ~130 points — enough to reach 820+.</div>
+  </div>
+
+  <div class="sp-section">
+    <div class="sub">0% — Must fix before Nov 20</div>
+    <p style="font-size:13px;color:var(--ink-3);margin:0 0 12px">9 objectives scored zero. Each is a category of questions you got completely wrong.</p>
+
+    <div class="sp-card" style="margin-bottom:10px">
+      <h4 style="color:var(--bad)">Domain 1 — Agentic Architecture (4 zeros, biggest gap)</h4>
+      <table class="sp-t" style="margin-top:8px">
+        <tr><th>Objective</th><th>What to know</th></tr>
+        <tr>
+          <td>Parallel tool calls in one turn</td>
+          <td>An agent can emit multiple tool calls in a single response — independent subtasks run simultaneously, cutting latency. Wrong answer is always "run them one by one" unless there is a data dependency.</td>
+        </tr>
+        <tr>
+          <td>Dynamic task decomposition</td>
+          <td>Adaptive orchestration: the agent decides the <em>next</em> step based on what it just found, not a fixed upfront plan. Wrong answers describe waterfall/fixed sequences.</td>
+        </tr>
+        <tr>
+          <td>Agentic review architecture</td>
+          <td><b>Direct execution</b> = low-risk, no approval. <b>Plan mode</b> = medium-risk, human reviews plan. <b>Multi-phase workflow</b> = high-risk, human approves at each phase. Match to task scope and risk level.</td>
+        </tr>
+        <tr>
+          <td>State persistence for resumption</td>
+          <td>Completed work must be checkpointed to scratchpad files or a state object so an interrupted pipeline can re-read them and continue without redoing steps. Wrong answer: re-run from scratch.</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="sp-card" style="margin-bottom:10px">
+      <h4 style="color:var(--bad)">Domain 3 — Claude Code Configuration (3 zeros)</h4>
+      <table class="sp-t" style="margin-top:8px">
+        <tr><th>Objective</th><th>What to know</th></tr>
+        <tr>
+          <td>CLI flags for CI/CD pipelines</td>
+          <td><code>--yes</code> (non-interactive), <code>--allowedTools</code>, <code>--max-turns</code>, <code>--max-cost</code>. Always set limits in CI — wrong answer is running without guards in an automated pipeline.</td>
+        </tr>
+        <tr>
+          <td>Code review configurations</td>
+          <td>Scope the reviewer via CLAUDE.md / <code>.claude/rules/</code>. Restrict tools to only what the review needs. Output via JSON schema + tool_choice. Wrong answer: unrestricted agent writing prose.</td>
+        </tr>
+        <tr>
+          <td>Built-in tool selection</td>
+          <td><b>Grep</b> = search file contents. <b>Glob</b> = list files by path pattern. <b>Read</b> = read a known file. <b>Bash</b> = anything needing a shell command. Match the tool to the nature of the operation.</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="sp-grid">
+      <div class="sp-card">
+        <h4 style="color:var(--bad)">Domain 4 — Structured Output (1 zero)</h4>
+        <p><b>Structured output method strictness order:</b></p>
+        <p>Tool use + JSON schema &gt; prompt-based formatting &gt; prefilled responses.</p>
+        <p>Use tool use when downstream systems need exact schema compliance. Use prefilled for simple, fast outputs. Prompt-based is weakest guarantee.</p>
+      </div>
+      <div class="sp-card">
+        <h4 style="color:var(--bad)">Domain 5 — Context Management (1 zero)</h4>
+        <p><b>Three context window techniques:</b></p>
+        <ul>
+          <li><b>Summarization</b> — oldest context compressed into a summary block</li>
+          <li><b>Sliding window</b> — oldest raw turns dropped</li>
+          <li><b>Structured state objects</b> — key facts persisted in a file, read at session start</li>
+        </ul>
+        <p>Match technique to: how much history is needed vs token budget.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sp-section">
+    <div class="sub">50–67% — Partial knowledge, easy gains</div>
+    <div class="card pad">
+      <table class="sp-t">
+        <tr><th>Objective</th><th>Score</th><th>Fix</th></tr>
+        <tr><td>Construct subagent prompts</td><td>67%</td><td>Brief must include: findings + structured data + source metadata. No coordinator callbacks needed after.</td></tr>
+        <tr><td>Codebase exploration strategy</td><td>60%</td><td>Incremental pattern: Glob to list → Grep to narrow → Read to confirm. Never jump straight to Read on unknown files.</td></tr>
+        <tr><td>Human review routing</td><td>67%</td><td>Route to human when confidence is below threshold OR field is ambiguous — not random sampling.</td></tr>
+        <tr><td>Extraction accuracy (optional fields)</td><td>50%</td><td>Optional fields prevent hallucination; nullable says "missing is valid, not unknown." Use both in schemas.</td></tr>
+        <tr><td>Prompt inclusion/exclusion boundaries</td><td>50%</td><td>Write explicit exclusion criteria, not just inclusion rules. The exam often tests that you know what to exclude.</td></tr>
+        <tr><td>Tool distribution across subagents</td><td>50%</td><td>Each subagent gets only the tools for its designated role — principle of least privilege.</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="sp-section">
+    <div class="sub">100% — Strengths, don't re-study these</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 6px">You already own these — no time needed here:</p>
+      <div style="display:flex;flex-wrap:wrap;gap:7px;margin-top:6px">
+        <span style="background:var(--good-bg);border:1px solid var(--good-bd);border-radius:7px;padding:4px 11px;font-size:12px;color:var(--good);font-weight:600">Session resumption</span>
+        <span style="background:var(--good-bg);border:1px solid var(--good-bd);border-radius:7px;padding:4px 11px;font-size:12px;color:var(--good);font-weight:600">Subagent delegation strategies</span>
+        <span style="background:var(--good-bg);border:1px solid var(--good-bd);border-radius:7px;padding:4px 11px;font-size:12px;color:var(--good);font-weight:600">Subagent invocation config</span>
+        <span style="background:var(--good-bg);border:1px solid var(--good-bd);border-radius:7px;padding:4px 11px;font-size:12px;color:var(--good);font-weight:600">Spawning diagnostics</span>
+        <span style="background:var(--good-bg);border:1px solid var(--good-bd);border-radius:7px;padding:4px 11px;font-size:12px;color:var(--good);font-weight:600">Orchestration patterns</span>
+        <span style="background:var(--good-bg);border:1px solid var(--good-bd);border-radius:7px;padding:4px 11px;font-size:12px;color:var(--good);font-weight:600">Test generation quality</span>
+        <span style="background:var(--good-bg);border:1px solid var(--good-bd);border-radius:7px;padding:4px 11px;font-size:12px;color:var(--good);font-weight:600">Claude Code configuration</span>
+        <span style="background:var(--good-bg);border:1px solid var(--good-bd);border-radius:7px;padding:4px 11px;font-size:12px;color:var(--good);font-weight:600">Synthesis agent behavior</span>
+        <span style="background:var(--good-bg);border:1px solid var(--good-bd);border-radius:7px;padding:4px 11px;font-size:12px;color:var(--good);font-weight:600">Context management (file strategy)</span>
+        <span style="background:var(--good-bg);border:1px solid var(--good-bd);border-radius:7px;padding:4px 11px;font-size:12px;color:var(--good);font-weight:600">API mode selection</span>
+        <span style="background:var(--good-bg);border:1px solid var(--good-bd);border-radius:7px;padding:4px 11px;font-size:12px;color:var(--good);font-weight:600">Specialized review passes</span>
+        <span style="background:var(--good-bg);border:1px solid var(--good-bd);border-radius:7px;padding:4px 11px;font-size:12px;color:var(--good);font-weight:600">tool_choice</span>
+        <span style="background:var(--good-bg);border:1px solid var(--good-bd);border-radius:7px;padding:4px 11px;font-size:12px;color:var(--good);font-weight:600">Truncation resolution</span>
+        <span style="background:var(--good-bg);border:1px solid var(--good-bd);border-radius:7px;padding:4px 11px;font-size:12px;color:var(--good);font-weight:600">MCP resources vs tools</span>
+        <span style="background:var(--good-bg);border:1px solid var(--good-bd);border-radius:7px;padding:4px 11px;font-size:12px;color:var(--good);font-weight:600">MCP server integration</span>
+        <span style="background:var(--good-bg);border:1px solid var(--good-bd);border-radius:7px;padding:4px 11px;font-size:12px;color:var(--good);font-weight:600">MCP tool descriptions</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="sp-section">
+    <div class="sub">16-day study plan — Nov 3 to Nov 20</div>
+    <div class="card pad">
+      <table class="sp-t">
+        <tr><th>Days</th><th>Focus</th><th>What to do</th></tr>
+        <tr>
+          <td>1–4</td>
+          <td><b>Domain 1</b> — Agentic Architecture</td>
+          <td>Parallel tool calls, dynamic decomposition, review architecture (plan/direct/multi-phase), state persistence. Do Papers D/E/F questions tagged Domain 1. For each wrong answer, apply the four-label framework.</td>
+        </tr>
+        <tr>
+          <td>5–7</td>
+          <td><b>Domain 3</b> — Claude Code Config</td>
+          <td>Non-interactive CLI flags, code review config, built-in tool selection. Run actual Claude Code commands in a test repo — hands-on is faster than reading for Domain 3.</td>
+        </tr>
+        <tr>
+          <td>8–9</td>
+          <td><b>Domain 4 &amp; 5</b> — Structured Output + Context</td>
+          <td>Memorize tool use &gt; prompt-based &gt; prefilled strictness ordering. Distinguish the three context window techniques and when each applies.</td>
+        </tr>
+        <tr>
+          <td>10–13</td>
+          <td><b>Partial-credit repair</b></td>
+          <td>Work through the 50–67% objectives. Practice writing complete subagent briefs. Practice drawing tool distribution diagrams per subagent role.</td>
+        </tr>
+        <tr>
+          <td>14–16</td>
+          <td><b>Mock exams under timer</b></td>
+          <td>One paper per day (Papers A–F), 120-minute timer. After each: for every wrong answer, write one sentence: which of the four labels applies and why.</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /sp-myresults -->
 
 <script>
 (function(){
