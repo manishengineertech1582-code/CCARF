@@ -2377,40 +2377,49 @@ export { formatInvoice as renderInvoice } from "./format";</pre>
     </div>
   </div>
   <div class="sp-section">
-    <div class="sub">The six-step flow</div>
+    <div class="sub">The six named steps</div>
     <div class="sp-grid">
       <div class="sp-card hi">
         <h4>Steps 1–3: First API call</h4>
-        <ol style="font-size:13px;color:var(--ink-2);padding-left:16px;margin:0;line-height:1.7">
-          <li>You send the request with tool definitions</li>
-          <li>Model decides to use a tool → returns <code>tool_use</code> block</li>
-          <li>stop_reason: "tool_use" — your signal to execute</li>
+        <ol style="font-size:13px;color:var(--ink-2);padding-left:16px;margin:0;line-height:1.9">
+          <li><b>Define tools</b> — name, description, input schema in the API request</li>
+          <li><b>Send request</b> — messages + tool definitions to the API</li>
+          <li><b>Model returns <code>tool_use</code></b> — block with name, params, unique ID; <code>stop_reason</code> = <code>"tool_use"</code></li>
         </ol>
       </div>
       <div class="sp-card hi">
         <h4>Steps 4–6: Second API call</h4>
-        <ol style="font-size:13px;color:var(--ink-2);padding-left:16px;margin:0;line-height:1.7">
-          <li>You execute the tool with the model's parameters</li>
-          <li>You send the result back as a <code>tool_result</code> block</li>
-          <li>Model processes result → returns final text or more tool calls</li>
+        <ol start="4" style="font-size:13px;color:var(--ink-2);padding-left:16px;margin:0;line-height:1.9">
+          <li><b>You execute the tool</b> — your code runs the actual operation</li>
+          <li><b>You send the result back</b> — <code>user</code> message with <code>tool_result</code> block referencing the original <code>tool_use</code> ID</li>
+          <li><b>Model processes the result</b> — Claude incorporates output into its next response</li>
         </ol>
       </div>
     </div>
-    <div class="kc"><b>Key concept:</b> The API is a pure reasoning engine. Execution is entirely your responsibility. The separation gives you full control of security, rate limiting, and error handling.</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">The model doesn't execute anything</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0">The Claude API is a pure reasoning engine. It generates structured requests specifying what it <em>wants</em> done. Execution is entirely your responsibility. Your code controls security, rate limiting, error handling, and access control. The model handles decision-making and parameter generation. <b>Neither side does the other's job.</b></p>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Multiple tool calls</div>
+    <div class="kc">The <code>content</code> array can contain multiple <code>tool_use</code> blocks in one response. Execute all of them, then send all results back in a single message (multiple <code>tool_result</code> blocks). Or the model chains tools sequentially — tool A, then tool B after reviewing A's result.</div>
   </div>
   <div class="sp-section">
     <div class="sub">Exam traps</div>
-    <div class="trap"><b>Claude executes tool calls directly.</b> No. Claude generates structured requests. Your code executes them.</div>
-    <div class="trap"><b>One tool call = one API call.</b> No. One tool call requires at least two API calls.</div>
-    <div class="trap"><b>Multiple tool calls need multiple API calls to send results.</b> No. Send all tool_result blocks in one message, one API call.</div>
+    <div class="warn">Claude executes tool calls directly. <b>No.</b> Claude generates structured requests. Your code executes them.</div>
+    <div class="warn">One tool call = one API call. <b>No.</b> One tool call requires at least two API calls.</div>
+    <div class="warn">Multiple tool calls need multiple API calls to send results. <b>No.</b> Send all <code>tool_result</code> blocks in one message, one API call.</div>
   </div>
   <div class="sp-section">
     <div class="sub">Also in this task (F2)</div>
-    <ul style="font-size:13px;color:var(--ink-2);line-height:1.8;padding-left:18px;margin:0">
-      <li><b>F2.2:</b> Tool definition format: name, description, input_schema (JSON Schema).</li>
-      <li><b>F2.3:</b> The tool_use block — what the model returns when it wants a tool called (id, name, input).</li>
-      <li><b>F2.4:</b> The tool_result block — what you send back (tool_use_id, content, is_error).</li>
-      <li><b>F2.5:</b> Virtual tools — use tool_use with tool_choice: "any" to guarantee JSON output without calling any real tool.</li>
+    <ul class="sp-bullets">
+      <li>F2.2: Tool definition format: name, description, input_schema (JSON Schema).</li>
+      <li>F2.3: The <code>tool_use</code> block — what the model returns when it wants a tool called (id, name, input).</li>
+      <li>F2.4: The <code>tool_result</code> block — what you send back (tool_use_id, content, is_error).</li>
+      <li>F2.5: Virtual tools — use tool_use with tool_choice: "any" to guarantee JSON output without calling any real tool.</li>
     </ul>
   </div>
 </div>
@@ -2424,24 +2433,45 @@ export { formatInvoice as renderInvoice } from "./format";</pre>
   <div class="sp-section">
     <div class="sub">What MCP is</div>
     <div class="card pad">
-      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">Model Context Protocol (MCP) is an <b>open protocol</b> for connecting AI applications to external systems. Instead of writing custom integration code for every service, you connect through MCP servers that speak a common language.</p>
-      <p style="font-size:13.2px;color:var(--ink-2);margin:0"><b>Client-server model:</b> The AI application (like Claude Code) is the client. Each external system gets an MCP server that wraps its API. Communication uses JSON-RPC 2.0.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0"><b>Model Context Protocol (MCP)</b> is an open protocol for connecting AI applications to external systems. Instead of writing custom integration code for every service (GitHub's API, Jira's API, Slack's API), you connect through MCP servers that speak a common language — JSON-RPC 2.0.</p>
     </div>
-    <div class="kc"><b>Key concept:</b> One client interface, any number of servers. The complexity of each service's API is encapsulated inside its server.</div>
+    <div class="kc" style="margin-top:12px"><b>The architecture:</b> The AI application (like Claude Code) is the <b>client</b>. Each external system gets an <b>MCP server</b> that wraps its API. When Claude Code needs to create a GitHub issue, it sends a JSON-RPC request to the GitHub MCP server, which translates it into a GitHub API call, executes it, and returns the result.</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Three primitives</div>
+    <div class="sp-grid">
+      <div class="sp-card hi">
+        <h4>Tools</h4>
+        <p style="font-size:13px;color:var(--ink-2);margin:4px 0 0">Actions the model can invoke — search, create, update, delete. Each has a name, description, and input schema just like Claude API tools.</p>
+      </div>
+      <div class="sp-card hi">
+        <h4>Resources</h4>
+        <p style="font-size:13px;color:var(--ink-2);margin:4px 0 0">Read-only data the server exposes — files, database records, API responses. The model can read them but not invoke them like tools.</p>
+      </div>
+      <div class="sp-card hi">
+        <h4>Prompts</h4>
+        <p style="font-size:13px;color:var(--ink-2);margin:4px 0 0">Reusable prompt templates the server provides. Users or clients can invoke them to get pre-formatted instructions for common tasks.</p>
+      </div>
+    </div>
   </div>
   <div class="sp-section">
     <div class="sub">What MCP is NOT</div>
-    <div class="trap"><b>MCP is exclusive to Claude/Anthropic.</b> No. It's an open protocol — any AI application can implement the client protocol, any developer can build an MCP server.</div>
-    <div class="trap"><b>MCP servers are discovered automatically.</b> No. Configuration is explicit — you tell your client which servers to connect to. No central registry or marketplace.</div>
-    <div class="trap"><b>MCP makes Claude call APIs directly.</b> No. Claude calls MCP tools; the MCP server translates those into API calls and returns results.</div>
+    <div class="warn">MCP is not exclusive to Claude or Anthropic. Any AI application can implement the MCP client protocol. The spec is open.</div>
+    <div class="warn">No central registry. MCP servers are discovered through <b>direct configuration</b>, not a marketplace. You tell your client which servers to connect to.</div>
+    <div class="warn">Errors must be errors. A server cannot return an empty result when a tool fails — it must signal failure explicitly. "Could not look" ≠ "found nothing."</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Exam traps</div>
+    <div class="warn">MCP tool definitions use <b>camelCase</b> (<code>inputSchema</code>); Claude API tool definitions use <b>snake_case</b> (<code>input_schema</code>).</div>
+    <div class="warn">Transport: <b>stdio</b> for local servers (Claude Code on your machine), <b>HTTP</b> for remote servers (shared team services).</div>
   </div>
   <div class="sp-section">
     <div class="sub">Also in this task (F3)</div>
-    <ul style="font-size:13px;color:var(--ink-2);line-height:1.8;padding-left:18px;margin:0">
-      <li><b>F3.2:</b> Three MCP primitives — Tools (actions), Resources (read-only data), Prompts (templates).</li>
-      <li><b>F3.3:</b> camelCase trap — MCP tool definitions use camelCase for input_schema; Claude API uses snake_case. They differ.</li>
-      <li><b>F3.4:</b> Don't disguise errors as empty results — return is_error: true, not empty content, so the model can recover.</li>
-      <li><b>F3.5:</b> stdio for local servers, HTTP for remote. Choose transport by deployment context.</li>
+    <ul class="sp-bullets">
+      <li>F3.2: Three primitives — tools, resources, prompts.</li>
+      <li>F3.3: camelCase trap — MCP vs Claude API tool definitions differ.</li>
+      <li>F3.4: Don't disguise errors as empty results.</li>
+      <li>F3.5: stdio for local, HTTP for remote.</li>
     </ul>
   </div>
 </div>
@@ -2455,31 +2485,41 @@ export { formatInvoice as renderInvoice } from "./format";</pre>
   <div class="sp-section">
     <div class="sub">What Claude Code is</div>
     <div class="card pad">
-      <p style="font-size:13.2px;color:var(--ink-2);margin:0">A <b>command-line tool</b> that runs in your terminal, reads and understands codebases, assists with development tasks. Not a web IDE, not a VS Code extension at its core, not a cloud service. Code stays on your machine — only prompts and context go to the API.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0">Claude Code is Anthropic's <b>command-line AI tool</b>. It runs in your terminal, reads and understands codebases, and assists with development tasks. Not a web IDE, not a VS Code extension at its core, not a cloud service — a CLI tool that processes code locally on your machine. It needs an internet connection (communicates with the Claude API) but <b>your code stays on your machine</b>.</p>
     </div>
   </div>
   <div class="sp-section">
     <div class="sub">Two modes — one flag separates them</div>
     <div class="sp-grid">
       <div class="sp-card hi">
-        <h4>Interactive mode (default)</h4>
-        <pre class="sp-code">claude</pre>
-        <p style="font-size:13px;color:var(--ink-2);margin:4px 0 0">Multi-turn conversational session. Review each action before the next.</p>
+        <h4>Interactive mode</h4>
+        <p style="font-size:13px;color:var(--ink-2);margin:4px 0 0">Run <code>claude</code>. Multi-turn conversational session — you send messages, Claude responds, you review. How most developers use it day-to-day.</p>
       </div>
       <div class="sp-card hi">
-        <h4>Non-interactive mode (-p flag)</h4>
-        <pre class="sp-code">claude -p "your prompt"</pre>
-        <p style="font-size:13px;color:var(--ink-2);margin:4px 0 0">Processes prompt, prints to stdout, exits. Designed for CI/CD pipelines. <b>-p is the only separator.</b></p>
+        <h4>Non-interactive mode</h4>
+        <p style="font-size:13px;color:var(--ink-2);margin:4px 0 0">Run <code>claude -p "your prompt"</code>. Claude processes the prompt, prints output to stdout, and exits. Designed for CI/CD pipelines and automation scripts.</p>
       </div>
     </div>
-    <div class="kc"><b>Key concept:</b> <code>-p</code> is the only thing separating interactive from non-interactive mode. No <code>--batch</code>, no <code>--ci-mode</code>, no environment variable.</div>
+    <div class="kc" style="margin-top:12px">The <code>-p</code> flag (short for <code>--print</code>) is the <b>only separator</b> between modes. No <code>--batch</code>, no <code>--headless</code>, no <code>CLAUDE_CI</code> env var. Same model, same tools, same capabilities in both modes.</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Built-in tools</div>
+    <div class="card pad">
+      <p style="font-size:13px;color:var(--ink-2);margin:0"><b>Grep</b> searches file <em>content</em>; <b>Glob</b> searches <em>paths/names</em>. Read → Edit for single-file changes. Read → Write as the fallback for full rewrites. Bash for shell commands. Claude Code works with any language and any project structure — no <code>package.json</code> or specific config required.</p>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Exam traps</div>
+    <div class="warn"><code>-p</code> does NOT switch to a lighter/faster model. Both modes use the same model.</div>
+    <div class="warn">Permission modes are controlled separately via <code>--permission-mode</code> or config — not by the <code>-p</code> flag.</div>
+    <div class="warn">No built-in subcommands like <code>claude analyze --pr</code>. Use <code>claude -p "..."</code> for all non-interactive tasks.</div>
   </div>
   <div class="sp-section">
     <div class="sub">Also in this task (F4)</div>
-    <ul style="font-size:13px;color:var(--ink-2);line-height:1.8;padding-left:18px;margin:0">
-      <li><b>F4.2:</b> Grep searches file contents; Glob matches file paths — wrong choice leads to empty results.</li>
-      <li><b>F4.3:</b> Three CLAUDE.md levels: user (~/.claude), project (.claude), directory (subdirectory).</li>
-      <li><b>F4.4:</b> Four permission modes — from full control (ask everything) to full automation (bypass all prompts).</li>
+    <ul class="sp-bullets">
+      <li>F4.2: Grep searches content, Glob searches paths.</li>
+      <li>F4.3: Three CLAUDE.md levels: user, project, directory.</li>
+      <li>F4.4: Four permission modes: from full control to full automation.</li>
     </ul>
   </div>
 </div>
@@ -2493,24 +2533,43 @@ export { formatInvoice as renderInvoice } from "./format";</pre>
   <div class="sp-section">
     <div class="sub">What the Agent SDK is</div>
     <div class="card pad">
-      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">The <code>claude_agent_sdk</code> package takes Claude Code's agentic capabilities — tool use, sub-agents, multi-turn reasoning — and packages them into an SDK you can program against. It's for building agents in <b>any domain</b>, not just coding.</p>
-      <p style="font-size:13.2px;color:var(--ink-2);margin:0">Research assistants, data processors, customer support agents, document analyzers — anything that needs multi-step reasoning with tool execution.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0">The <b>Agent SDK</b> (<code>claude_agent_sdk</code> package) packages Claude Code's agentic capabilities — tool use, sub-agents, multi-turn reasoning — into an SDK you can program against. It's for building autonomous, tool-using agents in <b>any domain</b>: research assistants, data processors, customer support agents, document analyzers — not just code.</p>
     </div>
-    <div class="kc"><b>Key concept:</b> The Agent SDK does NOT only work with code repositories. A research agent using WebSearch, Read, and other tools needs no repository at all.</div>
   </div>
   <div class="sp-section">
-    <div class="sub">Why use SDK vs direct Messages API?</div>
-    <div class="card pad">
-      <p style="font-size:13.2px;color:var(--ink-2);margin:0">The SDK provides pre-built: agentic loop, tool execution cycle, sub-agent management, permission controls, turn limits, hook execution. Same API calls, same models, same token costs — the advantage is <b>infrastructure</b>, not enhanced model access.</p>
+    <div class="sub">Three core interfaces</div>
+    <div class="sp-grid">
+      <div class="sp-card hi">
+        <h4><code>query()</code></h4>
+        <p style="font-size:13px;color:var(--ink-2);margin:4px 0 0">Stateless. Single-prompt operations — process one document, classify one ticket, answer one question. No cross-call context. Use when each request is independent.</p>
+      </div>
+      <div class="sp-card hi">
+        <h4><code>ClaudeSDKClient</code></h4>
+        <p style="font-size:13px;color:var(--ink-2);margin:4px 0 0">Stateful. Multi-turn interactions that maintain conversation context across exchanges. Follow-up questions reference prior context automatically.</p>
+      </div>
+      <div class="sp-card hi">
+        <h4><code>ClaudeAgentOptions</code></h4>
+        <p style="font-size:13px;color:var(--ink-2);margin:4px 0 0">Configuration for both interfaces: system prompt, allowed tools, permission mode, max turns, hooks, MCP servers.</p>
+      </div>
     </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Why use SDK vs. raw Messages API?</div>
+    <div class="kc">The SDK provides the <b>agentic loop pre-built</b> — tool execution cycle, sub-agent management, permission controls, turn limits, hook execution. You could build this on the Messages API yourself, but you'd implement all of it. Same token costs, same model, same capabilities — the advantage is infrastructure, not enhanced model access.</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Exam traps</div>
+    <div class="warn">The Agent SDK is <b>not</b> limited to code repositories. A research agent searching the web and reading documents needs no codebase.</div>
+    <div class="warn">SDK does <b>not</b> make API calls free (same token costs), does <b>not</b> guarantee deterministic behavior, and does <b>not</b> use a different model.</div>
+    <div class="warn"><code>query()</code> for stateless; <code>ClaudeSDKClient</code> for stateful — pick based on whether context must persist.</div>
   </div>
   <div class="sp-section">
     <div class="sub">Also in this task (F5)</div>
-    <ul style="font-size:13px;color:var(--ink-2);line-height:1.8;padding-left:18px;margin:0">
-      <li><b>F5.2:</b> query() = stateless (single task); ClaudeSDKClient = stateful (multi-turn, maintains session).</li>
-      <li><b>F5.3:</b> ClaudeAgentOptions — configure model, tools, system prompt, turn limit, permission mode.</li>
-      <li><b>F5.4:</b> Statefulness matters when conversation history must persist across multiple interactions.</li>
-      <li><b>F5.5:</b> Sub-agents — coordinator delegates tasks, specialists execute with their own tool sets.</li>
+    <ul class="sp-bullets">
+      <li>F5.2: query() vs ClaudeSDKClient — stateless vs stateful.</li>
+      <li>F5.3: ClaudeAgentOptions — configuring what an agent can do.</li>
+      <li>F5.4: When statefulness actually matters.</li>
+      <li>F5.5: Sub-agents — coordinator delegates, specialists execute.</li>
     </ul>
   </div>
 </div>
@@ -2524,23 +2583,46 @@ export { formatInvoice as renderInvoice } from "./format";</pre>
   <div class="sp-section">
     <div class="sub">The seven types</div>
     <div class="sp-grid">
-      <div class="sp-card hi">
-        <h4>number vs integer</h4>
-        <p style="font-size:13px;color:var(--ink-2)"><b>number</b> accepts integers AND decimals. <b>integer</b> accepts only whole numbers. Use integer for: quantity, count, age. Use number for: price, percentage, measurement.</p>
-        <p style="font-size:13px;color:var(--ink-2);margin-top:4px">There is no <code>float</code> type. There is no <code>whole_numbers_only</code> flag.</p>
-      </div>
-      <div class="sp-card hi">
-        <h4>null — a real type</h4>
-        <p style="font-size:13px;color:var(--ink-2)"><code>null</code> is a first-class type, not absence. Use <code>["string", "null"]</code> for nullable fields. This tells the model: "field is present, value is null" instead of fabricating a value.</p>
-        <p style="font-size:13px;color:var(--ink-2);margin-top:4px">Missing <code>null</code> in a required field → model fabricates a plausible value.</p>
+      <div class="sp-card">
+        <div style="font-size:13px;color:var(--ink-2);line-height:1.8">
+          <div><code>string</code> — text values: <code>"hello"</code>, <code>"INV-001"</code></div>
+          <div><code>number</code> — any numeric including decimals: <code>3.14</code>, <code>42</code></div>
+          <div><code>integer</code> — whole numbers only: <code>42</code>, <code>-7</code>. Rejects <code>3.14</code></div>
+          <div><code>boolean</code> — exactly <code>true</code> or <code>false</code></div>
+          <div><code>array</code> — ordered lists. Use <code>items</code> to specify element types</div>
+          <div><code>object</code> — key-value structures. Use <code>properties</code> to define fields</div>
+          <div><code>null</code> — the explicit null value. Not "missing" — present but null</div>
+        </div>
       </div>
     </div>
-    <div class="kc"><b>Key concept:</b> Use <code>integer</code> for whole numbers (not <code>number</code>), <code>null</code> in union types for nullable fields, and always pick the most specific type.</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">The critical distinctions</div>
+    <div class="kc"><b>number vs integer:</b> <code>number</code> accepts both integers and decimals. <code>integer</code> accepts only whole numbers. Use <code>integer</code> for quantity, count, age. Use <code>number</code> for price, percentage, measurement. There is no <code>float</code> type.</div>
+    <div class="kc" style="margin-top:8px"><b>null is a real type.</b> A common misconception: null isn't a JSON Schema type. Wrong. Use <code>["string", "null"]</code> for nullable fields — the field is present but its value is null. This matters for extraction: <code>{"warranty_period": null}</code> (explicit) rather than a fabricated value.</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Invoice extraction example</div>
+    <div class="card pad">
+      <div style="font-size:13px;color:var(--ink-2);line-height:1.9">
+        <div><code>invoice_number</code> → <code>string</code> (text ID like "INV-2024-001")</div>
+        <div><code>total_amount</code> → <code>number</code> (decimal like 127.50)</div>
+        <div><code>quantity</code> → <code>integer</code> (whole number like 3)</div>
+        <div><code>is_paid</code> → <code>boolean</code> (true/false)</div>
+        <div><code>notes</code> → <code>["string", "null"]</code> (nullable text)</div>
+      </div>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Exam traps</div>
+    <div class="warn">Missing <code>integer</code> (using <code>number</code> instead) allows unwanted decimals for counts and quantities.</div>
+    <div class="warn">Omitting <code>null</code> from a nullable field forces the model to fabricate a value for required fields. Use <code>["string", "null"]</code>.</div>
+    <div class="warn">There is no <code>float</code> type in JSON Schema.</div>
   </div>
   <div class="sp-section">
     <div class="sub">Also in this task (F6)</div>
-    <ul style="font-size:13px;color:var(--ink-2);line-height:1.8;padding-left:18px;margin:0">
-      <li><b>F6.2:</b> required (must appear), nullable (present but null), enum (fixed set of values) — these three features shape model output most.</li>
+    <ul class="sp-bullets">
+      <li>F6.2: required, nullable, enum — schema features that shape output.</li>
     </ul>
   </div>
 </div>
@@ -2552,31 +2634,48 @@ export { formatInvoice as renderInvoice } from "./format";</pre>
     <h2>System Prompt: Persistent Frame, Not Per-Turn Input</h2>
   </div>
   <div class="sp-section">
-    <div class="sub">System prompt vs user message</div>
+    <div class="sub">Different purposes</div>
     <div class="sp-grid">
       <div class="sp-card hi">
         <h4>System prompt</h4>
-        <p style="font-size:13px;color:var(--ink-2)">Sets role, behavioral rules, persistent instructions. Frames EVERY response. Goes in the top-level <code>system</code> parameter — outside the messages array.</p>
-        <p style="font-size:13px;color:var(--ink-2);margin-top:4px"><em>"You are a research assistant. Only cite verified sources. Maintain a professional tone."</em></p>
+        <p style="font-size:13px;color:var(--ink-2);margin:4px 0 0">Sets the agent's <b>role, behavioral rules, and persistent instructions</b>. Frames every response. "You are a research assistant. Only cite verified sources." Goes in the top-level <code>system</code> parameter — outside the <code>messages</code> array.</p>
       </div>
       <div class="sp-card hi">
         <h4>User message</h4>
-        <p style="font-size:13px;color:var(--ink-2)">Provides the specific task for the current turn. Changes with each interaction. Goes in the <code>messages</code> array with <code>role: "user"</code>.</p>
-        <p style="font-size:13px;color:var(--ink-2);margin-top:4px"><em>"Summarize this document." — "What does processPayment() do?"</em></p>
+        <p style="font-size:13px;color:var(--ink-2);margin:4px 0 0">Provides the <b>specific task or question for the current turn</b>. Changes with each interaction. "Summarize this document." Goes in the <code>messages</code> array with <code>role: "user"</code>.</p>
       </div>
     </div>
-    <div class="kc"><b>Key concept:</b> Persistent behavioral requirements → system prompt. Per-turn content → user messages. Structurally separate parameters.</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Different locations in the API</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0">System instructions use the <b>top-level <code>system</code> parameter</b> — outside the messages array. User questions go in the messages array with <code>role: "user"</code>. They are structurally separate. There is <b>no <code>role: "system"</code></b> in the messages array. There is no combined instructions parameter.</p>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">The API is stateless</div>
+    <div class="kc"><b>System prompts are not stored server-side.</b> Every request must include the system prompt — there's no "the server remembers from last time." If you omit it, the model has no behavioral framing for that call. The system prompt is included in every API call, adding to token usage — by design for self-contained requests.</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Customer support agent example</div>
+    <div class="card pad">
+      <div style="font-size:13px;color:var(--ink-2);line-height:1.8">
+        <div><b>System prompt:</b> professional tone, company policies, escalation rules → applies to every response</div>
+        <div><b>User message:</b> "Customer asks about return policy for order #12345" → varies per turn</div>
+      </div>
+    </div>
   </div>
   <div class="sp-section">
     <div class="sub">Exam traps</div>
-    <div class="trap"><b>role: "system" goes in the messages array.</b> No. There is no such role in messages. System has its own top-level parameter.</div>
-    <div class="trap"><b>The system prompt is stored server-side.</b> No. The API is stateless. Every request must include the system prompt, every time.</div>
+    <div class="warn">Don't put persistent rules in user messages — that's wasteful duplication each turn. Don't put per-turn questions in the system prompt.</div>
+    <div class="warn">No <code>role: "system"</code> exists in the messages array. System content lives in the top-level <code>system</code> parameter only.</div>
+    <div class="warn">System prompts are <b>not cached server-side</b>. Include them in every request.</div>
   </div>
   <div class="sp-section">
     <div class="sub">Also in this task (F7)</div>
-    <ul style="font-size:13px;color:var(--ink-2);line-height:1.8;padding-left:18px;margin:0">
-      <li><b>F7.2:</b> Few-shot: show, don't just tell. Examples demonstrate exact format and judgment; text describes it. Examples win.</li>
-      <li><b>F7.3:</b> Temperature: 0 = deterministic sampling, not guaranteed accuracy. High temperature = more randomness, not more creativity per se.</li>
+    <ul class="sp-bullets">
+      <li>F7.2: Few-shot: show, don't just tell.</li>
+      <li>F7.3: Temperature: determinism is NOT accuracy.</li>
     </ul>
   </div>
 </div>
@@ -2592,27 +2691,50 @@ export { formatInvoice as renderInvoice } from "./format";</pre>
     <div class="sp-grid">
       <div class="sp-card hi">
         <h4>Chatbot</h4>
-        <p style="font-size:13px;color:var(--ink-2)">Receives a message → generates text response → waits. Answers questions, summarizes, translates. <b>Talks about things.</b> Does not interact with external systems.</p>
-        <p style="font-size:13px;color:var(--ink-2);margin-top:4px">FAQ bot answering "What's your return policy?" = chatbot.</p>
+        <p style="font-size:13px;color:var(--ink-2);margin:4px 0 0">Receives a message, generates a text response, waits for the next message. Answers questions, summarizes text. <b>Talks about things.</b> Doesn't take actions on external systems. A FAQ bot answering "What's your return policy?" is a chatbot.</p>
       </div>
       <div class="sp-card hi">
         <h4>Agent</h4>
-        <p style="font-size:13px;color:var(--ink-2)">Receives a task → plans → uses tools → executes multi-step actions. Reads files, searches databases, processes refunds, creates issues. <b>Does things.</b></p>
-        <p style="font-size:13px;color:var(--ink-2);margin-top:4px">System that looks up order, processes refund, updates account = agent.</p>
+        <p style="font-size:13px;color:var(--ink-2);margin:4px 0 0">Receives a task, plans an approach, uses tools to interact with external systems, executes multi-step actions. Reads files, searches databases, processes refunds, creates issues. <b>Does things.</b> A system that looks up your order, processes a refund, and updates your account is an agent.</p>
       </div>
     </div>
-    <div class="kc"><b>Key concept:</b> The distinction is tool-mediated action vs passive response — not model quality, multimodal support, or conversation length.</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Four distinguishing capabilities</div>
+    <div class="card pad">
+      <ol style="font-size:13.2px;color:var(--ink-2);padding-left:16px;margin:0;line-height:1.9">
+        <li><b>Autonomous task completion</b> — agents drive the process; don't wait for instructions between steps</li>
+        <li><b>Multi-step planning</b> — break complex goals into sub-steps and execute them</li>
+        <li><b>Tool use</b> — interact with external systems (databases, APIs, files) through tools</li>
+        <li><b>Proactive execution</b> — take action rather than passively responding</li>
+      </ol>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">What does NOT define the difference</div>
+    <div class="kc"><b>Model quality:</b> agents and chatbots can use the same model — the distinction is behavioral. <b>Multi-turn:</b> chatbots can maintain conversation context across turns. <b>Question complexity:</b> a chatbot can answer complex questions from training data. <b>Multimodal:</b> processing images doesn't make a system an agent. A text-only system with tools is more "agent" than a multimodal chatbot without tools.</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">The tool use test</div>
+    <div class="kc"><b>If you're unsure:</b> Does it call tools to interact with external systems? Does it chain multiple actions to complete a task? If both: agent. If only text responses: chatbot — regardless of how sophisticated those responses are.</div>
   </div>
   <div class="sp-section">
     <div class="sub">The agentic loop</div>
     <div class="card pad">
-      <p style="font-size:13.2px;color:var(--ink-2);margin:0"><b>Reason → Act → Observe → Repeat.</b> The model reasons about the task, acts by calling a tool, observes the result, then reasons again about the next step. The loop continues until stop_reason is "end_turn".</p>
+      <p style="font-size:13px;color:var(--ink-2);margin:0;text-align:center;letter-spacing:.03em"><b>Reason → Act → Observe → Repeat</b></p>
+      <p style="font-size:12.5px;color:var(--ink-3);margin:8px 0 0">The model reasons about the task, calls a tool (Act), receives the result (Observe), then reasons about the next step. The loop continues until the task is complete or max turns is reached.</p>
     </div>
   </div>
   <div class="sp-section">
+    <div class="sub">Exam traps</div>
+    <div class="warn">Multi-turn conversation ≠ agent. A chatbot can have multi-turn context.</div>
+    <div class="warn">System prompts are used by both agents and chatbots.</div>
+  </div>
+  <div class="sp-section">
     <div class="sub">Also in this task (F8)</div>
-    <ul style="font-size:13px;color:var(--ink-2);line-height:1.8;padding-left:18px;margin:0">
-      <li><b>F8.3:</b> Five orchestration patterns — simple chain, parallel, hub-and-spoke, pipeline, dynamic — each suited to different task structures.</li>
+    <ul class="sp-bullets">
+      <li>F8.2: The agentic loop — Reason → Act → Observe → Repeat.</li>
+      <li>F8.3: Five orchestration patterns.</li>
     </ul>
   </div>
 </div>
