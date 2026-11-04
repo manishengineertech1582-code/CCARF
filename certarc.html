@@ -365,6 +365,33 @@ button{font-family:inherit}
 #v-practice .prac-score{font-size:13px;color:var(--ink-3)}
 #v-practice .prac-progress{height:4px;background:var(--border);border-radius:4px;margin:14px auto 0;max-width:720px}
 #v-practice .prac-progress-bar{height:4px;background:var(--accent);border-radius:4px;transition:width .3s}
+/* Domain Practice in Math tab */
+#v-math .prac-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px 24px}
+#v-math .prac-meta{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+#v-math .prac-badge{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;padding:3px 9px;border-radius:20px;border:1px solid currentColor;margin-right:4px}
+#v-math .prac-badge.d1{color:#6ea8fe;border-color:#6ea8fe}
+#v-math .prac-badge.d2{color:#a78bfa;border-color:#a78bfa}
+#v-math .prac-badge.d3{color:#34d399;border-color:#34d399}
+#v-math .prac-badge.d4{color:#fbbf24;border-color:#fbbf24}
+#v-math .prac-badge.d5{color:#f87171;border-color:#f87171}
+#v-math .prac-badge.d6{color:#fb923c;border-color:#fb923c}
+#v-math .prac-badge.diff-basic{color:var(--ink-3);border-color:var(--border)}
+#v-math .prac-badge.diff-intermediate{color:#fbbf24;border-color:#fbbf24}
+#v-math .prac-badge.diff-advanced{color:#f87171;border-color:#f87171}
+#v-math .prac-stem{font-size:15.5px;line-height:1.6;margin-bottom:18px;color:var(--ink)}
+#v-math .prac-opts{display:flex;flex-direction:column;gap:9px}
+#v-math .prac-opt{display:flex;align-items:flex-start;gap:10px;padding:11px 14px;border-radius:10px;border:1px solid var(--border);cursor:pointer;background:var(--bg);transition:all .15s;text-align:left;font-size:14.5px;color:var(--ink);width:100%}
+#v-math .prac-opt:hover:not(:disabled){border-color:var(--accent);background:var(--surface)}
+#v-math .prac-opt .opt-key{font-weight:700;min-width:18px;flex-shrink:0;color:var(--ink-2)}
+#v-math .prac-opt.correct{background:#14532d22;border-color:#22c55e;color:var(--ink)}
+#v-math .prac-opt.wrong{background:#7f1d1d22;border-color:#ef4444;color:var(--ink-2)}
+#v-math .prac-opt:disabled{cursor:default}
+#v-math .prac-rationale{margin-top:16px;padding:12px 14px;background:var(--surface);border-left:3px solid var(--accent);border-radius:0 8px 8px 0;font-size:13.5px;line-height:1.6;color:var(--ink-2);display:none}
+#v-math .prac-rationale.show{display:block}
+#v-math .prac-nav{display:flex;align-items:center;justify-content:space-between;margin-top:18px}
+#v-math .prac-score{font-size:13px;color:var(--ink-3)}
+#v-math .prac-progress{height:4px;background:var(--border);border-radius:4px;margin-bottom:16px}
+#v-math .prac-progress-bar{height:4px;background:var(--accent);border-radius:4px;transition:width .3s}
 </style>
 <div class="prac-hero">
   <div class="eyebrow">1,374 Questions &middot; 5 Domains</div>
@@ -7369,132 +7396,6 @@ function renderGuideExams(){
         '<p style="text-align:center;color:var(--ink-3);font-size:12.5px;margin-top:16px">This exam has not been added yet. Its questions will appear here once it has been extracted.</p>'+
       '</div>';
     }).join('')+
-  '<div class="subpanel" id="sp-mathprac">'+
-  '<div style="margin-bottom:14px">'+
-    '<div class="sub" style="margin-bottom:10px">Select a domain</div>'+
-    '<div id="mp-domain-row" style="display:flex;gap:8px;flex-wrap:wrap">'+
-      '<button class="mp-db act" data-d="1">D1 Agentic<br><small>319 Q &middot; 6 sets</small></button>'+
-      '<button class="mp-db" data-d="2">D2 MCP &amp; Tools<br><small>216 Q &middot; 4 sets</small></button>'+
-      '<button class="mp-db" data-d="3">D3 Claude Code<br><small>255 Q &middot; 5 sets</small></button>'+
-      '<button class="mp-db" data-d="4">D4 Prompting<br><small>270 Q &middot; 5 sets</small></button>'+
-      '<button class="mp-db" data-d="5">D5 Context<br><small>314 Q &middot; 6 sets</small></button>'+
-      '<button class="mp-db" data-d="6">D6 Advanced API<br><small>20 Q &middot; 1 set</small></button>'+
-    '</div>'+
-  '</div>'+
-  '<div id="mp-sets-row" class="opt-cards"></div>'+
-  '<div style="text-align:center;margin-top:14px">'+
-    '<button class="btn" id="mpStartBtn" disabled>Start practice &#8594;</button>'+
-  '</div>'+
-  '<p style="text-align:center;color:var(--ink-3);font-size:12.5px;margin-top:12px">'+
-    '60 questions per set &middot; instant feedback &middot; explanations included'+
-  '</p>'+
-'</div>'+
-'</div>';
-  el.querySelectorAll('.subtab').forEach(function(t){ t.onclick=function(){
-    el.querySelectorAll('.subtab').forEach(function(x){x.classList.remove('on');});
-    t.classList.add('on');
-    el.querySelectorAll('.subpanel').forEach(function(p){p.classList.remove('on');});
-    document.getElementById('sp-'+t.dataset.st).classList.add('on');
-  };});
-  document.getElementById('guideExam1StartBtn').onclick=function(){ startGuideExam1(); };
-  document.getElementById('guideExam2StartBtn').onclick=function(){ startGuideExam2(); };
-  document.getElementById('guideExam3StartBtn').onclick=function(){ startGuideExam3(); };
-  document.getElementById('guideExam4StartBtn').onclick=function(){ startGuideExam4(); };
-  document.getElementById('guideExam5StartBtn').onclick=function(){ startGuideExam5(); };
-}
-function startGuideExam1(){
-  var pool=Q.filter(function(q){return q.group==='CGuide1';});
-  practiceState={running:true,group:'CGuide1',questions:shuffle(pool.slice()),answers:{},flags:{},cur:0,
-    endAt:Date.now()+120*60*1000,timerId:null,submitted:false};
-  practiceState.timerId=setInterval(tickTimer,1000);
-  go('practice');
-  renderRun();
-  document.querySelectorAll('.nav button').forEach(function(b){b.classList.toggle('on', b.dataset.nav==='guideexams');});
-}
-function startGuideExam2(){
-  var pool=Q.filter(function(q){return q.group==='CGuide2';});
-  practiceState={running:true,group:'CGuide2',questions:shuffle(pool.slice()),answers:{},flags:{},cur:0,
-    endAt:Date.now()+120*60*1000,timerId:null,submitted:false};
-  practiceState.timerId=setInterval(tickTimer,1000);
-  go('practice');
-  renderRun();
-  document.querySelectorAll('.nav button').forEach(function(b){b.classList.toggle('on', b.dataset.nav==='guideexams');});
-}
-function startGuideExam3(){
-  var pool=Q.filter(function(q){return q.group==='CGuide3';});
-  practiceState={running:true,group:'CGuide3',questions:shuffle(pool.slice()),answers:{},flags:{},cur:0,
-    endAt:Date.now()+120*60*1000,timerId:null,submitted:false};
-  practiceState.timerId=setInterval(tickTimer,1000);
-  go('practice');
-  renderRun();
-  document.querySelectorAll('.nav button').forEach(function(b){b.classList.toggle('on', b.dataset.nav==='guideexams');});
-}
-function startGuideExam5(){
-  var pool=Q.filter(function(q){return q.group==='CGuide5';});
-  practiceState={running:true,group:'CGuide5',questions:shuffle(pool.slice()),answers:{},flags:{},cur:0,
-    endAt:Date.now()+120*60*1000,timerId:null,submitted:false};
-  practiceState.timerId=setInterval(tickTimer,1000);
-  go('practice');
-  renderRun();
-  document.querySelectorAll('.nav button').forEach(function(b){b.classList.toggle('on', b.dataset.nav==='guideexams');});
-}
-function startGuideExam4(){
-  var pool=Q.filter(function(q){return q.group==='CGuide4';});
-  practiceState={running:true,group:'CGuide4',questions:shuffle(pool.slice()),answers:{},flags:{},cur:0,
-    endAt:Date.now()+120*60*1000,timerId:null,submitted:false};
-  practiceState.timerId=setInterval(tickTimer,1000);
-  go('practice');
-  renderRun();
-  document.querySelectorAll('.nav button').forEach(function(b){b.classList.toggle('on', b.dataset.nav==='guideexams');});
-}
-function renderMath(){
-  var el=document.getElementById('v-math');
-  var count=Q.filter(function(q){return q.group==='MATH';}).length;
-  var multi=Q.filter(function(q){return q.group==='MATH' && q.select==='multi';}).length;
-  var titles={1:'Customer Support Resolution Agent',2:'Code Generation with Claude Code',3:'Multi-Agent Research System',4:'Developer Productivity with Claude',5:'Claude Code for Continuous Integration',6:'Structured Data Extraction'};
-  var scenCards=[1,2,3,4,5,6].map(function(s){
-    var n=Q.filter(function(q){return q.group==='MATH' && q.scenario===s;}).length;
-    return '<button class="pick" data-s="'+s+'"><span class="r"></span><div><h4>Scenario '+s+' - '+titles[s]+'</h4>'+
-      '<p>Foundations - '+n+' questions - 20 minutes</p></div></button>';
-  }).join('');
-  var m2Count=Q.filter(function(q){return q.group==='MATH2';}).length;
-  var m2Multi=Q.filter(function(q){return q.group==='MATH2' && q.select==='multi';}).length;
-  var m2ScenCards=[1,2,3,4,5,6].map(function(s){
-    var n=Q.filter(function(q){return q.group==='MATH2' && q.scenario===s;}).length;
-    return '<button class="pick" data-s="'+s+'"><span class="r"></span><div><h4>Scenario '+s+' - '+titles[s]+'</h4>'+
-      '<p>Foundations - '+n+' questions - 20 minutes</p></div></button>';
-  }).join('');
-  el.innerHTML='<div class="setup"><div class="hero"><h1 style="font-size:30px">MATH - Practice Set</h1>'+
-    '<p>60 original CCAR-F practice questions (Practice Question Set v2) - all six scenarios, blueprint-weighted across the five domains, with the full answer key and rationales.</p></div>'+
-    '<div class="subtabs"><button class="subtab on" data-st="mathfull">Full Exam</button>'+
-    '<button class="subtab" data-st="mathscen">By Scenario</button>'+
-    '<button class="subtab" data-st="mathstudy">Study All</button><button class="subtab" data-st="mathx2">Exam 2</button><button class="subtab" data-st="mathprac">Domain Practice</button></div>'+
-    '<div class="subpanel on" id="sp-mathfull">'+
-      '<div class="opt-cards"><button class="pick on"><span class="r"></span><div><h4>Full Practice Exam</h4>'+
-      '<p>Foundations - '+count+' questions - '+multi+' multi-select - 120 minutes</p></div></button></div>'+
-      '<div style="text-align:center"><button class="btn" id="mathStartBtn">Start exam -></button></div>'+
-      '<p style="text-align:center;color:var(--ink-3);font-size:12.5px;margin-top:16px">Multi-select questions require all correct options. No partial credit.</p>'+
-    '</div>'+
-    '<div class="subpanel" id="sp-mathscen">'+
-      '<div class="opt-cards" id="mathScenCards">'+scenCards+'</div>'+
-      '<div style="text-align:center"><button class="btn" id="mathScenStartBtn" disabled>Start scenario -></button></div>'+
-      '<p style="text-align:center;color:var(--ink-3);font-size:12.5px;margin-top:16px">One scenario at a time - 10 questions, 20 minutes, same pacing as the full exam.</p>'+
-    '</div>'+
-    '<div class="subpanel" id="sp-mathstudy">'+
-      '<p style="text-align:center;color:var(--ink-2);font-size:13.5px;margin:4px 0 16px">All '+count+' questions as selectable study cards - pick an answer for instant grading and the rationale.</p>'+
-      '<div id="mathStudyList"></div>'+
-    '</div>'+
-    '<div class="subpanel" id="sp-mathx2">'+
-      '<p style="text-align:center;color:var(--ink-2);font-size:13.5px;margin:4px 0 16px">Exam 2 - a second set of 60 original CCAR-F practice questions: all six scenarios, blueprint-weighted across the five domains, with the full answer key and rationales.</p>'+
-      '<div class="opt-cards"><button class="pick on"><span class="r"></span><div><h4>Exam 2 - Full Practice Exam</h4>'+
-      '<p>Foundations - '+m2Count+' questions - '+m2Multi+' multi-select - 120 minutes</p></div></button></div>'+
-      '<div style="text-align:center"><button class="btn" id="math2StartBtn">Start exam -></button></div>'+
-      '<div class="opt-cards" id="math2ScenCards" style="margin-top:18px">'+m2ScenCards+'</div>'+
-      '<div style="text-align:center"><button class="btn" id="math2ScenStartBtn" disabled>Start scenario -></button></div>'+
-      '<div style="text-align:center;margin-top:14px"><button class="btn ghost" id="math2StudyBtn">Study all 60 questions</button></div>'+
-      '<div id="math2StudyList" style="display:none;margin-top:14px"></div>'+
-      '<p style="text-align:center;color:var(--ink-3);font-size:12.5px;margin-top:16px">Multi-select questions require all correct options. No partial credit.</p>'+
-      '</div>'+
     '<div class="subpanel" id="sp-mathprac">'+
     '<div style="margin-bottom:14px">'+
       '<div class="sub" style="margin-bottom:10px">Select a domain</div>'+
