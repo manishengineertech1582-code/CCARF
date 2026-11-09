@@ -3014,51 +3014,124 @@ paths:
 <!-- ===== PANEL: D3.4 Plan Mode ===== -->
 <div class="sp-panel" id="sp-d3t4">
   <div class="sp-section">
-    <div class="sub">Domain 3 · Claude Code Configuration · 20% of exam</div>
-    <h2>Task 3.4 — Plan Mode &amp; Exploration</h2>
-    <p style="font-size:13.2px;color:var(--ink-2);margin:4px 0 0"><em>55% Rollback Rate When You Skip Planning on Complex Tasks.</em></p>
+    <div class="sub">Domain 3 · Claude Code Configuration and Workflows · 20% of exam</div>
+    <h2>Topic 3.4 — Plan Mode vs. Direct Execution</h2>
+    <p style="font-size:13.2px;color:var(--ink-2);margin:4px 0 0">Appears in: <em>Code Generation with Claude Code</em>, <em>Developer Productivity with Claude</em>, <em>Claude Code for Continuous Integration</em> scenarios.</p>
+    <p style="font-size:13.2px;color:var(--ink-2);margin:4px 0 0"><b>What you need to know:</b> Match the mode to what you do not yet know: use plan mode for large, multi-file, ambiguous or architectural work, and direct execution for small, clear, contained changes.</p>
   </div>
   <div class="sp-section">
-    <div class="sub">The decision rule</div>
+    <div class="sub">Last quiz answer — Topic 3.3</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 6px"><b>Answer: B</b> — move the section into <code>.claude/rules/protobuf.md</code> with <code>paths: ["**/*.proto"]</code> in its frontmatter. The glob matches .proto files in any directory, so one central file covers all 30 services and every new one. (Topic 3.3: protobuf conventions sat in the root CLAUDE.md and loaded in every session; the goal was to load them only for .proto work across 30 services, with new ones added every month.)</p>
+      <ul style="margin:6px 0 0;padding-left:18px;font-size:13px;color:var(--ink-2);line-height:1.6">
+        <li><b>Why C loses:</b> a CLAUDE.md in each api/ folder does load only for that folder, but it is tied to one directory. That means 30 copies that can drift, and every new service needs another copy.</li>
+        <li><b>A and D:</b> a rule file without paths loads unconditionally, and a skill loads only when a developer invokes it, not when a .proto file is touched.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Plan mode fits unknowns, direct execution fits knowns</div>
+    <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">Two questions decide the mode. Do you already know the change? And how far does it reach?</p>
     <div class="sp-grid">
       <div class="sp-card hi">
-        <h4>Use Plan Mode when</h4>
-        <ul style="font-size:13px;color:var(--ink-2);padding-left:16px;margin:0;line-height:1.7">
-          <li>Multiple valid approaches exist</li>
-          <li>Codebase is unfamiliar</li>
-          <li>Architectural decisions needed</li>
-          <li>Many files with interdependencies</li>
-        </ul>
-        <p style="font-size:13px;color:var(--ink-2);margin-top:6px">Plan mode = read-only exploration. No file modifications.</p>
+        <h4>Plan mode — large, ambiguous, architectural</h4>
+        <p>Large changes across many files, tasks with several valid approaches, and architectural choices. Examples: restructuring how services depend on each other, a library migration that touches dozens of files, or choosing between a message queue and synchronous webhooks.</p>
       </div>
       <div class="sp-card hi">
-        <h4>Use Direct Execution when</h4>
-        <ul style="font-size:13px;color:var(--ink-2);padding-left:16px;margin:0;line-height:1.7">
-          <li>Solution is already known</li>
-          <li>Stack trace points to exact line</li>
-          <li>Scoped, single-file change</li>
-          <li>Simple, isolated task</li>
-        </ul>
-        <p style="font-size:13px;color:var(--ink-2);margin-top:6px">If you already know the fix, just fix it. Plan mode on simple tasks wastes 2x time for 3% gain.</p>
+        <h4>Direct execution — small, clear, contained</h4>
+        <p>A bug whose stack trace names one line in one file, or one check that rejects an end date before the start date. The docs give a test: "If you could describe the diff in one sentence, skip the plan." Plan mode "adds overhead", so a trivial fix does not earn it.</p>
       </div>
     </div>
-    <div class="kc"><b>Key concept:</b> The decision is "does this task have uncertainty?" — not "is this a large task?" Match mode to complexity. Three-phase workflow for complex tasks: Plan → Explore → Direct.</div>
+    <div class="kc"><b>Key concept:</b> Large, ambiguous or architectural: plan mode. Small and clear: direct execution.</div>
   </div>
   <div class="sp-section">
-    <div class="sub">The 55% rollback stat</div>
+    <div class="sub">Plan mode prevents rework by delaying the edits</div>
     <div class="card pad">
-      <p style="font-size:13.2px;color:var(--ink-2);margin:0">One developer skipped planning on a 45-file microservice restructuring. After 30 minutes of changes across 12 files, discovered the approach conflicted with the session management system. Full rollback. Plan mode would have found that conflict before any changes were made. Complex tasks without planning fail more than half the time.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">"Plan mode tells Claude to research and propose changes without making them." Claude reads files and writes a plan, but does not edit your source. Nothing changes on disk until you approve the plan.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0">That is why it saves rework. The docs warn that letting Claude jump straight to coding "can produce code that solves the wrong problem". In plan mode, hidden dependencies and competing approaches show up while changing course still costs nothing. In direct execution, they show up after some of the files are already edited the wrong way.</p>
+    </div>
+    <div class="kc"><b>Key concept:</b> Plan mode finds the decisive dependency before any file is edited.</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Explore keeps discovery out of the main context</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">Explore is a built-in subagent: "A fast, read-only agent optimized for searching and analyzing codebases." Its Write and Edit tools are denied. It works in its own context and returns only a summary, which "keeps exploration results out of your main conversation context".</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0">This matters because "Claude's context window fills up fast, and performance degrades as it fills". Suppose a task has phases: discover, design, implement. If the discovery runs in the main conversation, the hundreds of search results stay there. The later phases then work in a context full of output nobody will read again, and answers get less accurate.</p>
+    </div>
+    <pre class="sp-code" style="margin-top:10px">main conversation                 Explore (own context)
+
+"find callers of X"   -------&gt;    Grep, Glob, Read: 300 hits
+
+&lt;-- summary: 23 call sites, 3 wrappers</pre>
+    <div class="kc"><b>Key concept:</b> Verbose discovery goes to Explore, and only the summary comes back.</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Plan, then execute</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">The two modes work together. Investigate and design in plan mode, using Explore for the verbose searches. Approve the plan. Then implement it directly: approving a plan exits plan mode, so Claude starts editing. The docs' rule: "Separate research and planning from implementation to avoid solving the wrong problem."</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0">Staying in plan mode does not finish the work, because plan mode never edits. The plan has to be approved and then carried out.</p>
+    </div>
+    <div class="kc"><b>Key concept:</b> Plan mode to investigate, approval, then direct execution of the plan.</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Exam vs. documentation</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">The exam says "direct execution". The docs have no mode by that name; they say "ask Claude to do it directly", meaning work without a planning phase. The guide's example of a migration affecting 45 or more files is an illustration. The docs name no threshold and give signals instead: an uncertain approach, several files, unfamiliar code.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0"><b>Under exam conditions:</b> pick plan mode on scale plus open design choices, direct execution for a small clear change, and Explore for verbose discovery.</p>
     </div>
   </div>
   <div class="sp-section">
-    <div class="sub">Also in this task (3.4)</div>
-    <ul style="font-size:13px;color:var(--ink-2);line-height:1.8;padding-left:18px;margin:0">
-      <li><b>K3.4.2:</b> Direct execution is correct when the fix is known and scoped — don't use plan mode for simple changes.</li>
-      <li><b>K3.4.3:</b> Explore subagent — 120 files explored, only 12% of context used because exploration runs in an isolated context.</li>
-      <li><b>S3.4.1:</b> Plan → Explore → Direct: the three-phase workflow for complex tasks.</li>
+    <div class="sub">Exam traps — options that lose</div>
+    <div class="trap"><b>Fork the session and try both approaches.</b> Forking is a real feature (Topic 1.7, sessions: resume and fork), but the choice needs exploration before any edits exist. Pick plan mode.</div>
+    <div class="trap"><b>Run /compact after discovery.</b> It recovers space after the damage, and it summarizes the design work too. Explore keeps the output out in the first place.</div>
+    <div class="trap"><b>Turn the discovery into a skill with context: fork.</b> Forked skills (Topic 3.2) isolate a reusable workflow. One-off discovery is Explore's job.</div>
+    <div class="trap"><b>Plan mode plus Explore for one date check.</b> The diff fits in one sentence, so plan mode only adds overhead.</div>
+    <div class="trap"><b>Add "think carefully before editing" to CLAUDE.md.</b> Instructions do not hold back edits. Plan mode does until approval.</div>
+    <div class="trap"><b>A hook that blocks edits until a plan file exists.</b> Hooks enforce policy. Choosing to plan is a mode choice.</div>
+    <div class="trap"><b>Switch to a stronger model when a long session contradicts itself.</b> The cause is a context full of discovery output.</div>
+    <div class="trap"><b>Stay in plan mode for safety.</b> Plan mode never edits, so the plan must be approved and executed.</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Worked example — the deprecated HTTP client migration</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>Symptom:</b> A team must replace a deprecated HTTP client used in about 50 files. Two approaches work: a thin adapter that keeps call sites unchanged, or rewriting call sites for the new async API. The developer asked Claude to migrate directly. After 14 files, Claude found that a shared retry wrapper only works with the adapter. Half the edits used the async rewrite and had to be reverted.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>Tempting answers:</b> write a longer prompt, or fork the session next time.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>Root cause:</b> a large change with two valid approaches ran as direct execution, so the decisive dependency appeared mid-edit.</p>
+      <div class="kc" style="margin:8px 0 0"><b>Fix:</b> Plan mode first. Explore finds every call site and wrapper and returns a summary. Claude compares the approaches and proposes the adapter plan. Approve it, then implement it directly.</div>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Checklist</div>
+    <ul class="checklist">
+      <li>Does the task state many files, several valid approaches or an architectural decision? Then plan mode.</li>
+      <li>Could the diff be described in one sentence? Then direct execution.</li>
+      <li>Will discovery produce hundreds of results the later phases never need? Then run it in Explore.</li>
+      <li>Does the option keep the output out of the main context, or only clean up afterwards?</li>
+      <li>Does the option stay in plan mode and expect edits? Plan mode needs approval, then execution.</li>
+      <li>Is the option a real mechanism from another topic (forking, /compact, forked skills, hooks, CLAUDE.md)? Check that it answers the question asked.</li>
+      <li>Does the option plan a trivial fix?</li>
     </ul>
   </div>
-</div>
+  <div class="sp-section">
+    <div class="sub">Quiz</div>
+    <div class="quiz-box">
+      <div class="q-label">Today's quiz · Topic 3.4</div>
+      <div class="q-text"><b>Code Generation with Claude Code.</b> You are using Claude Code to accelerate software development. Your team uses it for code generation, refactoring, debugging, and documentation. You need to integrate it into your development workflow with custom slash commands, CLAUDE.md configurations, and understand when to use plan mode vs direct execution.<br><br>
+      In one Claude Code session, a developer asked Claude to find every caller of the deprecated LegacyClient class, design a replacement, and then implement it. During discovery, Claude ran Grep and Read in the main conversation and got about 300 matches across 40 files. When implementation started, these search results filled most of the context window, and Claude's edits were less accurate than its earlier analysis.<br><br>
+      <b>For the next task like this, which change best keeps the main context free for the design and implementation phases?</b></div>
+      <div class="q-opt"><b>A.</b> Run /compact when implementation starts, so the conversation so far is summarized and the window has room again.</div>
+      <div class="q-opt"><b>B.</b> Have Claude also save the list of callers to a notes file during discovery, for the later phases to read.</div>
+      <div class="q-opt"><b>C.</b> Ask Claude to run discovery in the Explore subagent, so only a summary of the callers returns to the main conversation.</div>
+      <div class="q-opt"><b>D.</b> After discovery, fork the session and do the design and implementation in the fork, leaving the original session as it is.</div>
+      <details style="margin-top:14px">
+        <summary style="font-size:13px;color:var(--accent);cursor:pointer;font-weight:600">Show answer</summary>
+        <div style="margin-top:10px;padding:12px 14px;background:var(--good-bg);border:1px solid var(--good-bd);border-radius:9px;font-size:13.2px;color:var(--ink-2);line-height:1.6">
+          <b style="color:var(--good)">Answer: C.</b> Explore runs discovery in its own context and returns only a summary, so the main conversation stays free for design and implementation. A cleans up after the damage — the 300 matches were already in the main context, and /compact summarizes the design work too. B does not keep the output out: the matches were still produced in the main conversation, and reading the notes file back loads them in again. D forks a session that already carries the filled context, so the design and implementation still run in a crowded window.
+        </div>
+      </details>
+    </div>
+  </div>
+</div><!-- /sp-d3t4 -->
 
 <!-- ===== PANEL: D3.5 Examples First ===== -->
 <div class="sp-panel" id="sp-d3t5">
