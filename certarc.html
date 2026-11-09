@@ -2893,123 +2893,395 @@ export { formatInvoice as renderInvoice } from "./format";</pre>
 <!-- ===== PANEL: D3.1 Config Hierarchy ===== -->
 <div class="sp-panel" id="sp-d3t1">
   <div class="sp-section">
-    <div class="sub">Domain 3 · Claude Code Configuration · 20% of exam</div>
-    <h2>Task 3.1 — Config Hierarchy</h2>
-    <p style="font-size:13.2px;color:var(--ink-2);margin:4px 0 0"><em>Put Team Standards Where the Team Can Actually Get Them.</em></p>
+    <div class="sub">Domain 3 · Claude Code Configuration and Workflows · 20% of exam</div>
+    <h2>Topic 3.1 — CLAUDE.md Hierarchy</h2>
+    <p style="font-size:13.2px;color:var(--ink-2);margin:4px 0 0">Appears in: <em>Code Generation with Claude Code</em>, <em>Developer Productivity with Claude</em>, <em>Claude Code for Continuous Integration</em> scenarios.</p>
+    <p style="font-size:13.2px;color:var(--ink-2);margin:4px 0 0"><b>What you need to know:</b> Put an instruction at the level that matches who must get it: user level for you alone, project level for the whole team, directory level for one part of the tree.</p>
   </div>
   <div class="sp-section">
-    <div class="sub">Three levels, three audiences</div>
+    <div class="sub">Last quiz answer — Topic 2.5</div>
     <div class="card pad">
-      <table class="sp-t">
-        <tr><th>Level</th><th>Location</th><th>Who gets it</th><th>Use for</th></tr>
-        <tr><td>User</td><td><code>~/.claude/CLAUDE.md</code></td><td>One developer</td><td>Personal prefs (tab size, verbosity)</td></tr>
-        <tr><td>Project</td><td><code>.claude/CLAUDE.md</code></td><td>Everyone who clones</td><td>Team standards (naming, test format)</td></tr>
-        <tr><td>Directory</td><td><code>subdir/CLAUDE.md</code></td><td>Only when editing that dir</td><td>Area-specific rules (DB migrations)</td></tr>
-      </table>
-    </div>
-    <div class="kc"><b>Key concept:</b> All active levels load simultaneously — they stack. When editing <code>src/api/handler.py</code>, Claude Code sees user + project + <code>src/api/CLAUDE.md</code>.</div>
-  </div>
-  <div class="sp-section">
-    <div class="sub">The classic mistake</div>
-    <div class="card pad" style="border-color:var(--bad-bd)">
-      <p style="font-size:13.2px;color:var(--ink-2);margin:0">A developer sets coding standards in <code>~/.claude/CLAUDE.md</code>. Works perfectly on their machine. A new hire clones the repo — no standards. Cloning a git repo does not copy another person's home directory. If only 5 of 8 developers have configured user-level standards, 40% of Claude Code suggestions will violate team conventions.</p>
-      <p style="font-size:13.2px;color:var(--ink-2);margin:8px 0 0"><b>Fix:</b> Move team standards to <code>.claude/CLAUDE.md</code> at the project root.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 6px"><b>Answer: C</b> — Read <code>src/billing/index.ts</code>, list each name it exports for <code>formatInvoice</code>, and Grep for each. Modules that import only <code>renderInvoice</code> never contain the text <code>formatInvoice</code>, so each exported name needs its own search.</p>
+      <ul style="margin:6px 0 0;padding-left:18px;font-size:13px;color:var(--ink-2);line-height:1.6">
+        <li><b>Why A loses:</b> Grep is the right tool, and it finds every module that uses the name <code>formatInvoice</code>. It misses every module that imports only <code>renderInvoice</code>.</li>
+        <li><b>B and D:</b> Glob matches file names, not contents, so callers with other file names are never read. Grepping for imports from the wrapper finds the <code>renderInvoice</code> callers but misses the modules that import directly from <code>src/billing/format.ts</code>.</li>
+      </ul>
     </div>
   </div>
   <div class="sp-section">
-    <div class="sub">Exam traps</div>
-    <div class="trap"><b>Directory CLAUDE.md loads for the whole project.</b> No. It loads only when Claude Code edits files in that directory or its children.</div>
-    <div class="trap"><b>Lower-level config overrides higher-level.</b> No. They stack. All active levels load simultaneously — none replaces another.</div>
+    <div class="sub">Where a file lives decides who gets it</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">Claude Code reads instructions from CLAUDE.md files at three levels. The <b>user level</b> is <code>~/.claude/CLAUDE.md</code>. It holds your personal instructions for every project on your machine. The docs describe its scope as "Only you (all projects)". It is not in version control.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">The <b>project level</b> is <code>./CLAUDE.md</code> or <code>./.claude/CLAUDE.md</code>. It holds the team's instructions for the repository, "shared with your team through version control". The <b>directory level</b> is a CLAUDE.md inside a subdirectory. It holds conventions for that part of the tree and travels with the repository when it is committed.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0">The consequence the exam tests: an instruction in <code>~/.claude/CLAUDE.md</code> exists on one machine only. A teammate who clones the repository never gets it. Project files should "focus on project-level standards rather than personal preferences".</p>
+    </div>
+    <div class="kc"><b>Key concept:</b> Ask who must get the instruction, then store it at that level.</div>
   </div>
   <div class="sp-section">
-    <div class="sub">Also in this task (3.1)</div>
-    <ul style="font-size:13px;color:var(--ink-2);line-height:1.8;padding-left:18px;margin:0">
-      <li><b>K3.1.2:</b> Mentioning a file is not the same as loading it — use the import syntax (@path) to include external files.</li>
-      <li><b>K3.1.3:</b> 12 unscoped rules files waste 78% of your context budget — use the .claude/rules/ directory with paths globs.</li>
-      <li><b>S3.1.1:</b> /memory tells you what is actually loaded — MEMORY.md does not (it's only an index).</li>
+    <div class="sub">Imports keep files modular, and each package imports only what it needs</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">A CLAUDE.md file can pull in other files. The docs say: "CLAUDE.md files can import additional files using @path/to/import syntax."</p>
+      <pre class="sp-code" style="margin:0 0 8px">See @README for project overview and @package.json for npm
+commands.
+
+# Additional Instructions
+
+- git workflow @docs/git-instructions.md</pre>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">Use imports to keep CLAUDE.md modular: one standards file per topic, referenced where it is needed, instead of one pasted wall of text. In a monorepo, keep shared standards files in one place and let each package's CLAUDE.md import only the ones it needs.</p>
+      <pre class="sp-code" style="margin:0">standards/        api.md  react.md  sql.md
+
+packages/api/     CLAUDE.md imports api.md and sql.md
+
+packages/web/     CLAUDE.md imports react.md</pre>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:8px 0 0">The API package does not import the React rules. The web package does not import the SQL rules. An option where every package imports every standard is the wrong shape.</p>
+    </div>
+    <div class="kc"><b>Key concept:</b> Import by topic, and let each package import only its own standards.</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">A large CLAUDE.md splits into rule files</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">The docs describe the rules directory like this: "Place markdown files in your project's .claude/rules/ directory. Each file should cover one topic, with a descriptive filename like testing.md or api-design.md." Rule files are project level. They are committed and shared like ./CLAUDE.md.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">The signal for a split is one CLAUDE.md that covers many unrelated topics and keeps growing, so it is hard to find, review and maintain. The fix has three steps:</p>
+      <ul style="margin:0;padding-left:18px;font-size:13px;color:var(--ink-2);line-height:1.6">
+        <li>Keep in CLAUDE.md only what every session needs, such as build and test commands and core conventions.</li>
+        <li>Move each topic to its own file in .claude/rules/, for example testing.md, api-conventions.md and deployment.md.</li>
+        <li>Move a topic that applies to one package or directory to that directory's CLAUDE.md, or import it there.</li>
+      </ul>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:8px 0 0">Making a rule load only for matching files is a separate feature, covered in Topic 3.3, path-scoped rules.</p>
+    </div>
+    <div class="kc"><b>Key concept:</b> One topic per file in .claude/rules/, with a short CLAUDE.md on top.</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">When behavior differs, check with /memory</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">Sometimes Claude follows a rule in one session and ignores it in another, or follows it for one person only. Do not guess. The /memory command lists your memory files "across user and project scopes" and opens any of them in your editor. Run it in the affected session and compare it with a session that works.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0">Then ask one question first: is the instruction in someone's ~/.claude/CLAUDE.md instead of the project's CLAUDE.md or .claude/rules/? If so, only that person gets it. Move it to project level and commit.</p>
+    </div>
+    <div class="kc"><b>Key concept:</b> Different behavior between people or sessions: run /memory, then fix the level.</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Exam vs. documentation</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">The exam teaches three levels: user, project and directory. The docs add a managed policy file for IT-deployed rules and a personal CLAUDE.local.md for one project. For /memory, the docs say it lists and opens memory files, while /context shows what loaded into the current session.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0"><b>Under exam conditions:</b> reason with three levels and pick /memory to verify which memory files are loaded.</p>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Exam traps — options that lose</div>
+    <div class="trap"><b>Each developer copies the standards into their own user-level file.</b> The copies drift at once, and the next new hire still misses them. Put the standards at project level.</div>
+    <div class="trap"><b>A shared command that everyone runs at session start.</b> Commands (Topic 3.2, slash commands and skills) are shared but on demand. Standards that must always apply belong in the project CLAUDE.md.</div>
+    <div class="trap"><b>A hook that enforces the commit-message format.</b> Hooks (Topic 1.5, Agent SDK hooks) enforce behavior. A new hire who never got the instructions has a level problem.</div>
+    <div class="trap"><b>Capital letters in the instruction.</b> Emphasis does not help an instruction stored at the wrong level.</div>
+    <div class="trap"><b>Split the file into five and import all five from the root.</b> It is modular, but every package still gets every standard.</div>
+    <div class="trap"><b>Serve the long file from an MCP server.</b> Topic files in .claude/rules/ solve it with nothing extra to run.</div>
+    <div class="trap"><b>"Claude ignores CLAUDE.md."</b> Check with /memory first. The file may not apply to that session at all.</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Worked example — the ticket-ID rule on two machines</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>Symptom:</b> In the Developer Productivity with Claude scenario, the same developer works in the same repository on two machines. On the work laptop Claude always adds a ticket ID to commit messages. On a cloud dev box it never does.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>Tempting answers:</b> say the model is inconsistent and restate the rule in capital letters, or enforce it with a hook.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>Diagnosis:</b> Run /memory on each machine and compare the files. On the laptop, the ticket-ID rule sits in ~/.claude/CLAUDE.md. The dev box has its own home directory without that file, and the project CLAUDE.md does not mention ticket IDs.</p>
+      <div class="kc" style="margin:8px 0 0"><b>Root cause and fix:</b> The rule lives at user level, which belongs to one machine. The same cause hits a new teammate. If it is a team rule, move it to ./CLAUDE.md or .claude/rules/ and commit. If it is personal, copy the user-level file to the dev box.</div>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Checklist</div>
+    <ul class="checklist">
+      <li>Who must get this instruction: only me, the whole team, or one part of the tree?</li>
+      <li>Does the option put a team standard in ~/.claude/CLAUDE.md? Then new teammates never get it.</li>
+      <li>Does the option put a personal habit in the committed file? Then it is imposed on the team.</li>
+      <li>Is one CLAUDE.md covering many topics? Split it into .claude/rules/ files, one topic each.</li>
+      <li>Does every package import every standard? Each should import only its own.</li>
+      <li>Does behavior differ between people or sessions? Check with /memory before changing anything.</li>
+      <li>Is the option a feature from another topic (hooks, commands, MCP) used where a level problem needs a level fix?</li>
     </ul>
   </div>
-</div>
+  <div class="sp-section">
+    <div class="sub">Quiz</div>
+    <div class="quiz-box">
+      <div class="q-label">Today's quiz · Topic 3.1</div>
+      <div class="q-text"><b>Code Generation with Claude Code.</b> You are using Claude Code to accelerate software development. Your team uses it for code generation, refactoring, debugging, and documentation. You need to integrate it into your development workflow with custom slash commands, CLAUDE.md configurations, and understand when to use plan mode vs direct execution.<br><br>
+      Your team's monorepo has a committed root CLAUDE.md and a committed CLAUDE.md in each package. Every package must be tested with make test, which first starts a test database. In sessions started in packages/api, Claude runs make test. In sessions started in packages/web or packages/cli, it runs npm test, and the tests fail with no database.<br><br>
+<pre class="sp-code" style="margin:8px 0">$ grep -rn "make test" --include=CLAUDE.md .
+
+./packages/api/CLAUDE.md:4:- Run tests with make test, never npm test.</pre>
+      <b>Which change makes every developer's Claude run make test in every package, including packages added later?</b></div>
+      <div class="q-opt"><b>A.</b> Copy the line into packages/web/CLAUDE.md and packages/cli/CLAUDE.md, and commit both files.</div>
+      <div class="q-opt"><b>B.</b> Ask each developer to add the line to their own ~/.claude/CLAUDE.md on their machine.</div>
+      <div class="q-opt"><b>C.</b> Move the line into a committed docs/testing.md and @import it from packages/api/CLAUDE.md.</div>
+      <div class="q-opt"><b>D.</b> Move the line from packages/api/CLAUDE.md into the root CLAUDE.md, and commit the change.</div>
+      <details style="margin-top:14px">
+        <summary style="font-size:13px;color:var(--accent);cursor:pointer;font-weight:600">Show answer</summary>
+        <div style="margin-top:10px;padding:12px 14px;background:var(--good-bg);border:1px solid var(--good-bd);border-radius:9px;font-size:13.2px;color:var(--ink-2);line-height:1.6">
+          <b style="color:var(--good)">Answer: D.</b> The test command applies to every package, so it belongs in the root CLAUDE.md, which sets repository-wide rules. A stops the failures in those two packages, but it leaves three copies to keep in step, and a package added later has none until someone copies it again. B is user level (~/.claude/CLAUDE.md) and is not shared through version control. C's @import placed in packages/api/CLAUDE.md only loads for sessions that use that file.
+        </div>
+      </details>
+    </div>
+  </div>
+</div><!-- /sp-d3t1 -->
 
 <!-- ===== PANEL: D3.2 Commands vs Skills ===== -->
 <div class="sp-panel" id="sp-d3t2">
   <div class="sp-section">
-    <div class="sub">Domain 3 · Claude Code Configuration · 20% of exam</div>
-    <h2>Task 3.2 — Commands vs Skills</h2>
-    <p style="font-size:13.2px;color:var(--ink-2);margin:4px 0 0"><em>Commands Are Prompts. Skills Are Configured Workflows.</em></p>
+    <div class="sub">Domain 3 · Claude Code Configuration and Workflows · 20% of exam</div>
+    <h2>Topic 3.2 — Slash Commands and Skills</h2>
+    <p style="font-size:13.2px;color:var(--ink-2);margin:4px 0 0">Appears in: <em>Code Generation with Claude Code</em>, <em>Developer Productivity with Claude</em>, <em>Claude Code for Continuous Integration</em> scenarios.</p>
+    <p style="font-size:13.2px;color:var(--ink-2);margin:4px 0 0"><b>What you need to know:</b> Location decides who gets a command or skill. Frontmatter decides how it runs.</p>
   </div>
   <div class="sp-section">
-    <div class="sub">The key difference</div>
-    <div class="sp-grid">
-      <div class="sp-card hi">
-        <h4>Commands — plain markdown</h4>
-        <p style="font-size:13px;color:var(--ink-2)">Drop <code>review.md</code> into <code>.claude/commands/</code> → <code>/review</code> is available. No frontmatter, no configuration. File content = prompt.</p>
-        <p style="font-size:13px;color:var(--ink-2);margin-top:4px">Use when you need none of the three skill capabilities.</p>
-      </div>
-      <div class="sp-card hi">
-        <h4>Skills — YAML frontmatter</h4>
-        <p style="font-size:13px;color:var(--ink-2)"><code>SKILL.md</code> in <code>.claude/skills/{name}/</code>. Three capabilities commands lack:</p>
-        <ul style="font-size:13px;color:var(--ink-2);padding-left:16px;margin:4px 0 0">
-          <li><code>context: fork</code> — isolated execution</li>
-          <li><code>allowed-tools</code> — deterministic tool restriction</li>
-          <li><code>argument-hint</code> — parameter prompting</li>
-        </ul>
-      </div>
+    <div class="sub">Last quiz answer — Topic 3.1</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 6px"><b>Answer: D</b> — move the line from packages/api/CLAUDE.md into the root CLAUDE.md and commit it. The test command applies to every package, so it belongs in the root file, which sets repository-wide rules. (Topic 3.1: the make test line sat only in packages/api/CLAUDE.md, so sessions in packages/web and packages/cli ran npm test and failed with no database.)</p>
+      <ul style="margin:6px 0 0;padding-left:18px;font-size:13px;color:var(--ink-2);line-height:1.6">
+        <li><b>Why A loses:</b> copying the line into the two other packages stops the failures in those two packages, but it leaves three copies to keep in step, and a package added later has none until someone copies it again.</li>
+        <li><b>B and C:</b> a line in ~/.claude/CLAUDE.md is user level and is not shared through version control, and an @import placed in packages/api/CLAUDE.md only loads for sessions that use that file.</li>
+      </ul>
     </div>
-    <div class="kc"><b>Key concept:</b> <code>allowed-tools</code> is DETERMINISTIC. "Do not execute Bash" is a probabilistic instruction the model can override. <code>allowed-tools: Read, Write, Edit</code> makes Bash physically unavailable.</div>
   </div>
   <div class="sp-section">
-    <div class="sub">Exam traps</div>
-    <div class="trap"><b>CLAUDE.md instructions and skills serve the same purpose.</b> No. CLAUDE.md is always-on background context. Skills are on-demand workflows triggered by /name. Never mix the two.</div>
-    <div class="trap"><b>"ABSOLUTELY NEVER execute" is as strong as allowed-tools.</b> No. Stronger wording is still probabilistic. allowed-tools is enforced by the runtime — the tool doesn't exist in the model's environment.</div>
-    <div class="trap"><b>context: fork = filesystem isolation.</b> No. Fork isolates the conversation memory, NOT the filesystem. Files can still be accessed.</div>
+    <div class="sub">The folder decides who gets the command</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">A project command lives in .claude/commands/&lt;name&gt;.md. A project skill lives in .claude/skills/&lt;name&gt;/SKILL.md. Both are in the repository, so everyone who pulls gets them. The docs say to "commit it to a repository to share it with everyone who works there".</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">The personal scope is the home directory: ~/.claude/commands/ and ~/.claude/skills/. Files there work in all your projects, but only for you, and they are never in version control. A team command kept there is the classic mistake: teammates say it does not exist.</p>
+      <pre class="sp-code" style="margin:0 0 8px">repo/
+
+  .claude/
+
+    commands/
+
+      changelog.md    # /changelog for everyone after git pull</pre>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0">To change a shared skill to your taste, do not edit it. Create a personal copy in ~/.claude/skills/ under a different name, such as gen-migration-terse next to the team's gen-migration. Teammates are unaffected.</p>
+    </div>
+    <div class="kc"><b>Key concept:</b> Team goes in the repository and is committed. Personal goes in your home directory, with a different name for a variant.</div>
   </div>
   <div class="sp-section">
-    <div class="sub">Also in this task (3.2)</div>
-    <ul style="font-size:13px;color:var(--ink-2);line-height:1.8;padding-left:18px;margin:0">
-      <li><b>K3.2.2:</b> Three skill frontmatter fields that matter: context, allowed-tools, argument-hint.</li>
-      <li><b>K3.2.3:</b> context: fork isolates memory, not the filesystem.</li>
-      <li><b>K3.2.4:</b> Personal skills live in <code>~/.claude/skills/</code> — name them differently to avoid conflicts with project skills.</li>
+    <div class="sub">Frontmatter fields set how a skill runs</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">A skill is a directory with a SKILL.md file. Its configuration is YAML frontmatter between --- markers at the top. The guide names three fields.</p>
+      <pre class="sp-code" style="margin:0 0 8px">---
+
+name: dep-audit
+
+context: fork
+
+allowed-tools: Read Grep Glob
+
+argument-hint: [package-dir]
+
+---</pre>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">context: fork runs the skill in an isolated sub-agent. allowed-tools limits the tools the skill uses, for example Read Write for a skill that only creates files. argument-hint tells developers which parameter to pass, such as [ticket-id], so nobody runs the command bare.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0">A sentence in the skill body such as "never delete files" is only a request. The frontmatter field is the configuration.</p>
+    </div>
+    <div class="kc"><b>Key concept:</b> context: fork isolates, allowed-tools limits, argument-hint asks for input.</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Fork a skill whose output you will not read</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">A skill that reads many files puts every tool result into the main conversation. That makes the session slow, and earlier decisions get pushed out. With context: fork, the skill runs in a sub-agent with its own context. The docs say "The subagent summarizes its results and returns them to your main conversation when it finishes".</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">Use it for verbose output, such as codebase analysis and dependency maps, and for exploratory work, such as comparing several designs before picking one. The docs describe the pattern as a "Research task that reads many files but returns only key findings".</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0">This is not the same as forking a session. Topic 1.7, sessions: resume and fork, branches a whole conversation. context: fork isolates one skill run.</p>
+    </div>
+    <div class="kc"><b>Key concept:</b> Verbose or exploratory skill, context: fork: only the summary returns.</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Skills load when used, CLAUDE.md loads every session</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">The docs: "Unlike CLAUDE.md content, a skill's body loads only when it's used". Put what every session needs in CLAUDE.md: coding conventions, build commands, project structure. Put a task-specific procedure in a skill: a release checklist, a migration generator, a dependency audit.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0">A CLAUDE.md section that has "grown into a procedure rather than a fact" is a candidate for a skill. The opposite also fails: a standard that must always apply does not belong in a skill, because it is missing whenever the skill is not run.</p>
+    </div>
+    <div class="kc"><b>Key concept:</b> On demand, a skill. Always, CLAUDE.md.</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Exam vs. documentation</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">Three details differ. The exam says allowed-tools restricts a skill's tools, while the docs say it pre-approves the listed tools for the turn and "does not restrict which tools are available". The exam says argument-hint prompts for required parameters, while the docs call it a "Hint shown during autocomplete". And the docs say custom commands "have been merged into skills" and call .claude/commands/ the older format, which still works.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0"><b>Under exam conditions:</b> pick allowed-tools to limit a skill, argument-hint for parameters, and .claude/commands/ for a team command.</p>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Exam traps — options that lose</div>
+    <div class="trap"><b>Copying the command into each home directory.</b> Personal scope is real, but it is not shared and the copies drift. Commit one file.</div>
+    <div class="trap"><b>An MCP server for a checklist.</b> A committed file in .claude/commands/ already reaches the whole team (Topic 2.4, MCP servers in workflows).</div>
+    <div class="trap"><b>A hook to trim analysis output.</b> Hooks transform tool results. They do not move a skill's work out of the main conversation (Topic 1.5, Agent SDK hooks).</div>
+    <div class="trap"><b>Running /compact afterwards.</b> The output already went through the main session, and detail is lost in the summary.</div>
+    <div class="trap"><b>fork_session for one skill.</b> That branches a whole session. Isolating a skill run is context: fork.</div>
+    <div class="trap"><b>"Only write files" in the skill instructions.</b> A prompt is not a tool limit.</div>
+    <div class="trap"><b>More examples in CLAUDE.md for a command run bare.</b> The gap is at invocation. Use argument-hint.</div>
+    <div class="trap"><b>A path-scoped rule for a checklist.</b> Path rules load by file match, not on request (Topic 3.3, path-scoped rules).</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Worked example — the /dep-audit skill</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>Symptom:</b> In the Code Generation with Claude Code scenario, the team has a project skill /dep-audit that walks every package and flags outdated dependencies. After a run, the session is slow and Claude forgets earlier decisions about the feature in progress.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>Tempting answers:</b> run /compact afterwards, or move the audit instructions into CLAUDE.md.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>Root cause:</b> the skill runs inline, so hundreds of lines of package listings land in the main conversation.</p>
+      <div class="kc" style="margin:8px 0 0"><b>Fix:</b> Add context: fork to .claude/skills/dep-audit/SKILL.md. The audit runs in an isolated sub-agent and only its summary returns. Under exam conditions, allowed-tools: Read Grep Glob is the field that limits it to reading.</div>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Checklist</div>
+    <ul class="checklist">
+      <li>Who must have it? The team, then project scope and committed. Only me, then the home directory.</li>
+      <li>Is a shared skill being edited for personal taste? Make a personal variant with a different name.</li>
+      <li>Is the problem output flooding the main conversation? Look for context: fork.</li>
+      <li>Is the problem what a skill may do? Look for allowed-tools, not a sentence in the body.</li>
+      <li>Do developers run the command without a required value? Look for argument-hint.</li>
+      <li>Must it apply in every session, or only when someone runs the task? Always is CLAUDE.md, on demand is a skill.</li>
+      <li>Is the option a mechanism from another topic (hooks, fork_session, path rules, MCP)?</li>
     </ul>
   </div>
-</div>
+  <div class="sp-section">
+    <div class="sub">Quiz</div>
+    <div class="quiz-box">
+      <div class="q-label">Today's quiz · Topic 3.2</div>
+      <div class="q-text"><b>Code Generation with Claude Code.</b> You are using Claude Code to accelerate software development. Your team uses it for code generation, refactoring, debugging, and documentation. You need to integrate it into your development workflow with custom slash commands, CLAUDE.md configurations, and understand when to use plan mode vs direct execution.<br><br>
+      Your team has a project skill at .claude/skills/legacy-map/SKILL.md. Running /legacy-map explains an unfamiliar module: Claude reads every file in it with Read and Grep, then replies with a one-page summary. After each run, the main conversation holds hundreds of lines of file contents from those tool calls. Developers use only the summary.<br><br>
+      <b>Which change most effectively keeps the main conversation clear of those file contents?</b></div>
+      <div class="q-opt"><b>A.</b> Add context: fork to the YAML frontmatter of legacy-map/SKILL.md.</div>
+      <div class="q-opt"><b>B.</b> Ask developers to run /compact each time a /legacy-map run finishes.</div>
+      <div class="q-opt"><b>C.</b> Add allowed-tools: Read Grep to the YAML frontmatter of legacy-map/SKILL.md.</div>
+      <div class="q-opt"><b>D.</b> Add the line "Show only the final summary" to the body of legacy-map/SKILL.md.</div>
+      <details style="margin-top:14px">
+        <summary style="font-size:13px;color:var(--accent);cursor:pointer;font-weight:600">Show answer</summary>
+        <div style="margin-top:10px;padding:12px 14px;background:var(--good-bg);border:1px solid var(--good-bd);border-radius:9px;font-size:13.2px;color:var(--ink-2);line-height:1.6">
+          <b style="color:var(--good)">Answer: A.</b> The file contents come from the skill's own Read and Grep calls, and a forked skill runs in an isolated subagent, so only its summary returns to the main conversation. B loses: /compact frees space only after each run has already filled the conversation with file contents; it also summarizes the developer's earlier work, and someone has to remember to run it every time. C and D: allowed-tools is about which tools the skill may use without asking, not where their results go; a line asking for only the summary shapes the final reply, while the Read and Grep results have already entered the conversation.
+        </div>
+      </details>
+    </div>
+  </div>
+</div><!-- /sp-d3t2 -->
 
 <!-- ===== PANEL: D3.3 Path Globs ===== -->
 <div class="sp-panel" id="sp-d3t3">
   <div class="sp-section">
-    <div class="sub">Domain 3 · Claude Code Configuration · 20% of exam</div>
-    <h2>Task 3.3 — Frontmatter Paths &amp; Globs</h2>
-    <p style="font-size:13.2px;color:var(--ink-2);margin:4px 0 0"><em>86% of Your Rules Context Is Wasted Without Path Globs.</em></p>
+    <div class="sub">Domain 3 · Claude Code Configuration and Workflows · 20% of exam</div>
+    <h2>Topic 3.3 — Path-Scoped Rules</h2>
+    <p style="font-size:13.2px;color:var(--ink-2);margin:4px 0 0">Appears in: <em>Code Generation with Claude Code</em>, <em>Developer Productivity with Claude</em>, <em>Claude Code for Continuous Integration</em> scenarios.</p>
+    <p style="font-size:13.2px;color:var(--ink-2);margin:4px 0 0"><b>What you need to know:</b> To load conventions only when Claude works on certain files, put them in a rule file in .claude/rules/ and list glob patterns under paths in its frontmatter.</p>
   </div>
   <div class="sp-section">
-    <div class="sub">The problem and the fix</div>
-    <div class="card pad" style="border-color:var(--bad-bd)">
-      <p style="font-size:13.2px;color:var(--ink-2);margin:0"><b>Without paths globs:</b> A project with 7 technology areas loads ALL 7 rules files for every edit — 2,800 tokens total. Only 400 tokens (the Python rules) are relevant when editing Python files. <b>86% waste.</b></p>
+    <div class="sub">Last quiz answer — Topic 3.2</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 6px"><b>Answer: A</b> — add context: fork to the YAML frontmatter of legacy-map/SKILL.md. The file contents come from the skill's own Read and Grep calls, and a forked skill runs in an isolated subagent, so only its summary returns to the main conversation. (Topic 3.2: every /legacy-map run left hundreds of lines of file contents in the main conversation, and developers used only the summary.)</p>
+      <ul style="margin:6px 0 0;padding-left:18px;font-size:13px;color:var(--ink-2);line-height:1.6">
+        <li><b>Why B loses:</b> /compact frees space only after each run has already filled the conversation with file contents. It also summarizes the developer's earlier work, and someone has to remember to run it every time.</li>
+        <li><b>C and D:</b> allowed-tools is about which tools the skill may use without asking, not where their results go. A line asking for only the summary shapes the final reply, while the Read and Grep results have already entered the conversation.</li>
+      </ul>
     </div>
-    <div class="card pad" style="margin-top:8px;border-color:var(--good-bd)">
-      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>With paths globs:</b> Each rules file specifies which files trigger it:</p>
-      <pre class="sp-code" style="margin:0">---
+  </div>
+  <div class="sp-section">
+    <div class="sub">The paths field makes a rule conditional</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">A rule is a markdown file in .claude/rules/. The docs say: "Rules can be scoped to specific files using YAML frontmatter with the paths field." The values are glob patterns, and the rule applies only while Claude works with files that match them.</p>
+      <pre class="sp-code" style="margin:0 0 8px">---
+
 paths:
-  - "**/*.py"
+
+  - "src/api/**/*.ts"
+
 ---
-# Python coding standards...</pre>
-      <p style="font-size:13.2px;color:var(--ink-2);margin:8px 0 0">Now the Python rules load only when editing <code>.py</code> files. Everything else stays out of context.</p>
+
+# API Development Rules
+
+- All API endpoints must include input validation
+
+- Use the standard error response format</pre>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0">To write one, create a file named for its topic, such as terraform.md or testing.md. Put the YAML between --- markers at the top, set paths to one or more globs, write the conventions below as plain markdown, and commit it. Leave paths out and the rule is unconditional: "Rules without a paths field are loaded unconditionally and apply to all files."</p>
     </div>
-    <div class="kc"><b>Key concept:</b> <code>**</code> = any depth of subdirectories. <code>*</code> = any filename. Multiple rules can match one file simultaneously (intentional — a React test file should load both React and testing rules).</div>
+    <div class="kc"><b>Key concept:</b> paths in the frontmatter makes a rule conditional; without it, the rule loads for everything.</div>
   </div>
   <div class="sp-section">
-    <div class="sub">Exam traps</div>
-    <div class="trap"><b>More specific paths override less specific ones.</b> No. Each path pattern evaluates independently — there's no specificity priority, no cancellation. All matching rules load.</div>
-    <div class="trap"><b>Use section headers inside CLAUDE.md to scope rules by file type.</b> No. Section headers don't enforce scope. Only path rules in frontmatter do.</div>
+    <div class="sub">A scoped rule costs nothing until it matches</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">Path-scoped rules "only load into context when Claude works with matching files, reducing noise and saving context space". A session spent on React components never pays for the Terraform rule. That saving is the reason to scope a rule at all.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0">The docs give the same advice for a growing CLAUDE.md: move instructions that matter for only part of the codebase into path-scoped rules. One consequence: if a rule is absent from a session that never touched a matching file, nothing is broken. The rule is working as designed.</p>
+    </div>
+    <div class="kc"><b>Key concept:</b> A path-scoped rule loads only when Claude works on matching files.</div>
   </div>
   <div class="sp-section">
-    <div class="sub">Also in this task (3.3)</div>
-    <ul style="font-size:13px;color:var(--ink-2);line-height:1.8;padding-left:18px;margin:0">
-      <li><b>K3.3.2:</b> Section headers in CLAUDE.md do NOT enforce scope — path rules do.</li>
-      <li><b>K3.3.3:</b> File TYPE → glob rule in rules file. File LOCATION → directory CLAUDE.md. That decides which mechanism to use.</li>
+    <div class="sub">The double-star prefix selects a file type in any folder</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">The **/ prefix matches directories at any depth, so a pattern can pick files by type wherever they live. The docs list **/*.ts as "All TypeScript files in any directory" and *.md as "Markdown files in the project root".</p>
+      <pre class="sp-code" style="margin:0 0 8px">**/*.test.tsx     every React test file, any folder
+
+src/api/**/*      every file under src/api
+
+terraform/**/*    every file under terraform/
+
+*.md              Markdown files in the project root only</pre>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0">A pattern with no directory part, such as *.test.tsx, matches only files in the root, as the docs' *.md row shows. For test files spread across many folders, the directory part is what you need. A rule can also list several patterns under paths.</p>
+    </div>
+    <div class="kc"><b>Key concept:</b> Use a **/ pattern for a file type; a bare pattern matches the root only.</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">One glob rule beats a CLAUDE.md in every folder</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">A subdirectory CLAUDE.md belongs to one directory. To cover test files that sit next to the code in forty folders, you would need forty copies. They drift apart, and a new folder gets none. One rule with **/*.test.tsx covers them all from one place.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0">The docs describe both options. Path-scoped rules fit when you want "You want all conventions in one place, or the same rule applies to many scattered paths". A directory CLAUDE.md fits when "Directory owners maintain their own conventions; instructions are versioned with the code". The deciding question is whether the files are scattered or sit in one directory owned by one team.</p>
+    </div>
+    <div class="kc"><b>Key concept:</b> Scattered files of one type need a path-scoped rule; one team-owned directory can keep its own CLAUDE.md.</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Exam vs. documentation</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">Two details differ. The exam says path-scoped rules load when Claude edits matching files, while the docs say they trigger when Claude uses Read, Write or Edit on a matching file, so reading one loads the rule too. And the exam writes paths: ["terraform/**/*"] as a bracketed list, while the docs show a block list and also accept a comma-separated string.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0"><b>Under exam conditions:</b> pick the option that puts glob patterns under paths and loads the rule only for matching files; the read-versus-edit detail and the list style do not change the answer.</p>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Exam traps — options that lose</div>
+    <div class="trap"><b>The Glob tool to find the test files.</b> Glob finds files, but it does not attach conventions to them. The same pattern belongs in a rule's paths.</div>
+    <div class="trap"><b>A CLAUDE.md next to each group of test files.</b> It works per folder, drifts, and misses every new folder.</div>
+    <div class="trap"><b>A root CLAUDE.md line: "when editing tests, follow these rules".</b> It loads in every session and depends on inference instead of matching.</div>
+    <div class="trap"><b>A skill in .claude/skills/ for the conventions.</b> Skills (Topic 3.2) are on-demand workflows. Conventions that must apply by file path belong in a path-scoped rule.</div>
+    <div class="trap"><b>paths: ["src/**/*.test.tsx"] when tests also live under packages/ and apps/.</b> The mechanism is right and the pattern is too narrow.</div>
+    <div class="trap"><b>"The Terraform rule did not appear in a frontend session, so it is broken."</b> Not loading there is the point of scoping.</div>
+    <div class="trap"><b>An MCP server that serves conventions per file type.</b> One rule file with a glob does the job.</div>
+    <div class="trap"><b>The rule in ~/.claude/rules/.</b> That is personal (Topic 3.1, CLAUDE.md hierarchy), so teammates never get it. The project .claude/rules/ folder is committed.</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Worked example — the migration rule in nine services</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>Symptom:</b> In the Code Generation with Claude Code scenario, a repository has nine services, each with a db/migrations/ folder. The team put a CLAUDE.md in each one: never edit a merged migration, and every migration needs a down step. Then Claude generated a migration without a down step in a newly created service. Eight services follow the conventions and the ninth does not. Two of the eight copies now disagree on naming.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>Tempting answers:</b> restate the rule in capitals, or move everything into the root CLAUDE.md, which then loads for every task, frontend work included.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>Root cause:</b> a convention for one kind of file is stored in directory-bound files. Every new folder needs a new copy, and copies drift.</p>
+      <div class="kc" style="margin:8px 0 0"><b>Fix:</b> Delete the copies. Add .claude/rules/migrations.md with paths: ["**/db/migrations/**/*"] and the conventions once. Any migration in any service, new or old, pulls in the same rule, and sessions that never touch a migration do not load it.</div>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Checklist</div>
+    <ul class="checklist">
+      <li>Does the convention apply to a kind of file, or to one directory?</li>
+      <li>Is it a path-scoped rule? It needs a paths field of globs in the frontmatter.</li>
+      <li>Does the rule file have no frontmatter? Then it loads in every session.</li>
+      <li>Do the files sit in many folders? Then the pattern needs **/.</li>
+      <li>Is the pattern too narrow, for example src/** when tests also live elsewhere?</li>
+      <li>Is the option a mechanism from another topic (the Glob tool, a skill, an MCP server)?</li>
+      <li>Is the rule in the committed project .claude/rules/ folder rather than ~/.claude/rules/?</li>
+      <li>Is a rule missing from a session that never touched a matching file? That is expected.</li>
     </ul>
   </div>
-</div>
+  <div class="sp-section">
+    <div class="sub">Quiz</div>
+    <div class="quiz-box">
+      <div class="q-label">Today's quiz · Topic 3.3</div>
+      <div class="q-text"><b>Code Generation with Claude Code.</b> You are using Claude Code to accelerate software development. Your team uses it for code generation, refactoring, debugging, and documentation. You need to integrate it into your development workflow with custom slash commands, CLAUDE.md configurations, and understand when to use plan mode vs direct execution.<br><br>
+      Your monorepo has 30 services, and teams add new ones every month. Each service keeps its protobuf API definitions (.proto files) in its own api/ folder. The platform team's protobuf conventions, such as "never reuse a field number", are a section of the root CLAUDE.md. They load in every session, including frontend work that never touches a .proto file.<br><br>
+      <b>What is the most maintainable way to have these conventions load only when Claude works on .proto files?</b></div>
+      <div class="q-opt"><b>A.</b> Move the section into .claude/rules/protobuf.md as a rule file without a frontmatter block.</div>
+      <div class="q-opt"><b>B.</b> Move the section into .claude/rules/protobuf.md with paths: ["**/*.proto"] in its frontmatter.</div>
+      <div class="q-opt"><b>C.</b> Move the section into a CLAUDE.md file inside each of the 30 service api/ folders, next to the .proto files.</div>
+      <div class="q-opt"><b>D.</b> Move the section into a project skill, .claude/skills/protobuf/SKILL.md, that developers invoke for .proto work.</div>
+      <details style="margin-top:14px">
+        <summary style="font-size:13px;color:var(--accent);cursor:pointer;font-weight:600">Show answer</summary>
+        <div style="margin-top:10px;padding:12px 14px;background:var(--good-bg);border:1px solid var(--good-bd);border-radius:9px;font-size:13.2px;color:var(--ink-2);line-height:1.6">
+          <b style="color:var(--good)">Answer: B.</b> The glob matches .proto files in any directory, so one central file covers all 30 services and every new one. C loses: a CLAUDE.md in each api/ folder does load only for that folder, but it is tied to one directory — 30 copies that can drift, and every new service needs another copy. A and D: a rule file without paths loads unconditionally, and a skill loads only when a developer invokes it, not when a .proto file is touched.
+        </div>
+      </details>
+    </div>
+  </div>
+</div><!-- /sp-d3t3 -->
 
 <!-- ===== PANEL: D3.4 Plan Mode ===== -->
 <div class="sp-panel" id="sp-d3t4">
