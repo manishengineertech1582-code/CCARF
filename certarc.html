@@ -3408,33 +3408,144 @@ terraform/**/*    every file under terraform/
 <!-- ===== PANEL: D3.5 Examples First ===== -->
 <div class="sp-panel" id="sp-d3t5">
   <div class="sp-section">
-    <div class="sub">Domain 3 · Claude Code Configuration · 20% of exam</div>
-    <h2>Task 3.5 — Examples Over Descriptions</h2>
-    <p style="font-size:13.2px;color:var(--ink-2);margin:4px 0 0"><em>Text Descriptions Hit an Ambiguity Ceiling at 63%. Examples Reach 91%.</em></p>
+    <div class="sub">Domain 3 · Claude Code Configuration and Workflows · 20% of exam</div>
+    <h2>Topic 3.5 — Iterative Refinement</h2>
+    <p style="font-size:13.2px;color:var(--ink-2);margin:4px 0 0">Appears in: <em>Code Generation with Claude Code</em>, <em>Developer Productivity with Claude</em>, <em>Claude Code for Continuous Integration</em> scenarios.</p>
+    <p style="font-size:13.2px;color:var(--ink-2);margin:4px 0 0"><b>What you need to know:</b> Turn ambiguity into something concrete that Claude can check against: examples, tests, a specific failing case, or questions asked before coding.</p>
   </div>
   <div class="sp-section">
-    <div class="sub">The ambiguity ceiling</div>
+    <div class="sub">Last quiz answer — Topic 3.4</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 6px"><b>Answer: C</b> — ask Claude to run discovery in the Explore subagent, so only a summary of the callers returns to the main conversation. The 300 matches stay in the subagent's own context. (Topic 3.4: discovery put about 300 matches from 40 files into the main conversation, and the window was nearly full when implementation started.)</p>
+      <ul style="margin:6px 0 0;padding-left:18px;font-size:13px;color:var(--ink-2);line-height:1.6">
+        <li><b>Why A loses:</b> /compact frees space by summarizing the conversation, but it acts only when implementation starts. The design phase came after discovery, so it already ran with the 300 matches in the main conversation, and the design itself is reduced to a summary.</li>
+        <li><b>B and D:</b> a notes file does not free context, because the 300 matches still sit in the main conversation. A forked session starts with a copy of the same history, so it starts just as full.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Show examples instead of rewording the prose</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">Suppose you describe a transformation in words and Claude reads it differently from run to run. Rewording the description does not help, because any prose can be misread the same way. Give 2 or 3 concrete input and output pairs instead.</p>
+      <pre class="sp-code" style="margin:0 0 8px">Convert legacy SKU codes to the new format. Examples:
+
+  "ab-0042-x"   -&gt; "AB-000042-X"
+
+  "AB-42"       -&gt; "AB-000042"
+
+  "cd-1234567"  -&gt; "CD-1234567"</pre>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0">Pick pairs that differ where it matters: case, padding, a missing suffix, an already long number. The docs call examples "one of the most reliable ways to steer Claude's output format, tone, and structure".</p>
+    </div>
+    <div class="kc"><b>Key concept:</b> When prose is read inconsistently, add 2 or 3 input and output examples.</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Write tests first, then share the failures</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">Write the test suite before the implementation. Cover expected behaviour, edge cases and performance requirements. Ask Claude to implement and run the tests, then share the specific failures and iterate until they pass. The docs describe the loop: "Claude does the work, runs the check, reads the result, and iterates until the check passes."</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">A failing test says what input went in, what was expected and what came back. "It's still wrong" says none of that.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">The same idea fixes a single edge case. When the main path works but one case does not, do not write "handle nulls properly". Give the case:</p>
+      <pre class="sp-code" style="margin:0">The migration fails on rows where middle_name is NULL.
+
+Add this test and make it pass:
+
+  input:    {id: 7, first: "Ana", middle_name: NULL,
+             last: "Ruiz"}
+
+  expected: full_name = "Ana Ruiz"
+            (no double space, no "null")</pre>
+    </div>
+    <div class="kc"><b>Key concept:</b> Write the tests first, and pin an edge case with one specific input and its expected output.</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Let Claude interview you before it codes</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">In an unfamiliar domain, the costly decisions are the ones you do not see coming. Before implementing, ask Claude to question you about what you may not have considered.</p>
+      <pre class="sp-code" style="margin:0 0 8px">I want to add a caching layer in front of the pricing service.
+
+Before writing code, ask me questions about anything I may not
+have considered: invalidation, staleness limits, failure modes.</pre>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0">The questions surface design choices while no code exists yet, so they do not turn into rework later. This differs from plan mode (Topic 3.4). In an interview Claude asks the developer. In plan mode Claude reads the codebase and proposes a plan. If the missing information lives in the developer's head, interview. If it lives in the repository, use plan mode.</p>
+    </div>
+    <div class="kc"><b>Key concept:</b> In an unfamiliar domain, have Claude ask questions before it writes code.</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Group interacting issues, split independent ones</div>
+    <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">Ask one question: does fixing one problem change what the fix for another should be?</p>
     <div class="sp-grid">
-      <div class="sp-card">
-        <h4 style="color:var(--bad)">Text description</h4>
-        <p style="font-size:13px;color:var(--ink-2)">"Summarize findings in a structured format." → produces bullet points, numbered lists, and markdown tables. All valid interpretations. <b>63% consistency ceiling.</b> More adjectives cannot break through it.</p>
+      <div class="sp-card hi">
+        <h4>Interacting — one detailed message</h4>
+        <p>If yes, send both in one detailed message and explain how they relate. Pagination that returns duplicates and a cache key that ignores the page number are one example. Sent one per message, Claude fixes each in isolation, and the second fix can undo the first.</p>
       </div>
       <div class="sp-card hi">
-        <h4 style="color:var(--good)">Concrete example</h4>
-        <p style="font-size:13px;color:var(--ink-2)">An input/output example showing the exact expected format eliminates every ambiguity in one shot. <b>91% accuracy.</b> Concrete examples bypass the ceiling entirely.</p>
+        <h4>Independent — one at a time</h4>
+        <p>If no, fix and verify one at a time. A typo in a log message and an unrelated off-by-one in a date picker are independent. Bundled together, independent issues are harder to verify.</p>
       </div>
     </div>
-    <div class="kc"><b>Key concept:</b> Showing is more precise than telling. Text rules can also decrease accuracy when they create conflicting interpretations of edge cases. When text rules interact badly, adding one concrete example often recovers accuracy faster than more text.</div>
+    <div class="kc"><b>Key concept:</b> Interacting issues go in one message; independent issues go one at a time.</div>
   </div>
   <div class="sp-section">
-    <div class="sub">Also in this task (3.5)</div>
-    <ul style="font-size:13px;color:var(--ink-2);line-height:1.8;padding-left:18px;margin:0">
-      <li><b>K3.5.2:</b> Test-driven iteration — tests first gets to 15/15 in 3 iterations; implementation first gets 12/15 in 7 iterations.</li>
-      <li><b>K3.5.3:</b> Interview mode — ask about deployment topology before implementing to avoid three rounds of rework.</li>
-      <li><b>K3.5.4:</b> Interacting issues fix together; independent issues fix separately. Classify before submitting.</li>
+    <div class="sub">Exam vs. documentation</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">Two details differ. For examples, the general prompting docs advise "3-5 examples for best results", while the exam expects 2 or 3. For the interview, the docs frame it for larger features, run with the AskUserQuestion tool and ending in a written spec, while the exam picks it whenever the developer may not know the considerations. The docs have no named rule for batching issues.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0"><b>Under exam conditions:</b> pick 2 or 3 concrete examples, the interview when the developer may not know the considerations, and one message for interacting issues.</p>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Exam traps — options that lose</div>
+    <div class="trap"><b>Add emphasis to the prompt.</b> "IMPORTANT: handle all edge cases correctly" is not a specification. The null row still has no expected output. Give a specific input and result.</div>
+    <div class="trap"><b>Put the rules in CLAUDE.md.</b> CLAUDE.md (Topic 3.1) makes context persistent, but rules written as prose are still read inconsistently. Use examples.</div>
+    <div class="trap"><b>Run the Explore subagent first.</b> Explore (Topic 3.4) summarizes existing code. Invalidation policy and failure handling are decisions the developer has not made yet. Interview instead.</div>
+    <div class="trap"><b>Wrap it in a validation-retry loop with a JSON schema.</b> Retry loops (Topic 4.4) belong to extraction pipelines. A developer clarifying a transformation needs 2 or 3 examples.</div>
+    <div class="trap"><b>Fix the first bug now, the second one later.</b> When the second fix changes what the first must do, the fixes undo each other. Send them together.</div>
+    <div class="trap"><b>Generate tests from the finished code.</b> Those tests confirm whatever the code does. Write them first.</div>
+    <div class="trap"><b>Blame the model and rerun until one output looks right.</b> The variation comes from an ambiguous description.</div>
+    <div class="trap"><b>Say "still broken, please fix".</b> It carries no signal. Share the failing test and its output.</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Worked example — the phone numbers that would not settle</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>Symptom:</b> A developer asks for a function to "convert phone numbers to international format". Over several sessions the results differ: spacing changes, and sometimes the leading 0 of the area code stays.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>Tempting answers:</b> write the rule in capitals, or put the format rule in CLAUDE.md. Both are still prose.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>Root cause:</b> the description leaves the mapping open. Spacing, the trunk prefix and the country code are all unspecified.</p>
+      <div class="kc" style="margin:8px 0 0"><b>Fix:</b> Give 2 or 3 pairs that differ where it matters: 030 1234567 to +49 30 1234567, +49 (0)30-1234567 to +49 30 1234567, and 0049 30 1234567 to +49 30 1234567. Turn them into tests and iterate on the failures.</div>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Checklist</div>
+    <ul class="checklist">
+      <li>Is the output inconsistent because a description is ambiguous? Add 2 or 3 input and output examples.</li>
+      <li>Can behaviour, edge cases and performance be stated up front? Write the tests first.</li>
+      <li>Does one case fail while the main path works? Give that input and its expected output.</li>
+      <li>Does the option say "be careful" or "IMPORTANT" without a concrete case? Reject it.</li>
+      <li>Is the domain unfamiliar to the developer? Interview first.</li>
+      <li>Does the missing information live in the developer's head or in the repository? Head: interview. Repository: plan mode.</li>
+      <li>Do the problems affect each other's fix? One message. Otherwise one at a time.</li>
+      <li>Is the option a mechanism from another topic (CLAUDE.md, Explore, retry loops) that misses the actual gap?</li>
     </ul>
   </div>
-</div>
+  <div class="sp-section">
+    <div class="sub">Quiz</div>
+    <div class="quiz-box">
+      <div class="q-label">Today's quiz · Topic 3.5</div>
+      <div class="q-text"><b>Code Generation with Claude Code.</b> You are using Claude Code to accelerate software development. Your team uses it for code generation, refactoring, debugging, and documentation. You need to integrate it into your development workflow with custom slash commands, CLAUDE.md configurations, and understand when to use plan mode vs direct execution.<br><br>
+      A developer will use Claude Code to add webhook delivery to the billing service, in a new module src/billing/webhooks.ts. She knows the billing code well, but she has never built webhook delivery before. This is her whole feature note:<br>
+      <pre class="sp-code" style="margin:8px 0">Feature: send each payment event to the customer's webhook URL.
+
+Requirement: retry failed deliveries.</pre>
+      <b>What is the most effective first step before Claude writes any code?</b></div>
+      <div class="q-opt"><b>A.</b> Write a test suite for the retry requirement first, then have Claude implement the module and iterate on the failing tests.</div>
+      <div class="q-opt"><b>B.</b> Add a line to CLAUDE.md saying "IMPORTANT: handle every retry and failure case in webhook code carefully".</div>
+      <div class="q-opt"><b>C.</b> Have Claude run the Explore subagent over src/billing/ and summarise how the service sends HTTP requests today.</div>
+      <div class="q-opt"><b>D.</b> Ask Claude to interview her about the webhook delivery design until the open questions are answered, then write the code.</div>
+      <details style="margin-top:14px">
+        <summary style="font-size:13px;color:var(--accent);cursor:pointer;font-weight:600">Show answer</summary>
+        <div style="margin-top:10px;padding:12px 14px;background:var(--good-bg);border:1px solid var(--good-bd);border-radius:9px;font-size:13.2px;color:var(--ink-2);line-height:1.6">
+          <b style="color:var(--good)">Answer: D.</b> She knows the billing code, but webhook delivery is unfamiliar, and the open questions — how many retries, what backoff, which failures count, timeouts, duplicate delivery — are design decisions that live in her head, not in the repository. The interview surfaces them before any code exists, so they do not become rework. A comes after the interview: "retry failed deliveries" is too vague to write meaningful tests against until the retry behaviour is decided. B is emphasis, not a specification. C answers a repository question she does not have — Explore summarizes existing code, and the missing information is not in the code.
+        </div>
+      </details>
+    </div>
+  </div>
+</div><!-- /sp-d3t5 -->
 
 <!-- ===== PANEL: D3.6 CI Mode ===== -->
 <div class="sp-panel" id="sp-d3t6">
