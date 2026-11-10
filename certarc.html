@@ -795,6 +795,7 @@ button{font-family:inherit}
   <button class="sp-tab" data-sp="myresults">My Results</button>
   <button class="sp-tab" data-sp="weakpractice">Weak-Area Practice</button>
   <button class="sp-tab" data-sp="hardsets">Hard Practice Sets</button>
+  <button class="sp-tab" data-sp="quizkey">Quiz Answers</button>
 </div>
 
 <!-- ===== PANEL: EXAM STRATEGY ===== -->
@@ -4197,6 +4198,442 @@ Please re-extract with these corrections."</pre>
   <div class="sp-section"><div class="sub">Written questions per objective (120)</div></div>
   <table class="sp-t"><tr><th>Objective</th><th>Questions</th></tr><tr><td>D1 Parallel tool calls in one turn</td><td>8</td></tr><tr><td>D1 Dynamic task decomposition</td><td>8</td></tr><tr><td>D1 Review architecture: plan / direct / multi-phase</td><td>8</td></tr><tr><td>D1 Subagent prompts with full context</td><td>6</td></tr><tr><td>D1 State persistence &amp; resumption</td><td>8</td></tr><tr><td>D3 CLI in CI/CD: non-interactive flags</td><td>8</td></tr><tr><td>D3 Review configuration &amp; structured output</td><td>8</td></tr><tr><td>D3 Codebase exploration</td><td>6</td></tr><tr><td>D5 Context window optimization</td><td>8</td></tr><tr><td>D4 Structured output method: tool use vs prompt vs prefill</td><td>8</td></tr><tr><td>D2 Built-in tools: Grep / Glob / Read / Bash</td><td>8</td></tr><tr><td>D5 Human review routing</td><td>6</td></tr><tr><td>D4 Extraction schemas: optional / nullable / enum</td><td>8</td></tr><tr><td>D4 Extraction accuracy: few-shot, normalization</td><td>8</td></tr><tr><td>D4 Explicit criteria: inclusion / exclusion</td><td>7</td></tr><tr><td>D2 Tool distribution per subagent</td><td>7</td></tr></table>
 </div><!-- /sp-hardsets -->
+
+<!-- ===== PANEL: Quiz Answers ===== -->
+<div class="sp-panel" id="sp-quizkey">
+  <div class="sp-section">
+    <div class="sub">CCAR-F Preparation · LinkedIn series by Andrey Arykov</div>
+    <h2>Quiz Answers — Every Lesson Quiz, With Its Answer</h2>
+    <p style="font-size:13.2px;color:var(--ink-2);margin:4px 0 0">Every lesson in this series ends with a quiz, and the answer — with the explanation of why each other option loses — is only published at the top of the <em>next</em> lesson. This tab pairs them: each question below sits directly above its official answer and explanation, for all 17 published lessons (Topics 1.1–3.5).</p>
+    <p style="font-size:13.2px;color:var(--ink-2);margin:4px 0 0">Explanations are the series' own text, taken from the next lesson's "Answer to the last quiz" section. For Topics 1.7 and 2.1 the next lesson opens without one, so the explanation is the lesson's own answer block. Topic 3.5 is marked provisional: its official answer arrives with Topic 3.6.</p>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Answer key</div>
+    <table class="sp-t">
+        <tr><th>Topic</th><th>Lesson</th><th>Answer</th><th>Explained in</th></tr>
+        <tr><td><b>1.1</b></td><td>Agentic Loops</td><td><b>B</b></td><td>Topic 1.2</td></tr>
+        <tr><td><b>1.2</b></td><td>Coordinator-Subagent Orchestration</td><td><b>B</b></td><td>Topic 1.3</td></tr>
+        <tr><td><b>1.3</b></td><td>Spawning and Briefing Subagents</td><td><b>D</b></td><td>Topic 1.4</td></tr>
+        <tr><td><b>1.4</b></td><td>Enforced Workflows and Handoffs</td><td><b>A</b></td><td>Topic 1.5</td></tr>
+        <tr><td><b>1.5</b></td><td>Agent SDK Hooks</td><td><b>C</b></td><td>Topic 1.6</td></tr>
+        <tr><td><b>1.6</b></td><td>Task Decomposition Strategies</td><td><b>D</b></td><td>Topic 1.7</td></tr>
+        <tr><td><b>1.7</b></td><td>Sessions: Resume and Fork</td><td><b>C</b></td><td>This lesson's answer block</td></tr>
+        <tr><td><b>2.1</b></td><td>Tool Descriptions and Boundaries</td><td><b>B</b></td><td>This lesson's answer block</td></tr>
+        <tr><td><b>2.2</b></td><td>Structured MCP Errors</td><td><b>A</b></td><td>Topic 2.3</td></tr>
+        <tr><td><b>2.3</b></td><td>Tool Distribution and tool_choice</td><td><b>D</b></td><td>Topic 2.4</td></tr>
+        <tr><td><b>2.4</b></td><td>MCP Servers in Workflows</td><td><b>A</b></td><td>Topic 2.5</td></tr>
+        <tr><td><b>2.5</b></td><td>Built-in Tools</td><td><b>C</b></td><td>Topic 3.1</td></tr>
+        <tr><td><b>3.1</b></td><td>CLAUDE.md Hierarchy</td><td><b>D</b></td><td>Topic 3.2</td></tr>
+        <tr><td><b>3.2</b></td><td>Slash Commands and Skills</td><td><b>A</b></td><td>Topic 3.3</td></tr>
+        <tr><td><b>3.3</b></td><td>Path-Scoped Rules</td><td><b>B</b></td><td>Topic 3.4</td></tr>
+        <tr><td><b>3.4</b></td><td>Plan Mode vs. Direct Execution</td><td><b>C</b></td><td>Topic 3.5</td></tr>
+        <tr><td><b>3.5</b></td><td>Iterative Refinement</td><td><b>D</b></td><td>Topic 3.6 — not yet published</td></tr>
+    </table>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Topic 1.1 — Agentic Loops</div>
+    <div class="quiz-box">
+      <div class="q-label">Quiz · Topic 1.1 · Answer: B</div>
+<div class="q-text"><b>Developer Productivity with Claude.</b> Your team's code-explorer command runs its own loop on the Messages API. It defines two tools, Grep and Read, and runs them itself; Claude picks which files to Read from the Grep matches. The loop continues while <code>stop_reason</code> is <code>"tool_use"</code>, returns the answer on <code>"end_turn"</code>, and fails after 25 passes. Each log line is one request; <em>messages</em> is the number of entries in the list sent.<br><br>
+<pre class="sp-code" style="margin:8px 0">question: "Where is the retry policy set?"
+pass 1   stop_reason=tool_use  Grep "retry_policy"  messages=1
+pass 2   stop_reason=tool_use  Grep "retry_policy"  messages=1
+pass 3   stop_reason=tool_use  Grep "retry_policy"  messages=1
+(passes 4 to 24 are the same)
+pass 25  stop_reason=tool_use  Grep "retry_policy"  messages=1
+run failed: 25-pass limit reached</pre>
+      <b>What is the most effective fix?</b></div>
+      <div class="q-opt"><b>A.</b> Remove the 25-pass limit, so the loop keeps calling Claude until <code>stop_reason</code> is <code>"end_turn"</code>.</div>
+      <div class="q-opt"><b>B.</b> Append each assistant turn and its <code>tool_result</code> turn to the messages list, and send the full list every time.</div>
+      <div class="q-opt"><b>C.</b> Expand the Grep tool description to say that repeating a search returns the same matches.</div>
+      <div class="q-opt"><b>D.</b> Send the question with a short code-written summary of the earlier Grep results every time.</div>
+      <details style="margin-top:14px">
+        <summary style="font-size:13px;color:var(--accent);cursor:pointer;font-weight:600">Show answer &amp; explanation</summary>
+        <div style="margin-top:10px;padding:12px 14px;background:var(--good-bg);border:1px solid var(--good-bd);border-radius:9px;font-size:13.2px;color:var(--ink-2);line-height:1.6">
+<p style="font-size:13.2px;color:var(--ink-2);margin:0 0 6px"><b>Answer: B</b> — append each assistant turn and its <code>tool_result</code> turn to the messages list, and send the full list every time. The log showed <code>messages=1</code> on every pass, so Claude saw only the question and ran the same Grep again.</p>
+      <ul style="margin:6px 0 0;padding-left:18px;font-size:13px;color:var(--ink-2);line-height:1.6">
+        <li><b>D loses:</b> a summary shows Claude what Grep found, so it helps — but D sends no Read results back, so Claude never sees the files it picks and asks again.</li>
+        <li><b>A &amp; C:</b> removing the cap only moves the limit; a tool description cannot tell Claude a search is a repeat when it has no record of the earlier one.</li>
+      </ul>
+        </div>
+      </details>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Topic 1.2 — Coordinator-Subagent Orchestration</div>
+    <div class="quiz-box">
+      <div class="q-label">Quiz · Topic 1.2 · Answer: B</div>
+<div class="q-text"><b>Multi-Agent Research System.</b> Your coordinator sends every request through the same four subagents in order: web search → document analysis → synthesis → report generation. Each subagent does its own step correctly. Users also ask one-fact questions — these are slow and expensive, although the web search result already contains the answer.<br><br>
+<pre class="sp-code" style="margin:8px 0">query: "In what year did Apollo 11 land on the Moon?"
+coordinator -> web_search         ok  (answer found: 1969)
+coordinator -> document_analysis  ok
+coordinator -> synthesis          ok
+coordinator -> report_generation  ok</pre>
+      <b>What is the most effective fix for the one-fact questions?</b></div>
+      <div class="q-opt"><b>A.</b> Have the coordinator start all four subagents at the same time instead of waiting for each one to finish.</div>
+      <div class="q-opt"><b>B.</b> Have the coordinator analyze each query and invoke only the subagents it needs, such as web search alone.</div>
+      <div class="q-opt"><b>C.</b> Restrict each subagent to only the tools that its own step in the pipeline needs.</div>
+      <div class="q-opt"><b>D.</b> Have the coordinator check the synthesis for gaps and send targeted searches out again before the report.</div>
+      <details style="margin-top:14px">
+        <summary style="font-size:13px;color:var(--accent);cursor:pointer;font-weight:600">Show answer &amp; explanation</summary>
+        <div style="margin-top:10px;padding:12px 14px;background:var(--good-bg);border:1px solid var(--good-bd);border-radius:9px;font-size:13.2px;color:var(--ink-2);line-height:1.6">
+<p style="font-size:13.2px;color:var(--ink-2);margin:0 0 6px"><b>Answer: B</b> — have the coordinator analyze each query and invoke only the subagents it needs. The trace showed web_search found 1969, yet three more subagents still ran.</p>
+      <ul style="margin:6px 0 0;padding-left:18px;font-size:13px;color:var(--ink-2);line-height:1.6">
+        <li><b>A loses:</b> parallelizing the same unnecessary work is faster but still wasteful — all four still run.</li>
+        <li><b>C:</b> limiting tools does not change how many subagents run.</li>
+        <li><b>D:</b> a gap check suits broad research, not a question with nothing missing.</li>
+      </ul>
+        </div>
+      </details>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Topic 1.3 — Spawning and Briefing Subagents</div>
+    <div class="quiz-box">
+      <div class="q-label">Quiz · Topic 1.3 · Answer: D</div>
+<div class="q-text"><b>Developer Productivity with Claude.</b> Your coordinator reads <code>src/billing/invoice.py</code> and concludes, in its own conversation, that <code>apply_discount</code> rounds each line item instead of the total. The new tests must cover that bug. It spawns the "test-writer" subagent (tools: Read, Write, Grep, Glob) with the prompt below. The file also defines <code>format_invoice</code>, <code>total_lines</code> and <code>load_rates</code>.<br><br>
+<pre class="sp-code" style="margin:8px 0">Task prompt: "Write tests for the function we just reviewed."
+test-writer result: 6 tests, all for format_invoice</pre>
+      <b>Which change most reliably produces tests that cover the rounding bug?</b></div>
+      <div class="q-opt"><b>A.</b> Add Bash to the test-writer's tools, so it can run the existing tests and work out which function is failing.</div>
+      <div class="q-opt"><b>B.</b> Change the Task prompt to name the file <code>src/billing/invoice.py</code> and the function <code>apply_discount</code>.</div>
+      <div class="q-opt"><b>C.</b> Add the team's testing conventions to the test-writer's AgentDefinition prompt, so its tests follow one structure.</div>
+      <div class="q-opt"><b>D.</b> Change the Task prompt to name the file and the function, and to describe the rounding bug the tests must catch.</div>
+      <details style="margin-top:14px">
+        <summary style="font-size:13px;color:var(--accent);cursor:pointer;font-weight:600">Show answer &amp; explanation</summary>
+        <div style="margin-top:10px;padding:12px 14px;background:var(--good-bg);border:1px solid var(--good-bd);border-radius:9px;font-size:13.2px;color:var(--ink-2);line-height:1.6">
+<p style="font-size:13.2px;color:var(--ink-2);margin:0 0 6px"><b>Answer: D</b> — change the Task prompt to name the file and the function, and to describe the rounding bug the tests must catch. "The function we just reviewed" points at nothing the subagent can see.</p>
+      <ul style="margin:6px 0 0;padding-left:18px;font-size:13px;color:var(--ink-2);line-height:1.6">
+        <li><b>B loses:</b> names file and function but leaves out the bug — tests for <code>apply_discount</code> may pass without catching the rounding issue.</li>
+        <li><b>A:</b> running tests cannot reveal a bug the coordinator found by reading the code.</li>
+        <li><b>C:</b> improves test style but cannot say which function this call must test.</li>
+      </ul>
+        </div>
+      </details>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Topic 1.4 — Enforced Workflows and Handoffs</div>
+    <div class="quiz-box">
+      <div class="q-label">Quiz · Topic 1.4 · Answer: A</div>
+<div class="q-text"><b>Customer Support Resolution Agent.</b> Your support agent has a check: <code>process_refund</code> is allowed once the agent's reply contains the phrase "customer verified". The check does not look at tool results. An audit found 9 refunds sent to the wrong account. In each case the agent wrote the phrase after using only the name the customer typed, and <code>get_customer</code> was never called.<br><br>
+<pre class="sp-code" style="margin:8px 0">customer: "This is Maria Keller, please refund order 4471."
+agent:    "Thanks Maria, customer verified."
+tool call: process_refund(order_id="4471")  -> allowed
+tool call: get_customer                     -> (none in this run)</pre>
+      <b>Which change most reliably stops refunds on unverified accounts?</b></div>
+      <div class="q-opt"><b>A.</b> Record the customer ID that <code>get_customer</code> returns, and allow <code>process_refund</code> only for an order that belongs to that customer.</div>
+      <div class="q-opt"><b>B.</b> Add a line to the system prompt, in capitals, saying the agent must never write "customer verified" before it has called <code>get_customer</code>.</div>
+      <div class="q-opt"><b>C.</b> Move <code>process_refund</code> to a separate refunds subagent, so the main agent no longer holds the tool and cannot call it directly.</div>
+      <div class="q-opt"><b>D.</b> Force <code>get_customer</code> as the first tool call of every conversation with <code>tool_choice</code>, and keep the existing check as it is.</div>
+      <details style="margin-top:14px">
+        <summary style="font-size:13px;color:var(--accent);cursor:pointer;font-weight:600">Show answer &amp; explanation</summary>
+        <div style="margin-top:10px;padding:12px 14px;background:var(--good-bg);border:1px solid var(--good-bd);border-radius:9px;font-size:13.2px;color:var(--ink-2);line-height:1.6">
+<p style="font-size:13.2px;color:var(--ink-2);margin:0 0 6px"><b>Answer: A</b> — record the customer ID that <code>get_customer</code> returns, and allow <code>process_refund</code> only for an order belonging to that customer. The existing check read only reply text, so the gate must run on the real tool result.</p>
+      <ul style="margin:6px 0 0;padding-left:18px;font-size:13px;color:var(--ink-2);line-height:1.6">
+        <li><b>D loses:</b> forces one <code>get_customer</code> call at session start, but the existing phrase check still runs — a refund passes on the phrase even when the lookup found no match.</li>
+        <li><b>B &amp; C:</b> a stronger prompt is still advisory; moving the tool to a subagent changes ownership, not whether verification came first.</li>
+      </ul>
+        </div>
+      </details>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Topic 1.5 — Agent SDK Hooks</div>
+    <div class="quiz-box">
+      <div class="q-label">Quiz · Topic 1.5 · Answer: C</div>
+<div class="q-text"><b>Customer Support Resolution Agent.</b> Policy says any refund over $200 must go to a human agent, and the system prompt states this rule. An audit of 400 conversations found 6 where the agent called <code>process_refund</code> itself and the refund was issued.<br><br>
+<pre class="sp-code" style="margin:8px 0">process_refund order_id=A-4471 amount_usd=340 -> refund issued</pre>
+      <b>Which fix best stops these refunds and gets each over-limit case to a human agent?</b></div>
+      <div class="q-opt"><b>A.</b> Register a PreToolUse hook on <code>process_refund</code> that checks the amount and denies any call over $200 with the message "Refund denied."</div>
+      <div class="q-opt"><b>B.</b> Repeat the $200 rule in capital letters at the top of the system prompt and again in the description of the <code>process_refund</code> tool.</div>
+      <div class="q-opt"><b>C.</b> Register a PreToolUse hook on <code>process_refund</code> that denies any call over $200, with a reason telling Claude to escalate to a human.</div>
+      <div class="q-opt"><b>D.</b> Register a PostToolUse hook on <code>process_refund</code> that tells Claude to escalate to a human whenever the refund it issued is over $200.</div>
+      <details style="margin-top:14px">
+        <summary style="font-size:13px;color:var(--accent);cursor:pointer;font-weight:600">Show answer &amp; explanation</summary>
+        <div style="margin-top:10px;padding:12px 14px;background:var(--good-bg);border:1px solid var(--good-bd);border-radius:9px;font-size:13.2px;color:var(--ink-2);line-height:1.6">
+<p style="font-size:13.2px;color:var(--ink-2);margin:0 0 6px"><b>Answer: C</b> — register a PreToolUse hook that denies any call over $200 with a reason telling Claude to escalate. The system prompt stated the rule and 6 refunds were issued anyway, so the check must run before the call and Claude must be told where to send the case.</p>
+      <ul style="margin:6px 0 0;padding-left:18px;font-size:13px;color:var(--ink-2);line-height:1.6">
+        <li><b>A loses:</b> also stops the refund, but "Refund denied" gives Claude no escalation path — it has to infer it from the prompt rule that already failed.</li>
+        <li><b>B:</b> capital letters are still advisory. <b>D:</b> PostToolUse runs after the refund is paid.</li>
+      </ul>
+        </div>
+      </details>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Topic 1.6 — Task Decomposition Strategies</div>
+    <div class="quiz-box">
+      <div class="q-label">Quiz · Topic 1.6 · Answer: D</div>
+<div class="q-text"><b>Developer Productivity with Claude.</b> An incident command runs a fixed three-step script: read the error logs → inspect the service config → write the report. Each step gets only the previous step's output. After a timeout incident the report named the wrong cause. The real cause was the cache client. Each past incident had a different cause.<br><br>
+<pre class="sp-code" style="margin:8px 0">step 1 logs    -> timeouts began right after the cache client was replaced
+step 2 config  -> service config checked, nothing unusual
+step 3 report  -> cause: slow database queries</pre>
+      <b>What is the most effective fix for investigations like this?</b></div>
+      <div class="q-opt"><b>A.</b> Add a cache-client inspection step to the script, because the cache client was the cause this time.</div>
+      <div class="q-opt"><b>B.</b> Have a second Claude instance review each finished report and flag causes that look unsupported.</div>
+      <div class="q-opt"><b>C.</b> Have a coordinator choose which of the fixed steps to run for each incident, based on the error message.</div>
+      <div class="q-opt"><b>D.</b> Let the agent add, drop or reorder investigation steps after each step, based on what that step found.</div>
+      <details style="margin-top:14px">
+        <summary style="font-size:13px;color:var(--accent);cursor:pointer;font-weight:600">Show answer &amp; explanation</summary>
+        <div style="margin-top:10px;padding:12px 14px;background:var(--good-bg);border:1px solid var(--good-bd);border-radius:9px;font-size:13.2px;color:var(--ink-2);line-height:1.6">
+<p style="font-size:13.2px;color:var(--ink-2);margin:0 0 6px"><b>Answer: D</b> — let the agent add, drop or reorder steps after each step based on what it found. Step 1 pointed to the cache client; the fixed script never followed that lead.</p>
+      <ul style="margin:6px 0 0;padding-left:18px;font-size:13px;color:var(--ink-2);line-height:1.6">
+        <li><b>A:</b> adds a cache step but keeps the script fixed — the next incident may hit a cause no step covers.</li>
+        <li><b>B:</b> a second reviewer can doubt the report but cannot change the script.</li>
+        <li><b>C:</b> chooses among the same fixed steps, none of which covers the cache client.</li>
+      </ul>
+        </div>
+      </details>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Topic 1.7 — Sessions: Resume and Fork</div>
+    <div class="quiz-box">
+      <div class="q-label">Quiz · Topic 1.7 · Answer: C</div>
+<div class="q-text">A developer spent Monday in a session named <code>payment-timeout</code>. The agent read 30 files and diagnosed the cause from those reads. On Tuesday morning a teammate's overnight merge rewrote the logic in 24 of those 30 files. The fix is still needed.<br><br><b>Which way of continuing the work is most reliable?</b></div>
+      <div class="q-opt"><b>A.</b> Resume with <code>claude --resume payment-timeout</code> and give the agent the list of changed files to re-read.</div>
+      <div class="q-opt"><b>B.</b> Fork the <code>payment-timeout</code> session and continue in the fork, so the original session stays unchanged.</div>
+      <div class="q-opt"><b>C.</b> Start a new session with a structured summary of the findings, flagged where they rest on changed files, and the files to re-check.</div>
+      <div class="q-opt"><b>D.</b> Resume with <code>claude --resume payment-timeout</code> and ask the agent to re-explore the whole codebase before proposing a fix.</div>
+      <details style="margin-top:14px">
+        <summary style="font-size:13px;color:var(--accent);cursor:pointer;font-weight:600">Show answer &amp; explanation</summary>
+        <div style="margin-top:10px;padding:12px 14px;background:var(--good-bg);border:1px solid var(--good-bd);border-radius:9px;font-size:13.2px;color:var(--ink-2);line-height:1.6">
+<b style="color:var(--good)">Answer: C.</b> 24 of 30 files changed — most of the history is outdated. A new session with a structured summary carries what still holds without the competing old reads. A names the changed files, which helps, but the history still holds old reads of 24 files and the conclusions from them. B &amp; D bring the full outdated history along.
+        </div>
+      </details>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Topic 2.1 — Tool Descriptions and Boundaries</div>
+    <div class="quiz-box">
+      <div class="q-label">Quiz · Topic 2.1 · Answer: B</div>
+<div class="q-text"><b>Scenario:</b> Multi-Agent Research System. The document analysis subagent has three tools: <code>extract_data_points</code>, <code>summarize_content</code> and <code>verify_claim_against_source</code>. Each tool's description states its purpose, inputs, outputs and when to use it. The subagent's system prompt contains the line:<br><br><code>"When a request mentions a summary, call summarize_content."</code><br><br>Requests to check a claim from a summary against its source document keep going to <code>summarize_content</code>.<br><br><b>What is the most effective fix?</b></div>
+      <div class="q-opt"><b>A.</b> Add five few-shot examples to the system prompt that show claim checks being routed to <code>verify_claim_against_source</code>.</div>
+      <div class="q-opt"><b>B.</b> Remove the keyword instruction about summaries from the system prompt and let the tool descriptions decide.</div>
+      <div class="q-opt"><b>C.</b> Set <code>tool_choice</code> to force <code>verify_claim_against_source</code> on the subagent's first tool call for every request.</div>
+      <div class="q-opt"><b>D.</b> Add example queries and an edge case about claims quoted from summaries to the <code>verify_claim_against_source</code> description.</div>
+      <details style="margin-top:14px">
+        <summary style="font-size:13px;color:var(--accent);cursor:pointer;font-weight:600">Show answer &amp; explanation</summary>
+        <div style="margin-top:10px;padding:12px 14px;background:var(--good-bg);border:1px solid var(--good-bd);border-radius:9px;font-size:13.2px;color:var(--ink-2);line-height:1.6">
+<b style="color:var(--good)">Answer: B.</b> The descriptions are already good. The root cause is a keyword rule in the system prompt tying "summary" to <code>summarize_content</code>. Removing that rule lets the descriptions do their job.<br><br>
+          <b>Why others lose:</b> A adds examples but leaves the keyword rule in place — the rule still fires first. C forces the tool on every first call, catching requests that should go to other tools. D improves the description but the keyword rule still overrides it.
+        </div>
+      </details>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Topic 2.2 — Structured MCP Errors</div>
+    <div class="quiz-box">
+      <div class="q-label">Quiz · Topic 2.2 · Answer: A</div>
+<div class="q-text"><b>Customer Support Resolution Agent.</b> The <code>lookup_order</code> MCP tool catches every database exception and returns an empty orders list with <code>isError: false</code>. The order database was unreachable for 20 minutes. During that time, the agent told customers who had placed orders that it found no orders on their accounts.<br><br><b>What is the most effective fix?</b></div>
+      <div class="q-opt"><b>A.</b> Have <code>lookup_order</code> return database failures with <code>isError: true</code>, <code>errorCategory "transient"</code>, <code>isRetryable: true</code> and a readable description.</div>
+      <div class="q-opt"><b>B.</b> Wrap the database query inside <code>lookup_order</code> in automatic retries with exponential backoff before it returns a result.</div>
+      <div class="q-opt"><b>C.</b> Have the agent call <code>get_customer</code> to re-verify the customer ID before telling a customer they have no orders.</div>
+      <div class="q-opt"><b>D.</b> Have <code>lookup_order</code> put the database exception text in its result content, keeping <code>isError: false</code>, instead of an empty list.</div>
+      <details style="margin-top:14px">
+        <summary style="font-size:13px;color:var(--accent);cursor:pointer;font-weight:600">Show answer &amp; explanation</summary>
+        <div style="margin-top:10px;padding:12px 14px;background:var(--good-bg);border:1px solid var(--good-bd);border-radius:9px;font-size:13.2px;color:var(--ink-2);line-height:1.6">
+<p style="font-size:13.2px;color:var(--ink-2);margin:0 0 6px"><b>Answer: A</b> — return database failures with <code>isError: true</code>, <code>errorCategory "transient"</code>, <code>isRetryable: true</code> and a readable description. An unreachable database is an access failure, not a query that matched nothing.</p>
+      <ul style="margin:6px 0 0;padding-left:18px;font-size:13px;color:var(--ink-2);line-height:1.6">
+        <li><b>B loses:</b> retries help with short blips; in a 20-minute outage the retries run out and the tool still returns an empty success.</li>
+        <li><b>C:</b> re-checking the customer doesn't change what <code>lookup_order</code> returns.</li>
+        <li><b>D:</b> exception text in a result still marked <code>isError: false</code> — the failure still looks like data.</li>
+      </ul>
+        </div>
+      </details>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Topic 2.3 — Tool Distribution and tool_choice</div>
+    <div class="quiz-box">
+      <div class="q-label">Quiz · Topic 2.3 · Answer: D</div>
+<div class="q-text"><b>Multi-Agent Research System.</b> The coordinator passes the document-analysis subagent only the URLs of PDF papers the search subagent found. The analysis subagent loads each paper with its only loading tool, a custom <code>fetch_url</code> tool that accepts any URL. Its transcripts show <code>fetch_url</code> calls to news and forum pages linked inside the papers, and final reports now cite those pages.<br><br><b>What is the most effective fix?</b></div>
+      <div class="q-opt"><b>A.</b> Remove <code>fetch_url</code> from the analysis subagent's tools, so only the search subagent loads anything from the web.</div>
+      <div class="q-opt"><b>B.</b> Add "Load only the papers on the coordinator's list" to the analysis subagent's system prompt.</div>
+      <div class="q-opt"><b>C.</b> Rewrite the <code>fetch_url</code> description to say it is only for loading the papers on the coordinator's list.</div>
+      <div class="q-opt"><b>D.</b> Replace <code>fetch_url</code> with a custom <code>load_document</code> tool that loads a URL only if it is on the coordinator's list.</div>
+      <details style="margin-top:14px">
+        <summary style="font-size:13px;color:var(--accent);cursor:pointer;font-weight:600">Show answer &amp; explanation</summary>
+        <div style="margin-top:10px;padding:12px 14px;background:var(--good-bg);border:1px solid var(--good-bd);border-radius:9px;font-size:13.2px;color:var(--ink-2);line-height:1.6">
+<p style="font-size:13.2px;color:var(--ink-2);margin:0 0 6px"><b>Answer: D</b> — replace <code>fetch_url</code> with a custom <code>load_document</code> tool that loads a URL only if it is on the coordinator's list. The root cause was a generic tool that accepted any URL; a constrained replacement enforces the boundary in code.</p>
+      <ul style="margin:6px 0 0;padding-left:18px;font-size:13px;color:var(--ink-2);line-height:1.6">
+        <li><b>A loses:</b> removing <code>fetch_url</code> stops stray loads but takes away the only way to load the listed papers.</li>
+        <li><b>B &amp; C:</b> prompt rules and description changes leave the generic tool still accepting any URL.</li>
+      </ul>
+        </div>
+      </details>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Topic 2.4 — MCP Servers in Workflows</div>
+    <div class="quiz-box">
+      <div class="q-label">Quiz · Topic 2.4 · Answer: A</div>
+<div class="q-text"><b>Developer Productivity with Claude.</b> The team uses a Jira MCP server defined as the <code>jira</code> entry in the committed <code>.mcp.json</code>. A security review flagged the API token written literally in that entry. The token has been revoked and each engineer now has a personal token.<br><br>
+<pre class="sp-code" style="margin:8px 0">"jira": {
+  "command": "jira-mcp",
+  "env": { "JIRA_API_TOKEN": "jira_9f3kq7x2" }
+}</pre>
+      <b>Which change keeps tokens out of <code>.mcp.json</code> while engineers still get the Jira tools by cloning the repository?</b></div>
+      <div class="q-opt"><b>A.</b> In <code>.mcp.json</code>, set <code>"JIRA_API_TOKEN": "${JIRA_API_TOKEN}"</code> and have each engineer export their own token as <code>JIRA_API_TOKEN</code>.</div>
+      <div class="q-opt"><b>B.</b> In <code>.mcp.json</code>, set <code>"JIRA_API_TOKEN": "${JIRA_API_TOKEN:-jira_9f3kq7x2}"</code> — the default keeps existing behavior and the override allows individual tokens.</div>
+      <div class="q-opt"><b>C.</b> Move the <code>jira</code> entry to user-scoped <code>~/.claude.json</code> with <code>"JIRA_API_TOKEN": "${JIRA_API_TOKEN}"</code>, and have each engineer export their own token.</div>
+      <div class="q-opt"><b>D.</b> Keep the entry in <code>.mcp.json</code> as it is, and limit read access to the repository to the engineering team.</div>
+      <details style="margin-top:14px">
+        <summary style="font-size:13px;color:var(--accent);cursor:pointer;font-weight:600">Show answer &amp; explanation</summary>
+        <div style="margin-top:10px;padding:12px 14px;background:var(--good-bg);border:1px solid var(--good-bd);border-radius:9px;font-size:13.2px;color:var(--ink-2);line-height:1.6">
+<p style="font-size:13.2px;color:var(--ink-2);margin:0 0 6px"><b>Answer: A</b> — set <code>"JIRA_API_TOKEN": "${JIRA_API_TOKEN}"</code> in <code>.mcp.json</code> and have each engineer export their own token. The entry stays in the committed file so cloning brings the tools; the file holds a reference instead of the secret.</p>
+      <ul style="margin:6px 0 0;padding-left:18px;font-size:13px;color:var(--ink-2);line-height:1.6">
+        <li><b>C loses:</b> user-scoped <code>~/.claude.json</code> keeps the secret safe but the server reaches only one developer — engineers who clone no longer get the Jira tools.</li>
+        <li><b>B:</b> <code>${VAR:-default}</code> writes the default (revoked literal) back. <b>D:</b> restricted access leaves a committed secret.</li>
+      </ul>
+        </div>
+      </details>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Topic 2.5 — Built-in Tools</div>
+    <div class="quiz-box">
+      <div class="q-label">Quiz · Topic 2.5 · Answer: C</div>
+<div class="q-text"><b>Developer Productivity with Claude.</b> Before changing the parameters of <code>formatInvoice</code>, an engineer asks the agent to list every module that calls it. The function is defined in <code>src/billing/format.ts</code>. Some modules import it from that file directly. The others import from <code>src/billing/index.ts</code>, which contains only:<br><br>
+<pre class="sp-code" style="margin:8px 0">export { formatInvoice } from "./format";
+export { formatInvoice as renderInvoice } from "./format";</pre>
+      <b>Which approach lists every module that calls <code>formatInvoice</code>?</b></div>
+      <div class="q-opt"><b>A.</b> Grep the whole codebase for <code>formatInvoice</code> and list every module in which the name appears.</div>
+      <div class="q-opt"><b>B.</b> Glob for <code>**/*invoice*.ts</code> and Read each matching file to find the calls.</div>
+      <div class="q-opt"><b>C.</b> Read <code>src/billing/index.ts</code>, list each name it exports for <code>formatInvoice</code>, then Grep for each name across the codebase.</div>
+      <div class="q-opt"><b>D.</b> Grep for imports from <code>src/billing/index.ts</code> and list every module that imports from it.</div>
+      <details style="margin-top:14px">
+        <summary style="font-size:13px;color:var(--accent);cursor:pointer;font-weight:600">Show answer &amp; explanation</summary>
+        <div style="margin-top:10px;padding:12px 14px;background:var(--good-bg);border:1px solid var(--good-bd);border-radius:9px;font-size:13.2px;color:var(--ink-2);line-height:1.6">
+<p style="font-size:13.2px;color:var(--ink-2);margin:0 0 6px"><b>Answer: C</b> — Read <code>src/billing/index.ts</code>, list each name it exports for <code>formatInvoice</code>, and Grep for each. Modules that import only <code>renderInvoice</code> never contain the text <code>formatInvoice</code>, so each exported name needs its own search.</p>
+      <ul style="margin:6px 0 0;padding-left:18px;font-size:13px;color:var(--ink-2);line-height:1.6">
+        <li><b>Why A loses:</b> Grep is the right tool, and it finds every module that uses the name <code>formatInvoice</code>. It misses every module that imports only <code>renderInvoice</code>.</li>
+        <li><b>B and D:</b> Glob matches file names, not contents, so callers with other file names are never read. Grepping for imports from the wrapper finds the <code>renderInvoice</code> callers but misses the modules that import directly from <code>src/billing/format.ts</code>.</li>
+      </ul>
+        </div>
+      </details>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Topic 3.1 — CLAUDE.md Hierarchy</div>
+    <div class="quiz-box">
+      <div class="q-label">Quiz · Topic 3.1 · Answer: D</div>
+<div class="q-text"><b>Code Generation with Claude Code.</b> You are using Claude Code to accelerate software development. Your team uses it for code generation, refactoring, debugging, and documentation. You need to integrate it into your development workflow with custom slash commands, CLAUDE.md configurations, and understand when to use plan mode vs direct execution.<br><br>
+      Your team's monorepo has a committed root CLAUDE.md and a committed CLAUDE.md in each package. Every package must be tested with make test, which first starts a test database. In sessions started in packages/api, Claude runs make test. In sessions started in packages/web or packages/cli, it runs npm test, and the tests fail with no database.<br><br>
+<pre class="sp-code" style="margin:8px 0">$ grep -rn "make test" --include=CLAUDE.md .
+
+./packages/api/CLAUDE.md:4:- Run tests with make test, never npm test.</pre>
+      <b>Which change makes every developer's Claude run make test in every package, including packages added later?</b></div>
+      <div class="q-opt"><b>A.</b> Copy the line into packages/web/CLAUDE.md and packages/cli/CLAUDE.md, and commit both files.</div>
+      <div class="q-opt"><b>B.</b> Ask each developer to add the line to their own ~/.claude/CLAUDE.md on their machine.</div>
+      <div class="q-opt"><b>C.</b> Move the line into a committed docs/testing.md and @import it from packages/api/CLAUDE.md.</div>
+      <div class="q-opt"><b>D.</b> Move the line from packages/api/CLAUDE.md into the root CLAUDE.md, and commit the change.</div>
+      <details style="margin-top:14px">
+        <summary style="font-size:13px;color:var(--accent);cursor:pointer;font-weight:600">Show answer &amp; explanation</summary>
+        <div style="margin-top:10px;padding:12px 14px;background:var(--good-bg);border:1px solid var(--good-bd);border-radius:9px;font-size:13.2px;color:var(--ink-2);line-height:1.6">
+<p style="font-size:13.2px;color:var(--ink-2);margin:0 0 6px"><b>Answer: D</b> — move the line from packages/api/CLAUDE.md into the root CLAUDE.md and commit it. The test command applies to every package, so it belongs in the root file, which sets repository-wide rules. (Topic 3.1: the make test line sat only in packages/api/CLAUDE.md, so sessions in packages/web and packages/cli ran npm test and failed with no database.)</p>
+      <ul style="margin:6px 0 0;padding-left:18px;font-size:13px;color:var(--ink-2);line-height:1.6">
+        <li><b>Why A loses:</b> copying the line into the two other packages stops the failures in those two packages, but it leaves three copies to keep in step, and a package added later has none until someone copies it again.</li>
+        <li><b>B and C:</b> a line in ~/.claude/CLAUDE.md is user level and is not shared through version control, and an @import placed in packages/api/CLAUDE.md only loads for sessions that use that file.</li>
+      </ul>
+        </div>
+      </details>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Topic 3.2 — Slash Commands and Skills</div>
+    <div class="quiz-box">
+      <div class="q-label">Quiz · Topic 3.2 · Answer: A</div>
+<div class="q-text"><b>Code Generation with Claude Code.</b> You are using Claude Code to accelerate software development. Your team uses it for code generation, refactoring, debugging, and documentation. You need to integrate it into your development workflow with custom slash commands, CLAUDE.md configurations, and understand when to use plan mode vs direct execution.<br><br>
+      Your team has a project skill at .claude/skills/legacy-map/SKILL.md. Running /legacy-map explains an unfamiliar module: Claude reads every file in it with Read and Grep, then replies with a one-page summary. After each run, the main conversation holds hundreds of lines of file contents from those tool calls. Developers use only the summary.<br><br>
+      <b>Which change most effectively keeps the main conversation clear of those file contents?</b></div>
+      <div class="q-opt"><b>A.</b> Add context: fork to the YAML frontmatter of legacy-map/SKILL.md.</div>
+      <div class="q-opt"><b>B.</b> Ask developers to run /compact each time a /legacy-map run finishes.</div>
+      <div class="q-opt"><b>C.</b> Add allowed-tools: Read Grep to the YAML frontmatter of legacy-map/SKILL.md.</div>
+      <div class="q-opt"><b>D.</b> Add the line "Show only the final summary" to the body of legacy-map/SKILL.md.</div>
+      <details style="margin-top:14px">
+        <summary style="font-size:13px;color:var(--accent);cursor:pointer;font-weight:600">Show answer &amp; explanation</summary>
+        <div style="margin-top:10px;padding:12px 14px;background:var(--good-bg);border:1px solid var(--good-bd);border-radius:9px;font-size:13.2px;color:var(--ink-2);line-height:1.6">
+<p style="font-size:13.2px;color:var(--ink-2);margin:0 0 6px"><b>Answer: A</b> — add context: fork to the YAML frontmatter of legacy-map/SKILL.md. The file contents come from the skill's own Read and Grep calls, and a forked skill runs in an isolated subagent, so only its summary returns to the main conversation. (Topic 3.2: every /legacy-map run left hundreds of lines of file contents in the main conversation, and developers used only the summary.)</p>
+      <ul style="margin:6px 0 0;padding-left:18px;font-size:13px;color:var(--ink-2);line-height:1.6">
+        <li><b>Why B loses:</b> /compact frees space only after each run has already filled the conversation with file contents. It also summarizes the developer's earlier work, and someone has to remember to run it every time.</li>
+        <li><b>C and D:</b> allowed-tools is about which tools the skill may use without asking, not where their results go. A line asking for only the summary shapes the final reply, while the Read and Grep results have already entered the conversation.</li>
+      </ul>
+        </div>
+      </details>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Topic 3.3 — Path-Scoped Rules</div>
+    <div class="quiz-box">
+      <div class="q-label">Quiz · Topic 3.3 · Answer: B</div>
+<div class="q-text"><b>Code Generation with Claude Code.</b> You are using Claude Code to accelerate software development. Your team uses it for code generation, refactoring, debugging, and documentation. You need to integrate it into your development workflow with custom slash commands, CLAUDE.md configurations, and understand when to use plan mode vs direct execution.<br><br>
+      Your monorepo has 30 services, and teams add new ones every month. Each service keeps its protobuf API definitions (.proto files) in its own api/ folder. The platform team's protobuf conventions, such as "never reuse a field number", are a section of the root CLAUDE.md. They load in every session, including frontend work that never touches a .proto file.<br><br>
+      <b>What is the most maintainable way to have these conventions load only when Claude works on .proto files?</b></div>
+      <div class="q-opt"><b>A.</b> Move the section into .claude/rules/protobuf.md as a rule file without a frontmatter block.</div>
+      <div class="q-opt"><b>B.</b> Move the section into .claude/rules/protobuf.md with paths: ["**/*.proto"] in its frontmatter.</div>
+      <div class="q-opt"><b>C.</b> Move the section into a CLAUDE.md file inside each of the 30 service api/ folders, next to the .proto files.</div>
+      <div class="q-opt"><b>D.</b> Move the section into a project skill, .claude/skills/protobuf/SKILL.md, that developers invoke for .proto work.</div>
+      <details style="margin-top:14px">
+        <summary style="font-size:13px;color:var(--accent);cursor:pointer;font-weight:600">Show answer &amp; explanation</summary>
+        <div style="margin-top:10px;padding:12px 14px;background:var(--good-bg);border:1px solid var(--good-bd);border-radius:9px;font-size:13.2px;color:var(--ink-2);line-height:1.6">
+<p style="font-size:13.2px;color:var(--ink-2);margin:0 0 6px"><b>Answer: B</b> — move the section into <code>.claude/rules/protobuf.md</code> with <code>paths: ["**/*.proto"]</code> in its frontmatter. The glob matches .proto files in any directory, so one central file covers all 30 services and every new one. (Topic 3.3: protobuf conventions sat in the root CLAUDE.md and loaded in every session; the goal was to load them only for .proto work across 30 services, with new ones added every month.)</p>
+      <ul style="margin:6px 0 0;padding-left:18px;font-size:13px;color:var(--ink-2);line-height:1.6">
+        <li><b>Why C loses:</b> a CLAUDE.md in each api/ folder does load only for that folder, but it is tied to one directory. That means 30 copies that can drift, and every new service needs another copy.</li>
+        <li><b>A and D:</b> a rule file without paths loads unconditionally, and a skill loads only when a developer invokes it, not when a .proto file is touched.</li>
+      </ul>
+        </div>
+      </details>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Topic 3.4 — Plan Mode vs. Direct Execution</div>
+    <div class="quiz-box">
+      <div class="q-label">Quiz · Topic 3.4 · Answer: C</div>
+<div class="q-text"><b>Code Generation with Claude Code.</b> You are using Claude Code to accelerate software development. Your team uses it for code generation, refactoring, debugging, and documentation. You need to integrate it into your development workflow with custom slash commands, CLAUDE.md configurations, and understand when to use plan mode vs direct execution.<br><br>
+      In one Claude Code session, a developer asked Claude to find every caller of the deprecated LegacyClient class, design a replacement, and then implement it. During discovery, Claude ran Grep and Read in the main conversation and got about 300 matches across 40 files. When implementation started, these search results filled most of the context window, and Claude's edits were less accurate than its earlier analysis.<br><br>
+      <b>For the next task like this, which change best keeps the main context free for the design and implementation phases?</b></div>
+      <div class="q-opt"><b>A.</b> Run /compact when implementation starts, so the conversation so far is summarized and the window has room again.</div>
+      <div class="q-opt"><b>B.</b> Have Claude also save the list of callers to a notes file during discovery, for the later phases to read.</div>
+      <div class="q-opt"><b>C.</b> Ask Claude to run discovery in the Explore subagent, so only a summary of the callers returns to the main conversation.</div>
+      <div class="q-opt"><b>D.</b> After discovery, fork the session and do the design and implementation in the fork, leaving the original session as it is.</div>
+      <details style="margin-top:14px">
+        <summary style="font-size:13px;color:var(--accent);cursor:pointer;font-weight:600">Show answer &amp; explanation</summary>
+        <div style="margin-top:10px;padding:12px 14px;background:var(--good-bg);border:1px solid var(--good-bd);border-radius:9px;font-size:13.2px;color:var(--ink-2);line-height:1.6">
+<p style="font-size:13.2px;color:var(--ink-2);margin:0 0 6px"><b>Answer: C</b> — ask Claude to run discovery in the Explore subagent, so only a summary of the callers returns to the main conversation. The 300 matches stay in the subagent's own context. (Topic 3.4: discovery put about 300 matches from 40 files into the main conversation, and the window was nearly full when implementation started.)</p>
+      <ul style="margin:6px 0 0;padding-left:18px;font-size:13px;color:var(--ink-2);line-height:1.6">
+        <li><b>Why A loses:</b> /compact frees space by summarizing the conversation, but it acts only when implementation starts. The design phase came after discovery, so it already ran with the 300 matches in the main conversation, and the design itself is reduced to a summary.</li>
+        <li><b>B and D:</b> a notes file does not free context, because the 300 matches still sit in the main conversation. A forked session starts with a copy of the same history, so it starts just as full.</li>
+      </ul>
+        </div>
+      </details>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Topic 3.5 — Iterative Refinement</div>
+    <div class="quiz-box">
+      <div class="q-label">Quiz · Topic 3.5 · Answer: D</div>
+<div class="q-text"><b>Code Generation with Claude Code.</b> You are using Claude Code to accelerate software development. Your team uses it for code generation, refactoring, debugging, and documentation. You need to integrate it into your development workflow with custom slash commands, CLAUDE.md configurations, and understand when to use plan mode vs direct execution.<br><br>
+      A developer will use Claude Code to add webhook delivery to the billing service, in a new module src/billing/webhooks.ts. She knows the billing code well, but she has never built webhook delivery before. This is her whole feature note:<br>
+      <pre class="sp-code" style="margin:8px 0">Feature: send each payment event to the customer's webhook URL.
+
+Requirement: retry failed deliveries.</pre>
+      <b>What is the most effective first step before Claude writes any code?</b></div>
+      <div class="q-opt"><b>A.</b> Write a test suite for the retry requirement first, then have Claude implement the module and iterate on the failing tests.</div>
+      <div class="q-opt"><b>B.</b> Add a line to CLAUDE.md saying "IMPORTANT: handle every retry and failure case in webhook code carefully".</div>
+      <div class="q-opt"><b>C.</b> Have Claude run the Explore subagent over src/billing/ and summarise how the service sends HTTP requests today.</div>
+      <div class="q-opt"><b>D.</b> Ask Claude to interview her about the webhook delivery design until the open questions are answered, then write the code.</div>
+      <details style="margin-top:14px">
+        <summary style="font-size:13px;color:var(--accent);cursor:pointer;font-weight:600">Show answer &amp; explanation</summary>
+        <div style="margin-top:10px;padding:12px 14px;background:var(--good-bg);border:1px solid var(--good-bd);border-radius:9px;font-size:13.2px;color:var(--ink-2);line-height:1.6">
+<b style="color:var(--good)">Answer: D.</b> She knows the billing code, but webhook delivery is unfamiliar, and the open questions — how many retries, what backoff, which failures count, timeouts, duplicate delivery — are design decisions that live in her head, not in the repository. The interview surfaces them before any code exists, so they do not become rework. A comes after the interview: "retry failed deliveries" is too vague to write meaningful tests against until the retry behaviour is decided. B is emphasis, not a specification. C answers a repository question she does not have — Explore summarizes existing code, and the missing information is not in the code.
+          <p style="margin:10px 0 0"><b>Provisional:</b> the series publishes this answer at the top of Topic 3.6, which is not out yet. This answer and explanation follow the lesson's own logic — interview when the missing information lives in the developer's head — and will be checked against Topic 3.6 when it appears.</p>
+        </div>
+      </details>
+    </div>
+  </div>
+</div><!-- /sp-quizkey -->
 
 
 
