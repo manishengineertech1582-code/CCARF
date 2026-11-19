@@ -3551,9 +3551,11 @@ Requirement: retry failed deliveries.</pre>
 <!-- ===== PANEL: D3.6 CI Mode ===== -->
 <div class="sp-panel" id="sp-d3t6">
   <div class="sp-section">
-    <div class="sub">Domain 3 · Claude Code Configuration · 20% of exam</div>
-    <h2>Task 3.6 — CI &amp; Non-interactive Mode</h2>
+    <div class="sub">Domain 3 · Claude Code Configuration and Workflows · 20% of exam</div>
+    <h2>Topic 3.6 — Claude Code in CI/CD</h2>
     <p style="font-size:13.2px;color:var(--ink-2);margin:4px 0 0"><em>Without -p, Your CI Job Hangs Until Timeout Kills It.</em></p>
+    <p style="font-size:13.2px;color:var(--ink-2);margin:4px 0 0">Appears in: <em>Code Generation with Claude Code</em>, <em>Developer Productivity with Claude</em>, <em>Claude Code for Continuous Integration</em> scenarios.</p>
+    <p style="font-size:13.2px;color:var(--ink-2);margin:4px 0 0"><b>What you need to know:</b> A CI job is a script: run Claude Code with <code>-p</code>, bind its findings to a JSON schema, keep project standards in CLAUDE.md, and let a separate instance do the review.</p>
   </div>
   <div class="sp-section">
     <div class="sub">The rule</div>
@@ -3582,14 +3584,111 @@ claude "analyze the diff"</pre>
       <li><b>S3.6.1:</b> Pass prior review context to avoid 62% duplicate comments. Prior context cuts duplicates from 62% to 4%.</li>
     </ul>
   </div>
-</div>
+
+  <div class="sp-section">
+    <div class="sub">Last quiz answer — Topic 3.5</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>Answer: D</b> — ask Claude to interview her about the webhook delivery design until the open questions are answered, then write the code. She had never built webhook delivery before and her feature note stated a single requirement, so the questions she had not anticipated needed to surface first. (Official answer, published at the top of this lesson.)</p>
+      <ul style="margin:6px 0 0;padding-left:18px;font-size:13px;color:var(--ink-2);line-height:1.6">
+        <li><b>Why A loses:</b> tests first is a sound move once the expected behaviour is known. Here the suite could only cover the one requirement in her note, so the unanticipated questions would still appear after the code exists. Interview first, then write the tests.</li>
+        <li><b>B and C:</b> a CLAUDE.md line about handling failures "carefully" is prose about behaviour nobody has decided, and an Explore summary of the billing code tells her what she already knows.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Bind the findings to a schema</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">A pipeline that posts review comments needs findings it can parse. Two flags work together. <code>--output-format json</code> returns a structured JSON envelope (result, session ID, metadata). <code>--json-schema</code> binds the output itself to a JSON Schema. The envelope alone is not enough: the findings inside stay free text whose shape changes from run to run, and asking for "valid JSON" in the prompt has the same weakness, because nothing binds the shape.</p>
+      <pre class="sp-code" style="margin:0 0 8px">claude -p "Review pr.diff for bugs and security issues." \
+  --output-format json \
+  --json-schema "$(cat findings.schema.json)" \
+  | jq '.structured_output.findings[]'</pre>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0">Give each finding the fields <b>file</b>, <b>line</b>, <b>severity</b> and <b>message</b>. The first two anchor an inline PR comment; the last two fill its body. A script then posts each item.</p>
+    </div>
+    <div class="kc"><b>Key concept:</b> <code>--output-format json</code> plus <code>--json-schema</code> gives findings a script can post as inline comments.</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Standards live in CLAUDE.md; existing tests go in the prompt</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">CI-invoked Claude Code reads the project CLAUDE.md like any session, so standing context goes there and not into each pipeline prompt: the test runner, what counts as a valuable test, and the fixtures that exist (for example <code>tests/fixtures/orders.py</code>). Every pipeline and every developer session then gets one version, from version control.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0">Standards do not show Claude what the suite already covers. For that, put the existing test files in context by naming them in the prompt, and ask for scenarios that are not yet covered. Without them, Claude proposes scenarios the suite already has — the failure behind this lesson's quiz.</p>
+    </div>
+    <div class="kc"><b>Key concept:</b> CLAUDE.md carries the standards; the existing test files go in the prompt.</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">A separate instance reviews, and prior findings prevent repeats</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">The session that wrote the code is a weak reviewer of it: it still holds the reasoning behind each decision, so it tends to confirm them. In a pipeline, generation and review are two separate <code>claude -p</code> calls. The review call gets the diff and the criteria, not the generator's conversation.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0">A second problem appears on re-review. A fresh review does not know what was already said, so it re-reports old issues in new words. The fix has three steps: load the prior findings from the last run, put them in the prompt with the new diff, and instruct Claude to report only new issues and prior findings that are still unaddressed.</p>
+    </div>
+    <div class="kc"><b>Key concept:</b> Review in a separate instance, and pass prior findings so it reports only what is new or unresolved.</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Exam vs. documentation</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">The docs also recommend <code>--bare</code> for CI, which starts Claude Code without loading CLAUDE.md, and say it will become the default for <code>-p</code>. In practice, if a CI run ignores CLAUDE.md, check for <code>--bare</code> first. The docs' managed Code Review service also deduplicates findings itself; the prior-findings technique above is the guide's, not the docs'.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0"><b>Under exam conditions:</b> pick CLAUDE.md for CI project context, and pick prior findings plus "new or unaddressed only" to stop duplicate comments.</p>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Exam traps — more options that lose</div>
+    <div class="trap"><b>Resume the generating session and ask it to review.</b> Resuming (Topic 1.7) brings back exactly the reasoning an independent review should lack.</div>
+    <div class="trap"><b>Tell the generator to critique its own code.</b> The context and the blind spots stay the same.</div>
+    <div class="trap"><b>Add "respond only with valid JSON" to the prompt.</b> Without <code>--json-schema</code> the shape is not bound, and the posting script still breaks.</div>
+    <div class="trap"><b>A PostToolUse hook to reformat the output.</b> Hooks (Topic 1.5) act on tool calls and tool results, not on the final answer a pipeline parses.</div>
+    <div class="trap"><b>Deduplicate in the posting script by file and line.</b> Rephrased findings and findings on shifted lines still post, and Claude still does not know what was fixed.</div>
+    <div class="trap"><b>Keep testing standards in ~/.claude/CLAUDE.md on the build agent.</b> User level (Topic 3.1) is not in version control, so other runners and developers never get it.</div>
+    <div class="trap"><b>Blame a weak model for trivial tests.</b> If CLAUDE.md says nothing about what a valuable test is, the model is not the cause.</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Worked example — the comments that would not stop repeating</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>Situation:</b> A review job runs <code>claude -p</code> with <code>--output-format json</code> and <code>--json-schema</code>, and a script posts each finding as an inline comment. After the third push, the PR has three near-identical comments about the same missing input check, and two comments about an issue fixed in the second push.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>Tempting answers:</b> the schema is wrong, or the posting script should deduplicate. The JSON parses fine, and script-side deduplication misses rewordings and moved lines.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>Root cause:</b> every run starts with no knowledge of earlier findings, so it cannot tell new issues from old, or fixed from unfixed.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0"><b>Fix:</b> store each run's findings JSON. On the next run, pass the prior findings with the new diff, and ask for new issues and still-unaddressed findings only, marking which is which.</p>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Checklist</div>
+    <ul style="font-size:13px;color:var(--ink-2);line-height:1.8;padding-left:18px;margin:0">
+      <li>Does the pipeline call <code>claude -p</code>? Without it, the job waits for input.</li>
+      <li>Must a script read the findings? Then <code>--output-format json</code> plus <code>--json-schema</code>.</li>
+      <li>Does the schema include file, line, severity and message for inline comments?</li>
+      <li>Are test standards, fixtures and review criteria in the project CLAUDE.md, not copied into each prompt or kept at user level?</li>
+      <li>Are the existing test files in context when tests are generated?</li>
+      <li>Is the reviewer a separate instance from the writer?</li>
+      <li>Do re-reviews get prior findings and an instruction to report new or unaddressed issues only?</li>
+    </ul>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Quiz</div>
+    <div class="quiz-box">
+      <div class="q-label">Today's quiz · Topic 3.6</div>
+      <div class="q-text"><b>Claude Code for Continuous Integration.</b> You are integrating Claude Code into your Continuous Integration/Continuous Deployment (CI/CD) pipeline. The system runs automated code reviews, generates test cases, and provides feedback on pull requests. You need to design prompts that provide actionable feedback and minimize false positives.<br><br>
+      A CI job runs <code>claude -p "Write unit tests for src/billing/invoice.py"</code> on each pull request. The project CLAUDE.md documents the test runner, what counts as a valuable test, and the invoice_factory fixture, and the generated tests follow all three. Reviewers still reject most of them, because tests/test_invoice.py already covers the same scenarios. Run transcripts show Claude opens only the files the prompt names, and never opens that file.<br><br>
+      <b>Which change most effectively stops the job from generating tests for scenarios the suite already covers?</b></div>
+      <div class="q-opt"><b>A.</b> Name tests/test_invoice.py in the prompt and ask for tests only for scenarios that this file does not already cover.</div>
+      <div class="q-opt"><b>B.</b> Add a separate <code>claude -p</code> step in which an independent instance reviews the generated tests before they reach reviewers.</div>
+      <div class="q-opt"><b>C.</b> Add a line to the project CLAUDE.md telling Claude not to write tests that duplicate scenarios already in the suite.</div>
+      <div class="q-opt"><b>D.</b> Add <code>--output-format json</code> with a <code>--json-schema</code> that requires a name and a description for every generated test.</div>
+      <details style="margin-top:14px">
+        <summary style="font-size:13px;color:var(--accent);cursor:pointer;font-weight:600">Show answer</summary>
+        <div style="margin-top:10px;padding:12px 14px;background:var(--good-bg);border:1px solid var(--good-bd);border-radius:9px;font-size:13.2px;color:var(--ink-2);line-height:1.6">
+          <b style="color:var(--good)">Answer: A.</b> Name the existing test file in the prompt and ask only for scenarios it does not cover — the tests already followed the documented standards, so what Claude lacked was the existing suite. C names no file, and Claude opens only files the prompt names. B reviews after generation, so the duplicates are still written. D fixes output shape, not scenario choice. (Official answer, published at the top of Topic 4.1.)
+        </div>
+      </details>
+    </div>
+  </div></div>
 
 <!-- ===== PANEL: D4.1 Specific Criteria ===== -->
 <div class="sp-panel" id="sp-d4t1">
   <div class="sp-section">
-    <div class="sub">Domain 4 · Prompt Engineering &amp; Optimization · 20% of exam</div>
-    <h2>Task 4.1 — Specific Criteria &amp; Rules</h2>
+    <div class="sub">Domain 4 · Prompt Engineering and Structured Output · 20% of exam</div>
+    <h2>Topic 4.1 — Explicit Review Criteria</h2>
     <p style="font-size:13.2px;color:var(--ink-2);margin:4px 0 0"><em>"Be Conservative" Means Nothing — 47% Agreement. "Lacks Sample Size" Means Something — 94%.</em></p>
+    <p style="font-size:13.2px;color:var(--ink-2);margin:4px 0 0">Appears in: <em>Claude Code for Continuous Integration</em>, <em>Structured Data Extraction</em> scenarios.</p>
+    <p style="font-size:13.2px;color:var(--ink-2);margin:4px 0 0"><b>What you need to know:</b> A review prompt must state what counts: which categories to report, which to skip, and what each severity level means. A word such as "be conservative" does not do that.</p>
   </div>
   <div class="sp-section">
     <div class="sub">The core insight</div>
@@ -3617,14 +3716,116 @@ claude "analyze the diff"</pre>
       <li><b>K4.1.3:</b> Labels alone: 41% accuracy. Text conditions: 72%. Text + code examples: 94%.</li>
     </ul>
   </div>
-</div>
+
+  <div class="sp-section">
+    <div class="sub">Last quiz answer — Topic 3.6</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>Answer: A</b> — name tests/test_invoice.py in the prompt and ask for tests only for scenarios that this file does not already cover. The tests already followed the documented standards, so what Claude lacked was the existing suite. (Official answer, published at the top of this lesson.)</p>
+      <ul style="margin:6px 0 0;padding-left:18px;font-size:13px;color:var(--ink-2);line-height:1.6">
+        <li><b>Why C loses:</b> Claude reads CLAUDE.md on every run, but the added line names no file, and Claude opens only the files the prompt names.</li>
+        <li><b>B and D:</b> a separate reviewing instance runs after generation, so the generator still writes the same duplicates. A JSON schema fixes the shape of the output, not which scenarios Claude chooses.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Write the scope as report and skip lists</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">A vague criterion states an intent, so the model decides where the bar is on every run. An explicit criterion states the condition that makes a finding reportable, and it can be checked against each finding. Write the whole scope as two lists, by category:</p>
+      <pre class="sp-code" style="margin:0 0 8px">Report:
+- Bugs: wrong behaviour, crashes, data loss
+- Security: injection, auth bypass, secrets in code or logs
+
+Skip:
+- Minor style (naming, formatting, ordering)
+- Local patterns the codebase uses on purpose</pre>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0">The guide's split is bugs and security to report, minor style and local patterns to skip. Common skip candidates also include generated code, lockfiles, vendored dependencies and anything CI already enforces. An evidence rule works the same way: "behavior claims need a file:line citation in the source, not an inference from naming" cuts false positives.</p>
+    </div>
+    <div class="kc"><b>Key concept:</b> Set the bar by issue category and a checkable condition, not by the model's own judgement.</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Confidence wording does not say what to report</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">"Be conservative", "only report high-confidence findings" and "only flag important issues" name no category. They ask the model to apply its own bar. A current model may follow such wording faithfully — investigating just as thoroughly, finding the bugs, and then not reporting the ones it judges below the stated bar.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0">Confidence does have a place, later in the pipeline: a verification or routing step can use it to decide who looks at a finding (Topics 4.6 and 5.5). It is not a filter inside the review prompt.</p>
+    </div>
+    <div class="kc"><b>Key concept:</b> If the problem is what gets flagged, state criteria. Confidence belongs to routing.</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">One noisy category costs trust in all of them</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">False positives cost more than the time spent on the bad finding. When one category is noisy, developers start dismissing the reviewer as a whole — including the accurate bug and security findings. So judge precision per category, not overall.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0">When one category produces most of the false positives, do not leave it running while you fix it: (1) find the category with the high false-positive rate; (2) disable it temporarily, so the accurate categories keep running and win back trust; (3) rewrite its criteria — explicit conditions, report and skip lists, examples — and test them; (4) re-enable it when its precision is acceptable.</p>
+    </div>
+    <div class="kc"><b>Key concept:</b> Measure per category, pause the noisy one, fix its criteria, then re-enable it.</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Severity levels need definitions and code examples</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">Without definitions, "critical" and "minor" drift between runs and between similar findings. Define each level by its consequence and anchor it with a short code example:</p>
+      <pre class="sp-code" style="margin:0">CRITICAL: exploitable or data-destroying.
+  query = f"SELECT * FROM users WHERE id = {user_id}"
+HIGH: incorrect behaviour on a normal path.
+MEDIUM: incorrect behaviour on an edge path.
+LOW: no behaviour change; maintainability only.
+  except Exception: pass   # swallowed error</pre>
+    </div>
+    <div class="kc"><b>Key concept:</b> Define every severity level with criteria and a concrete code example.</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Exam vs. documentation</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">The exam guide says wording such as "be conservative" fails to improve precision compared with categorical criteria. The docs say a model may follow it faithfully: precision typically rises, but measured recall can fall, so real bugs go unreported. Both agree it is the wrong tool; they differ on the precision effect.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0"><b>Under exam conditions:</b> pick the option that replaces confidence wording with categorical report/skip criteria.</p>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Worked example — the category nobody read any more</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>Situation:</b> A CI job reviews every PR and posts inline comments in four categories: security, bugs, documentation accuracy and style. After a month the team says "nobody reads the bot any more". A real SQL injection finding sat unaddressed on a merged PR. Dismissal data shows 70% of documentation-accuracy comments are dismissed, while security and bug comments are rarely wrong.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>Tempting diagnoses:</b> the security findings need better wording, or the whole prompt needs "be conservative". The first misreads which category is noisy; the second is confidence wording.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>Root cause:</b> the documentation-accuracy category has a vague criterion and floods pull requests with false positives. That noise eroded trust in every category.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0"><b>Fix:</b> disable that category temporarily, rewrite its criteria with an explicit condition and skip rules, test them, then re-enable it.</p>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Checklist</div>
+    <ul style="font-size:13px;color:var(--ink-2);line-height:1.8;padding-left:18px;margin:0">
+      <li>Does each review category state a checkable condition, not an intent?</li>
+      <li>Are report and skip lists written by category (bugs and security in, minor style and local patterns out)?</li>
+      <li>Does the fix replace words like "conservative" or "high-confidence" with criteria?</li>
+      <li>Which category has the high dismissal rate, and is it hurting trust in the others?</li>
+      <li>Is that category paused while its prompt is rewritten, then re-enabled?</li>
+      <li>Does each severity level have a definition and a short code example?</li>
+    </ul>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Quiz</div>
+    <div class="quiz-box">
+      <div class="q-label">Today's quiz · Topic 4.1</div>
+      <div class="q-text"><b>Claude Code for Continuous Integration.</b> You are integrating Claude Code into your Continuous Integration/Continuous Deployment (CI/CD) pipeline. The system runs automated code reviews, generates test cases, and provides feedback on pull requests. You need to design prompts that provide actionable feedback and minimize false positives.<br><br>
+      Your CI job runs <code>claude -p</code> on each pull request with a review prompt. For code comments, the prompt says only: "Check that code comments are accurate." Developers dismiss most comment findings as not real problems. Four recent findings: cache.py:12, comment wording is awkward (dismissed); client.py:40, comment does not mention the timeout parameter (dismissed); pool.py:88, comment says "conn", write "connection" (dismissed); retry.py:21, comment says it returns None on a miss, but the code raises KeyError (fixed).<br><br>
+      <b>Which change most effectively cuts the false positives in comment findings by stating the bar instead of leaving it to Claude?</b></div>
+      <div class="q-opt"><b>A.</b> Add "Be conservative: report a comment finding only when you are highly confident it is a real problem."</div>
+      <div class="q-opt"><b>B.</b> Replace the instruction with "Flag a comment only when the behavior it describes contradicts what the code actually does."</div>
+      <div class="q-opt"><b>C.</b> Add a detected_pattern field to each finding so the team can analyse which comment findings get dismissed.</div>
+      <div class="q-opt"><b>D.</b> Add a skip rule below the instruction: "Do not flag comment wording, grammar or spelling in any file."</div>
+      <details style="margin-top:14px">
+        <summary style="font-size:13px;color:var(--accent);cursor:pointer;font-weight:600">Show answer</summary>
+        <div style="margin-top:10px;padding:12px 14px;background:var(--good-bg);border:1px solid var(--good-bd);border-radius:9px;font-size:13.2px;color:var(--ink-2);line-height:1.6">
+          <b style="color:var(--good)">Answer: B.</b> State the condition: flag a comment only when the behavior it describes contradicts what the code does. It excludes all three dismissed findings and keeps the retry.py one. D helps but sets no report condition, so findings like the timeout parameter keep coming. A is confidence wording; C only measures the noise. (Official answer, published at the top of Topic 4.2.)
+        </div>
+      </details>
+    </div>
+  </div></div>
 
 <!-- ===== PANEL: D4.2 Few-shot ===== -->
 <div class="sp-panel" id="sp-d4t2">
   <div class="sp-section">
-    <div class="sub">Domain 4 · Prompt Engineering &amp; Optimization · 20% of exam</div>
-    <h2>Task 4.2 — Few-shot Calibration</h2>
+    <div class="sub">Domain 4 · Prompt Engineering and Structured Output · 20% of exam</div>
+    <h2>Topic 4.2 — Few-Shot Prompting</h2>
     <p style="font-size:13.2px;color:var(--ink-2);margin:4px 0 0"><em>Text Instructions Failed at 64%. Two Examples Reached 91%.</em></p>
+    <p style="font-size:13.2px;color:var(--ink-2);margin:4px 0 0">Appears in: <em>Claude Code for Continuous Integration</em>, <em>Structured Data Extraction</em> scenarios.</p>
+    <p style="font-size:13.2px;color:var(--ink-2);margin:4px 0 0"><b>What you need to know:</b> When detailed instructions still produce inconsistent or noisy output, add a few targeted examples aimed at the exact failure. More prose is what is already failing.</p>
   </div>
   <div class="sp-section">
     <div class="sub">The escalation path</div>
@@ -3655,14 +3856,111 @@ claude "analyze the diff"</pre>
       <li><b>S4.2.1:</b> Paired REPORT + SKIP examples: 67% → 94% boundary accuracy. Always pair positive and negative examples.</li>
     </ul>
   </div>
-</div>
+
+  <div class="sp-section">
+    <div class="sub">Last quiz answer — Topic 4.1</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>Answer: B</b> — replace the instruction with "Flag a comment only when the behavior it describes contradicts what the code actually does." The old instruction set no condition, and this one excludes all three dismissed findings while keeping the retry.py comment that contradicts the code. (Official answer, published at the top of this lesson.)</p>
+      <ul style="margin:6px 0 0;padding-left:18px;font-size:13px;color:var(--ink-2);line-height:1.6">
+        <li><b>Why D loses:</b> a skip rule for wording, grammar and spelling removes two of the dismissed findings, but the instruction still states no condition for what to report, so findings like the missing timeout parameter keep coming.</li>
+        <li><b>A and C:</b> "highly confident" is Claude's own guess, not a stated condition; a detected_pattern field helps study dismissals but changes nothing about what gets flagged.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Examples beat more instructions when output varies</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">Few-shot prompting means putting a few worked examples of the desired output into the prompt. It is the move when the instructions are already detailed and the output is still inconsistent: a detailed paragraph is read slightly differently each run, while an example is the target itself, not a description of it.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0">Every example must show every required field — for a CI finding: location, issue, severity and suggested fix — because Claude copies a gap as readily as a field. Vary the files, severities and kinds of issue, so the model copies the format and not one particular finding.</p>
+    </div>
+    <div class="kc"><b>Key concept:</b> When instructions are detailed and the format still drifts, add two or three examples in the exact format.</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Targeted examples with reasons settle ambiguous cases</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">Examples earn their place on the cases the instructions cannot settle: a request that two tools could plausibly serve, or whether a changed branch needs a new test when its function already has line coverage. Write 2 to 4 targeted examples of such borderline cases, each showing why one action was chosen over the plausible alternatives — the reasoning is what transfers to new cases with different surface details.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0">Choose borderline cases, where the model actually goes wrong; easy cases teach nothing the instructions did not. Keep the set diverse: a set of diverse, canonical examples beats a laundry list of edge cases, which is brittle and misses new variants.</p>
+    </div>
+    <div class="kc"><b>Key concept:</b> Write 2 to 4 diverse examples of borderline cases, each with the reason one action beat the alternatives.</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Contrast pairs mark the line between fine and flagged</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">A reviewer shown only issues has no signal for what is acceptable, so false positives stay. Pair an acceptable pattern, not flagged and with the reason, with a genuine issue, flagged, that looks similar:</p>
+      <pre class="sp-code" style="margin:0">Acceptable (do not flag):
+  catch (e) { log.warn(e); throw e; }
+  Reason: logged and rethrown; the caller still sees it.
+
+Issue (flag, high):
+  catch (e) { log.warn(e); }
+  Reason: error is swallowed; the caller proceeds as if the
+  write succeeded.</pre>
+    </div>
+    <div class="kc"><b>Key concept:</b> Pair an acceptable pattern with a similar genuine issue, each with its reason, to cut false positives.</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Extraction needs one example per layout</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">In the Structured Data Extraction scenario, few-shot targets three related failures. <b>Varied structures:</b> the same information appears in different shapes — citations inline or in a bibliography, a methods section or method details inside the narrative — so give one correctly extracted example per shape. <b>Empty fields:</b> a required field comes back empty on some formats although the information is there, because the model does not recognise where that format keeps it; add examples from exactly those formats. <b>Hallucination:</b> informal inputs such as "about two cups" invite invented precision; examples that record what is stated, normalising only as the prompt defines, cut fabricated values.</p>
+    </div>
+    <div class="kc"><b>Key concept:</b> Add correctly extracted examples from each failing layout and each informal input.</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Exam vs. documentation</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">The guide says 2 to 4 targeted examples for ambiguous cases; the docs say "include 3-5 examples for best results". The docs also send guaranteed schema-valid JSON to structured outputs (Topic 4.3), not to examples, and lead their hallucination advice with permission to say "I don't know".</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0"><b>Under exam conditions:</b> pick 2 to 4 targeted examples, and pick few-shot when the symptom is inconsistent format despite detailed instructions. Pick tool use with a schema only when the requirement is guaranteed schema compliance.</p>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Worked example — the papers that came back empty</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>Situation:</b> A pipeline extracts methodology and cited_works, both required, from research papers. The prompt has detailed field definitions and one example: a paper with a "Methods" heading and a numbered bibliography. Journal papers extract well. Conference papers come back with methodology empty and cited_works an empty list, though a human finds both in seconds.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>Tempting answers:</b> make the fields nullable, add retries on validation failure, or lengthen the field definitions. Each aims at a problem this pipeline does not have.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>Root cause:</b> the only example shows one structure. Conference papers embed their method details in the introduction and cite inline, as in "Lee et al., 2024", and the model has never seen where that format keeps the data.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0"><b>Fix:</b> add examples of correct extraction from an embedded-methods paper and an inline-citation paper, next to the existing one, and keep them diverse in length and field.</p>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Checklist</div>
+    <ul style="font-size:13px;color:var(--ink-2);line-height:1.8;padding-left:18px;margin:0">
+      <li>Are the instructions already detailed while the output still varies? Then add examples, not prose.</li>
+      <li>Does every example show every required field, such as location, issue, severity and fix?</li>
+      <li>Do the examples cover borderline cases, not easy ones?</li>
+      <li>Does each example say why one action beat the alternatives?</li>
+      <li>Are the examples diverse in length, verdict and field, so no accidental pattern repeats?</li>
+      <li>Does a noisy reviewer have acceptable patterns paired with similar genuine issues?</li>
+      <li>For extraction, is there one correct example per document layout in the corpus?</li>
+    </ul>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Quiz</div>
+    <div class="quiz-box">
+      <div class="q-label">Today's quiz · Topic 4.2</div>
+      <div class="q-text"><b>Claude Code for Continuous Integration.</b> You are integrating Claude Code into your Continuous Integration/Continuous Deployment (CI/CD) pipeline. The system runs automated code reviews, generates test cases, and provides feedback on pull requests. You need to design prompts that provide actionable feedback and minimize false positives.<br><br>
+      Your CI job runs <code>claude -p</code> to review each pull request. The prompt's SQL injection criterion is a detailed paragraph. It says that calls to the team's db.query helper with a sql tagged template are safe, because the template sends values as query parameters. The prompt has no examples. The review flags both of these lines as SQL injection; only the second is unsafe: <code>db.query(sql`SELECT * FROM orders WHERE id = ${orderId}`)</code> and <code>db.query("SELECT * FROM orders WHERE id = " + orderId)</code>.<br><br>
+      <b>Which prompt change most reliably teaches the review to flag only the second kind of call?</b></div>
+      <div class="q-opt"><b>A.</b> Add two or three examples of sql template calls to the prompt, each marked as acceptable with the reason it is safe.</div>
+      <div class="q-opt"><b>B.</b> Add a severity field to each finding so reviewers can sort the SQL injection findings by risk and read the worst first.</div>
+      <div class="q-opt"><b>C.</b> Rewrite the SQL injection paragraph to describe in more detail how sql template calls differ from +-built queries.</div>
+      <div class="q-opt"><b>D.</b> Add example pairs: a sql template call marked acceptable, with the reason, next to a +-built query flagged as an issue.</div>
+      <details style="margin-top:14px">
+        <summary style="font-size:13px;color:var(--accent);cursor:pointer;font-weight:600">Show answer</summary>
+        <div style="margin-top:10px;padding:12px 14px;background:var(--good-bg);border:1px solid var(--good-bd);border-radius:9px;font-size:13.2px;color:var(--ink-2);line-height:1.6">
+          <b style="color:var(--good)">Answer: D.</b> Show both sides of the boundary: a template call marked acceptable with its reason, beside a +-built query flagged as an issue. A shows only the safe side, so the review sees no boundary between two similar calls. B only sorts findings; C is more of the prose that already failed. (Official answer, published at the top of Topic 4.3.)
+        </div>
+      </details>
+    </div>
+  </div></div>
 
 <!-- ===== PANEL: D4.3 tool_use Output ===== -->
 <div class="sp-panel" id="sp-d4t3">
   <div class="sp-section">
-    <div class="sub">Domain 4 · Prompt Engineering &amp; Optimization · 20% of exam</div>
-    <h2>Task 4.3 — Structured Output via tool_use</h2>
+    <div class="sub">Domain 4 · Prompt Engineering and Structured Output · 20% of exam</div>
+    <h2>Topic 4.3 — Structured Output via Tools</h2>
     <p style="font-size:13.2px;color:var(--ink-2);margin:4px 0 0"><em>tool_use Eliminates Structural Errors. Semantic Errors Remain.</em></p>
+    <p style="font-size:13.2px;color:var(--ink-2);margin:4px 0 0">Appears in: <em>Claude Code for Continuous Integration</em>, <em>Structured Data Extraction</em> scenarios.</p>
+    <p style="font-size:13.2px;color:var(--ink-2);margin:4px 0 0"><b>What you need to know:</b> To get schema-valid output, define a tool whose input schema is the record you want, choose tool_choice so Claude must call it, and read the data from the tool_use block.</p>
   </div>
   <div class="sp-section">
     <div class="sub">What tool_use guarantees (and doesn't)</div>
@@ -3701,14 +3999,118 @@ claude "analyze the diff"</pre>
       <li><b>K4.3.4:</b> Closed enum for format standardization — the same date comes out three ways without it.</li>
     </ul>
   </div>
-</div>
+
+  <div class="sp-section">
+    <div class="sub">Last quiz answer — Topic 4.2</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>Answer: D</b> — add example pairs, a sql template call marked acceptable with the reason next to a +-built query flagged as an issue. The criterion already named the safe pattern and the review still flagged it, so the fix is to show both sides of the boundary. (Official answer, published at the top of this lesson.)</p>
+      <ul style="margin:6px 0 0;padding-left:18px;font-size:13px;color:var(--ink-2);line-height:1.6">
+        <li><b>Why A loses:</b> examples of the safe call alone show only one side; with no flagged +-built query beside them, the review sees no boundary between two similar calls.</li>
+        <li><b>B and C:</b> a severity field only sorts findings; a longer paragraph is more of what already failed.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">A tool schema beats a request for JSON</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">Asking for "JSON only" in a prompt leaves Claude free to emit broken output — parsing errors from invalid JSON syntax still happen even with careful prompting. A tool moves the shape into the API contract. Its <code>input_schema</code> is the target structure, and with <code>strict: true</code> the tool input strictly follows that schema:</p>
+      <pre class="sp-code" style="margin:0 0 8px">{"name": "extract_invoice", "strict": true,
+ "input_schema": {"type": "object",
+   "properties": {"invoice_number": {"type": "string"},
+                  "total": {"type": "number"}},
+   "required": ["invoice_number", "total"],
+   "additionalProperties": false}}</pre>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0">The tool is never executed in the usual sense. The response has stop_reason <code>tool_use</code>, and the record is the block's <code>input</code>. Do not parse the text block; the data is not there.</p>
+    </div>
+    <div class="kc"><b>Key concept:</b> Tool use with a strict JSON schema is the most reliable route to schema-valid output, and the record is the input of the tool_use block.</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">tool_choice decides whether a record comes back</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">Extraction needs a record every time, and the default is not enough. There are three settings:</p>
+      <ul style="margin:0 0 8px;padding-left:18px;font-size:13px;color:var(--ink-2);line-height:1.7">
+        <li><b>auto:</b> Claude may call a tool or answer in text. Risky for extraction — a text reply is not a record.</li>
+        <li><b>any:</b> Claude must use one of the provided tools, but chooses which. Use it with one extraction tool per document type when the type is unknown: a record is guaranteed, in the schema that fits.</li>
+        <li><b>forced</b> ({"type": "tool", "name": "..."}): Claude must use that named tool. Use it when one extraction has to run first, for example metadata before enrichment.</li>
+      </ul>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0">With <code>any</code> or forced selection, the model does not emit a natural-language explanation before the tool_use block.</p>
+    </div>
+    <div class="kc"><b>Key concept:</b> auto may return text, any guarantees a call to one of several tools, and forced selection guarantees a named one.</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">A strict schema checks shape, not truth</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">Strict mode stops syntax errors, such as a truncated brace, and schema errors, such as "2" for an integer or a missing required key. It cannot check meaning. Two semantic errors pass it: line items that add up to 940 while the total says 1,040, and a supplier's VAT ID sitting in invoice_number.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0">Both parse and pass the schema. They need a validation step after extraction (Topic 4.4). Pick the schema fix when the output cannot be parsed or keys are missing; pick validation when the output parses but the numbers or field placement are wrong.</p>
+    </div>
+    <div class="kc"><b>Key concept:</b> Strict schemas stop syntax errors, not semantic ones.</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Schema design prevents invented values</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>Required or optional.</b> Mark a field required only when every source document contains it. A required field the source lacks still has to be filled, so the model makes up a plausible value. For information the source may lack, allow null with <code>"type": ["string", "null"]</code> — now "not in the document" has a valid answer.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>Enum escape values.</b> A closed list forces a wrong pick when reality does not fit. Add "other" plus a detail string, and "unclear" for genuinely ambiguous cases, so the schema stays stable.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0"><b>Normalization rules.</b> A schema can say invoice_date is a string; it cannot say "output YYYY-MM-DD, treat slashed dates as DD/MM". Put that rule in the prompt, next to the schema.</p>
+    </div>
+    <div class="kc"><b>Key concept:</b> Make fields the source may lack nullable, add "other" and "unclear" to enums, and keep format rules in the prompt.</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Exam vs. documentation</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">The docs guarantee schema compliance only "in most cases", offer a second route (JSON outputs, returned in a text block), and their complexity guidance says to make parameters required where possible — while the guide recommends optional or nullable fields for data a source may lack.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0"><b>Under exam conditions:</b> pick tool use with a strict schema, <code>any</code> for unknown document types, forced selection for a named extractor, and optional or nullable fields for data the source may lack.</p>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Worked example — the purchase orders that did not exist</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>Situation:</b> A procurement team extracts supplier invoices with a strict extract_invoice tool. Finance reports purchase-order numbers that match no order in the ERP. About 15% of records carry well-formed po_number values such as PO-20431 that do not exist. All records parse and pass schema checks.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>Tempting answers:</b> schema validation is failing silently, so add a retry; or the prompt needs "don't make things up". Neither touches the cause.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>Root cause:</b> po_number is required as a plain string, and many small suppliers print no PO number. The model must fill the field, so it makes up a plausible value.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0"><b>Fix:</b> allow null for po_number. Documents without a PO number now yield null.</p>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Checklist</div>
+    <ul style="font-size:13px;color:var(--ink-2);line-height:1.8;padding-left:18px;margin:0">
+      <li>Is the output a tool_use record from a tool with a strict JSON schema, not JSON requested in the prompt?</li>
+      <li>Is the data read from the input of the tool_use block, not the text block?</li>
+      <li>Must every document yield a record? Then not auto.</li>
+      <li>Is the document type unknown, with one tool per type? Then any.</li>
+      <li>Must one named extraction run first? Then forced selection.</li>
+      <li>Does the output parse but contain wrong sums or misplaced values? Then validation, not a stricter schema.</li>
+      <li>Can the source lack a field? Then nullable or optional, not required.</li>
+      <li>Do the enums have "other" plus detail and "unclear", and do format rules sit in the prompt?</li>
+    </ul>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Quiz</div>
+    <div class="quiz-box">
+      <div class="q-label">Today's quiz · Topic 4.3</div>
+      <div class="q-text"><b>Structured Data Extraction.</b> You are building a structured data extraction system using Claude. The system extracts information from unstructured documents, validates the output using JSON schemas, and maintains high accuracy. It must handle edge cases gracefully and integrate with downstream systems.<br><br>
+      Your pipeline receives unlabelled supplier invoices, receipts and contracts. Each request sends one strict tool, extract_invoice, and forces it with tool_choice {"type": "tool", "name": "extract_invoice"}. Every response has a tool_use block that passes the schema, but receipts and contracts come back as invoice records, often with an invented invoice_number. Strict extract_receipt and extract_contract tools exist but are not sent.<br><br>
+      <b>Which change most reliably gets every document a record in the schema that matches its type?</b></div>
+      <div class="q-opt"><b>A.</b> Send all three extraction tools, each described by its document type, and set the tool_choice type to <code>any</code>, so Claude must call one of them.</div>
+      <div class="q-opt"><b>B.</b> Send all three extraction tools, each described by its document type, and set the tool_choice type to <code>auto</code>, so Claude decides whether to call one.</div>
+      <div class="q-opt"><b>C.</b> Keep forcing extract_invoice and make invoice_number nullable, so receipts and contracts get null instead of an invented value.</div>
+      <div class="q-opt"><b>D.</b> Keep forcing extract_invoice and add a system prompt rule telling Claude to identify the document type before filling any field.</div>
+      <details style="margin-top:14px">
+        <summary style="font-size:13px;color:var(--accent);cursor:pointer;font-weight:600">Show answer</summary>
+        <div style="margin-top:10px;padding:12px 14px;background:var(--good-bg);border:1px solid var(--good-bd);border-radius:9px;font-size:13.2px;color:var(--ink-2);line-height:1.6">
+          <b style="color:var(--good)">Answer: A.</b> Send all three tools with <code>any</code>: a record is guaranteed, and Claude picks the schema that fits each unlabelled document. C cuts the invented numbers but still forces every document into the invoice schema. B may answer in text; D is overridden by the forced choice. (Official answer, published at the top of Topic 4.4.)
+        </div>
+      </details>
+    </div>
+  </div></div>
 
 <!-- ===== PANEL: D4.4 Semantic Validation ===== -->
 <div class="sp-panel" id="sp-d4t4">
   <div class="sp-section">
-    <div class="sub">Domain 4 · Prompt Engineering &amp; Optimization · 20% of exam</div>
-    <h2>Task 4.4 — Semantic Validation &amp; Retry</h2>
+    <div class="sub">Domain 4 · Prompt Engineering and Structured Output · 20% of exam</div>
+    <h2>Topic 4.4 — Validation and Retry Loops</h2>
     <p style="font-size:13.2px;color:var(--ink-2);margin:4px 0 0"><em>Blind Retry: 12% Fixed After 3 Attempts. Error Feedback: 87% Fixed After 1.</em></p>
+    <p style="font-size:13.2px;color:var(--ink-2);margin:4px 0 0">Appears in: <em>Claude Code for Continuous Integration</em>, <em>Structured Data Extraction</em> scenarios.</p>
+    <p style="font-size:13.2px;color:var(--ink-2);margin:4px 0 0"><b>What you need to know:</b> A retry is only as good as the information it adds: validate meaning in code, send the model the source, its failed output and the specific errors, and stop retrying when the source does not hold the answer.</p>
   </div>
   <div class="sp-section">
     <div class="sub">The retry rule</div>
@@ -3738,14 +4140,108 @@ Please re-extract with these corrections."</pre>
       <li><b>K4.4.4:</b> Schema says valid + line items don't sum to total = both true. Cross-field consistency is a semantic check.</li>
     </ul>
   </div>
-</div>
+
+  <div class="sp-section">
+    <div class="sub">Last quiz answer — Topic 4.3</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>Answer: A</b> — send all three extraction tools, each described by its document type, and set the tool_choice type to <code>any</code>. The documents arrive unlabelled in three types, and <code>any</code> makes Claude call one of the three tools while letting it choose the schema that fits each document. (Official answer, published at the top of this lesson.)</p>
+      <ul style="margin:6px 0 0;padding-left:18px;font-size:13px;color:var(--ink-2);line-height:1.6">
+        <li><b>Why C loses:</b> a nullable invoice_number cuts the invented numbers, but the request still forces extract_invoice, so receipts and contracts still come back as invoice records.</li>
+        <li><b>B and D:</b> with auto Claude may answer in text, so a record for every document is not guaranteed; D keeps the forced setting, which applies whatever the prompt says.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">A strict schema guarantees the shape, not the meaning</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">Tool use with a strict JSON schema removes syntax errors: unparseable output, wrong types and missing required keys. For those errors, no retries are needed — strict mode already guarantees schema-valid tool inputs.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0">A schema does not check that the values are right. Line items that do not add up to the stated total, and a value in the wrong field (a supplier's VAT ID in invoice_number), both pass it. Those checks live in your code, after extraction. Fix the schema when output cannot be parsed or keys are missing; add a semantic check with a retry when it parses but the values are wrong.</p>
+    </div>
+    <div class="kc"><b>Key concept:</b> A strict schema removes syntax errors; semantic errors need validation in your code.</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">A useful retry carries the document, the failed output and the specific errors</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">A retry that says only "that was wrong, try again" gives the model nothing new. A self-correction request has three parts: (1) the original document, so the model can find the right value; (2) the failed extraction, so it corrects its own output instead of starting over; (3) the specific validation errors — which field, which rule, expected against actual.</p>
+      <pre class="sp-code" style="margin:0">user:      &lt;document&gt;...invoice text...&lt;/document&gt;
+assistant: tool_use extract_invoice { "stated_total": 1040 }
+user:      tool_result: Validation failed.
+           - line_items sum to 940.00, stated_total is 1040.00.
+             Re-read the line items; one may be missing.
+           Call extract_invoice again with corrected values.</pre>
+    </div>
+    <div class="kc"><b>Key concept:</b> Resend the document, the failed extraction and the specific errors, never a bare "try again".</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">A retry cannot add what the source lacks</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">Retries fix errors the model made while reading a source that holds the answer: a date in the wrong format, a value in the wrong field, items that do not sum. In each case the right value is in the document, so a retry with feedback can succeed.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0">A retry cannot succeed when the value is not in what the model was given — it exists only in an external document that was never sent, or the field is simply absent. More attempts then burn tokens and push the model toward a plausible invented value. Classify the failure before retrying: if the information is absent, stop — return null through a nullable field (Topic 4.3), flag the record, and fetch the missing document or route the record to a person.</p>
+    </div>
+    <div class="kc"><b>Key concept:</b> Retry format and structure errors; when the data is not in the source, stop and flag.</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Extra fields make failures measurable</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">Ask the model to compute the check itself, then compare in code. Extract <b>stated_total</b> (the total as printed), <b>calculated_total</b> (the sum of the extracted line items) and <b>conflict_detected</b> (a boolean the model sets when the source itself is inconsistent). If the totals differ and the flag is false, a line item was missed or misread: retry with the specific error. If the model re-reads and the items really do sum to the lower figure, it sets the flag: do not retry, keep both values and route the record for review.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0">The same idea works for review findings: add a <b>detected_pattern</b> field naming the code construct that triggered each finding. Grouping dismissals by that field shows which constructs produce false positives, and which criteria or examples to fix (Topics 4.1 and 4.2).</p>
+    </div>
+    <div class="kc"><b>Key concept:</b> Record calculated_total, conflict_detected and detected_pattern so inconsistencies and false positives can be analysed.</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Exam vs. documentation</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">The guide names a validation-retry loop. The docs have no page by that name; they teach instructive error messages, self-correction chains and iterative refinement. The four field names — stated_total, calculated_total, conflict_detected and detected_pattern — appear only in the guide.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0"><b>Under exam conditions:</b> pick the answer that resends the document, the failed extraction and the specific errors, and use the guide's field names.</p>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Worked example — the renewal rate that was never sent</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>Situation:</b> A legal-ops team extracts supplier contracts with a strict extract_contract tool and a validation-retry loop of up to three retries with specific errors. The loop works well for date formats and misplaced party names. About 7% of contracts use all three retries on renewal_rate, and validation keeps reporting it missing. On some documents the third attempt returns a value that appears nowhere in the contract.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>Root cause:</b> those contracts say "renewal pricing per Schedule B", and Schedule B is a separate document that was never sent. The information is absent from the source, so no retry can succeed, and repeated pressure produces a fabricated rate.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0"><b>Fix:</b> classify the failure before retrying. Format and structure errors go back with the document, the failed extraction and the specific errors. For a value that is not in the provided document, stop: return renewal_rate: null, record that Schedule B is referenced, and fetch it or route the contract to review.</p>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Checklist</div>
+    <ul style="font-size:13px;color:var(--ink-2);line-height:1.8;padding-left:18px;margin:0">
+      <li>Does the output parse but hold wrong values or a value in the wrong field? That needs a semantic check in code, not a schema change.</li>
+      <li>Does the retry include the original document, the failed extraction and the specific errors?</li>
+      <li>Is the failure a format or structure error, with the answer in the source? Then retry.</li>
+      <li>Is the value only in a document the model never received? Then stop, return null, flag it and fetch the source.</li>
+      <li>Are stated_total, calculated_total and conflict_detected extracted, with both totals kept when the source is inconsistent?</li>
+      <li>Do review findings carry detected_pattern, so dismissals can be grouped by cause?</li>
+    </ul>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Quiz</div>
+    <div class="quiz-box">
+      <div class="q-label">Today's quiz · Topic 4.4</div>
+      <div class="q-text"><b>Structured Data Extraction.</b> You are building a structured data extraction system using Claude. The system extracts information from unstructured documents, validates the output using JSON schemas, and maintains high accuracy. It must handle edge cases gracefully and integrate with downstream systems.<br><br>
+      Your pipeline extracts invoices with an extract_invoice tool whose schema allows a null tax_rate. A code validator rejects null anyway and retries up to three times, resending the invoice, the failed extraction and the specific error. Some invoices only say "VAT as per framework agreement"; the agreement is never sent. There, the first attempt returns null; later attempts fail until retries run out or return an invented rate.<br><br>
+      <b>Which change most reliably prevents these invented tax rates?</b></div>
+      <div class="q-opt"><b>A.</b> Add "If the tax rate is not printed on the invoice, return null and do not guess" to the retry message of each attempt, keeping three retries.</div>
+      <div class="q-opt"><b>B.</b> Raise the retry limit from three to five so the model gets more attempts to find the tax rate in the invoice text.</div>
+      <div class="q-opt"><b>C.</b> Rewrite the validation error to quote the "framework agreement" line and ask the model to work out tax_rate from it.</div>
+      <div class="q-opt"><b>D.</b> If an invoice only points to an agreement for the rate, accept null: no retry; flag it and fetch the agreement or send it to review.</div>
+      <details style="margin-top:14px">
+        <summary style="font-size:13px;color:var(--accent);cursor:pointer;font-weight:600">Show answer</summary>
+        <div style="margin-top:10px;padding:12px 14px;background:var(--good-bg);border:1px solid var(--good-bd);border-radius:9px;font-size:13.2px;color:var(--ink-2);line-height:1.6">
+          <b style="color:var(--good)">Answer: D.</b> Accept null and stop: the rate lives in an agreement the pipeline never sends, so no retry can find it, and stopping removes the pressure that produces invented rates. A is only an instruction while the validator still rejects null; B adds invention chances; C names an agreement, not a rate. (Official answer, published at the top of Topic 4.5.)
+        </div>
+      </details>
+    </div>
+  </div></div>
 
 <!-- ===== PANEL: D4.5 Batch API ===== -->
 <div class="sp-panel" id="sp-d4t5">
   <div class="sp-section">
-    <div class="sub">Domain 4 · Prompt Engineering &amp; Optimization · 20% of exam</div>
-    <h2>Task 4.5 — Batch API</h2>
+    <div class="sub">Domain 4 · Prompt Engineering and Structured Output · 20% of exam</div>
+    <h2>Topic 4.5 — Batch Processing</h2>
     <p style="font-size:13.2px;color:var(--ink-2);margin:4px 0 0"><em>50% Cost Savings — But Up to 24 Hours Wait.</em></p>
+    <p style="font-size:13.2px;color:var(--ink-2);margin:4px 0 0">Appears in: <em>Claude Code for Continuous Integration</em>, <em>Structured Data Extraction</em> scenarios.</p>
+    <p style="font-size:13.2px;color:var(--ink-2);margin:4px 0 0"><b>What you need to know:</b> Batches cost half and take up to 24 hours, so use them only where nobody is waiting and no tool has to run mid-request. Match results by custom_id, and resubmit only the failures.</p>
   </div>
   <div class="sp-section">
     <div class="sub">The tradeoff</div>
@@ -3791,14 +4287,110 @@ Please re-extract with these corrections."</pre>
       <li><b>S4.5.1:</b> Always test on a sample first — 18% failure rate vs 3% with pre-testing.</li>
     </ul>
   </div>
-</div>
+
+  <div class="sp-section">
+    <div class="sub">Last quiz answer — Topic 4.4</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>Answer: D</b> — if an invoice only points to an agreement for the rate, accept null, do not retry, and flag it or fetch the agreement. The rate lives in an agreement the pipeline never sends, so no retry can find it, and stopping the retries removes the pressure that produces invented rates. (Official answer, published at the top of this lesson.)</p>
+      <ul style="margin:6px 0 0;padding-left:18px;font-size:13px;color:var(--ink-2);line-height:1.6">
+        <li><b>Why A loses:</b> the instruction helps, but the validator still rejects null and retries, and each rejection pushes toward a value again. Not retrying is more reliable.</li>
+        <li><b>B and C:</b> more attempts are only more chances to invent a rate, and an error quoting the "framework agreement" line names an agreement, not a rate.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Batches trade time for money, so ask who is waiting</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">The Message Batches API cuts cost in half: all usage is charged at 50% of standard API prices. The price is time. A batch is processed asynchronously and expires if processing does not complete within 24 hours; there is no latency guarantee inside that window. Plan with the 24 hours, not with how fast batches usually finish.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">Two questions decide every item. <b>Is a person or a pipeline blocked on the answer?</b> A pre-merge check that gates a merge is blocking, so it stays on the synchronous API. An overnight report, a weekly audit or a bulk extraction with a next-day SLA is not, so it goes to batches. <b>Does Claude need the result of your own tool before it can finish?</b> Inside a batch each request is handled independently, so there is no point at which your code can return a tool_result. A workflow where Claude calls lookup_order and continues is an agentic loop (Topic 1.1) and needs the synchronous API; batch the single-shot parts — one document in, one extraction out.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0">Choose per workflow, not per team. Cost is the reason to move a latency-tolerant job to batches, never a reason to move a blocking one.</p>
+    </div>
+    <div class="kc"><b>Key concept:</b> Batches are for latency-tolerant, single-shot work; anything blocking, or needing your tools mid-request, stays synchronous.</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Results come back in any order, so match on custom_id</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">Every request in a batch carries a unique <code>custom_id</code>. You need it because batch results can be returned in any order and may not match the order requests were submitted. Always match results to requests with the custom_id field — never by zipping the results file with the input list by position.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0">Make the ID meaningful, such as the document ID rather than a loop counter. A meaningful ID joins each result back to its source record and picks out the failures without a side table.</p>
+    </div>
+    <div class="kc"><b>Key concept:</b> Results arrive in any order; join them to requests with custom_id, never by position.</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Size the submission cadence from the SLA</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">A document's worst case is the time it waits for the next submission plus the full batch window. Take a 30-hour SLA and batches that may take up to 24 hours:</p>
+      <pre class="sp-code" style="margin:0 0 8px">doc arrives -- waits &lt;= interval -- batch: up to 24 h -- result
+|_____________ must be &lt;= SLA (30 h) _____________|
+interval &lt;= 30 - 24 = 6 h, so submit every 4 h (2 h headroom)</pre>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0">Start from the SLA, subtract the full 24-hour window (not the typical completion time), and pick an interval inside what is left, with headroom for handling results. If the SLA is below 24 hours, no cadence can guarantee it with batches — that workload needs the synchronous API.</p>
+    </div>
+    <div class="kc"><b>Key concept:</b> Maximum wait before submission is the SLA minus 24 hours; pick an interval inside it.</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Refine on a sample, then resubmit only the failures</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">In a batch, a prompt flaw is multiplied by the volume and found only after the run. Before submitting a large volume, run the prompt on a representative sample covering the document types and edge cases; fix the prompt and repeat until the first-pass success rate is high.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0">Some items will still fail. Collect the failed custom_ids and resubmit just those — rerunning the whole batch pays again for every success. And resubmit with a fix where the input was the problem: a document that exceeded the context limit fails again if resent unchanged, so split it into chunks, each with its own derived custom_id (for example contract-8812-part1 and contract-8812-part2).</p>
+    </div>
+    <div class="kc"><b>Key concept:</b> Refine the prompt on a sample first; then resubmit only the failed custom_ids, with a fix such as chunking where the input was the problem.</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Exam vs. documentation</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">The docs say most batches finish in under an hour, and that tool use and multi-turn messages are accepted as request content — server tools even run their loop on Anthropic's side inside a batch. The guide teaches the 24-hour window and no mid-request tool loop for your own tools.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0"><b>Under exam conditions:</b> pick the 24-hour window for any planning decision, and pick "batches can't run your tools mid-request and return results".</p>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Worked example — the rerun that doubled the bill</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>Situation:</b> A logistics firm extracts 40,000 customs declarations each night through the Message Batches API. After a run, 1,100 results are errored. The on-call engineer resubmits all 40,000. The rerun returns about 300 errors — the same declarations as before — and the second night's bill doubles.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>Tempting answers:</b> the batch service is unreliable, so switch to the synchronous API; or retry with validation feedback. The first uses the wrong API for a latency-tolerant job, and the second is the wrong layer.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>Root cause:</b> two mistakes. The rerun included 38,900 declarations that had already succeeded. The persistent 300 are multi-hundred-page declarations that exceed the context limit, resent unchanged.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0"><b>Fix:</b> collect the failed custom_ids and resubmit only those. Split the oversize declarations into chunks with derived IDs such as decl-55102-p1 and decl-55102-p2, and merge the chunk results by ID.</p>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Checklist</div>
+    <ul style="font-size:13px;color:var(--ink-2);line-height:1.8;padding-left:18px;margin:0">
+      <li>Is anyone or anything blocked on the result? Then the synchronous API.</li>
+      <li>Is the job nightly, weekly or otherwise latency-tolerant? Then batches, at half the price.</li>
+      <li>Must Claude call your own tool and read the result mid-request? Then not a batch.</li>
+      <li>Are results joined to requests by a meaningful custom_id, not by position?</li>
+      <li>Is the submission interval no more than the SLA minus 24 hours, with headroom?</li>
+      <li>Was the prompt refined on a representative sample before the full run?</li>
+      <li>Does recovery resubmit only the failed custom_ids?</li>
+      <li>Are failed oversize documents changed, for example chunked, before resubmission?</li>
+    </ul>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Quiz</div>
+    <div class="quiz-box">
+      <div class="q-label">Today's quiz · Topic 4.5</div>
+      <div class="q-text"><b>Structured Data Extraction.</b> You are building a structured data extraction system using Claude. The system extracts information from unstructured documents, validates the output using JSON schemas, and maintains high accuracy. It must handle edge cases gracefully and integrate with downstream systems.<br><br>
+      A nightly Message Batches API job extracts fields from 12,000 contracts, one request per contract, with the contract ID as custom_id. The results file has 150 errored results. 140 of them failed with api_error, an internal server error. The other 10 failed with invalid_request_error because the contract text alone is longer than the model's context window.<br><br>
+      <b>What is the most effective way to get extractions for all 150 failed contracts?</b></div>
+      <div class="q-opt"><b>A.</b> Send the 150 failed contracts to the synchronous Messages API, one request at a time, instead of a batch.</div>
+      <div class="q-opt"><b>B.</b> Resubmit the 150 failed custom_ids, splitting each of the 10 long contracts into chunks with new custom_ids.</div>
+      <div class="q-opt"><b>C.</b> Resubmit the 150 failed contracts in a new batch with each error message added to the prompt, so Claude can correct its output.</div>
+      <div class="q-opt"><b>D.</b> Resubmit only the 150 failed custom_ids in a new batch, with each request body exactly as it was sent.</div>
+      <details style="margin-top:14px">
+        <summary style="font-size:13px;color:var(--accent);cursor:pointer;font-weight:600">Show answer</summary>
+        <div style="margin-top:10px;padding:12px 14px;background:var(--good-bg);border:1px solid var(--good-bd);border-radius:9px;font-size:13.2px;color:var(--ink-2);line-height:1.6">
+          <b style="color:var(--good)">Answer: B.</b> Resubmit only the failed custom_ids, and chunk the 10 oversize contracts so they fit. D resubmits those 10 unchanged, so they fail again. A recovers the server errors at full price and still fails the 10; C adds prompt length to requests that produced no output. (Official answer, published at the top of Topic 4.6.)
+        </div>
+      </details>
+    </div>
+  </div></div>
 
 <!-- ===== PANEL: D4.6 Multi-pass Review ===== -->
 <div class="sp-panel" id="sp-d4t6">
   <div class="sp-section">
-    <div class="sub">Domain 4 · Prompt Engineering &amp; Optimization · 20% of exam</div>
-    <h2>Task 4.6 — Multi-pass Review</h2>
+    <div class="sub">Domain 4 · Prompt Engineering and Structured Output · 20% of exam</div>
+    <h2>Topic 4.6 — Multi-Pass Review</h2>
     <p style="font-size:13.2px;color:var(--ink-2);margin:4px 0 0"><em>Same-Session Review: 0.3 Findings. Independent Instance: 3.7. Human Baseline: 4.1.</em></p>
+    <p style="font-size:13.2px;color:var(--ink-2);margin:4px 0 0">Appears in: <em>Claude Code for Continuous Integration</em>, <em>Structured Data Extraction</em> scenarios.</p>
+    <p style="font-size:13.2px;color:var(--ink-2);margin:4px 0 0"><b>What you need to know:</b> Review generated work in a separate instance that sees the output and the criteria but not the author's reasoning, and cut a large review into per-file passes plus a cross-file integration pass.</p>
   </div>
   <div class="sp-section">
     <div class="sub">Why same-session review fails</div>
@@ -3826,7 +4418,98 @@ Please re-extract with these corrections."</pre>
       <li><b>S4.6.1:</b> Calibrate confidence per category — "HIGH" means 92% for style but 70% for security.</li>
     </ul>
   </div>
-</div>
+
+  <div class="sp-section">
+    <div class="sub">Last quiz answer — Topic 4.5</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>Answer: B</b> — resubmit the 150 failed custom_ids, splitting each of the 10 long contracts into chunks with new custom_ids. The 10 long contracts are invalid as sent, so splitting them into chunks lets them fit and succeed. (Official answer, published at the top of this lesson.)</p>
+      <ul style="margin:6px 0 0;padding-left:18px;font-size:13px;color:var(--ink-2);line-height:1.6">
+        <li><b>Why D loses:</b> resubmitting only the failed custom_ids is right for the 140 server errors, but the 10 oversize contracts fail again with the body unchanged.</li>
+        <li><b>A and C:</b> A recovers the 140 at full price instead of the 50% batch price, and the 10 still fail. C's error messages help fix output mistakes; these requests produced no output, and a longer prompt leaves the 10 further over the limit.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">The author is a weak reviewer of its own work</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">A model that generated code still holds the reasoning behind each decision. When the same session is asked to review, it re-reads its choices through that reasoning and is less likely to question them. A fresh context improves code review precisely because the reviewer is not biased toward code it just wrote.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0">The fix is structural, not a better instruction. A self-review instruction such as "critically review your code before finishing" keeps the same context and the same blind spots. Extended thinking in the generating session adds more reasoning, but over the same context and the same commitments. Independence matters more the longer the agent worked unattended.</p>
+    </div>
+    <div class="kc"><b>Key concept:</b> A review in the author's context confirms the author's decisions, so a gating review needs an independent instance.</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">A second instance gets the output and the criteria, not the conversation</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">Generate in one instance; review in another that never saw the generation. The reviewer sees only the diff and the criteria you give it, not the reasoning that produced the change, so it evaluates the result on its own terms.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">There are three ways to get that fresh instance: a separate session (the Writer/Reviewer pattern; in CI, a separate <code>claude -p</code> step, Topic 3.6); a subagent, which starts with a fresh, isolated context window; or a direct API call that starts a new message history holding only the output and the criteria.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0">Resuming or forking the generator session (Topic 1.7) does not count. A fork inherits the whole conversation, and a resume restores it — neither gives the reviewer independence.</p>
+    </div>
+    <div class="kc"><b>Key concept:</b> Give the reviewer the artefact and the criteria, never the generator's conversation.</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">A large review needs per-file passes and an integration pass</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">One pass over many files spreads attention thin: performance degrades as context fills, and models do better when each consideration is handled by a separate call. The guide names two symptoms of the single pass — diluted attention, with uneven depth and missed issues, and contradictory findings across files.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">So run local passes, one call per file, for bugs and edge cases in that file — then a separate integration pass for interfaces, call sites and data flow across the changed files. Both halves are needed: local passes alone never look across files (a field renamed in one module can break a serializer in another, unflagged), and an integration pass that also redoes every local check is the diluted single pass again. Separate calls also let the pipeline log, evaluate or branch at any point.</p>
+    </div>
+    <div class="kc"><b>Key concept:</b> Run focused per-file passes, then a separate integration pass for cross-file data flow.</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">A verification pass tags each finding with confidence</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">After the finding passes, a verification pass re-examines each candidate finding and outputs it with a self-reported confidence — for example {"file": "billing/invoice.py", "line": 88, "category": "bug", "confidence": 0.86}. The pipeline then routes on that value: high-confidence findings post automatically; low-confidence ones go to a human or are held back.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0">Two limits keep this honest. Confidence routes findings; it does not define them — what counts as a reportable issue comes from explicit criteria (Topic 4.1). And raw self-reported confidence is not calibrated, so routing thresholds are set against labeled data (Topic 5.5).</p>
+    </div>
+    <div class="kc"><b>Key concept:</b> A verification pass attaches confidence to each finding for routing, while criteria define findings and labeled data sets the thresholds.</div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Exam vs. documentation</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px">The docs also describe a self-correction chain (draft, review against criteria, refine, as separate calls) and a self-check instruction that "catches errors reliably". They make no comparison with extended thinking, and they do not document a per-finding confidence field for custom pipelines. The managed Code Review service runs a verification step that filters false positives.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0"><b>Under exam conditions:</b> pick an independent instance over more thinking in the generating session, and per-finding confidence from a verification pass as the routing signal.</p>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Worked example — the review that kept coming back clean</div>
+    <div class="card pad">
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>Situation:</b> A pipeline asks Claude to implement a ticket ("add idempotency keys to the payments webhook"). Then, in the same session, it asks Claude to "review the change and list any problems". The review keeps coming back clean. In production, retried webhooks are processed twice: the generated code stores the key after the side effect instead of before it.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>Tempting answers:</b> tell the review to be harsher, turn on extended thinking for the implementation step, or resume the session later for a second look. All three keep the reasoning in play.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>Root cause:</b> the session chose the ordering and still holds the reasoning for it, so its review confirms the choice.</p>
+      <p style="font-size:13.2px;color:var(--ink-2);margin:0"><b>Fix:</b> add a separate review step in a fresh context that sees only the change and the review criteria, including "check ordering of side effects against idempotency writes". Feed its findings back to the generator or to the PR.</p>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Checklist</div>
+    <ul style="font-size:13px;color:var(--ink-2);line-height:1.8;padding-left:18px;margin:0">
+      <li>Does the review that gates a merge or a later step run in a different instance from the author?</li>
+      <li>Does the reviewer receive only the output and the criteria, with no generator conversation, resumed session or fork?</li>
+      <li>Is an option that keeps the review in the author's context (a stricter prompt, more thinking) the weaker one?</li>
+      <li>For a many-file change, are there per-file local passes?</li>
+      <li>Is there a separate integration pass for interfaces and data flow across files?</li>
+      <li>Is each pass its own call, so it can be logged and checked?</li>
+      <li>Do findings pass through a verification pass that attaches confidence for routing?</li>
+      <li>Do explicit criteria define what is a finding, and are thresholds calibrated on labeled data?</li>
+    </ul>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Quiz</div>
+    <div class="quiz-box">
+      <div class="q-label">Today's quiz · Topic 4.6</div>
+      <div class="q-text"><b>Claude Code for Continuous Integration.</b> You are integrating Claude Code into your Continuous Integration/Continuous Deployment (CI/CD) pipeline. The system runs automated code reviews, generates test cases, and provides feedback on pull requests. You need to design prompts that provide actionable feedback and minimize false positives.<br><br>
+      Your CI job runs <code>claude -p</code> once per pull request. The prompt tells Claude to write unit tests for the changed functions, then review those tests against the team's review criteria and approve or reject them. The review approves almost every time. Human reviewers later find subtle problems in approved tests that the review never flagged.<br><br>
+      <b>Which change to the review step most effectively catches these problems before the tests are committed?</b></div>
+      <div class="q-opt"><b>A.</b> Run the review as a second <code>claude -p</code> step that resumes the test-writing session with <code>--resume</code>.</div>
+      <div class="q-opt"><b>B.</b> Keep the review in the same run and raise extended thinking so Claude reasons longer before approving.</div>
+      <div class="q-opt"><b>C.</b> Run the review as a second <code>claude -p</code> step in a new session given only the test diff and review criteria.</div>
+      <div class="q-opt"><b>D.</b> Have the review attach a self-reported confidence to each finding and send low-confidence findings to a human.</div>
+      <details style="margin-top:14px">
+        <summary style="font-size:13px;color:var(--accent);cursor:pointer;font-weight:600">Show answer</summary>
+        <div style="margin-top:10px;padding:12px 14px;background:var(--good-bg);border:1px solid var(--good-bd);border-radius:9px;font-size:13.2px;color:var(--ink-2);line-height:1.6">
+          <b style="color:var(--good)">Answer: C.</b> A new session given only the test diff and the criteria judges the tests on their own terms. A restores the writer's reasoning through --resume; B adds thinking over the same context; D routes findings but does not make the review find them. <b>Provisional:</b> the official answer is published at the top of Topic 5.1, the next lesson in the series.
+        </div>
+      </details>
+    </div>
+  </div></div>
 
 <!-- ===== PANEL: D5.1 Context Facts ===== -->
 <div class="sp-panel" id="sp-d5t1">
@@ -4204,8 +4887,8 @@ Please re-extract with these corrections."</pre>
   <div class="sp-section">
     <div class="sub">CCAR-F Preparation · LinkedIn series by Andrey Arykov</div>
     <h2>Quiz Answers — Every Lesson Quiz, With Its Answer</h2>
-    <p style="font-size:13.2px;color:var(--ink-2);margin:4px 0 0">Every lesson in this series ends with a quiz, and the answer — with the explanation of why each other option loses — is only published at the top of the <em>next</em> lesson. This tab pairs them: each question below sits directly above its official answer and explanation, for all 17 published lessons (Topics 1.1–3.5).</p>
-    <p style="font-size:13.2px;color:var(--ink-2);margin:4px 0 0">Explanations are the series' own text, taken from the next lesson's "Answer to the last quiz" section. For Topics 1.7 and 2.1 the next lesson opens without one, so the explanation is the lesson's own answer block. Topic 3.5 is marked provisional: its official answer arrives with Topic 3.6.</p>
+    <p style="font-size:13.2px;color:var(--ink-2);margin:4px 0 0">Every lesson in this series ends with a quiz, and the answer — with the explanation of why each other option loses — is only published at the top of the <em>next</em> lesson. This tab pairs them: each question below sits directly above its official answer and explanation, for all 24 published lessons (Topics 1.1–4.6).</p>
+    <p style="font-size:13.2px;color:var(--ink-2);margin:4px 0 0">Explanations are the series' own text, taken from the next lesson's "Answer to the last quiz" section. For Topics 1.7 and 2.1 the next lesson opens without one, so the explanation is the lesson's own answer block. Topic 3.5 was marked provisional until Topic 3.6 confirmed its answer as D. Topic 4.6 is the provisional one now: its official answer arrives with Topic 5.1, the next lesson in the series.</p>
   </div>
   <div class="sp-section">
     <div class="sub">Answer key</div>
@@ -4227,7 +4910,14 @@ Please re-extract with these corrections."</pre>
         <tr><td><b>3.2</b></td><td>Slash Commands and Skills</td><td><b>A</b></td><td>Topic 3.3</td></tr>
         <tr><td><b>3.3</b></td><td>Path-Scoped Rules</td><td><b>B</b></td><td>Topic 3.4</td></tr>
         <tr><td><b>3.4</b></td><td>Plan Mode vs. Direct Execution</td><td><b>C</b></td><td>Topic 3.5</td></tr>
-        <tr><td><b>3.5</b></td><td>Iterative Refinement</td><td><b>D</b></td><td>Topic 3.6 — not yet published</td></tr>
+        <tr><td><b>3.5</b></td><td>Iterative Refinement</td><td><b>D</b></td><td>Topic 3.6</td></tr>
+        <tr><td><b>3.6</b></td><td>Claude Code in CI/CD</td><td><b>A</b></td><td>Topic 4.1</td></tr>
+        <tr><td><b>4.1</b></td><td>Explicit Review Criteria</td><td><b>B</b></td><td>Topic 4.2</td></tr>
+        <tr><td><b>4.2</b></td><td>Few-Shot Prompting</td><td><b>D</b></td><td>Topic 4.3</td></tr>
+        <tr><td><b>4.3</b></td><td>Structured Output via Tools</td><td><b>A</b></td><td>Topic 4.4</td></tr>
+        <tr><td><b>4.4</b></td><td>Validation and Retry Loops</td><td><b>D</b></td><td>Topic 4.5</td></tr>
+        <tr><td><b>4.5</b></td><td>Batch Processing</td><td><b>B</b></td><td>Topic 4.6</td></tr>
+        <tr><td><b>4.6</b></td><td>Multi-Pass Review</td><td><b>C</b> (provisional)</td><td>Topic 5.1 — not yet published</td></tr>
     </table>
   </div>
   <div class="sp-section">
@@ -4628,7 +5318,170 @@ Requirement: retry failed deliveries.</pre>
         <summary style="font-size:13px;color:var(--accent);cursor:pointer;font-weight:600">Show answer &amp; explanation</summary>
         <div style="margin-top:10px;padding:12px 14px;background:var(--good-bg);border:1px solid var(--good-bd);border-radius:9px;font-size:13.2px;color:var(--ink-2);line-height:1.6">
 <b style="color:var(--good)">Answer: D.</b> She knows the billing code, but webhook delivery is unfamiliar, and the open questions — how many retries, what backoff, which failures count, timeouts, duplicate delivery — are design decisions that live in her head, not in the repository. The interview surfaces them before any code exists, so they do not become rework. A comes after the interview: "retry failed deliveries" is too vague to write meaningful tests against until the retry behaviour is decided. B is emphasis, not a specification. C answers a repository question she does not have — Explore summarizes existing code, and the missing information is not in the code.
-          <p style="margin:10px 0 0"><b>Provisional:</b> the series publishes this answer at the top of Topic 3.6, which is not out yet. This answer and explanation follow the lesson's own logic — interview when the missing information lives in the developer's head — and will be checked against Topic 3.6 when it appears.</p>
+          <p style="margin:10px 0 0"><b>Confirmed:</b> Topic 3.6 (published 11 Nov 2026) opens with this answer as D — interview her about the webhook delivery design first, because the unanticipated questions need to surface before any code or tests exist. The provisional marking is removed.</p>
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <div class="sp-section">
+    <div class="sub">Topic 3.6 — Claude Code in CI/CD</div>
+    <div class="quiz-box">
+      <div class="q-label">Quiz · Topic 3.6 · Answer: A</div>
+      <div class="q-text"><b>Claude Code for Continuous Integration.</b> You are integrating Claude Code into your Continuous Integration/Continuous Deployment (CI/CD) pipeline. The system runs automated code reviews, generates test cases, and provides feedback on pull requests. You need to design prompts that provide actionable feedback and minimize false positives.<br><br>
+      A CI job runs <code>claude -p "Write unit tests for src/billing/invoice.py"</code> on each pull request. The project CLAUDE.md documents the test runner, what counts as a valuable test, and the invoice_factory fixture, and the generated tests follow all three. Reviewers still reject most of them, because tests/test_invoice.py already covers the same scenarios. Run transcripts show Claude opens only the files the prompt names, and never opens that file.<br><br>
+      <b>Which change most effectively stops the job from generating tests for scenarios the suite already covers?</b></div>
+      <div class="q-opt"><b>A.</b> Name tests/test_invoice.py in the prompt and ask for tests only for scenarios that this file does not already cover.</div>
+      <div class="q-opt"><b>B.</b> Add a separate <code>claude -p</code> step in which an independent instance reviews the generated tests before they reach reviewers.</div>
+      <div class="q-opt"><b>C.</b> Add a line to the project CLAUDE.md telling Claude not to write tests that duplicate scenarios already in the suite.</div>
+      <div class="q-opt"><b>D.</b> Add <code>--output-format json</code> with a <code>--json-schema</code> that requires a name and a description for every generated test.</div>
+      <details style="margin-top:14px">
+        <summary style="font-size:13px;color:var(--accent);cursor:pointer;font-weight:600">Show answer &amp; explanation</summary>
+        <div style="margin-top:10px;padding:12px 14px;background:var(--good-bg);border:1px solid var(--good-bd);border-radius:9px;font-size:13.2px;color:var(--ink-2);line-height:1.6">
+<p style="font-size:13.2px;color:var(--ink-2);margin:0 0 6px"><b>Answer: A</b> — name the existing test file in the prompt and ask only for scenarios it does not cover. The generated tests already followed the documented standards, so what Claude lacked was sight of the existing suite.</p>
+      <ul style="margin:6px 0 0;padding-left:18px;font-size:13px;color:var(--ink-2);line-height:1.6">
+        <li><b>Why C loses:</b> Claude reads CLAUDE.md on every run, but the added line names no file. The transcripts show Claude opens only the files the prompt names, so the suite stays unopened and its scenarios stay out of context.</li>
+        <li><b>B and D:</b> an independent review runs after generation, so the generator still writes the same duplicates. A JSON schema fixes the shape of the output, not which scenarios Claude chooses.</li>
+      </ul>
+        </div>
+      </details>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Topic 4.1 — Explicit Review Criteria</div>
+    <div class="quiz-box">
+      <div class="q-label">Quiz · Topic 4.1 · Answer: B</div>
+      <div class="q-text"><b>Claude Code for Continuous Integration.</b> You are integrating Claude Code into your Continuous Integration/Continuous Deployment (CI/CD) pipeline. The system runs automated code reviews, generates test cases, and provides feedback on pull requests. You need to design prompts that provide actionable feedback and minimize false positives.<br><br>
+      Your CI job runs <code>claude -p</code> on each pull request with a review prompt. For code comments, the prompt says only: "Check that code comments are accurate." Developers dismiss most comment findings as not real problems. Four recent findings: cache.py:12, comment wording is awkward (dismissed); client.py:40, comment does not mention the timeout parameter (dismissed); pool.py:88, comment says "conn", write "connection" (dismissed); retry.py:21, comment says it returns None on a miss, but the code raises KeyError (fixed).<br><br>
+      <b>Which change most effectively cuts the false positives in comment findings by stating the bar instead of leaving it to Claude?</b></div>
+      <div class="q-opt"><b>A.</b> Add "Be conservative: report a comment finding only when you are highly confident it is a real problem."</div>
+      <div class="q-opt"><b>B.</b> Replace the instruction with "Flag a comment only when the behavior it describes contradicts what the code actually does."</div>
+      <div class="q-opt"><b>C.</b> Add a detected_pattern field to each finding so the team can analyse which comment findings get dismissed.</div>
+      <div class="q-opt"><b>D.</b> Add a skip rule below the instruction: "Do not flag comment wording, grammar or spelling in any file."</div>
+      <details style="margin-top:14px">
+        <summary style="font-size:13px;color:var(--accent);cursor:pointer;font-weight:600">Show answer &amp; explanation</summary>
+        <div style="margin-top:10px;padding:12px 14px;background:var(--good-bg);border:1px solid var(--good-bd);border-radius:9px;font-size:13.2px;color:var(--ink-2);line-height:1.6">
+<p style="font-size:13.2px;color:var(--ink-2);margin:0 0 6px"><b>Answer: B</b> — replace the instruction with a checkable condition: flag a comment only when the behavior it describes contradicts what the code does. The old instruction set no condition; this one excludes all three dismissed findings and keeps the retry.py comment that genuinely contradicts the code.</p>
+      <ul style="margin:6px 0 0;padding-left:18px;font-size:13px;color:var(--ink-2);line-height:1.6">
+        <li><b>Why D loses:</b> the skip rule removes the wording findings (cache.py, pool.py), so it helps — but the instruction still states no condition for what to report, so findings like the missing timeout parameter keep coming. Only B's condition removes all three.</li>
+        <li><b>A and C:</b> "highly confident" is Claude's own guess, not a condition the team stated. A detected_pattern field helps the team study dismissals but changes nothing about what the review flags.</li>
+      </ul>
+        </div>
+      </details>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Topic 4.2 — Few-Shot Prompting</div>
+    <div class="quiz-box">
+      <div class="q-label">Quiz · Topic 4.2 · Answer: D</div>
+      <div class="q-text"><b>Claude Code for Continuous Integration.</b> You are integrating Claude Code into your Continuous Integration/Continuous Deployment (CI/CD) pipeline. The system runs automated code reviews, generates test cases, and provides feedback on pull requests. You need to design prompts that provide actionable feedback and minimize false positives.<br><br>
+      Your CI job runs <code>claude -p</code> to review each pull request. The prompt's SQL injection criterion is a detailed paragraph. It says calls to the team's db.query helper with a sql tagged template are safe, because the template sends values as query parameters. The prompt has no examples. The review flags both of these lines as SQL injection; only the second is unsafe: <code>db.query(sql`SELECT * FROM orders WHERE id = ${orderId}`)</code> and <code>db.query("SELECT * FROM orders WHERE id = " + orderId)</code>.<br><br>
+      <b>Which prompt change most reliably teaches the review to flag only the second kind of call?</b></div>
+      <div class="q-opt"><b>A.</b> Add two or three examples of sql template calls to the prompt, each marked as acceptable with the reason it is safe.</div>
+      <div class="q-opt"><b>B.</b> Add a severity field to each finding so reviewers can sort the SQL injection findings by risk and read the worst first.</div>
+      <div class="q-opt"><b>C.</b> Rewrite the SQL injection paragraph to describe in more detail how sql template calls differ from +-built queries.</div>
+      <div class="q-opt"><b>D.</b> Add example pairs: a sql template call marked acceptable, with the reason, next to a +-built query flagged as an issue.</div>
+      <details style="margin-top:14px">
+        <summary style="font-size:13px;color:var(--accent);cursor:pointer;font-weight:600">Show answer &amp; explanation</summary>
+        <div style="margin-top:10px;padding:12px 14px;background:var(--good-bg);border:1px solid var(--good-bd);border-radius:9px;font-size:13.2px;color:var(--ink-2);line-height:1.6">
+<p style="font-size:13.2px;color:var(--ink-2);margin:0 0 6px"><b>Answer: D</b> — add example pairs: a sql template call marked acceptable, with its reason, beside a +-built query flagged as an issue. The criterion already named the safe pattern and the review still flagged it, so the fix is to show both sides of the boundary.</p>
+      <ul style="margin:6px 0 0;padding-left:18px;font-size:13px;color:var(--ink-2);line-height:1.6">
+        <li><b>Why A loses:</b> examples of the safe call alone would likely cut the false positives, but they show only one side. With no flagged +-built query beside them, the review sees no boundary between two db.query calls that look alike.</li>
+        <li><b>B and C:</b> a severity field only sorts findings and changes nothing about which calls are flagged; a longer paragraph is more of what already failed.</li>
+      </ul>
+        </div>
+      </details>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Topic 4.3 — Structured Output via Tools</div>
+    <div class="quiz-box">
+      <div class="q-label">Quiz · Topic 4.3 · Answer: A</div>
+      <div class="q-text"><b>Structured Data Extraction.</b> You are building a structured data extraction system using Claude. The system extracts information from unstructured documents, validates the output using JSON schemas, and maintains high accuracy. It must handle edge cases gracefully and integrate with downstream systems.<br><br>
+      Your pipeline receives unlabelled supplier invoices, receipts and contracts. Each request sends one strict tool, extract_invoice, and forces it with tool_choice {"type": "tool", "name": "extract_invoice"}. Every response passes the schema, but receipts and contracts come back as invoice records, often with an invented invoice_number. Strict extract_receipt and extract_contract tools exist but are not sent.<br><br>
+      <b>Which change most reliably gets every document a record in the schema that matches its type?</b></div>
+      <div class="q-opt"><b>A.</b> Send all three extraction tools, each described by its document type, and set the tool_choice type to <code>any</code>, so Claude must call one of them.</div>
+      <div class="q-opt"><b>B.</b> Send all three extraction tools, each described by its document type, and set the tool_choice type to <code>auto</code>, so Claude decides whether to call one.</div>
+      <div class="q-opt"><b>C.</b> Keep forcing extract_invoice and make invoice_number nullable, so receipts and contracts get null instead of an invented value.</div>
+      <div class="q-opt"><b>D.</b> Keep forcing extract_invoice and add a system prompt rule telling Claude to identify the document type before filling any field.</div>
+      <details style="margin-top:14px">
+        <summary style="font-size:13px;color:var(--accent);cursor:pointer;font-weight:600">Show answer &amp; explanation</summary>
+        <div style="margin-top:10px;padding:12px 14px;background:var(--good-bg);border:1px solid var(--good-bd);border-radius:9px;font-size:13.2px;color:var(--ink-2);line-height:1.6">
+<p style="font-size:13.2px;color:var(--ink-2);margin:0 0 6px"><b>Answer: A</b> — send all three extraction tools, each described by its document type, with tool_choice set to <code>any</code>. The documents arrive unlabelled in three types, and <code>any</code> makes Claude call one of the tools while letting it choose the schema that fits each document.</p>
+      <ul style="margin:6px 0 0;padding-left:18px;font-size:13px;color:var(--ink-2);line-height:1.6">
+        <li><b>Why C loses:</b> a nullable invoice_number cuts the invented numbers, but the request still forces extract_invoice, so receipts and contracts still come back as invoice records. It treats the symptom and leaves the forced choice in place.</li>
+        <li><b>B and D:</b> with <code>auto</code> Claude may answer in text, so a record for every document is not guaranteed. D keeps the forced setting, which makes Claude call extract_invoice whatever the prompt says.</li>
+      </ul>
+        </div>
+      </details>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Topic 4.4 — Validation and Retry Loops</div>
+    <div class="quiz-box">
+      <div class="q-label">Quiz · Topic 4.4 · Answer: D</div>
+      <div class="q-text"><b>Structured Data Extraction.</b> You are building a structured data extraction system using Claude. The system extracts information from unstructured documents, validates the output using JSON schemas, and maintains high accuracy. It must handle edge cases gracefully and integrate with downstream systems.<br><br>
+      Your pipeline extracts invoices with an extract_invoice tool whose schema allows a null tax_rate. A code validator rejects null anyway and retries up to three times, resending the invoice, the failed extraction and the specific error. Some invoices only say "VAT as per framework agreement"; the agreement is never sent. There, the first attempt returns null; later attempts fail until retries run out or return an invented rate.<br><br>
+      <b>Which change most reliably prevents these invented tax rates?</b></div>
+      <div class="q-opt"><b>A.</b> Add "If the tax rate is not printed on the invoice, return null and do not guess" to the retry message of each attempt, keeping three retries.</div>
+      <div class="q-opt"><b>B.</b> Raise the retry limit from three to five so the model gets more attempts to find the tax rate in the invoice text.</div>
+      <div class="q-opt"><b>C.</b> Rewrite the validation error to quote the "framework agreement" line and ask the model to work out tax_rate from it.</div>
+      <div class="q-opt"><b>D.</b> If an invoice only points to an agreement for the rate, accept null: no retry; flag it and fetch the agreement or send it to review.</div>
+      <details style="margin-top:14px">
+        <summary style="font-size:13px;color:var(--accent);cursor:pointer;font-weight:600">Show answer &amp; explanation</summary>
+        <div style="margin-top:10px;padding:12px 14px;background:var(--good-bg);border:1px solid var(--good-bd);border-radius:9px;font-size:13.2px;color:var(--ink-2);line-height:1.6">
+<p style="font-size:13.2px;color:var(--ink-2);margin:0 0 6px"><b>Answer: D</b> — if an invoice only points to an agreement for the rate, accept null, do not retry, and flag it or fetch the agreement. The rate lives in an agreement the pipeline never sends, so no retry can find it, and stopping the retries removes the pressure that produces invented rates.</p>
+      <ul style="margin:6px 0 0;padding-left:18px;font-size:13px;color:var(--ink-2);line-height:1.6">
+        <li><b>Why A loses:</b> telling the model to return null instead of guessing helps, but it is only an instruction. The validator still rejects null and retries, and each rejection pushes toward a value again. It works, but less reliably than not retrying.</li>
+        <li><b>B and C:</b> more attempts are only more chances to invent a rate, and a validation error that quotes the "framework agreement" line names an agreement, not a rate.</li>
+      </ul>
+        </div>
+      </details>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Topic 4.5 — Batch Processing</div>
+    <div class="quiz-box">
+      <div class="q-label">Quiz · Topic 4.5 · Answer: B</div>
+      <div class="q-text"><b>Structured Data Extraction.</b> You are building a structured data extraction system using Claude. The system extracts information from unstructured documents, validates the output using JSON schemas, and maintains high accuracy. It must handle edge cases gracefully and integrate with downstream systems.<br><br>
+      A nightly Message Batches API job extracts fields from 12,000 contracts, one request per contract, with the contract ID as custom_id. The results file has 150 errored results. 140 failed with api_error, an internal server error. The other 10 failed with invalid_request_error because the contract text alone is longer than the model's context window.<br><br>
+      <b>What is the most effective way to get extractions for all 150 failed contracts?</b></div>
+      <div class="q-opt"><b>A.</b> Send the 150 failed contracts to the synchronous Messages API, one request at a time, instead of a batch.</div>
+      <div class="q-opt"><b>B.</b> Resubmit the 150 failed custom_ids, splitting each of the 10 long contracts into chunks with new custom_ids.</div>
+      <div class="q-opt"><b>C.</b> Resubmit the 150 failed contracts in a new batch with each error message added to the prompt, so Claude can correct its output.</div>
+      <div class="q-opt"><b>D.</b> Resubmit only the 150 failed custom_ids in a new batch, with each request body exactly as it was sent.</div>
+      <details style="margin-top:14px">
+        <summary style="font-size:13px;color:var(--accent);cursor:pointer;font-weight:600">Show answer &amp; explanation</summary>
+        <div style="margin-top:10px;padding:12px 14px;background:var(--good-bg);border:1px solid var(--good-bd);border-radius:9px;font-size:13.2px;color:var(--ink-2);line-height:1.6">
+<p style="font-size:13.2px;color:var(--ink-2);margin:0 0 6px"><b>Answer: B</b> — resubmit the 150 failed custom_ids, splitting each of the 10 long contracts into chunks with new custom_ids. The 10 long contracts are invalid as sent, so splitting them into chunks lets them fit and succeed.</p>
+      <ul style="margin:6px 0 0;padding-left:18px;font-size:13px;color:var(--ink-2);line-height:1.6">
+        <li><b>Why D loses:</b> resubmitting only the failed custom_ids is the right move for the 140 server errors. But the 10 long contracts are longer than the context window as sent, so with the request body unchanged they fail again with the same error.</li>
+        <li><b>A and C:</b> A would recover the 140 server errors, but at full price instead of the 50% batch price, and the 10 long contracts still fail. C adds error messages to the prompt, which helps Claude fix mistakes in its output — but these requests produced no output, and a longer prompt leaves the 10 contracts further over the limit.</li>
+      </ul>
+        </div>
+      </details>
+    </div>
+  </div>
+  <div class="sp-section">
+    <div class="sub">Topic 4.6 — Multi-Pass Review</div>
+    <div class="quiz-box">
+      <div class="q-label">Quiz · Topic 4.6 · Answer: C (provisional)</div>
+      <div class="q-text"><b>Claude Code for Continuous Integration.</b> You are integrating Claude Code into your Continuous Integration/Continuous Deployment (CI/CD) pipeline. The system runs automated code reviews, generates test cases, and provides feedback on pull requests. You need to design prompts that provide actionable feedback and minimize false positives.<br><br>
+      Your CI job runs <code>claude -p</code> once per pull request. The prompt tells Claude to write unit tests for the changed functions, then review those tests against the team's review criteria and approve or reject them. The review approves almost every time. Human reviewers later find subtle problems in approved tests that the review never flagged.<br><br>
+      <b>Which change to the review step most effectively catches these problems before the tests are committed?</b></div>
+      <div class="q-opt"><b>A.</b> Run the review as a second <code>claude -p</code> step that resumes the test-writing session with <code>--resume</code>.</div>
+      <div class="q-opt"><b>B.</b> Keep the review in the same run and raise extended thinking so Claude reasons longer before approving.</div>
+      <div class="q-opt"><b>C.</b> Run the review as a second <code>claude -p</code> step in a new session given only the test diff and review criteria.</div>
+      <div class="q-opt"><b>D.</b> Have the review attach a self-reported confidence to each finding and send low-confidence findings to a human.</div>
+      <details style="margin-top:14px">
+        <summary style="font-size:13px;color:var(--accent);cursor:pointer;font-weight:600">Show answer &amp; explanation</summary>
+        <div style="margin-top:10px;padding:12px 14px;background:var(--good-bg);border:1px solid var(--good-bd);border-radius:9px;font-size:13.2px;color:var(--ink-2);line-height:1.6">
+<p style="font-size:13.2px;color:var(--ink-2);margin:0 0 6px"><b>Answer: C</b> — run the review as a second <code>claude -p</code> step in a new session given only the test diff and the review criteria. The writing session still holds the reasoning behind each test, so its own review confirms its choices; a fresh instance judges the tests on their own terms.</p>
+      <ul style="margin:6px 0 0;padding-left:18px;font-size:13px;color:var(--ink-2);line-height:1.6">
+        <li><b>Why A loses:</b> resuming restores exactly the reasoning the reviewer should lack — the session that wrote the tests reviews them with its justifications intact.</li>
+        <li><b>B and D:</b> extended thinking adds more reasoning over the same context and the same commitments. Confidence routing (D) decides who sees a finding; it does not make the review find the problems in the first place.</li>
+      </ul>
+          <p style="margin:10px 0 0"><b>Provisional:</b> the series publishes this answer at the top of Topic 5.1, which is not out yet. This answer follows the lesson's own logic — the gating review must run in an independent instance — and will be checked against Topic 5.1 when it appears.</p>
         </div>
       </details>
     </div>
