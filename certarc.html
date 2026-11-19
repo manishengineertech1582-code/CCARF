@@ -3640,7 +3640,12 @@ claude "analyze the diff"</pre>
     <div class="trap"><b>Keep testing standards in ~/.claude/CLAUDE.md on the build agent.</b> User level (Topic 3.1) is not in version control, so other runners and developers never get it.</div>
     <div class="trap"><b>Blame a weak model for trivial tests.</b> If CLAUDE.md says nothing about what a valuable test is, the model is not the cause.</div>
   </div>
+  
   <div class="sp-section">
+    <div class="sub">Exam traps — the remaining options that lose</div>
+    <div class="trap"><b>Add only --output-format json.</b> The envelope becomes JSON, and the findings inside still have no fixed shape. Bind them with --json-schema.</div>
+    <div class="trap"><b>An MCP server that indexes the test suite.</b> Giving Claude the existing test files in the prompt solves duplicate scenarios. MCP is the wrong layer here.</div>
+  </div><div class="sp-section">
     <div class="sub">Worked example — the comments that would not stop repeating</div>
     <div class="card pad">
       <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>Situation:</b> A review job runs <code>claude -p</code> with <code>--output-format json</code> and <code>--json-schema</code>, and a script posts each finding as an inline comment. After the third push, the PR has three near-identical comments about the same missing input check, and two comments about an issue fixed in the second push.</p>
@@ -3659,6 +3664,7 @@ claude "analyze the diff"</pre>
       <li>Are the existing test files in context when tests are generated?</li>
       <li>Is the reviewer a separate instance from the writer?</li>
       <li>Do re-reviews get prior findings and an instruction to report new or unaddressed issues only?</li>
+      <li>Is the option a mechanism from another topic (sessions, hooks, MCP) used at the wrong layer?</li>
     </ul>
   </div>
   <div class="sp-section">
@@ -3778,7 +3784,15 @@ LOW: no behaviour change; maintainability only.
       <p style="font-size:13.2px;color:var(--ink-2);margin:0"><b>Under exam conditions:</b> pick the option that replaces confidence wording with categorical report/skip criteria.</p>
     </div>
   </div>
+  
   <div class="sp-section">
+    <div class="sub">Exam traps — the remaining options that lose</div>
+    <div class="trap"><b>Route each finding by the model's self-reported confidence.</b> Routing (Topics 4.6 and 5.5) decides who looks at a finding. It does not change what the review flags.</div>
+    <div class="trap"><b>Have an independent second instance review the findings.</b> A fresh reviewer applying the same vague criterion (Topic 4.6) inherits the same noise.</div>
+    <div class="trap"><b>Build a calibrated confidence threshold from a labelled validation set.</b> Heavy machinery (Topic 5.5) before the cheap fix — stating the categories — has been tried.</div>
+    <div class="trap"><b>Rewrite the security prompt because developers ignore security findings.</b> The security findings are accurate. The noisy category taught developers to ignore everything.</div>
+    <div class="trap"><b>Add few-shot examples of the output format.</b> The format becomes consistent (Topic 4.2), but severity stays inconsistent without per-level definitions.</div>
+  </div><div class="sp-section">
     <div class="sub">Worked example — the category nobody read any more</div>
     <div class="card pad">
       <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>Situation:</b> A CI job reviews every PR and posts inline comments in four categories: security, bugs, documentation accuracy and style. After a month the team says "nobody reads the bot any more". A real SQL injection finding sat unaddressed on a merged PR. Dismissal data shows 70% of documentation-accuracy comments are dismissed, while security and bug comments are rarely wrong.</p>
@@ -3796,6 +3810,7 @@ LOW: no behaviour change; maintainability only.
       <li>Which category has the high dismissal rate, and is it hurting trust in the others?</li>
       <li>Is that category paused while its prompt is rewritten, then re-enabled?</li>
       <li>Does each severity level have a definition and a short code example?</li>
+      <li>Is the option a mechanism from another topic (routing, a second reviewer, dismissal tracking, few-shot) aimed at a problem it does not solve?</li>
     </ul>
   </div>
   <div class="sp-section">
@@ -3912,7 +3927,16 @@ Issue (flag, high):
       <p style="font-size:13.2px;color:var(--ink-2);margin:0"><b>Under exam conditions:</b> pick 2 to 4 targeted examples, and pick few-shot when the symptom is inconsistent format despite detailed instructions. Pick tool use with a schema only when the requirement is guaranteed schema compliance.</p>
     </div>
   </div>
+  
   <div class="sp-section">
+    <div class="sub">Exam traps — the remaining options that lose</div>
+    <div class="trap"><b>Add "always use the same output format" in capitals.</b> More instruction text is the approach already failing. Add examples in the format instead.</div>
+    <div class="trap"><b>Report a confidence score and drop findings below 0.8.</b> Confidence filtering does not mark which patterns are acceptable (Topic 4.1). Use contrast pairs.</div>
+    <div class="trap"><b>Temporarily disable the noisy category.</b> It restores trust while you fix the prompt (Topic 4.1), but the fix here is still the contrast pairs.</div>
+    <div class="trap"><b>Split the review into per-file passes.</b> The same safe idiom is flagged in two-file pull requests, so this is a missing boundary, not diluted attention (Topic 4.6).</div>
+    <div class="trap"><b>Add a validation-retry loop with the error message.</b> A retry may rescue one document (Topic 4.4), but every new layout fails the first pass again. Examples fix the cause.</div>
+    <div class="trap"><b>Add a separate model call that classifies each request first.</b> Examples of the ambiguous cases in the existing prompt are the proportionate first step.</div>
+  </div><div class="sp-section">
     <div class="sub">Worked example — the papers that came back empty</div>
     <div class="card pad">
       <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>Situation:</b> A pipeline extracts methodology and cited_works, both required, from research papers. The prompt has detailed field definitions and one example: a paper with a "Methods" heading and a numbered bibliography. Journal papers extract well. Conference papers come back with methodology empty and cited_works an empty list, though a human finds both in seconds.</p>
@@ -3931,6 +3955,7 @@ Issue (flag, high):
       <li>Are the examples diverse in length, verdict and field, so no accidental pattern repeats?</li>
       <li>Does a noisy reviewer have acceptable patterns paired with similar genuine issues?</li>
       <li>For extraction, is there one correct example per document layout in the corpus?</li>
+      <li>Is the option a mechanism from another topic (nullable fields, retries, per-file passes) aimed at a problem it does not cause?</li>
     </ul>
   </div>
   <div class="sp-section">
@@ -4061,7 +4086,17 @@ Issue (flag, high):
       <p style="font-size:13.2px;color:var(--ink-2);margin:0"><b>Under exam conditions:</b> pick tool use with a strict schema, <code>any</code> for unknown document types, forced selection for a named extractor, and optional or nullable fields for data the source may lack.</p>
     </div>
   </div>
+  
   <div class="sp-section">
+    <div class="sub">Exam traps — the remaining options that lose</div>
+    <div class="trap"><b>Wrap JSON.parse in a retry loop.</b> It treats a symptom that a strict schema eliminates.</div>
+    <div class="trap"><b>Blame a loose schema for totals that do not add up.</b> The shape is fine. It is a semantic error, for validation (Topic 4.4).</div>
+    <div class="trap"><b>auto plus better tool descriptions.</b> Descriptions help selection (Topic 2.1), but auto still allows a text reply instead of a record.</div>
+    <div class="trap"><b>Use any so extract_metadata runs first.</b> any lets Claude choose; only forced selection names the tool.</div>
+    <div class="trap"><b>Make po_number required so it is never missing.</b> The model invents one when the document has none. Make it nullable.</div>
+    <div class="trap"><b>Add a new enum value for every uncategorized item.</b> "other" plus a detail string handles open categories without schema churn; "unclear" records ambiguity honestly.</div>
+    <div class="trap"><b>Parse every date with a parser for each source format.</b> A normalization rule in the prompt handles it at the source.</div>
+  </div><div class="sp-section">
     <div class="sub">Worked example — the purchase orders that did not exist</div>
     <div class="card pad">
       <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>Situation:</b> A procurement team extracts supplier invoices with a strict extract_invoice tool. Finance reports purchase-order numbers that match no order in the ERP. About 15% of records carry well-formed po_number values such as PO-20431 that do not exist. All records parse and pass schema checks.</p>
@@ -4195,7 +4230,18 @@ user:      tool_result: Validation failed.
       <p style="font-size:13.2px;color:var(--ink-2);margin:0"><b>Under exam conditions:</b> pick the answer that resends the document, the failed extraction and the specific errors, and use the guide's field names.</p>
     </div>
   </div>
+  
   <div class="sp-section">
+    <div class="sub">Exam traps — the remaining options that lose</div>
+    <div class="trap"><b>Raise the retry limit from 2 to 5.</b> More attempts with the same empty feedback, or on a value the source lacks, do not help.</div>
+    <div class="trap"><b>Make the schema strict because the totals mismatch.</b> The output already parses. A strict schema does not check sums (Topic 4.3).</div>
+    <div class="trap"><b>Add "double-check that line items sum" to the extraction prompt.</b> Without a coded check and a conflict_detected flag, a genuinely inconsistent document cannot be told apart from an extraction error.</div>
+    <div class="trap"><b>Return isRetryable: false for missing fields.</b> That is metadata for tool failures (Topic 2.2), not a validation flow for extraction output.</div>
+    <div class="trap"><b>Resubmit failed documents by custom_id with chunking.</b> That is batch failure handling (Topic 4.5). It does not put the specific validation errors in front of the model.</div>
+    <div class="trap"><b>Keep retrying until a contract's renewal rate is filled in.</b> If the rate lives in an attachment that was never provided, the loop ends in a fabricated value.</div>
+    <div class="trap"><b>Route every finding to human reviewers to label why it was dismissed.</b> Review routing (Topic 5.5) is for low-confidence extractions. A detected_pattern field gives the same grouping with no extra people.</div>
+    <div class="trap"><b>Pause every category that has dismissals.</b> Pausing (Topic 4.1) works once you know which construct is noisy. Without a pattern field you pause accurate findings too.</div>
+  </div><div class="sp-section">
     <div class="sub">Worked example — the renewal rate that was never sent</div>
     <div class="card pad">
       <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>Situation:</b> A legal-ops team extracts supplier contracts with a strict extract_contract tool and a validation-retry loop of up to three retries with specific errors. The loop works well for date formats and misplaced party names. About 7% of contracts use all three retries on renewal_rate, and validation keeps reporting it missing. On some documents the third attempt returns a value that appears nowhere in the contract.</p>
@@ -4212,6 +4258,7 @@ user:      tool_result: Validation failed.
       <li>Is the value only in a document the model never received? Then stop, return null, flag it and fetch the source.</li>
       <li>Are stated_total, calculated_total and conflict_detected extracted, with both totals kept when the source is inconsistent?</li>
       <li>Do review findings carry detected_pattern, so dismissals can be grouped by cause?</li>
+      <li>Is the option a mechanism from another topic (MCP error metadata, batch resubmission, review routing) used at the wrong layer?</li>
     </ul>
   </div>
   <div class="sp-section">
@@ -4341,7 +4388,19 @@ interval &lt;= 30 - 24 = 6 h, so submit every 4 h (2 h headroom)</pre>
       <p style="font-size:13.2px;color:var(--ink-2);margin:0"><b>Under exam conditions:</b> pick the 24-hour window for any planning decision, and pick "batches can't run your tools mid-request and return results".</p>
     </div>
   </div>
+  
   <div class="sp-section">
+    <div class="sub">Exam traps — the remaining options that lose</div>
+    <div class="trap"><b>Run the merge-gating review in a batch and poll until it ends.</b> Polling does not create a latency guarantee, and the gate can wait up to 24 hours. Keep blocking checks synchronous.</div>
+    <div class="trap"><b>Blame a slow prompt for an SLA miss when most batches finished in under an hour.</b> The cadence was sized on typical time. Size it on the 24-hour window.</div>
+    <div class="trap"><b>Add retry with specific validation errors for documents that were too long.</b> Error feedback (Topic 4.4) fixes output mistakes, not oversize inputs. Chunk the failed documents.</div>
+    <div class="trap"><b>Resubmit the failed items exactly as they were.</b> Server errors may clear, but oversize documents fail again without modification.</div>
+    <div class="trap"><b>Run the CI review with claude -p inside the nightly batch.</b> The flag (Topic 3.6) is how Claude Code runs in CI. It does not make a batch synchronous.</div>
+    <div class="trap"><b>Batch a support agent's turns, each calling lookup_order and continuing.</b> That is an agentic loop, and a batched request cannot run client tools and return results.</div>
+    <div class="trap"><b>Split the nightly job across many parallel synchronous calls to finish faster.</b> Nobody is waiting overnight, and batches cost half.</div>
+    <div class="trap"><b>Add "be concise and fast" to the batch prompt to meet the SLA.</b> Wording does not shorten a 24-hour processing window.</div>
+    <div class="trap"><b>Fix the prompt after each full run until accuracy is acceptable.</b> It gets there, but each round pays for the full volume. Refine on a sample first.</div>
+  </div><div class="sp-section">
     <div class="sub">Worked example — the rerun that doubled the bill</div>
     <div class="card pad">
       <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>Situation:</b> A logistics firm extracts 40,000 customs declarations each night through the Message Batches API. After a run, 1,100 results are errored. The on-call engineer resubmits all 40,000. The rerun returns about 300 errors — the same declarations as before — and the second night's bill doubles.</p>
@@ -4469,7 +4528,16 @@ interval &lt;= 30 - 24 = 6 h, so submit every 4 h (2 h headroom)</pre>
       <p style="font-size:13.2px;color:var(--ink-2);margin:0"><b>Under exam conditions:</b> pick an independent instance over more thinking in the generating session, and per-finding confidence from a verification pass as the routing signal.</p>
     </div>
   </div>
+  
   <div class="sp-section">
+    <div class="sub">Exam traps — the remaining options that lose</div>
+    <div class="trap"><b>Tell the generating session to adopt a skeptical reviewer persona.</b> A persona does not remove the reasoning already in context.</div>
+    <div class="trap"><b>Enforce the review output with --json-schema.</b> A schema (Topic 3.6) fixes the shape of findings, not attention dilution across files.</div>
+    <div class="trap"><b>Review each file in its own pass and concatenate the results.</b> Local issues improve, but cross-file data-flow breaks stay unseen without the integration pass.</div>
+    <div class="trap"><b>Add "only report findings you are highly confident in" to the review prompt.</b> That wording (Topic 4.1) does not improve precision. A verification pass with per-finding confidence routes findings instead of silently dropping them.</div>
+    <div class="trap"><b>Train a classifier on past reviews before any routing exists.</b> Start with per-finding confidence from a verification pass.</div>
+    <div class="trap"><b>Switch the generator to a larger model.</b> The miss comes from self-review in the same context, not from model size.</div>
+  </div><div class="sp-section">
     <div class="sub">Worked example — the review that kept coming back clean</div>
     <div class="card pad">
       <p style="font-size:13.2px;color:var(--ink-2);margin:0 0 8px"><b>Situation:</b> A pipeline asks Claude to implement a ticket ("add idempotency keys to the payments webhook"). Then, in the same session, it asks Claude to "review the change and list any problems". The review keeps coming back clean. In production, retried webhooks are processed twice: the generated code stores the key after the side effect instead of before it.</p>
